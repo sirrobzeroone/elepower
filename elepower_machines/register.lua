@@ -251,6 +251,16 @@ minetest.register_craft({
 	}
 })
 
+-- Sawmill
+minetest.register_craft({
+	output = "elepower_machines:sawmill",
+	recipe = {
+		{"", "elepower_dynamics:copper_wire", ""},
+		{"elepower_dynamics:steel_gear", "elepower_machines:machine_block", "elepower_dynamics:steel_gear"},
+		{"elepower_dynamics:lead_ingot", "elepower_dynamics:diamond_gear", "elepower_dynamics:lead_ingot"},
+	}
+})
+
 -- Power Cell
 minetest.register_craft({
 	output = "elepower_machines:power_cell_0",

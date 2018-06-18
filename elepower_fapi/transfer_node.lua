@@ -81,7 +81,7 @@ function elefluid.register_transfer_duct(nodename, nodedef)
 		connects_to = {
 			"group:elefluid_transport",
 			"group:elefluid_transport_source",
-			"group:ele_fluid_container",
+			"group:fluid_container",
 			"group:fluidity_tank"
 		},
 	}

@@ -14,8 +14,9 @@ end
 
 local function add_node(nodes, pos, pnodeid)
 	local node_id = minetest.hash_node_position(pos)
-	if elefluid.graphcache.nodes[node_id] and elefluid.graphcache.nodes[node_id] ~= pnodeid then return end
-	elefluid.graphcache.nodes[node_id] = pnodeid
+	if elefluid.graphcache.nodes[node_id] == "" then
+		elefluid.graphcache.nodes[node_id] = pnodeid
+	end
 	if nodes[node_id] then
 		return false
 	end
@@ -39,17 +40,10 @@ local function check_node(targets, all_nodes, pos, p_pos, pnodeid, queue)
 		return
 	end
 
-	if not ele.helpers.get_item_group(node.name, "ele_fluid_container") and
+	if not ele.helpers.get_item_group(node.name, "fluid_container") and
 		not ele.helpers.get_item_group(node.name, "fluidity_tank") then
 		return
 	end
-
-	-- Don't add already networked nodes to this network
-	if meta:get_string("network_id") ~= "" and meta:get_string("network_id") ~= pnodeid then
-		return
-	end
-
-	meta:set_string("network_id", pnodeid)
 
 	add_node(targets, pos, pnodeid)
 end
@@ -86,7 +80,7 @@ local function fluid_targets(p_pos, positions)
 		local node = minetest.get_node(pos)
 		if node and ele.helpers.get_item_group(node.name, "elefluid_transport") then
 			add_duct_node(all_nodes, pos, pnodeid, queue)
-		elseif node and (ele.helpers.get_item_group(node.name, "ele_fluid_container") or
+		elseif node and (ele.helpers.get_item_group(node.name, "fluid_container") or
 			ele.helpers.get_item_group(node.name, "fluidity_tank")) then
 			queue = {p_pos}
 		end
@@ -123,19 +117,6 @@ minetest.register_abm({
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		local meta  = minetest.get_meta(pos)
 		local meta1 = nil
-
-		-- Check if a source is attached to a network.
-		-- If that network has been abolished, we will use this node as the network's root this time.
-		local netwrkto = meta:get_string("ele_network")
-		if netwrkto ~= "" and netwrkto ~= nil then
-			local lpos = minetest.string_to_pos(netwrkto)
-			if ele.helpers.get_item_group(minetest.get_node(lpos).name, "elefluid_transport_source") then
-				return
-			else
-				elefluid.graphcache[netwrkto] = nil
-			end
-			meta:set_string("ele_network", "")
-		end
 
 		local targets = {}
 		local source  = minetest.registered_nodes[node.name]
@@ -178,7 +159,7 @@ minetest.register_abm({
 		end
 
 		-- Make sure source node is a registered fluid container
-		if not ele.helpers.get_item_group(srcnode.name, "ele_fluid_container") and
+		if not ele.helpers.get_item_group(srcnode.name, "fluid_container") and
 			not ele.helpers.get_item_group(srcnode.name, "fluidity_tank") then
 			return
 		end
@@ -241,8 +222,8 @@ local function check_connections(pos)
 	for _,connected_pos in pairs(positions) do
 		local name = minetest.get_node(connected_pos).name
 		if ele.helpers.get_item_group(name, "elefluid_transport") or
-			ele.helpers.get_item_group(name, "ele_fluid_container") or
-			ele.helpers.get_item_group(name, "elefluid_transport_source") or 
+			ele.helpers.get_item_group(name, "elefluid_transport_source") or
+			ele.helpers.get_item_group(name, "fluid_container") or
 			ele.helpers.get_item_group(name, "fluidity_tank") then
 			table.insert(connections, connected_pos)
 		end
@@ -284,9 +265,8 @@ function elefluid.clear_networks(pos)
 					table.insert(network.all_nodes, pos)
 				end
 
-				if ele.helpers.get_item_group(name, "ele_fluid_container") or
+				if ele.helpers.get_item_group(name, "fluid_container") or
 					ele.helpers.get_item_group(name, "fluidity_tank") then
-					meta:set_string("ele_network", network_id)
 					table.insert(network.targets, pos)
 				end
 			elseif dead_end and not placed then

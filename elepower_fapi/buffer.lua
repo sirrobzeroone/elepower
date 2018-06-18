@@ -9,7 +9,7 @@ end
 
 function elefluid.get_node_buffers(pos)
 	local node, nodedef = node_data(pos)
-	if not nodedef['ele_fluid_container'] and not ele.helpers.get_item_group(node.name, "fluidity_tank") then
+	if not nodedef['fluid_buffers'] and not ele.helpers.get_item_group(node.name, "fluidity_tank") then
 		return nil
 	end
 
@@ -17,7 +17,7 @@ function elefluid.get_node_buffers(pos)
 		return {fluidity = {}}
 	end
 
-	return nodedef['ele_fluid_container']
+	return nodedef['fluid_buffers']
 end
 
 function elefluid.get_buffer_data(pos, buffer)
@@ -60,6 +60,10 @@ function elefluid.buffer_accepts_fluid(pos, buffer, fluid)
 		return true
 	end
 
+	if bfdata.fluid ~= "" and bfdata.fluid ~= fluid then
+		return false
+	end
+
 	if type(bfdata.accepts) ~= "table" then
 		bfdata.accepts = { bfdata.accepts }
 	end
@@ -67,7 +71,7 @@ function elefluid.buffer_accepts_fluid(pos, buffer, fluid)
 	for _,pf in pairs(bfdata.accepts) do
 		if pf == fluid then
 			return true
-		elseif pf:match("^group") and ele.helpers.get_item_group(fluid, pf) then
+		elseif pf:match("^group") and ele.helpers.get_item_group(fluid, pf:gsub("group:", "")) then
 			return true
 		end
 	end
@@ -152,5 +156,5 @@ function elefluid.take_from_buffer(pos, buffer, count)
 	meta:set_int(buffer .. "_fluid_storage", new_storage)
 	meta:set_string(buffer .. "_fluid", fluid)
 
-	return fluid, take_count
+	return bfdata.fluid, take_count
 end
