@@ -41,26 +41,11 @@ elepm.register_craft_type("grind", {
 	inputs      = 1,
 })
 
--- Look for item name regardless of mod
-local function scan_item_list(item_name)
-	local found = nil
-
-	for name in pairs(minetest.registered_items) do
-		local nomod = name:gsub("(%w+):", "")
-		if nomod == item_name then
-			found = name
-			break
-		end
-	end
-
-	return found
-end
-
 local keywords = { _ingot = 1, _lump = 2, _block = 9, block = 9 }
 for mat, data in pairs(elepd.registered_dusts) do
 	local kwfound = nil
 	for keyword,count in pairs(keywords) do
-		local found = scan_item_list(mat .. keyword)
+		local found = ele.helpers.scan_item_list(mat .. keyword)
 		if found then
 			if keyword == "_ingot" and not kwfound then
 				kwfound = found
@@ -161,7 +146,7 @@ minetest.after(0.2, function ()
 		elepm.register_craft({
 			type   = "saw",
 			recipe = { tree },
-			output = wood .. " 6",
+			output = {wood .. " 6", "elepower_dynamics:wood_dust"},
 			time   = 8,
 		})
 	end

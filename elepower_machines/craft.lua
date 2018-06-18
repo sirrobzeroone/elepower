@@ -17,6 +17,11 @@ function elepm.register_craft(craftdef)
 		return nil
 	end
 
+	if craftdef.type == "cooking" then
+		minetest.register_craft(craftdef)
+		return
+	end
+
 	local inputs  = craftdef.recipe
 	local outputs = craftdef.output
 	local ctype   = craftdef.type
@@ -32,10 +37,10 @@ function elepm.register_craft(craftdef)
 
 	local craftresult = {}
 	if type(outputs) == "table" then
-		for _,output in ipairs(output) do
+		for _,output in ipairs(outputs) do
 			local stack = ItemStack(output)
 			if stack and not stack:is_empty() then
-				craftresult[stack:get_name()] = stack:get_count()
+				craftresult[#craftresult + 1] = stack:to_string()
 			end
 		end
 	else

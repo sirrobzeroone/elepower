@@ -72,3 +72,18 @@ function ele.helpers.get_node_property(meta, pos, prop)
 
 	return value
 end
+
+-- Look for item name regardless of mod
+function ele.helpers.scan_item_list(item_name)
+	local found = nil
+
+	for name in pairs(minetest.registered_items) do
+		local nomod = name:gsub("([%w_]+):", "")
+		if nomod == item_name then
+			found = name
+			break
+		end
+	end
+
+	return found
+end

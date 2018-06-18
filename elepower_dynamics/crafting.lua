@@ -93,6 +93,17 @@ minetest.register_craft({
 -- Items --
 -----------
 
+minetest.register_craft({
+	type   = "shapeless",
+	output = "elepower_dynamics:particle_board",
+	recipe = {
+		"elepower_dynamics:wood_dust",
+		"elepower_dynamics:wood_dust",
+		"elepower_dynamics:wood_dust",
+		"elepower_dynamics:wood_dust",
+	}
+})
+
 --------------
 -- Smelting --
 --------------
@@ -108,3 +119,34 @@ minetest.register_craft({
 	output = "elepower_dynamics:lead_lump",
 	recipe = "elepower_dynamics:lead_ingot"
 })
+
+-----------
+-- Gears --
+-----------
+
+local keywords = { "_ingot", "" }
+for mat, data in pairs(elepd.registered_gears) do
+	for _,keyword in ipairs(keywords) do
+		local found     = ele.helpers.scan_item_list(mat .. keyword)
+		local immebreak = false
+
+		if mat == "wood" then
+			found = "group:stick"
+			immebreak = true
+		end
+
+		if found then
+			-- Gear recipe for material
+			minetest.register_craft({
+				recipe = {
+					{ "",    found, "" },
+					{ found, "",    found},
+					{ "",    found, "" }
+				},
+				output = data.item
+			})
+
+			if immebreak then break end
+		end
+	end
+end

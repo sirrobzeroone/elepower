@@ -12,10 +12,19 @@ function elepd.register_dust(mat, data)
 	data.item = itemname
 	elepd.registered_dusts[mat] = data
 
+	-- Make descriptions overridable
+	local description = "Pulverized " .. data.description
+	if data.force_description then
+		description = data.description
+	end
+
 	minetest.register_craftitem(itemname, {
-		description = "Pulverized " .. data.description,
+		description     = description,
 		inventory_image = "elepower_dust.png^[multiply:" .. data.color,
-		groups = {["dust_" .. mat] = 1, dust = 1}
+		groups          = {
+			["dust_" .. mat] = 1,
+			dust = 1
+		}
 	})
 end
 
@@ -79,4 +88,10 @@ elepd.register_dust("diamond", {
 elepd.register_dust("energium", {
 	description = "Energium",
 	color = "#ff1111"
+})
+
+elepd.register_dust("wood", {
+	description = "Wood Shavings",
+	force_description = true,
+	color = "#847454"
 })

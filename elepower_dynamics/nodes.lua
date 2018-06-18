@@ -14,3 +14,11 @@ minetest.register_node("elepower_dynamics:stone_with_lead", {
 	drop = 'elepower_dynamics:lead_lump',
 	sounds = default.node_sound_stone_defaults(),
 })
+
+minetest.register_node("elepower_dynamics:particle_board", {
+	description = "Particle Board",
+	tiles = {"elepower_particle_board.png"},
+	groups = {choppy = 2, wood = 1},
+	drop = 'elepower_dynamics:wood_dust 4',
+	sounds = default.node_sound_wood_defaults(),
+})
