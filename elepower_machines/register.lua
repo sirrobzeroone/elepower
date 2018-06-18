@@ -126,6 +126,58 @@ elepm.register_crafter("elepower_machines:furnace", {
 	groups = {oddly_breakable_by_hand = 1}
 })
 
+-------------
+-- Sawmill --
+-------------
+
+elepm.register_craft_type("saw", {
+	description = "Sawmilling",
+	inputs      = 1,
+})
+
+-- Register all logs as sawable, if we can find a planks version
+minetest.after(0.2, function ()
+	local wood_nodes = {}
+	for name in pairs(minetest.registered_nodes) do
+		if ele.helpers.get_item_group(name, "wood") then
+			wood_nodes[#wood_nodes + 1] = name
+		end
+	end
+
+	-- Begin making associations
+	-- Get crafting recipe for all woods
+	local assoc = {}
+	for _,wood in ipairs(wood_nodes) do
+		local recipes = minetest.get_all_craft_recipes(wood)
+		for _, recipe in ipairs(recipes) do
+			if recipe.items and #recipe.items == 1 then
+				assoc[recipe.items[1]] = wood
+			end
+		end
+	end
+
+	-- Register sawmill craft
+	for tree, wood in pairs(assoc) do
+		elepm.register_craft({
+			type   = "saw",
+			recipe = { tree },
+			output = wood .. " 6",
+			time   = 8,
+		})
+	end
+end)
+
+elepm.register_crafter("elepower_machines:sawmill", {
+	description = "Sawmill",
+	craft_type = "saw",
+	ele_usage = 32,
+	tiles = {
+		"elepower_machine_top.png", "elepower_machine_base.png", "elepower_machine_side.png",
+		"elepower_machine_side.png", "elepower_machine_side.png", "elepower_sawmill.png",
+	},
+	groups = {oddly_breakable_by_hand = 1}
+})
+
 ----------------------
 -- Power Generation --
 ----------------------

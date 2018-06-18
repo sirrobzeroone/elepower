@@ -6,7 +6,7 @@ local function can_dig(pos, player)
 end
 
 local function item_in_group(stack, grp)
-	return minetest.get_item_group(stack:get_name(), grp) > 0
+	return ele.helpers.get_item_group(stack:get_name(), grp)
 end
 
 function elepm.register_storage(nodename, nodedef)
