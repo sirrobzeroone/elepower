@@ -87,3 +87,14 @@ function ele.helpers.scan_item_list(item_name)
 
 	return found
 end
+
+function ele.helpers.face_front(pos, fd)
+	local back = minetest.facedir_to_dir(fd)
+	local front = ele.helpers.table_copy(back)
+
+	front.x = front.x * -1 + pos.x
+	front.y = front.y * -1 + pos.y
+	front.z = front.z * -1 + pos.z
+
+	return front
+end

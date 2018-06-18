@@ -364,7 +364,7 @@ function ele.clear_networks(pos)
 
 				-- The network was deleted.
 				if network_id == minetest.pos_to_string(pos) then
-					for _,v in pairs(network.all_nodes) do
+					for _,v in ipairs(network.all_nodes) do
 						local pos1 = minetest.hash_node_position(v)
 						clear_networks_from_node(v)
 						ele.graphcache.devices[pos1] = nil
@@ -386,7 +386,7 @@ function ele.clear_networks(pos)
 				end
 			else
 				-- Not a dead end, so the whole network needs to be recalculated
-				for _,v in pairs(ele.graphcache[net].all_nodes) do
+				for _,v in ipairs(ele.graphcache[net].all_nodes) do
 					local pos1 = minetest.hash_node_position(v)
 					clear_networks_from_node(v)
 					ele.graphcache.devices[pos1] = nil
