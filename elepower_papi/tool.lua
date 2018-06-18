@@ -43,8 +43,7 @@ function ele.tools.update_tool_wear(itemstack)
 	local percent  = storage / capacity
 	local wear     = math.floor((1-percent) * 65535)
 
-	meta:set_string("description", itemdef.description .. "\nCharge: " .. 
-		storage .. "/" .. capacity .. " " .. ele.unit)
+	meta:set_string("description", itemdef.description .. "\n" .. ele.capacity_text(capacity, storage))
 
 	itemstack:set_wear(wear)
 	itemstack = ele.tools.groupcaps(itemstack)

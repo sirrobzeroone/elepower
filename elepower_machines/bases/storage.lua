@@ -27,7 +27,7 @@ function elepm.register_storage(nodename, nodedef)
 
 		ele.helpers.swap_node(pos, nodename .. "_" .. level)
 		meta:set_string("formspec", ele.formspec.get_storage_formspec(rounded))
-		meta:set_string("infotext", ("%s Active"):format(nodedef.description))
+		meta:set_string("infotext", ("%s Active"):format(nodedef.description) .. "\n" .. ele.capacity_text(capacity, storage))
 
 		local inv = meta:get_inventory()
 

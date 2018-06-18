@@ -110,6 +110,10 @@ local function retrieve_metadata(pos, placer, itemstack, pointed_thing)
 	return false
 end
 
+function ele.capacity_text(capacity, storage)
+	return "Charge: " .. storage .. "/" .. capacity .. " " ..ele.unit
+end
+
 -- Register a base device
 function ele.register_base_device(nodename, nodedef)
 	-- Override construct callback

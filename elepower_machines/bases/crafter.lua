@@ -44,11 +44,13 @@ function elepm.register_crafter(nodename, nodedef)
 				if not result then
 					meta:set_string("formspec", ele.formspec.get_crafter_formspec(craft_type, pow_percent))
 					meta:set_int("src_time", 0)
-					meta:set_string("infotext", ("%s Idle"):format(nodedef.description))
+					meta:set_string("infotext", ("%s Idle"):format(nodedef.description) ..
+						"\n" .. ele.capacity_text(capacity, storage))
 				else
 					local pct = math.floor((ele.helpers.round(result.time * 10) / meta:get_int("src_time")) * 100)
 					meta:set_string("formspec", ele.formspec.get_crafter_formspec(craft_type, pow_percent, pct))
-					meta:set_string("infotext", ("%s Out of Power!"):format(nodedef.description))
+					meta:set_string("infotext", ("%s Out of Power!"):format(nodedef.description) ..
+						"\n" .. ele.capacity_text(capacity, storage))
 				end
 
 				break
@@ -60,7 +62,8 @@ function elepm.register_crafter(nodename, nodedef)
 			meta:set_int("storage", storage - usage)
 			pow_percent = math.floor((storage / capacity) * 100)
 			meta:set_int("src_time", meta:get_int("src_time") + ele.helpers.round(machine_speed * 10))
-					meta:set_string("infotext", ("%s Active"):format(nodedef.description))
+			meta:set_string("infotext", ("%s Active"):format(nodedef.description) ..
+				"\n" .. ele.capacity_text(capacity, storage))
 
 			if nodedef.ele_active_node then
 				local active_node = nodename.."_active"
@@ -100,7 +103,8 @@ function elepm.register_crafter(nodename, nodedef)
 				ele.helpers.swap_node(pos, machine_node)
 				meta:set_string("formspec", ele.formspec.get_crafter_formspec(craft_type, pow_percent))
 				meta:set_int("src_time", ele.helpers.round(result.time*10))
-				meta:set_string("infotext", ("%s Output Full!"):format(nodedef.description))
+				meta:set_string("infotext", ("%s Output Full!"):format(nodedef.description) ..
+					"\n" .. ele.capacity_text(capacity, storage))
 				break
 			end
 
