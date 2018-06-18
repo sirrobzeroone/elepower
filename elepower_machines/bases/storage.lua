@@ -1,4 +1,10 @@
 
+local function can_dig(pos, player)
+	local meta = minetest.get_meta(pos);
+	local inv = meta:get_inventory()
+	return inv:is_empty("in") and inv:is_empty("out")
+end
+
 local function item_in_group(stack, grp)
 	return minetest.get_item_group(stack:get_name(), grp) > 0
 end
@@ -14,6 +20,8 @@ function elepm.register_storage(nodename, nodedef)
 	nodedef.groups["ele_storage"]  = 1
 	nodedef.groups["ele_provider"] = 1
 
+	nodedef.can_dig = can_dig
+
 	nodedef.on_timer = function (pos, elapsed)
 		local meta    = minetest.get_meta(pos)
 		local refresh = false
@@ -27,7 +35,8 @@ function elepm.register_storage(nodename, nodedef)
 
 		ele.helpers.swap_node(pos, nodename .. "_" .. level)
 		meta:set_string("formspec", ele.formspec.get_storage_formspec(rounded))
-		meta:set_string("infotext", ("%s Active"):format(nodedef.description) .. "\n" .. ele.capacity_text(capacity, storage))
+		meta:set_string("infotext", ("%s Active"):format(nodedef.description) .. "\n" ..
+			ele.capacity_text(capacity, storage))
 
 		local inv = meta:get_inventory()
 

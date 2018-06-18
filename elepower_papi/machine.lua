@@ -39,6 +39,12 @@
 			Intended use: to set textures or light output.
 ]]
 
+local function can_dig(pos, player)
+	local meta = minetest.get_meta(pos);
+	local inv = meta:get_inventory()
+	return inv:is_empty("dst") and inv:is_empty("src")
+end
+
 local function allow_metadata_inventory_put(pos, listname, index, stack, player)
 	if minetest.is_protected(pos, player:get_player_name()) then
 		return 0
@@ -142,6 +148,11 @@ function ele.register_base_device(nodename, nodedef)
 	-- Save storage amount when picked up
 	nodedef.preserve_metadata = preserve_metadata
 	nodedef.after_place_node  = retrieve_metadata
+
+	-- Prevent digging when there's items inside
+	if not nodedef.can_dig then
+		nodedef.can_dig = can_dig
+	end
 
 	-- Finally, register the damn thing already
 	minetest.register_node(nodename, nodedef)
