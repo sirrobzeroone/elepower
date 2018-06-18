@@ -3,8 +3,6 @@
 -- Network cache
 elefluid.graphcache = {nodes = {}}
 
-local fluidmod = minetest.get_modpath("fluidity") ~= nil
-
 ---------------------
 -- Graph Functions --
 ---------------------
@@ -41,7 +39,8 @@ local function check_node(targets, all_nodes, pos, p_pos, pnodeid, queue)
 		return
 	end
 
-	if not ele.helpers.get_item_group(node.name, "ele_fluid_container") then
+	if not ele.helpers.get_item_group(node.name, "ele_fluid_container") and
+		not ele.helpers.get_item_group(node.name, "fluidity_tank") then
 		return
 	end
 
@@ -87,7 +86,8 @@ local function fluid_targets(p_pos, positions)
 		local node = minetest.get_node(pos)
 		if node and ele.helpers.get_item_group(node.name, "elefluid_transport") then
 			add_duct_node(all_nodes, pos, pnodeid, queue)
-		elseif node and ele.helpers.get_item_group(node.name, "ele_fluid_container") then
+		elseif node and (ele.helpers.get_item_group(node.name, "ele_fluid_container") or
+			ele.helpers.get_item_group(node.name, "fluidity_tank")) then
 			queue = {p_pos}
 		end
 
@@ -178,13 +178,14 @@ minetest.register_abm({
 		end
 
 		-- Make sure source node is a registered fluid container
-		if not ele.helpers.get_item_group(srcnode.name, "ele_fluid_container") then
+		if not ele.helpers.get_item_group(srcnode.name, "ele_fluid_container") and
+			not ele.helpers.get_item_group(srcnode.name, "fluidity_tank") then
 			return
 		end
 
 		local srcmeta = minetest.get_meta(srcpos)
 		local srcdef  = minetest.registered_nodes[srcnode.name]
-		local buffers = srcdef['ele_fluid_buffers']
+		local buffers = elefluid.get_node_buffers(srcpos)
 		if not buffers then return nil end
 
 		local pcapability = ele.helpers.get_node_property(meta, pos, "fluid_pump_capacity")
@@ -192,63 +193,27 @@ minetest.register_abm({
 		-- Transfer some fluid here
 		for _,pos in pairs(targets) do
 			if not vector.equals(pos, srcpos) then
-				local nm = minetest.get_meta(pos)
-				local nd = minetest.get_node(pos)
-				local nc = minetest.registered_nodes[nd.name]
-				local pp = nc['ele_fluid_buffers']
+				local pp = elefluid.get_node_buffers(pos)
 
 				local changed = false
 
 				if pp ~= nil then
-					for name, data in pairs(pp) do
-						for bname, buf in pairs(buffers) do
-							local target_fluid = nm:get_string(name.."_fluid")
-							local buffer_fluid = srcmeta:get_string(bname.."_fluid")
+					for name in pairs(pp) do
+						for bname in pairs(buffers) do
+							local buffer_data = elefluid.get_buffer_data(srcpos, bname)
+							local target_data = elefluid.get_buffer_data(pos, name)
 
-							local target_count = nm:get_int(name.."_fluid_storage")
-							local buffer_count = srcmeta:get_int(bname.."_fluid_storage")
-
-							local apply = false
-
-							if (target_fluid == buffer_fluid or target_fluid == "") and buffer_fluid ~= "" and buffer_count > 0 and
-								(data.accepts == true or data.accepts == buffer_fluid) then
-								local can_transfer_amnt = 0
-								if buffer_count > pcapability then
-									can_transfer_amnt = pcapability
-								else
-									can_transfer_amnt = buffer_count
-								end
-
-								if can_transfer_amnt > 0 then
-									local can_accept_amnt = 0
-									if target_count + can_transfer_amnt > data.capacity then
-										can_accept_amnt = data.capacity - target_count
-									else
-										can_accept_amnt = can_transfer_amnt
-									end
-
-									if can_accept_amnt > 0 then
-										target_count = target_count + can_accept_amnt
-										target_fluid = buffer_fluid
-										buffer_count = buffer_count - can_accept_amnt
-
-										if buffer_count == 0 then
-											buffer_fluid = ""
-										end
-
-										apply = true
+							if (target_data.fluid == buffer_data.fluid or target_data.fluid == "") and
+								buffer_data.fluid ~= "" and buffer_data.amount > 0 and
+								elefluid.buffer_accepts_fluid(pos, name, buffer_data.fluid) then
+								
+								if elefluid.can_insert_into_buffer(pos, name, buffer_data.fluid, pcapability) > 0 then
+									local res_f, count = elefluid.take_from_buffer(srcpos, bname, pcapability)
+									if count > 0 then
+										elefluid.insert_into_buffer(pos, name, res_f, count)
+										changed = true
 									end
 								end
-							end
-
-							if apply then
-								nm:set_string(name.."_fluid", target_fluid)
-								srcmeta:set_string(bname.."_fluid", buffer_fluid)
-
-								nm:set_int(name.."_fluid_storage", target_count)
-								srcmeta:set_string(bname.."_fluid_storage", buffer_count)
-
-								changed = true
 							end
 						end
 					end
@@ -277,7 +242,8 @@ local function check_connections(pos)
 		local name = minetest.get_node(connected_pos).name
 		if ele.helpers.get_item_group(name, "elefluid_transport") or
 			ele.helpers.get_item_group(name, "ele_fluid_container") or
-			ele.helpers.get_item_group(name, "elefluid_transport_source") then
+			ele.helpers.get_item_group(name, "elefluid_transport_source") or 
+			ele.helpers.get_item_group(name, "fluidity_tank") then
 			table.insert(connections, connected_pos)
 		end
 	end
@@ -318,7 +284,8 @@ function elefluid.clear_networks(pos)
 					table.insert(network.all_nodes, pos)
 				end
 
-				if ele.helpers.get_item_group(name, "ele_fluid_container") then
+				if ele.helpers.get_item_group(name, "ele_fluid_container") or
+					ele.helpers.get_item_group(name, "fluidity_tank") then
 					meta:set_string("ele_network", network_id)
 					table.insert(network.targets, pos)
 				end

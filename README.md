@@ -8,7 +8,7 @@ A new *powerful* modpack for [Minetest](http://minetest.net)!
 ### Universal Electric Power API
 How is this any different from technic I hear you asking? Well, first of all, I have eliminated the concept of "tiers" in the **technic** sense, as all types of machines will now be accepting any conduit. Machines can be upgraded for speed and efficiency.
 
-### (Planned) Universal Fluid Transfer API
+### Universal Fluid Transfer API
 Exactly what it sounds like. Pipeworks failed to do this.
 
 ### (Planned) Universal Item Transfer API
