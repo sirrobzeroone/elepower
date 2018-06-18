@@ -155,7 +155,7 @@ local function give_node_power(pos, available)
 	end
 
 	if total_add + storage > capacity then
-		total_add = (total_add + storage) - capacity
+		total_add = capacity - storage
 	end
 
 	if storage >= capacity then

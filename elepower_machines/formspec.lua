@@ -52,14 +52,16 @@ function ele.formspec.get_storage_formspec(power)
 		default.gui_bg_img..
 		default.gui_slots..
 		ele.formspec.power_meter(power)..
-		"list[context;src;2,1.5;1,1;]"..
-		"list[context;dst;5,1.5;1,1;]"..
+		"image[2,0.5;1,1;gui_furnace_arrow_bg.png^[transformR180]"..
+		"list[context;out;2,1.5;1,1;]"..
+		"image[5,0.5;1,1;gui_furnace_arrow_bg.png]"..
+		"list[context;in;5,1.5;1,1;]"..
 		"list[current_player;main;0,4.25;8,1;]"..
 		"list[current_player;main;0,5.5;8,3;8]"..
 		"listring[current_player;main]"..
-		"listring[context;src]"..
+		"listring[context;out]"..
 		"listring[current_player;main]"..
-		"listring[context;dst]"..
+		"listring[context;in]"..
 		"listring[current_player;main]"..
 		default.get_hotbar_bg(0, 4.25)
 end
