@@ -197,3 +197,66 @@ elepm.register_storage("elepower_machines:power_cell", {
 	},
 	groups = {oddly_breakable_by_hand = 1}
 })
+
+--******************--
+-- CRAFTING RECIPES --
+--******************--
+
+minetest.register_craft({
+	output = "elepower_machines:machine_block",
+	recipe = {
+		{"group:glass", "default:steel_ingot", "group:glass"},
+		{"default:steel_ingot", "default:mese_crystal", "default:steel_ingot"},
+		{"group:glass", "default:steel_ingot", "group:glass"},
+	}
+})
+
+-- Generator
+minetest.register_craft({
+	output = "elepower_machines:generator",
+	recipe = {
+		{"", "default:steel_ingot", ""},
+		{"default:steel_ingot", "elepower_machines:machine_block", "default:steel_ingot"},
+		{"elepower_dynamics:wound_copper_coil", "default:furnace", "elepower_dynamics:wound_copper_coil"}
+	}
+})
+
+-- Alloy Furnace
+minetest.register_craft({
+	output = "elepower_machines:alloy_furnace",
+	recipe = {
+		{"", "elepower_dynamics:copper_wire", ""},
+		{"default:brick", "elepower_machines:machine_block", "default:brick"},
+		{"default:furnace", "elepower_dynamics:wound_copper_coil", "default:furnace"},
+	}
+})
+
+-- Furnace
+minetest.register_craft({
+	output = "elepower_machines:furnace",
+	recipe = {
+		{"", "elepower_dynamics:copper_wire", ""},
+		{"default:clay_brick", "elepower_machines:machine_block", "default:clay_brick"},
+		{"elepower_dynamics:wound_copper_coil", "default:furnace", "elepower_dynamics:wound_copper_coil"},
+	}
+})
+
+-- Pulverizer
+minetest.register_craft({
+	output = "elepower_machines:pulverizer",
+	recipe = {
+		{"", "elepower_dynamics:copper_wire", ""},
+		{"default:flint", "elepower_machines:machine_block", "default:flint"},
+		{"elepower_dynamics:wound_copper_coil", "elepower_dynamics:lead_gear", "elepower_dynamics:wound_copper_coil"},
+	}
+})
+
+-- Power Cell
+minetest.register_craft({
+	output = "elepower_machines:power_cell_0",
+	recipe = {
+		{"elepower_dynamics:lead_ingot", "elepower_dynamics:copper_wire", "elepower_dynamics:lead_ingot"},
+		{"elepower_dynamics:wound_copper_coil", "elepower_machines:machine_block", "elepower_dynamics:wound_copper_coil"},
+		{"elepower_dynamics:lead_ingot", "elepower_dynamics:diamond_gear", "elepower_dynamics:lead_ingot"},
+	}
+})

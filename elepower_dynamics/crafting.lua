@@ -90,7 +90,7 @@ minetest.register_craft({
 })
 
 -----------
--- Items --
+-- Nodes --
 -----------
 
 minetest.register_craft({
@@ -101,6 +101,28 @@ minetest.register_craft({
 		"elepower_dynamics:wood_dust",
 		"elepower_dynamics:wood_dust",
 		"elepower_dynamics:wood_dust",
+	}
+})
+
+-----------
+-- Items --
+-----------
+
+minetest.register_craft({
+	output = "elepower_dynamics:wound_copper_coil",
+	recipe = {
+		{"", "default:copper_ingot", ""},
+		{"default:copper_ingot", "elepower_dynamics:iron_ingot", "default:copper_ingot"},
+		{"", "default:copper_ingot", ""}
+	}
+})
+
+minetest.register_craft({
+	output = "elepower_dynamics:copper_wire",
+	recipe = {
+		{"default:copper_ingot", "default:copper_ingot", "default:copper_ingot"},
+		{"default:copper_ingot", "",                     "default:copper_ingot"},
+		{"default:copper_ingot", "default:copper_ingot", "default:copper_ingot"}
 	}
 })
 
@@ -118,6 +140,13 @@ minetest.register_craft({
 	type   = "cooking",
 	output = "elepower_dynamics:lead_lump",
 	recipe = "elepower_dynamics:lead_ingot"
+})
+
+minetest.register_craft({
+	type     = "cooking",
+	output   = "default:steel_ingot",
+	recipe   = "elepower_dynamics:iron_ingot",
+	cooktime = 20
 })
 
 -----------
