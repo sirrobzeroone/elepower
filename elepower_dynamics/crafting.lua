@@ -104,6 +104,16 @@ minetest.register_craft({
 	}
 })
 
+-- Conduit
+minetest.register_craft({
+	output = "elepower_dynamics:conduit 6",
+	recipe = {
+		{"elepower_dynamics:lead_ingot",  "elepower_dynamics:lead_ingot",  "elepower_dynamics:lead_ingot"},
+		{"elepower_dynamics:copper_wire", "elepower_dynamics:copper_wire", "elepower_dynamics:copper_wire"},
+		{"elepower_dynamics:lead_ingot",  "elepower_dynamics:lead_ingot",  "elepower_dynamics:lead_ingot"},
+	}
+})
+
 -----------
 -- Items --
 -----------
