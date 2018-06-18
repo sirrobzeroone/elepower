@@ -30,7 +30,7 @@ function elefluid.get_buffer_data(pos, buffer)
 
 	local meta     = minetest.get_meta(pos)
 	local fluid    = meta:get_string(buffer .. "_fluid")
-	local amount   = meta:get_string(buffer .. "_fluid_storage")
+	local amount   = meta:get_int(buffer .. "_fluid_storage")
 	local capacity = buffers[buffer].capacity
 	local accepts  = buffers[buffer].accepts
 
