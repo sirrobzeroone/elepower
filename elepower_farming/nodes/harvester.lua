@@ -45,7 +45,8 @@ local function harvest(pos, harvested, fdir)
 			local check_node = minetest.get_node_or_nil(check_pos)
 			if check_node and ele.helpers.get_item_group(check_node.name, "plant") then
 				local nodedef = minetest.registered_nodes[check_node.name]
-				if not nodedef['next_plant'] or not minetest.registered_nodes[nodedef.next_plant] then
+				if (not nodedef['next_plant'] or not minetest.registered_nodes[nodedef.next_plant]) 
+					and not ele.helpers.get_item_group(check_node.name, "growing") then
 					-- Can harvest
 					local drop = minetest.get_node_drops(check_node.name)
 					if drop then

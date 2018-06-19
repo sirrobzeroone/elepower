@@ -7,4 +7,5 @@ elefarm = rawget(_G, "elefarm") or {}
 elefarm.modpath = modpath
 
 dofile(modpath.."/formspec.lua")
+dofile(modpath.."/craftitems.lua")
 dofile(modpath.."/nodes/init.lua")

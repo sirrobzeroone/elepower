@@ -43,12 +43,6 @@ local function check_node(users, providers, all_nodes, pos, pr_pos, pnodeid, que
 
 	if ele.helpers.get_item_group(node.name, "ele_conductor") then
 		local nodedef = minetest.registered_nodes[node.name]
-		local ptransfer = 0
-		
-		if nodedef.elepower_transfer then
-			ptransfer = nodedef.elepower_transfer
-		end
-
 		add_conductor_node(all_nodes, pos, pnodeid, queue)
 		return
 	end

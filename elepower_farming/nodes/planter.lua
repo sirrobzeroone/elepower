@@ -145,9 +145,10 @@ local function plant(pos, range, stack, inv)
 					if node and node.name == "air" then
 						if till then
 							local regN = minetest.registered_nodes
-							if regN[base_node.name].soil     == nil or
+							if (regN[base_node.name].soil     == nil or
 							   regN[base_node.name].soil.wet == nil or
-							   regN[base_node.name].soil.dry == nil then
+							   regN[base_node.name].soil.dry == nil) and
+							   regN["farming:soil"] == nil then
 								till = false
 							end
 
@@ -157,7 +158,10 @@ local function plant(pos, range, stack, inv)
 									gain = 0.5,
 								})
 
-								minetest.set_node(base_pos, {name = regN[base_node.name].soil.dry})
+								local soil = regN[base_node.name].soil
+								if soil then soil = soil.dry else soil = "farming:soil" end
+
+								minetest.set_node(base_pos, {name = soil})
 							end
 						end
 
@@ -165,10 +169,10 @@ local function plant(pos, range, stack, inv)
 						if to_place then
 							minetest.set_node(place_pos, {name = to_place})
 						else
-							local seeddef = minetest.registered_items[to_plant]
-
+							local seeddef  = minetest.registered_items[to_plant]
+							local nodename = seeddef.next_plant or (to_plant .. "_1"):gsub("seed_", "")
 							farming.place_seed(to_plant, nil, {type = "node", under = base_pos, above = place_pos},
-								seeddef.next_plant)
+								nodename)
 
 							take = to_plant
 						end
