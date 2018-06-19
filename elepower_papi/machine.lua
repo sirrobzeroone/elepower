@@ -211,19 +211,22 @@ function ele.register_machine(nodename, nodedef)
 		nodedef.groups["ele_machine"] = 0
 	end
 
-	-- Add ports to the device's faces
-	if nodedef.tiles and #nodedef.tiles == 6 then
-		for i = 1, 5 do
-			nodedef.tiles[i] = nodedef.tiles[i] .. "^elepower_power_port.png"
+	if not nodedef.ele_no_automatic_ports then
+		-- Add ports to the device's faces
+		if nodedef.tiles and #nodedef.tiles == 6 then
+			for i = 1, 5 do
+				nodedef.tiles[i] = nodedef.tiles[i] .. "^elepower_power_port.png"
+			end
 		end
-	end
 
-	-- Add ports to the device's active faces
-	if nodedef.ele_active_nodedef and nodedef.ele_active_nodedef.tiles and #nodedef.ele_active_nodedef.tiles == 6 then
-		for i = 1, 5 do
-			nodedef.ele_active_nodedef.tiles[i] = nodedef.ele_active_nodedef.tiles[i] .. "^elepower_power_port.png"
+		-- Add ports to the device's active faces
+		if nodedef.ele_active_nodedef and nodedef.ele_active_nodedef.tiles and #nodedef.ele_active_nodedef.tiles == 6 then
+			for i = 1, 5 do
+				nodedef.ele_active_nodedef.tiles[i] = nodedef.ele_active_nodedef.tiles[i] .. "^elepower_power_port.png"
+			end
 		end
 	end
+	nodedef.ele_no_automatic_ports = nil
 
 	-- Default metadata handlers for "src" and "dst"
 	if not nodedef.allow_metadata_inventory_put then
