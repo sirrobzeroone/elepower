@@ -64,12 +64,12 @@ end
 local function fluid_targets(p_pos, positions)
 	local provider = minetest.get_node(p_pos)
 	local pnodeid  = minetest.pos_to_string(p_pos)
-
+--[[
 	if elefluid.graphcache[pnodeid] then
 		local cached = elefluid.graphcache[pnodeid]
 		return cached.targets
 	end
-
+]]
 	local targets   = {}
 	local queue     = {}
 	local all_nodes = {}
@@ -111,7 +111,7 @@ end
 
 minetest.register_abm({
 	nodenames = {"group:elefluid_transport_source"},
-	label = "elefluitFluidGraphSource",
+	label = "elefluidFluidGraphSource",
 	interval   = 1,
 	chance     = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
@@ -231,6 +231,11 @@ local function check_connections(pos)
 	return connections
 end
 
+function elefluid.clear_networks(pos)
+	return
+end
+
+--[[
 -- Update networks when a node has been placed or removed
 function elefluid.clear_networks(pos)
 	local node = minetest.get_node(pos)
@@ -313,3 +318,4 @@ function elefluid.clear_networks(pos)
 		end
 	end
 end
+]]

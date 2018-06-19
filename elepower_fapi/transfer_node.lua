@@ -9,6 +9,7 @@ function elefluid.register_transfer_node(nodename, nodedef)
 
 	nodedef.groups["elefluid_transport_source"] = 1
 	nodedef.paramtype2 = "facedir"
+	nodedef.legacy_facedir_simple = true
 
 	local orig_construct = nodedef.on_construct
 	nodedef.on_construct = function (pos)
