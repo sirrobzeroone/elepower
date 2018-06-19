@@ -1,6 +1,8 @@
 
 -- Machine definitions
 
+local pw = minetest.get_modpath("pipeworks") ~= nil
+
 --[[
 	Groups:
 		ele_machine			Any machine that does something with power
@@ -120,6 +122,26 @@ function ele.capacity_text(capacity, storage)
 	return "Charge: " .. storage .. "/" .. capacity .. " " ..ele.unit
 end
 
+local tube = {
+	insert_object = function(pos, node, stack, direction)
+		local meta = minetest.get_meta(pos)
+		local inv = meta:get_inventory()
+		minetest.get_node_timer(pos):start(1.0)
+		return inv:add_item("src", stack)
+	end,
+	can_insert = function(pos, node, stack, direction)
+		local meta = minetest.get_meta(pos)
+		local inv = meta:get_inventory()
+		if meta:get_int("splitstacks") == 1 then
+			stack = stack:peek_item(1)
+		end
+		return inv:room_for_item("src", stack)
+	end,
+	input_inventory = "dst",
+
+	connect_sides = {left = 1, right = 1, back = 1, top = 1, bottom = 1},
+}
+
 -- Register a base device
 function ele.register_base_device(nodename, nodedef)
 	-- Override construct callback
@@ -152,6 +174,11 @@ function ele.register_base_device(nodename, nodedef)
 	-- Prevent digging when there's items inside
 	if not nodedef.can_dig then
 		nodedef.can_dig = can_dig
+	end
+
+	-- Pipeworks support
+	if pw and nodedef.groups and (nodedef.groups["tubedevice"] or nodedef.groups["tube"]) then
+		nodedef['tube'] = tube
 	end
 
 	-- Finally, register the damn thing already

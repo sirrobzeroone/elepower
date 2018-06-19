@@ -242,6 +242,8 @@ ele.register_base_device("elepower_farming:planter", {
 		ele_machine = 1,
 		ele_user = 1,
 		cracky = 1,
+		tubedevice = 1,
+		tubedevice_receiver = 1,
 	},
 	on_construct = function (pos)
 		local meta = minetest.get_meta(pos)

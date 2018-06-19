@@ -6,6 +6,8 @@ function elepm.register_fuel_generator(nodename, nodedef)
 
 	nodedef.groups["ele_machine"]  = 1
 	nodedef.groups["ele_provider"] = 1
+	nodedef.groups["tubedevice"]   = 1
+	nodedef.groups["tubedevice_receiver"] = 1
 
 	nodedef.on_timer = function (pos, elapsed)
 		local meta = minetest.get_meta(pos)

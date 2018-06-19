@@ -17,19 +17,22 @@ local fdir_areas = {
 		{x = 0,  z = 4,  y = 0},
 	},
 	{ -- POS Z (2)
-		{x = -4, z = 0, y = 0},
-		{x = 4, z = 8,  y = 0},
+		{x = -4, z = 0,  y = 0},
+		{x = 4,  z = 8,  y = 0},
 	},
 	{ -- POS X (3)
-		{x = 0, z = -4, y = 0},
-		{x = 8, z = 4,  y = 0},
+		{x = 0,  z = -4, y = 0},
+		{x = 8,  z = 4,  y = 0},
 	},
 	nil, nil
 }
 
 local function harvest(pos, harvested, fdir)
-	local front     = ele.helpers.face_front(pos, fdir)
-	local ranges    = fdir_areas[fdir + 1]
+	local front  = ele.helpers.face_front(pos, fdir)
+	local ranges = fdir_areas[fdir + 1]
+
+	if not ranges then return nil end
+
 	local range_st  = vector.add(front, ranges[1])
 	local range_end = vector.add(front, ranges[2])
 
@@ -122,6 +125,7 @@ ele.register_machine("elepower_farming:harvester", {
 		ele_machine = 1,
 		ele_user = 1,
 		cracky = 1,
+		tubedevice = 1,
 	},
 	on_construct = function (pos)
 		local meta = minetest.get_meta(pos)

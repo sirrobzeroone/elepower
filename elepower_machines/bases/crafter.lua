@@ -13,6 +13,8 @@ function elepm.register_crafter(nodename, nodedef)
 
 	nodedef.groups["ele_machine"] = 1
 	nodedef.groups["ele_user"]    = 1
+	nodedef.groups["tubedevice"]  = 1
+	nodedef.groups["tubedevice_receiver"] = 1
 
 	nodedef.on_timer = function (pos, elapsed)
 		local refresh = false
