@@ -9,7 +9,7 @@ local fluid_table = {
 	["default:aspen_tree"]  = { fpc = 50,  fluid = "elepower_farming:resin_source" },
 }
 
-minetest.register_node("elepower_farming:tree_extractor", elefluid.add_bucket_handler({
+minetest.register_node("elepower_farming:tree_extractor", {
 	description = "Tree Fluid Extractor",
 	groups = {fluid_container = 1, oddly_breakable_by_hand = 1, cracky = 1},
 	tiles = {
@@ -23,7 +23,7 @@ minetest.register_node("elepower_farming:tree_extractor", elefluid.add_bucket_ha
 		}
 	},
 	paramtype2 = "facedir"
-}))
+})
 
 minetest.register_abm({
 	nodenames = {"elepower_farming:tree_extractor"},

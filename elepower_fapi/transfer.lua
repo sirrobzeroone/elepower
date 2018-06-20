@@ -152,7 +152,7 @@ minetest.register_abm({
 
 		local srcmeta = minetest.get_meta(srcpos)
 		local srcdef  = minetest.registered_nodes[srcnode.name]
-		local buffers = elefluid.get_node_buffers(srcpos)
+		local buffers = fluid_lib.get_node_buffers(srcpos)
 		if not buffers then return nil end
 
 		-- Limit the amount of fluid pumped per cycle
@@ -163,7 +163,7 @@ minetest.register_abm({
 		for _,pos in pairs(targets) do
 			if not vector.equals(pos, srcpos) then
 				if pumped >= pcapability then break end
-				local pp = elefluid.get_node_buffers(pos)
+				local pp = fluid_lib.get_node_buffers(pos)
 
 				local changed = false
 
@@ -171,18 +171,18 @@ minetest.register_abm({
 					for name in pairs(pp) do
 						for bname in pairs(buffers) do
 							if pumped >= pcapability then break end
-							local buffer_data = elefluid.get_buffer_data(srcpos, bname)
-							local target_data = elefluid.get_buffer_data(pos, name)
+							local buffer_data = fluid_lib.get_buffer_data(srcpos, bname)
+							local target_data = fluid_lib.get_buffer_data(pos, name)
 
 							if (target_data.fluid == buffer_data.fluid or target_data.fluid == "") and
 								buffer_data.fluid ~= "" and buffer_data.amount > 0 and
 								(buffer_data.drainable == nil or buffer_data.drainable == true) and
-								elefluid.buffer_accepts_fluid(pos, name, buffer_data.fluid) then
+								fluid_lib.buffer_accepts_fluid(pos, name, buffer_data.fluid) then
 								
-								if elefluid.can_insert_into_buffer(pos, name, buffer_data.fluid, pcapability) > 0 then
-									local res_f, count = elefluid.take_from_buffer(srcpos, bname, pcapability)
+								if fluid_lib.can_insert_into_buffer(pos, name, buffer_data.fluid, pcapability) > 0 then
+									local res_f, count = fluid_lib.take_from_buffer(srcpos, bname, pcapability)
 									if count > 0 then
-										elefluid.insert_into_buffer(pos, name, res_f, count)
+										fluid_lib.insert_into_buffer(pos, name, res_f, count)
 										pumped = pumped + count
 										changed = true
 									end
