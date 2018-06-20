@@ -130,12 +130,14 @@ ele.register_machine("elepower_farming:tree_processor", {
 	groups = {ele_user = 1, oddly_breakable_by_hand = 1, cracky = 1, fluid_container = 1},
 	fluid_buffers = {
 		tree = {
-			capacity = 8000,
-			accepts  = {"group:tree_fluid"}
+			capacity  = 8000,
+			accepts   = {"group:tree_fluid"},
+			drainable = false,
 		},
 		water = {
-			capacity = 8000,
-			accepts  = {"default:water_source"}
+			capacity  = 8000,
+			accepts   = {"default:water_source"},
+			drainable = false,
 		},
 		output = {
 			capacity = 8000

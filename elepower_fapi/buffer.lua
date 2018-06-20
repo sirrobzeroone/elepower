@@ -28,27 +28,30 @@ function elefluid.get_buffer_data(pos, buffer)
 		return nil
 	end
 
-	local meta     = minetest.get_meta(pos)
-	local fluid    = meta:get_string(buffer .. "_fluid")
-	local amount   = meta:get_int(buffer .. "_fluid_storage")
-	local capacity = buffers[buffer].capacity
-	local accepts  = buffers[buffer].accepts
+	local meta      = minetest.get_meta(pos)
+	local fluid     = meta:get_string(buffer .. "_fluid")
+	local amount    = meta:get_int(buffer .. "_fluid_storage")
+	local capacity  = buffers[buffer].capacity
+	local accepts   = buffers[buffer].accepts
+	local drainable = buffers[buffer].drainable or true
 
 	-- Fluidity tanks compatibility
 	if buffer == "fluidity" then
 		local ffluid, fluidcount, fcapacity, fbasetank, fmod = fluidity.tanks.get_tank_at(pos)
 
-		fluid    = ffluid
-		amount   = fluidcount
-		accepts  = true
-		capacity = fcapacity
+		fluid     = ffluid
+		amount    = fluidcount
+		capacity  = fcapacity
+		accepts   = true
+		drainable = true
 	end
 
 	return {
-		fluid    = fluid,
-		amount   = amount,
-		accepts  = accepts,
-		capacity = capacity,
+		fluid     = fluid,
+		amount    = amount,
+		accepts   = accepts,
+		capacity  = capacity,
+		drainable = drainable,
 	}
 end
 
@@ -81,8 +84,8 @@ end
 
 function elefluid.can_insert_into_buffer(pos, buffer, fluid, count)
 	local bfdata = elefluid.get_buffer_data(pos, buffer)
-	if not bfdata then return nil end
-	if bfdata.fluid ~= fluid and bfdata.fluid ~= "" then return nil end
+	if not bfdata then return 0 end
+	if bfdata.fluid ~= fluid and bfdata.fluid ~= "" then return 0 end
 
 	local can_put = 0
 	if bfdata.amount + count > bfdata.capacity then
@@ -116,7 +119,7 @@ end
 
 function elefluid.can_take_from_buffer(pos, buffer, count)
 	local bfdata = elefluid.get_buffer_data(pos, buffer)
-	if not bfdata then return nil end
+	if not bfdata or not bfdata.drainable then return 0 end
 
 	local amount = bfdata.amount
 	local take_count = 0
