@@ -11,4 +11,5 @@ elefluid.unit_description = "milli-bucket"
 
 dofile(modpath.."/transfer.lua")
 dofile(modpath.."/transfer_node.lua")
+dofile(modpath.."/formspec.lua")
 dofile(modpath.."/buffer.lua")

@@ -1,5 +1,9 @@
 
-local HARVESTER_TICK = 10
+-- How many seconds there are between runs
+local HARVESTER_TICK  = 10
+
+-- How many plants we can collect in one run
+local HARVESTER_SWEEP = 9
 
 local function can_dig(pos, player)
 	local meta = minetest.get_meta(pos)
@@ -36,7 +40,7 @@ local function harvest(pos, harvested, fdir)
 	local range_st  = vector.add(front, ranges[1])
 	local range_end = vector.add(front, ranges[2])
 
-	local shots = 9
+	local shots = HARVESTER_SWEEP
 
 	for x = range_st.x, range_end.x do
 		for z = range_st.z, range_end.z do

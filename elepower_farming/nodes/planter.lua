@@ -1,6 +1,8 @@
 
-local PLANTER_TICK = 5
+-- How many seconds there are between runs
+local PLANTER_TICK = 10
 
+-- Growth regions for configured crops
 local ranges = {
 	-- Slot 1 (starts from upper left corner)
 	{
@@ -169,10 +171,10 @@ local function plant(pos, range, stack, inv)
 						if to_place then
 							minetest.set_node(place_pos, {name = to_place})
 						else
-							local seeddef  = minetest.registered_items[to_plant]
-							local nodename = seeddef.next_plant or (to_plant .. "_1"):gsub("seed_", "")
-							farming.place_seed(to_plant, nil, {type = "node", under = base_pos, above = place_pos},
-								nodename)
+							local seeddef = minetest.registered_items[to_plant]
+
+							seeddef.on_place(ItemStack(to_plant), nil,
+								{type = "node", under = base_pos, above = place_pos})
 
 							take = to_plant
 						end

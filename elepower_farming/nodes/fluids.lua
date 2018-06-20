@@ -19,7 +19,7 @@ minetest.register_node("elepower_farming:tree_sap_source", {
 	liquid_alternative_flowing = "elepower_farming:tree_sap_flowing",
 	liquid_viscosity = 7,
 	post_effect_color = {a = 103, r = 84, g = 34, b = 0},
-	groups = {tree_sap = 3, liquid = 3},
+	groups = {tree_sap = 3, liquid = 3, raw_bio = 1, tree_fluid = 1},
 	sounds = default.node_sound_water_defaults(),
 })
 
@@ -67,7 +67,7 @@ minetest.register_node("elepower_farming:resin_source", {
 	liquid_alternative_flowing = "elepower_farming:resin_flowing",
 	liquid_viscosity = 8,
 	post_effect_color = {a = 103, r = 84, g = 34, b = 0},
-	groups = {resin = 3, liquid = 3},
+	groups = {resin = 3, liquid = 3, raw_bio = 1, tree_fluid = 1},
 	sounds = default.node_sound_water_defaults(),
 })
 
@@ -236,3 +236,25 @@ minetest.register_node("elepower_farming:sludge_flowing", {
 	groups = {sludge = 3, liquid = 3, not_in_creative_inventory = 1},
 	sounds = default.node_sound_water_defaults(),
 })
+
+-- Register buckets
+local function bucket_construct(color)
+	return "bucket.png^(elefarming_bucket_mask.png^[multiply:"..color..")"
+end
+
+if minetest.get_modpath("bucket") ~= nil then
+	bucket.register_liquid("elepower_farming:tree_sap_source", "elepower_farming:tree_sap_flowing",
+		"elepower_farming:bucket_tree_sap", bucket_construct("#411400"), "Tree Sap Bucket")
+
+	bucket.register_liquid("elepower_farming:resin_source",    "elepower_farming:resin_flowing",
+		"elepower_farming:bucket_resin",    bucket_construct("#411401"), "Resin Bucket")
+
+	bucket.register_liquid("elepower_farming:biomass_source",  "elepower_farming:biomass_flowing",
+		"elepower_farming:bucket_biomass",  bucket_construct("#002c01"), "Biomass Bucket")
+
+	bucket.register_liquid("elepower_farming:biofuel_source",  "elepower_farming:biofuel_flowing",
+		"elepower_farming:bucket_biofuel",  bucket_construct("#762700"), "Biofuel Bucket")
+
+	bucket.register_liquid("elepower_farming:sludge_source",   "elepower_farming:sludge_flowing",
+		"elepower_farming:bucket_sludge",   bucket_construct("#121212"), "Sludge Bucket")
+end

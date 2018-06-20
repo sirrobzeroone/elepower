@@ -61,7 +61,7 @@ local function traverse_network(targets, all_nodes, pos, p_pos, pnodeid, queue)
 	end
 end
 
-local function fluid_targets(p_pos, positions)
+local function fluid_targets(p_pos, pos)
 	local provider = minetest.get_node(p_pos)
 	local pnodeid  = minetest.pos_to_string(p_pos)
 --[[
@@ -74,24 +74,20 @@ local function fluid_targets(p_pos, positions)
 	local queue     = {}
 	local all_nodes = {}
 
-	for pos in pairs(positions) do
-		queue = {}
+	local node = minetest.get_node(pos)
+	if node and ele.helpers.get_item_group(node.name, "elefluid_transport") then
+		add_duct_node(all_nodes, pos, pnodeid, queue)
+	elseif node and (ele.helpers.get_item_group(node.name, "fluid_container") or
+		ele.helpers.get_item_group(node.name, "fluidity_tank")) then
+		queue = {p_pos}
+	end
 
-		local node = minetest.get_node(pos)
-		if node and ele.helpers.get_item_group(node.name, "elefluid_transport") then
-			add_duct_node(all_nodes, pos, pnodeid, queue)
-		elseif node and (ele.helpers.get_item_group(node.name, "fluid_container") or
-			ele.helpers.get_item_group(node.name, "fluidity_tank")) then
-			queue = {p_pos}
+	while next(queue) do
+		local to_visit = {}
+		for _, posi in ipairs(queue) do
+			traverse_network(targets, all_nodes, posi, p_pos, pnodeid, to_visit)
 		end
-
-		while next(queue) do
-			local to_visit = {}
-			for _, posi in ipairs(queue) do
-				traverse_network(targets, all_nodes, posi, p_pos, pnodeid, to_visit)
-			end
-			queue = to_visit
-		end
+		queue = to_visit
 	end
 
 	local prov_id = minetest.hash_node_position(p_pos)
@@ -119,35 +115,25 @@ minetest.register_abm({
 		local meta1 = nil
 
 		local targets = {}
-		local source  = minetest.registered_nodes[node.name]
 
-		local positions = {vector.add(minetest.facedir_to_dir(node.param2), pos)}
-
-		local ntwks   = {}
-		local errored = false
-		local nw_branches = 0
-		for _,pos1 in pairs(positions) do
-			local name = node.name
-			local networked = ele.helpers.get_item_group(name, "elefluid_transport_source") or
-				ele.helpers.get_item_group(name, "elefluid_transport")
-			if networked then
-				ntwks[pos1] = true
-				nw_branches = nw_branches + 1
-			end
-		end
-
-		if errored then
-			return
-		end
-
-		if nw_branches == 0 then
+		-- Only allow the node directly behind to be a start of a network
+		local tpos  = vector.add(minetest.facedir_to_dir(node.param2), pos)
+		local tname = minetest.get_node(tpos).name
+		if not ele.helpers.get_item_group(tname, "elefluid_transport") and
+			not ele.helpers.get_item_group(tname, "fluidity_tank") and
+			not ele.helpers.get_item_group(tname, "fluid_container") then
 			minetest.forceload_free_block(pos)
 			return
-		else
-			minetest.forceload_block(pos)
 		end
 
-		targets = fluid_targets(pos, ntwks)
+		-- Retrieve network
+		minetest.forceload_block(pos)
+		targets = fluid_targets(pos, tpos)
+
+		-- No targets, don't proceed
+		if #targets == 0 then
+			return
+		end
 
 		-- Begin transfer
 		local srcpos  = ele.helpers.face_front(pos, node.param2)
@@ -169,11 +155,14 @@ minetest.register_abm({
 		local buffers = elefluid.get_node_buffers(srcpos)
 		if not buffers then return nil end
 
+		-- Limit the amount of fluid pumped per cycle
 		local pcapability = ele.helpers.get_node_property(meta, pos, "fluid_pump_capacity")
+		local pumped      = 0
 
 		-- Transfer some fluid here
 		for _,pos in pairs(targets) do
 			if not vector.equals(pos, srcpos) then
+				if pumped >= pcapability then break end
 				local pp = elefluid.get_node_buffers(pos)
 
 				local changed = false
@@ -181,17 +170,20 @@ minetest.register_abm({
 				if pp ~= nil then
 					for name in pairs(pp) do
 						for bname in pairs(buffers) do
+							if pumped >= pcapability then break end
 							local buffer_data = elefluid.get_buffer_data(srcpos, bname)
 							local target_data = elefluid.get_buffer_data(pos, name)
 
 							if (target_data.fluid == buffer_data.fluid or target_data.fluid == "") and
 								buffer_data.fluid ~= "" and buffer_data.amount > 0 and
+								(buffer_data.drainable == nil or buffer_data.drainable == true) and
 								elefluid.buffer_accepts_fluid(pos, name, buffer_data.fluid) then
 								
 								if elefluid.can_insert_into_buffer(pos, name, buffer_data.fluid, pcapability) > 0 then
 									local res_f, count = elefluid.take_from_buffer(srcpos, bname, pcapability)
 									if count > 0 then
 										elefluid.insert_into_buffer(pos, name, res_f, count)
+										pumped = pumped + count
 										changed = true
 									end
 								end
