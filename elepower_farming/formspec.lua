@@ -23,14 +23,15 @@ function elefarm.formspec.planter_formspec(timer, power)
 		default.get_hotbar_bg(0, 5.75)
 end
 
-function elefarm.formspec.harvester_formspec(timer, power)
+function elefarm.formspec.harvester_formspec(timer, power, sludge)
 	return "size[8,8.5]"..
 		default.gui_bg..
 		default.gui_bg_img..
 		default.gui_slots..
 		ele.formspec.power_meter(power)..
+		ele.formspec.fluid_bar(7, 0, sludge)..
 		bar(1, 0, 100-timer)..
-		"list[context;dst;1.5,0.25;6,2;]"..
+		"list[context;dst;1.5,0;5,3;]"..
 		"list[current_player;main;0,4.25;8,1;]"..
 		"list[current_player;main;0,5.5;8,3;8]"..
 		"listring[context;dst]"..

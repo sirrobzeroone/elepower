@@ -270,3 +270,13 @@ minetest.register_craft({
 		{"elepower_dynamics:lead_ingot", "elepower_dynamics:diamond_gear", "elepower_dynamics:lead_ingot"},
 	}
 })
+
+-- Water Accumulator
+minetest.register_craft({
+	output = "elepower_machines:accumulator",
+	recipe = {
+		{"", "elepower_dynamics:fluid_duct", ""},
+		{"group:glass", "elepower_machines:machine_block", "group:glass"},
+		{"elepower_dynamics:steel_gear", "elepower_dynamics:servo_valve", "elepower_dynamics:steel_gear"},
+	}
+})

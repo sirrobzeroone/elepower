@@ -59,6 +59,6 @@ minetest.register_abm({
 		water_c = water_c + give
 
 		meta:set_int("water_fluid_storage", water_c)
-		meta:set_string("infotext", ("Water: %d/%d %s"):format(water_c, CAPACITY, elefluid.unit))
+		meta:set_string("infotext", ("Water: %d/%d %s"):format(water_c, CAPACITY, fluid_lib.unit))
 	end
 })

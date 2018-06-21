@@ -115,8 +115,8 @@ local function plant(pos, range, stack, inv)
 
 	local to_plant = stack:get_name()
 	local to_place = nil
-	local amount = 0
-	local till   = false
+	local amount   = 0
+	local till     = true
 	for _,stack in ipairs(inv:get_list("src")) do
 		if stack:get_name() == to_plant then
 			amount = amount + stack:get_count()
@@ -127,9 +127,9 @@ local function plant(pos, range, stack, inv)
 	if ele.helpers.get_item_group(to_plant, "sapling") then
 		to_place = to_plant
 		to_plant = nil
+		till     = false
 	elseif ele.helpers.get_item_group(to_plant, "seed") then
 		to_place = nil
-		till     = true
 	end
 
 	if (to_plant or to_place) and amount > 0 then
@@ -161,9 +161,22 @@ local function plant(pos, range, stack, inv)
 								})
 
 								local soil = regN[base_node.name].soil
-								if soil then soil = soil.dry else soil = "farming:soil" end
+								local wet_soil = "farming:soil_wet"
 
-								minetest.set_node(base_pos, {name = soil})
+								-- Determine soil name
+								-- Make sure we don't replace wet soil
+								if soil then
+									wet_soil = soil.wet or "farming:soil_wet"
+									soil = soil.dry
+								else
+									soil = "farming:soil"
+								end
+
+								print(dump(base_node), soil,wet_soil)
+
+								if base_node.name ~= soil and base_node.name ~= wet_soil then
+									minetest.set_node(base_pos, {name = soil})
+								end
 							end
 						end
 

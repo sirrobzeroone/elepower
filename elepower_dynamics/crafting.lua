@@ -114,6 +114,26 @@ minetest.register_craft({
 	}
 })
 
+-- Duct
+minetest.register_craft({
+	output = "elepower_dynamics:fluid_duct 6",
+	recipe = {
+		{"group:glass",  "group:glass",  "group:glass"},
+		{"elepower_dynamics:lead_ingot", "elepower_dynamics:lead_ingot", "elepower_dynamics:lead_ingot"},
+		{"group:glass",  "group:glass",  "group:glass"},
+	}
+})
+
+-- Fluid Transfer Node
+minetest.register_craft({
+	output = "elepower_dynamics:fluid_transfer_node",
+	recipe = {
+		{"group:stone",  "elepower_dynamics:fluid_duct",  "group:stone"},
+		{"elepower_dynamics:steel_gear", "elepower_dynamics:servo_valve", "elepower_dynamics:steel_gear"},
+		{"group:stone",  "elepower_dynamics:fluid_duct",  "group:stone"},
+	}
+})
+
 -----------
 -- Items --
 -----------
@@ -133,6 +153,22 @@ minetest.register_craft({
 		{"default:copper_ingot", "default:copper_ingot", "default:copper_ingot"},
 		{"default:copper_ingot", "",                     "default:copper_ingot"},
 		{"default:copper_ingot", "default:copper_ingot", "default:copper_ingot"}
+	}
+})
+
+minetest.register_craft({
+	output = "elepower_dynamics:servo_valve 3",
+	recipe = {
+		{"", "elepower_dynamics:wound_copper_coil", ""},
+		{"elepower_dynamics:fluid_duct", "elepower_dynamics:fluid_duct", "elepower_dynamics:fluid_duct"},
+	}
+})
+
+minetest.register_craft({
+	output = "elepower_dynamics:tree_tap",
+	recipe = {
+		{"default:steel_ingot", "default:steel_ingot", "default:steel_ingot"},
+		{"", "", "default:steel_ingot"},
 	}
 })
 

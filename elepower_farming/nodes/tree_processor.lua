@@ -5,7 +5,7 @@ local tree_fluid_recipes = {
 		amount = 100,
 		time   = 5,
 		output = {
-			fluid  = "elepower_farming:biofuel_source",
+			fluid  = "elepower_farming:biomass_source",
 			amount = 80,
 		},
 	},
@@ -15,7 +15,7 @@ local tree_fluid_recipes = {
 		time   = 5,
 		output = {
 			fluid  = "elepower_farming:biomass_source",
-			amount = 80,
+			amount = 20,
 			item   = "elepower_farming:resin"
 		},
 	},
@@ -26,9 +26,9 @@ local function on_timer(pos, elapsed)
 	local meta    = minetest.get_meta(pos)
 	local inv     = meta:get_inventory()
 
-	local tree_buffer  = elefluid.get_buffer_data(pos, "tree")
-	local water_buffer = elefluid.get_buffer_data(pos, "water")
-	local out_buffer   = elefluid.get_buffer_data(pos, "output")
+	local tree_buffer  = fluid_lib.get_buffer_data(pos, "tree")
+	local water_buffer = fluid_lib.get_buffer_data(pos, "water")
+	local out_buffer   = fluid_lib.get_buffer_data(pos, "output")
 
 	local capacity = ele.helpers.get_node_property(meta, pos, "capacity")
 	local storage  = ele.helpers.get_node_property(meta, pos, "storage")
@@ -150,9 +150,6 @@ ele.register_machine("elepower_farming:tree_processor", {
 
 		inv:set_size("dst", 1)
 		meta:set_string("formspec", elefarm.formspec.tree_processor(0, 0))
-
-		meta:set_string("tree_fluid", "elepower_farming:resin_source")
-		meta:set_int("tree_fluid_storage", 2000)
 	end,
 	tiles = {
 		"elefarming_machine_tree_processor.png", "elefarming_machine_base.png", "elefarming_machine_side.png",

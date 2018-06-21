@@ -5,6 +5,9 @@ local HARVESTER_TICK  = 10
 -- How many plants we can collect in one run
 local HARVESTER_SWEEP = 9
 
+-- How much sludge is generated as a by-product
+local SLUDGE_PRODUCED = 10
+
 local function can_dig(pos, player)
 	local meta = minetest.get_meta(pos)
 	local inv = meta:get_inventory()
@@ -78,9 +81,10 @@ local function on_timer(pos, elapsed)
 	local usage    = ele.helpers.get_node_property(meta, pos, "usage")
 	local storage  = ele.helpers.get_node_property(meta, pos, "storage")
 
-	local work  = meta:get_int("src_time")
+	local work   = meta:get_int("src_time")
+	local sludge = fluid_lib.get_buffer_data(pos, "sludge")
 
-	if storage > usage then
+	if storage > usage and sludge.amount + SLUDGE_PRODUCED < sludge.capacity then
 		if work == HARVESTER_TICK then
 			local harvested = {}
 
@@ -89,6 +93,7 @@ local function on_timer(pos, elapsed)
 			work = 0
 			if #harvested > 0 then
 				storage = storage - usage
+				sludge.amount = sludge.amount + SLUDGE_PRODUCED
 				for _,itm in ipairs(harvested) do
 					local stack = ItemStack(itm)
 					if inv:room_for_item("dst", stack) then
@@ -109,9 +114,12 @@ local function on_timer(pos, elapsed)
 	local power_percent = math.floor((storage / capacity)*100)
 	local work_percent  = math.floor((work / HARVESTER_TICK)*100)
 
-	meta:set_string("formspec", elefarm.formspec.harvester_formspec(work_percent, power_percent))
+	meta:set_string("formspec", elefarm.formspec.harvester_formspec(work_percent, power_percent, sludge))
 	meta:set_int("storage", storage)
 	meta:set_int("src_time", work)
+
+	meta:set_string("sludge_fluid", "elepower_farming:sludge_source")
+	meta:set_int("sludge_fluid_storage", sludge.amount)
 
 	return refresh
 end
@@ -131,16 +139,23 @@ ele.register_machine("elepower_farming:harvester", {
 		ele_user = 1,
 		cracky = 1,
 		tubedevice = 1,
+		fluid_container = 1,
+	},
+	fluid_buffers = {
+		sludge = {
+			capacity  = 8000,
+			drainable = true,
+		}
 	},
 	on_construct = function (pos)
 		local meta = minetest.get_meta(pos)
 		local inv  = meta:get_inventory()
 		inv:set_size("layout", 9)
-		inv:set_size("dst", 12)
+		inv:set_size("dst", 15)
 
 		meta:set_int("src_time", 0)
 
-		meta:set_string("formspec", elefarm.formspec.harvester_formspec(0,0))
+		meta:set_string("formspec", elefarm.formspec.harvester_formspec(0, 0))
 
 		local node = minetest.get_node(pos)
 	end,

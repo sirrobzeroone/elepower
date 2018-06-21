@@ -42,13 +42,25 @@ minetest.register_craftitem("elepower_dynamics:carbon_sheet", {
 minetest.register_craftitem("elepower_dynamics:wound_copper_coil", {
 	description = "Wound Copper Coil",
 	inventory_image = "elepower_copper_coil.png",
-	groups = {copper = 1, coil = 1}
+	groups = {copper = 1, coil = 1, component = 1}
 })
 
 minetest.register_craftitem("elepower_dynamics:copper_wire", {
 	description = "Copper Wire",
 	inventory_image = "elepower_copper_wire.png",
-	groups = {copper = 1, wire = 1}
+	groups = {copper = 1, wire = 1, component = 1}
+})
+
+minetest.register_craftitem("elepower_dynamics:servo_valve", {
+	description = "Servo Valve",
+	inventory_image = "elepower_servo_valve.png",
+	groups = {servo_valve = 1, component = 1}
+})
+
+minetest.register_craftitem("elepower_dynamics:tree_tap", {
+	description = "Steel Treetap",
+	inventory_image = "elepower_tree_tap.png",
+	groups = {treetap = 1, component = 1}
 })
 
 ---------------

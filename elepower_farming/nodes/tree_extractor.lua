@@ -65,6 +65,6 @@ minetest.register_abm({
 
 		meta:set_int("tree_fluid_storage", fluid_c)
 		meta:set_string("tree_fluid", ftype)
-		meta:set_string("infotext", ("%s: %d/%d %s"):format(fname, fluid_c, CAPACITY, elefluid.unit))
+		meta:set_string("infotext", ("%s: %d/%d %s"):format(fname, fluid_c, CAPACITY, fluid_lib.unit))
 	end
 })

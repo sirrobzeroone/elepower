@@ -9,3 +9,4 @@ elefarm.modpath = modpath
 dofile(modpath.."/formspec.lua")
 dofile(modpath.."/craftitems.lua")
 dofile(modpath.."/nodes/init.lua")
+dofile(modpath.."/crafting.lua")
