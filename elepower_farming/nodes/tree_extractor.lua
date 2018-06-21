@@ -27,44 +27,43 @@ minetest.register_node("elepower_farming:tree_extractor", {
 
 minetest.register_abm({
 	nodenames = {"elepower_farming:tree_extractor"},
-	label = "elefluidSapAccumulator",
-	interval   = 8,
-	chance     = 1/6,
-	action = function(pos, node, active_object_count, active_object_count_wider)
-		local meta    = minetest.get_meta(pos)
-		local fluid_c = meta:get_int("tree_fluid_storage")
-		if fluid_c == CAPACITY then return end
+	label     = "elefluidSapAccumulator",
+	interval  = 8,
+	chance    = 1/6,
+	action    = function(pos, node, active_object_count, active_object_count_wider)
+		local meta   = minetest.get_meta(pos)
+		local buffer = fluid_lib.get_buffer_data(pos, "tree")
+		if not buffer or buffer.amount == buffer.capacity then return end
 
-		local fpos  = ele.helpers.face_front(pos, node.param2)
-		local fluid = 0
-		local ftype = meta:get_string("tree_fluid")
-		local fname = "Tree Sap"
-		local fnode = minetest.get_node_or_nil(fpos)
+		local fpos   = ele.helpers.face_front(pos, node.param2)
+		local amount = 0
+		local ftype  = buffer.fluid
+		local fnode  = minetest.get_node_or_nil(fpos)
 		if fnode and ele.helpers.get_item_group(fnode.name, "tree") then
 			local fdata = fluid_table[fnode.name]
 			if fdata and (ftype == "" or ftype == fdata.fluid) then
-				fluid = fdata.fpc
+				amount = fdata.fpc
 				ftype = fdata.fluid
-				fname = minetest.registered_nodes[ftype].description:gsub(" Source", "")
 			end
 		end
 
-		if fluid == 0 then
+		if amount == 0 then
 			meta:set_string("infotext", "Place me in front of a tree!")
 			return
 		end
 
 		local give = 0
-		if fluid_c + fluid > CAPACITY then
-			give = CAPACITY - fluid_c
+		if buffer.amount + amount > buffer.capacity then
+			give = buffer.capacity - buffer.amount
 		else
-			give = fluid
+			give = amount
 		end
 
-		fluid_c = fluid_c + give
+		buffer.amount = buffer.amount + give
+		buffer.fluid  = ftype
 
-		meta:set_int("tree_fluid_storage", fluid_c)
-		meta:set_string("tree_fluid", ftype)
-		meta:set_string("infotext", ("%s: %d/%d %s"):format(fname, fluid_c, CAPACITY, fluid_lib.unit))
+		meta:set_int("tree_fluid_storage", buffer.amount)
+		meta:set_string("tree_fluid", buffer.fluid)
+		meta:set_string("infotext", fluid_lib.buffer_to_string(buffer))
 	end
 })

@@ -21,13 +21,13 @@ minetest.register_node("elepower_machines:accumulator", {
 
 minetest.register_abm({
 	nodenames = {"elepower_machines:accumulator"},
-	label = "elefluidAccumulator",
-	interval   = 2,
-	chance     = 1/5,
-	action = function(pos, node, active_object_count, active_object_count_wider)
-		local meta    = minetest.get_meta(pos)
-		local water_c = meta:get_int("water_fluid_storage")
-		if water_c == CAPACITY then return end
+	label     = "elefluidAccumulator",
+	interval  = 2,
+	chance    = 1/5,
+	action    = function(pos, node, active_object_count, active_object_count_wider)
+		local meta   = minetest.get_meta(pos)
+		local buffer = fluid_lib.get_buffer_data(pos, "water")
+		if not buffer or buffer.amount == buffer.capacity then return end
 
 		local positions = {
 			{x=pos.x+1,y=pos.y,z=pos.z},
@@ -36,29 +36,29 @@ minetest.register_abm({
 			{x=pos.x,  y=pos.y,z=pos.z-1},
 		}
 
-		local fluid = 0
+		local amount = 0
 		for _,fpos in pairs(positions) do
 			local node = minetest.get_node(fpos)
 			if node.name == "default:water_source" then
-				fluid = fluid + 1000
+				amount = amount + 1000
 			end
 		end
 
-		if fluid == 0 then
+		if amount == 0 then
 			meta:set_string("infotext", "Submerge me in water!")
 			return
 		end
 
 		local give = 0
-		if water_c + fluid > CAPACITY then
-			give = CAPACITY - water_c
+		if buffer.amount + amount > buffer.capacity then
+			give = buffer.capacity - buffer.amount
 		else
-			give = fluid
+			give = amount
 		end
 
-		water_c = water_c + give
+		buffer.amount = buffer.amount + give
 
-		meta:set_int("water_fluid_storage", water_c)
-		meta:set_string("infotext", ("Water: %d/%d %s"):format(water_c, CAPACITY, fluid_lib.unit))
+		meta:set_int("water_fluid_storage", buffer.amount)
+		meta:set_string("infotext", fluid_lib.buffer_to_string(buffer))
 	end
 })

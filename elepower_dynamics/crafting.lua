@@ -134,6 +134,16 @@ minetest.register_craft({
 	}
 })
 
+-- Portable Tank
+minetest.register_craft({
+	output = "elepower_dynamics:portable_tank",
+	recipe = {
+		{"group:glass", "elepower_dynamics:fluid_duct", "group:glass"},
+		{"group:glass", "group:glass", "group:glass"},
+		{"default:bronze_ingot",  "default:bronze_ingot", "default:bronze_ingot"},
+	}
+})
+
 -----------
 -- Items --
 -----------

@@ -172,8 +172,6 @@ local function plant(pos, range, stack, inv)
 									soil = "farming:soil"
 								end
 
-								print(dump(base_node), soil,wet_soil)
-
 								if base_node.name ~= soil and base_node.name ~= wet_soil then
 									minetest.set_node(base_pos, {name = soil})
 								end
