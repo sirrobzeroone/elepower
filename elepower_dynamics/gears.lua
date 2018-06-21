@@ -76,12 +76,22 @@ elepd.register_gear("diamond", {
 	color = "#02c1e8"
 })
 
-elepd.register_gear("energium", {
-	description = "Energium",
-	color = "#ff1111"
-})
-
 elepd.register_gear("wood", {
 	description = "Wood",
 	color = "#847454"
+})
+
+elepd.register_gear("nickel", {
+	description = "Nickel",
+	color = "#d6d5ab"
+})
+
+elepd.register_gear("invar", {
+	description = "Invar",
+	color = "#9fa5b2"
+})
+
+elepd.register_gear("electrum", {
+	description = "Electrum",
+	color = "#ebeb90"
 })

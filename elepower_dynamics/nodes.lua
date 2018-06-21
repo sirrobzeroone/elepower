@@ -15,6 +15,14 @@ minetest.register_node("elepower_dynamics:stone_with_lead", {
 	sounds = default.node_sound_stone_defaults(),
 })
 
+minetest.register_node("elepower_dynamics:stone_with_nickel", {
+	description = "Nickel Ore",
+	tiles = {"default_stone.png^elepower_mineral_nickel.png"},
+	groups = {cracky = 2},
+	drop = 'elepower_dynamics:nickel_lump',
+	sounds = default.node_sound_stone_defaults(),
+})
+
 minetest.register_node("elepower_dynamics:particle_board", {
 	description = "Particle Board",
 	tiles = {"elepower_particle_board.png"},

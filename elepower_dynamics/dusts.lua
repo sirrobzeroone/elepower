@@ -85,9 +85,19 @@ elepd.register_dust("diamond", {
 	color = "#02c1e8"
 })
 
-elepd.register_dust("energium", {
-	description = "Energium",
-	color = "#ff1111"
+elepd.register_dust("nickel", {
+	description = "Nickel",
+	color = "#d6d5ab"
+})
+
+elepd.register_dust("invar", {
+	description = "Invar",
+	color = "#9fa5b2"
+})
+
+elepd.register_dust("electrum", {
+	description = "Electrum",
+	color = "#ebeb90"
 })
 
 elepd.register_dust("wood", {

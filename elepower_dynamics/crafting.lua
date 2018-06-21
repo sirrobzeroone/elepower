@@ -194,8 +194,14 @@ minetest.register_craft({
 
 minetest.register_craft({
 	type   = "cooking",
-	output = "elepower_dynamics:lead_lump",
-	recipe = "elepower_dynamics:lead_ingot"
+	output = "elepower_dynamics:lead_ingot",
+	recipe = "elepower_dynamics:lead_lump"
+})
+
+minetest.register_craft({
+	type   = "cooking",
+	output = "elepower_dynamics:nickel_ingot",
+	recipe = "elepower_dynamics:nickel_lump"
 })
 
 minetest.register_craft({
