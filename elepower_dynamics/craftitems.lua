@@ -63,6 +63,18 @@ minetest.register_craftitem("elepower_dynamics:tree_tap", {
 	groups = {treetap = 1, component = 1}
 })
 
+minetest.register_craftitem("elepower_dynamics:induction_coil", {
+	description = "Induction Coil",
+	inventory_image = "elepower_induction_coil.png",
+	groups = {induction_coil = 1, component = 1}
+})
+
+minetest.register_craftitem("elepower_dynamics:induction_coil_advanced", {
+	description = "Advanced Induction Coil\nSuitable for high-power operations",
+	inventory_image = "elepower_induction_coil_advanced.png",
+	groups = {induction_coil = 1, component = 1}
+})
+
 ---------------
 -- Overrides --
 ---------------

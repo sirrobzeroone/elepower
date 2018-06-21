@@ -119,7 +119,8 @@ local function retrieve_metadata(pos, placer, itemstack, pointed_thing)
 end
 
 function ele.capacity_text(capacity, storage)
-	return "Charge: " .. storage .. "/" .. capacity .. " " ..ele.unit
+	return ("Charge: %s / %s %s"):format(ele.helpers.comma_value(storage),
+		ele.helpers.comma_value(capacity), ele.unit)
 end
 
 local tube = {

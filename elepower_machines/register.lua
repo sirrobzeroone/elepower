@@ -8,12 +8,27 @@ elepm.register_craft_type("alloy", {
 	inputs      = 2,
 })
 
-elepm.register_craft({
-	type   = "alloy",
-	recipe = { "elepower_dynamics:iron_ingot", "elepower_dynamics:coal_dust 4" },
-	output = "default:steel_ingot",
-	time   = 6,
-})
+local alloy_recipes = {
+	{
+		recipe = { "elepower_dynamics:iron_ingot", "elepower_dynamics:coal_dust 4" },
+		output = "default:steel_ingot",
+		time   = 6,
+	},
+	{
+		recipe = { "default:copper_ingot 2", "default:tin_ingot" },
+		output = "default:bronze_ingot 3",
+	}
+}
+
+-- Register alloy furnace recipes
+for _,i in pairs(alloy_recipes) do
+	elepm.register_craft({
+		type   = "alloy",
+		recipe = i.recipe,
+		output = i.output,
+		time   = i.time or 4
+	})
+end
 
 elepm.register_crafter("elepower_machines:alloy_furnace", {
 	description = "Alloy Furnace",

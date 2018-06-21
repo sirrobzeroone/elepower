@@ -57,7 +57,7 @@ function elepm.register_craft(craftdef)
 end
 
 function elepm.get_recipe(type, inputs)
-	if not elepm.craft[type] then
+	if not elepm.craft[type] or not inputs then
 		return nil
 	end
 

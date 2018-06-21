@@ -14,18 +14,30 @@ ele.graphcache = {devices = {}}
 -- Graph Functions --
 ---------------------
 
-local function clear_networks_from_node(pos)
-	local meta = minetest.get_meta(pos)
-	meta:set_string("network_id", "")
+local function table_has_string(arr, str)
+	for _,astr in ipairs(arr) do
+		if astr == str then
+			return true
+		end
+	end
+	return false
 end
 
 local function add_node(nodes, pos, pnodeid)
 	local node_id = minetest.hash_node_position(pos)
-	if ele.graphcache.devices[node_id] and ele.graphcache.devices[node_id] ~= pnodeid then return end
-	ele.graphcache.devices[node_id] = pnodeid
+
+	if not ele.graphcache.devices[node_id] then
+		ele.graphcache.devices[node_id] = {}
+	end
+
+	if not table_has_string(ele.graphcache.devices[node_id], pnodeid) then
+		table.insert(ele.graphcache.devices[node_id], pnodeid)
+	end
+
 	if nodes[node_id] then
 		return false
 	end
+
 	nodes[node_id] = pos
 	return true
 end
@@ -36,14 +48,15 @@ local function add_conductor_node(nodes, pos, pnodeid, queue)
 	end
 end
 
-local function check_node(users, providers, all_nodes, pos, pr_pos, pnodeid, queue)
+local function check_node(users, providers, conductors, pos, pr_pos, pnodeid, queue)
+	if minetest.pos_to_string(pos) == pnodeid then return end
+
 	ele.helpers.get_or_load_node(pos)
 	local node = minetest.get_node(pos)
 	local meta = minetest.get_meta(pos)
 
 	if ele.helpers.get_item_group(node.name, "ele_conductor") then
-		local nodedef = minetest.registered_nodes[node.name]
-		add_conductor_node(all_nodes, pos, pnodeid, queue)
+		add_conductor_node(conductors, pos, pnodeid, queue)
 		return
 	end
 
@@ -51,26 +64,15 @@ local function check_node(users, providers, all_nodes, pos, pr_pos, pnodeid, que
 		return
 	end
 
-	-- Don't add already networked nodes to this network
-	if meta:get_string("network_id") ~= "" and meta:get_string("network_id") ~= pnodeid then
-		return
-	end
-
-	meta:set_string("network_id", pnodeid)
-
-	if ele.helpers.get_item_group(node.name, "ele_user") then
+	if ele.helpers.get_item_group(node.name, "ele_user") or
+		ele.helpers.get_item_group(node.name, "ele_storage") then
 		add_node(users, pos, pnodeid)
 	elseif ele.helpers.get_item_group(node.name, "ele_provider") then
-		if ele.helpers.get_item_group(node.name, "ele_storage") then
-			-- Storage gets added to users, for now
-			add_node(users, pos, pnodeid)
-		else
-			add_node(providers, pos, pnodeid)
-		end
+		add_node(providers, pos, pnodeid)
 	end
 end
 
-local function traverse_network(users, providers, all_nodes, pos, pr_pos, pnodeid, queue)
+local function traverse_network(users, providers, conductors, pos, pr_pos, pnodeid, queue)
 	local positions = {
 		{x=pos.x+1, y=pos.y,   z=pos.z},
 		{x=pos.x-1, y=pos.y,   z=pos.z},
@@ -79,11 +81,11 @@ local function traverse_network(users, providers, all_nodes, pos, pr_pos, pnodei
 		{x=pos.x,   y=pos.y,   z=pos.z+1},
 		{x=pos.x,   y=pos.y,   z=pos.z-1}}
 	for _, cur_pos in pairs(positions) do
-		check_node(users, providers, all_nodes, cur_pos, pr_pos, pnodeid, queue)
+		check_node(users, providers, conductors, cur_pos, pr_pos, pnodeid, queue)
 	end
 end
 
-local function power_networks(pr_pos, positions)
+local function discover_branches(pr_pos, positions)
 	local provider = minetest.get_node(pr_pos)
 	local pnodeid  = minetest.pos_to_string(pr_pos)
 
@@ -92,17 +94,17 @@ local function power_networks(pr_pos, positions)
 		return cached.users, cached.providers
 	end
 
-	local users     = {}
-	local providers = {}
-	local queue     = {}
-	local all_nodes = {}
+	local users      = {}
+	local providers  = {}
+	local queue      = {}
+	local conductors = {}
 
-	for pos in pairs(positions) do
+	for _,pos in ipairs(positions) do
 		queue = {}
 
 		local node = minetest.get_node(pos)
 		if node and ele.helpers.get_item_group(node.name, "ele_conductor") then
-			add_conductor_node(all_nodes, pos, pnodeid, queue)
+			add_conductor_node(conductors, pos, pnodeid, queue)
 		elseif node and ele.helpers.get_item_group(node.name, "ele_machine") then
 			queue = {pr_pos}
 		end
@@ -110,22 +112,20 @@ local function power_networks(pr_pos, positions)
 		while next(queue) do
 			local to_visit = {}
 			for _, posi in ipairs(queue) do
-				traverse_network(users, providers, all_nodes, posi, pr_pos, pnodeid, to_visit)
+				traverse_network(users, providers, conductors, posi, pr_pos, pnodeid, to_visit)
 			end
 			queue = to_visit
 		end
 	end
 
 	-- Add self to providers
-	local prov_id = minetest.hash_node_position(pr_pos)
-	ele.graphcache.devices[prov_id] = pnodeid
-	providers[prov_id] = pr_pos
+	add_node(providers, pr_pos, pnodeid)
 
-	users     = ele.helpers.flatten(users)
-	providers = ele.helpers.flatten(providers)
-	all_nodes = ele.helpers.flatten(all_nodes)
+	users      = ele.helpers.flatten(users)
+	providers  = ele.helpers.flatten(providers)
+	conductors = ele.helpers.flatten(conductors)
 
-	ele.graphcache[pnodeid] = {all_nodes = all_nodes, users = users, providers = providers}
+	ele.graphcache[pnodeid] = {conductors = conductors, users = users, providers = providers}
 
 	return users, providers
 end
@@ -199,30 +199,26 @@ minetest.register_abm({
 			{x=pos.x,   y=pos.y,   z=pos.z+1}
 		}
 
-		local ntwks   = {}
-		local errored = false
-		local nw_branches = 0
+		local branches = {}
 		for _,pos1 in pairs(positions) do
-			local name = node.name
+			local pnode = minetest.get_node(pos1)
+			local name  = pnode.name
 			local networked = ele.helpers.get_item_group(name, "ele_machine") or ele.helpers.get_item_group(name, "ele_conductor")
 			if networked then
-				ntwks[pos1] = true
-				nw_branches = nw_branches + 1
+				branches[#branches + 1] = pos1
 			end
 		end
 
-		if errored then
-			return
-		end
-
-		if nw_branches == 0 then
+		-- No possible branches found
+		if #branches == 0 then
 			minetest.forceload_free_block(pos)
 			return
 		else
 			minetest.forceload_block(pos)
 		end
 
-		users, providers = power_networks(pos, ntwks)
+		-- Find all users and providers
+		users, providers = discover_branches(pos, branches)
 
 		-- Calculate power data
 		local pw_supply = 0
@@ -246,7 +242,9 @@ minetest.register_abm({
 				break
 			end
 
-			local user_gets, user_storage = give_node_power(ndv, pw_supply - pw_demand)
+			-- Sharing: Determine how much each user gets
+			local user_supply = (pw_supply - pw_demand) / #users
+			local user_gets, user_storage = give_node_power(ndv, user_supply)
 			pw_demand = pw_demand + user_gets
 
 			local user_meta = minetest.get_meta(ndv)
@@ -261,14 +259,16 @@ minetest.register_abm({
 			end
 		end
 
-		-- Take the power from a provider node
+		-- Take the power from provider nodes
 		if pw_demand > 0 then
 			for _, spos in ipairs(providers) do
+				if pw_demand == 0 then break end
 				local smeta = minetest.get_meta(spos)
 				local pw_storage = smeta:get_int("storage")
 
 				if pw_storage >= pw_demand then
 					smeta:set_int("storage", pw_storage - pw_demand)
+					pw_demand = 0
 				else
 					pw_demand = pw_demand - pw_storage
 					smeta:set_int("storage", 0)
@@ -308,84 +308,102 @@ function ele.clear_networks(pos)
 	if #positions < 1 then return end
 	local dead_end = #positions == 1
 	for _,connected_pos in pairs(positions) do
-		local net = ele.graphcache.devices[minetest.hash_node_position(connected_pos)] or minetest.pos_to_string(connected_pos)
-		if net and ele.graphcache[net] then
-			if dead_end and placed then
-				-- Dead end placed, add it to the network
-				-- Get the network
-				local node_at = minetest.get_node(positions[1])
-				local network_id = ele.graphcache.devices[minetest.hash_node_position(positions[1])] or minetest.pos_to_string(positions[1])
+		local networks = ele.graphcache.devices[minetest.hash_node_position(connected_pos)] or
+			{minetest.pos_to_string(connected_pos)}
 
-				if not network_id or not ele.graphcache[network_id] then
-					-- We're evidently not on a network, nothing to add ourselves to
-					return
-				end
-				local c_pos = minetest.string_to_pos(network_id)
-				local network = ele.graphcache[network_id]
+		for _,net in ipairs(networks) do
+			if net and ele.graphcache[net] then
+				-- This is so we can break the pipeline instead of the network search loop
+				while true do
+					if dead_end and placed then
+						-- Dead end placed, add it to the network
+						-- Get the networks
+						local network_ids = ele.graphcache.devices[minetest.hash_node_position(positions[1])] or
+							{minetest.pos_to_string(positions[1])}
 
-				-- Actually add it to the (cached) network
-				-- This is similar to check_node_subp
-				ele.graphcache.devices[minetest.hash_node_position(pos)] = network_id
-				pos.visited = 1
-
-				if ele.helpers.get_item_group(name, "ele_conductor") then
-					table.insert(network.all_nodes, pos)
-				end
-
-				if ele.helpers.get_item_group(name, "ele_machine") then
-					meta:set_string("ele_network", network_id)
-
-					if ele.helpers.get_item_group(name, "ele_provider") then
-						if ele.helpers.get_item_group(name, "ele_storage") then
-							-- TODO: Add storage to users for now
-							table.insert(network.users, pos)
-						else
-							table.insert(network.providers, pos)
+						if not #network_ids then
+							-- We're evidently not on a network, nothing to add ourselves to
+							break
 						end
-					elseif ele.helpers.get_item_group(name, "ele_user") then
-						table.insert(network.users, pos)
-					end
-				end
-			elseif dead_end and not placed then
-				-- Dead end removed, remove it from the network
-				-- Get the network
-				local network_id = ele.graphcache.devices[minetest.hash_node_position(positions[1])] or minetest.pos_to_string(positions[1])
-				if not network_id or not ele.graphcache[network_id] then
-					-- We're evidently not on a network, nothing to remove ourselves from
-					return
-				end
-				local network = ele.graphcache[network_id]
 
-				-- The network was deleted.
-				if network_id == minetest.pos_to_string(pos) then
-					for _,v in ipairs(network.all_nodes) do
-						local pos1 = minetest.hash_node_position(v)
-						clear_networks_from_node(v)
-						ele.graphcache.devices[pos1] = nil
-					end
-					ele.graphcache[network_id] = nil
-					return
-				end
+						for _, int_net in ipairs(network_ids) do
+							if ele.graphcache[int_net] then
+								local c_pos = minetest.string_to_pos(int_net)
+								local network = ele.graphcache[int_net]
 
-				-- Search for and remove device
-				ele.graphcache.devices[minetest.hash_node_position(pos)] = nil
-				for tblname,table in pairs(network) do
-					if type(table) == "table" then
-						for devicenum,device in pairs(table) do
-							if vector.equals(device, pos) then
-								table[devicenum] = nil
+								-- Actually add it to the (cached) network
+								if not ele.graphcache.devices[minetest.hash_node_position(pos)] then
+									ele.graphcache.devices[minetest.hash_node_position(pos)] = {}
+								end
+
+								local t = ele.graphcache.devices[minetest.hash_node_position(pos)]
+								if not table_has_string(t, int_net) then
+									table.insert(t, int_net)
+								end
+
+								if ele.helpers.get_item_group(name, "ele_conductor") then
+									table.insert(network.conductors, pos)
+								elseif ele.helpers.get_item_group(name, "ele_machine") then
+									if ele.helpers.get_item_group(name, "ele_user") or 
+										ele.helpers.get_item_group(name, "ele_storage") then
+										table.insert(network.users, pos)
+									elseif ele.helpers.get_item_group(name, "ele_provider") then
+										table.insert(network.providers, pos)
+									end
+								end
 							end
 						end
+
+						break
+					elseif dead_end and not placed then
+						-- Dead end removed, remove it from the network
+						-- Get the network
+						local network_ids = ele.graphcache.devices[minetest.hash_node_position(positions[1])] or
+							{minetest.pos_to_string(positions[1])}
+
+						if not #network_ids then
+							-- We're evidently not on a network, nothing to remove ourselves from
+							break
+						end
+
+						for _,int_net in ipairs(network_ids) do
+							if ele.graphcache[int_net] then
+								local network = ele.graphcache[int_net]
+
+								-- The network was deleted.
+								if int_net == minetest.pos_to_string(pos) then
+									for _,v in ipairs(network.conductors) do
+										local pos1 = minetest.hash_node_position(v)
+										ele.graphcache.devices[pos1] = nil
+									end
+									ele.graphcache[int_net] = nil
+								else
+									-- Search for and remove device
+									ele.graphcache.devices[minetest.hash_node_position(pos)] = nil
+									for tblname, table in pairs(network) do
+										if type(table) == "table" then
+											for devicenum, device in pairs(table) do
+												if vector.equals(device, pos) then
+													table[devicenum] = nil
+												end
+											end
+										end
+									end
+								end
+							end
+						end
+						break
+					else
+						-- Not a dead end, so the whole network needs to be recalculated
+						for _,v in ipairs(ele.graphcache[net].conductors) do
+							local pos1 = minetest.hash_node_position(v)
+							ele.graphcache.devices[pos1] = nil
+						end
+						ele.graphcache[net] = nil
+						break
 					end
+					break
 				end
-			else
-				-- Not a dead end, so the whole network needs to be recalculated
-				for _,v in ipairs(ele.graphcache[net].all_nodes) do
-					local pos1 = minetest.hash_node_position(v)
-					clear_networks_from_node(v)
-					ele.graphcache.devices[pos1] = nil
-				end
-				ele.graphcache[net] = nil
 			end
 		end
 	end
