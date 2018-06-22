@@ -36,14 +36,14 @@ function elepm.register_crafter(nodename, nodedef)
 			local power_operation = false
 
 			-- Determine if there is enough power for this action
-			if result and storage >= usage then
+			if result.time ~= 0 and storage >= usage then
 				power_operation = true
 			end
 
-			if not result or not power_operation then
+			if result.time == 0 or not power_operation then
 				ele.helpers.swap_node(pos, machine_node)
 				
-				if not result then
+				if result.time == 0 then
 					meta:set_string("formspec", ele.formspec.get_crafter_formspec(craft_type, pow_percent))
 					meta:set_int("src_time", 0)
 					meta:set_string("infotext", ("%s Idle"):format(nodedef.description) ..

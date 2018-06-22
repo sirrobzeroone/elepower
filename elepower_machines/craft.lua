@@ -56,9 +56,15 @@ function elepm.register_craft(craftdef)
 	table.insert(elepm.craft[ctype], recipe)
 end
 
+local no_recipe = {
+	time = 0,
+	new_input = {},
+	output = {}
+}
+
 function elepm.get_recipe(type, inputs)
 	if not elepm.craft[type] or not inputs then
-		return nil
+		return no_recipe
 	end
 
 	-- Minetest's cooking builtin type
@@ -70,7 +76,7 @@ function elepm.get_recipe(type, inputs)
 		})
 
 		if not result or result.time == 0 then
-			return nil
+			return no_recipe
 		else
 			return {
 				time = result.time,
@@ -81,7 +87,7 @@ function elepm.get_recipe(type, inputs)
 	end
 
 	-- Custom types
-	local result = nil
+	local result = no_recipe
 	for _,recipe in ipairs(elepm.craft[type]) do
 		local recip_match = true
 		local inputs_full = {}

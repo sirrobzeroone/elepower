@@ -5,3 +5,5 @@ local modpath = minetest.get_modpath(minetest.get_current_modname())
 
 elenuclear = rawget(_G, "elenuclear") or {}
 elenuclear.modpath = modpath
+
+dofile(modpath.."/craftitems.lua")

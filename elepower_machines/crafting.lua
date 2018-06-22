@@ -111,13 +111,25 @@ end)
 -- CRAFTING RECIPES --
 --******************--
 
+-- Coal-fired Alloy Furnace
+minetest.register_craft({
+	output = "elepower_machines:coal_alloy_furnace",
+	recipe = {
+		{"default:brick", "default:brick", "default:brick"},
+		{"default:furnace", "bucket:bucket_lava", "default:furnace"}
+	},
+	replacements = {
+		{"bucket:bucket_lava", "bucket:bucket_empty"}
+	}
+})
+
 -- Machine block
 minetest.register_craft({
 	output = "elepower_machines:machine_block",
 	recipe = {
-		{"group:glass", "default:steel_ingot", "group:glass"},
+		{"elepower_dynamics:viridisium_ingot", "default:steel_ingot", "elepower_dynamics:viridisium_ingot"},
 		{"default:steel_ingot", "default:mese_crystal", "default:steel_ingot"},
-		{"group:glass", "default:steel_ingot", "group:glass"},
+		{"elepower_dynamics:viridisium_ingot", "elepower_dynamics:tin_gear", "elepower_dynamics:viridisium_ingot"},
 	}
 })
 
@@ -135,9 +147,13 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_machines:alloy_furnace",
 	recipe = {
-		{"", "elepower_dynamics:copper_wire", ""},
+		{"", "elepower_dynamics:integrated_circuit", ""},
 		{"default:brick", "elepower_machines:machine_block", "default:brick"},
-		{"default:furnace", "elepower_dynamics:wound_copper_coil", "default:furnace"},
+		{
+			"elepower_dynamics:wound_copper_coil",
+			"elepower_machines:coal_alloy_furnace",
+			"elepower_dynamics:wound_copper_coil"
+		},
 	}
 })
 
@@ -145,7 +161,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_machines:furnace",
 	recipe = {
-		{"", "elepower_dynamics:copper_wire", ""},
+		{"", "elepower_dynamics:integrated_circuit", ""},
 		{"default:clay_brick", "elepower_machines:machine_block", "default:clay_brick"},
 		{"elepower_dynamics:wound_copper_coil", "default:furnace", "elepower_dynamics:wound_copper_coil"},
 	}
@@ -155,7 +171,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_machines:pulverizer",
 	recipe = {
-		{"", "elepower_dynamics:copper_wire", ""},
+		{"", "elepower_dynamics:integrated_circuit", ""},
 		{"default:flint", "elepower_machines:machine_block", "default:flint"},
 		{"elepower_dynamics:wound_copper_coil", "elepower_dynamics:lead_gear", "elepower_dynamics:wound_copper_coil"},
 	}
@@ -165,7 +181,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_machines:sawmill",
 	recipe = {
-		{"", "elepower_dynamics:copper_wire", ""},
+		{"", "elepower_dynamics:integrated_circuit", ""},
 		{"elepower_dynamics:steel_gear", "elepower_machines:machine_block", "elepower_dynamics:steel_gear"},
 		{"elepower_dynamics:lead_ingot", "elepower_dynamics:diamond_gear", "elepower_dynamics:lead_ingot"},
 	}
@@ -175,7 +191,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_machines:power_cell_0",
 	recipe = {
-		{"elepower_dynamics:lead_ingot", "elepower_dynamics:copper_wire", "elepower_dynamics:lead_ingot"},
+		{"elepower_dynamics:lead_ingot", "elepower_dynamics:control_circuit", "elepower_dynamics:lead_ingot"},
 		{"elepower_dynamics:wound_copper_coil", "elepower_machines:machine_block", "elepower_dynamics:wound_copper_coil"},
 		{"elepower_dynamics:lead_ingot", "elepower_dynamics:diamond_gear", "elepower_dynamics:lead_ingot"},
 	}

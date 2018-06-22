@@ -74,7 +74,7 @@ local function allow_metadata_inventory_take(pos, listname, index, stack, player
 	return stack:get_count()
 end
 
-function metadata_inventory_changed(pos)
+local function metadata_inventory_changed(pos)
 	local t = minetest.get_node_timer(pos)
 
 	if not t:is_started() then

@@ -95,3 +95,8 @@ elepd.register_gear("electrum", {
 	description = "Electrum",
 	color = "#ebeb90"
 })
+
+elepd.register_gear("viridisium", {
+	description = "Viridisium",
+	color = "#5b9751"
+})
