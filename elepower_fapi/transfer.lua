@@ -1,7 +1,5 @@
 -- Network graphs are built eminating from provider nodes.
-
--- Network cache
-elefluid.graphcache = {nodes = {}}
+-- TODO: Caching
 
 ---------------------
 -- Graph Functions --
@@ -14,9 +12,6 @@ end
 
 local function add_node(nodes, pos, pnodeid)
 	local node_id = minetest.hash_node_position(pos)
-	if elefluid.graphcache.nodes[node_id] == "" then
-		elefluid.graphcache.nodes[node_id] = pnodeid
-	end
 	if nodes[node_id] then
 		return false
 	end
@@ -40,8 +35,7 @@ local function check_node(targets, all_nodes, pos, p_pos, pnodeid, queue)
 		return
 	end
 
-	if not ele.helpers.get_item_group(node.name, "fluid_container") and
-		not ele.helpers.get_item_group(node.name, "fluidity_tank") then
+	if not ele.helpers.get_item_group(node.name, "fluid_container") then
 		return
 	end
 
@@ -64,12 +58,7 @@ end
 local function fluid_targets(p_pos, pos)
 	local provider = minetest.get_node(p_pos)
 	local pnodeid  = minetest.pos_to_string(p_pos)
---[[
-	if elefluid.graphcache[pnodeid] then
-		local cached = elefluid.graphcache[pnodeid]
-		return cached.targets
-	end
-]]
+
 	local targets   = {}
 	local queue     = {}
 	local all_nodes = {}
@@ -77,8 +66,7 @@ local function fluid_targets(p_pos, pos)
 	local node = minetest.get_node(pos)
 	if node and ele.helpers.get_item_group(node.name, "elefluid_transport") then
 		add_duct_node(all_nodes, pos, pnodeid, queue)
-	elseif node and (ele.helpers.get_item_group(node.name, "fluid_container") or
-		ele.helpers.get_item_group(node.name, "fluidity_tank")) then
+	elseif node and ele.helpers.get_item_group(node.name, "fluid_container") then
 		queue = {p_pos}
 	end
 
@@ -90,13 +78,8 @@ local function fluid_targets(p_pos, pos)
 		queue = to_visit
 	end
 
-	local prov_id = minetest.hash_node_position(p_pos)
-	elefluid.graphcache.nodes[prov_id] = pnodeid
-
 	targets   = ele.helpers.flatten(targets)
 	all_nodes = ele.helpers.flatten(all_nodes)
-
-	elefluid.graphcache[pnodeid] = {all_nodes = all_nodes, targets = targets}
 
 	return targets
 end
@@ -107,10 +90,10 @@ end
 
 minetest.register_abm({
 	nodenames = {"group:elefluid_transport_source"},
-	label = "elefluidFluidGraphSource",
-	interval   = 1,
-	chance     = 1,
-	action = function(pos, node, active_object_count, active_object_count_wider)
+	label     = "elepower Fluid Transfer Tick",
+	interval  = 1,
+	chance    = 1,
+	action    = function(pos, node, active_object_count, active_object_count_wider)
 		local meta  = minetest.get_meta(pos)
 		local meta1 = nil
 
@@ -120,7 +103,6 @@ minetest.register_abm({
 		local tpos  = vector.add(minetest.facedir_to_dir(node.param2), pos)
 		local tname = minetest.get_node(tpos).name
 		if not ele.helpers.get_item_group(tname, "elefluid_transport") and
-			not ele.helpers.get_item_group(tname, "fluidity_tank") and
 			not ele.helpers.get_item_group(tname, "fluid_container") then
 			minetest.forceload_free_block(pos)
 			return
@@ -145,8 +127,7 @@ minetest.register_abm({
 		end
 
 		-- Make sure source node is a registered fluid container
-		if not ele.helpers.get_item_group(srcnode.name, "fluid_container") and
-			not ele.helpers.get_item_group(srcnode.name, "fluidity_tank") then
+		if not ele.helpers.get_item_group(srcnode.name, "fluid_container") then
 			return
 		end
 
@@ -201,113 +182,7 @@ minetest.register_abm({
 	end,
 })
 
-local function check_connections(pos)
-	local connections = {}
-	local positions = {
-		{x=pos.x+1, y=pos.y,   z=pos.z},
-		{x=pos.x-1, y=pos.y,   z=pos.z},
-		{x=pos.x,   y=pos.y+1, z=pos.z},
-		{x=pos.x,   y=pos.y-1, z=pos.z},
-		{x=pos.x,   y=pos.y,   z=pos.z+1},
-		{x=pos.x,   y=pos.y,   z=pos.z-1}}
-
-	for _,connected_pos in pairs(positions) do
-		local name = minetest.get_node(connected_pos).name
-		if ele.helpers.get_item_group(name, "elefluid_transport") or
-			ele.helpers.get_item_group(name, "elefluid_transport_source") or
-			ele.helpers.get_item_group(name, "fluid_container") or
-			ele.helpers.get_item_group(name, "fluidity_tank") then
-			table.insert(connections, connected_pos)
-		end
-	end
-	return connections
-end
-
 function elefluid.clear_networks(pos)
+	-- TODO: Fluid network cache
 	return
 end
-
---[[
--- Update networks when a node has been placed or removed
-function elefluid.clear_networks(pos)
-	local node = minetest.get_node(pos)
-	local meta = minetest.get_meta(pos)
-	local name = node.name
-	local placed = name ~= "air"
-	local positions = check_connections(pos)
-	if #positions < 1 then return end
-	local dead_end = #positions == 1
-	for _,connected_pos in pairs(positions) do
-		local net = elefluid.graphcache.nodes[minetest.hash_node_position(connected_pos)] or minetest.pos_to_string(connected_pos)
-		if net and elefluid.graphcache[net] then
-			if dead_end and placed then
-				-- Dead end placed, add it to the network
-				-- Get the network
-				local node_at = minetest.get_node(positions[1])
-				local network_id = elefluid.graphcache.nodes[minetest.hash_node_position(positions[1])] or minetest.pos_to_string(positions[1])
-
-				if not network_id or not elefluid.graphcache[network_id] then
-					-- We're evidently not on a network, nothing to add ourselves to
-					return
-				end
-				local c_pos = minetest.string_to_pos(network_id)
-				local network = elefluid.graphcache[network_id]
-
-				-- Actually add it to the (cached) network
-				-- This is similar to check_node_subp
-				elefluid.graphcache.nodes[minetest.hash_node_position(pos)] = network_id
-				pos.visited = 1
-
-				if ele.helpers.get_item_group(name, "elefluid_transport") then
-					table.insert(network.all_nodes, pos)
-				end
-
-				if ele.helpers.get_item_group(name, "fluid_container") or
-					ele.helpers.get_item_group(name, "fluidity_tank") then
-					table.insert(network.targets, pos)
-				end
-			elseif dead_end and not placed then
-				-- Dead end removed, remove it from the network
-				-- Get the network
-				local network_id = elefluid.graphcache.nodes[minetest.hash_node_position(positions[1])] or minetest.pos_to_string(positions[1])
-				if not network_id or not elefluid.graphcache[network_id] then
-					-- We're evidently not on a network, nothing to remove ourselves from
-					return
-				end
-				local network = elefluid.graphcache[network_id]
-
-				-- The network was deleted.
-				if network_id == minetest.pos_to_string(pos) then
-					for _,v in ipairs(network.all_nodes) do
-						local pos1 = minetest.hash_node_position(v)
-						clear_networks_from_node(v)
-						elefluid.graphcache.nodes[pos1] = nil
-					end
-					elefluid.graphcache[network_id] = nil
-					return
-				end
-
-				-- Search for and remove device
-				elefluid.graphcache.nodes[minetest.hash_node_position(pos)] = nil
-				for tblname,table in pairs(network) do
-					if type(table) == "table" then
-						for devicenum,device in pairs(table) do
-							if vector.equals(device, pos) then
-								table[devicenum] = nil
-							end
-						end
-					end
-				end
-			else
-				-- Not a dead end, so the whole network needs to be recalculated
-				for _,v in ipairs(elefluid.graphcache[net].all_nodes) do
-					local pos1 = minetest.hash_node_position(v)
-					clear_networks_from_node(v)
-					elefluid.graphcache.nodes[pos1] = nil
-				end
-				elefluid.graphcache[net] = nil
-			end
-		end
-	end
-end
-]]

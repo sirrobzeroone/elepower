@@ -44,17 +44,6 @@ minetest.register_ore({
 	ore_type       = "scatter",
 	ore            = "elepower_dynamics:stone_with_nickel",
 	wherein        = "default:stone",
-	clust_scarcity = 28 * 28 * 28,
-	clust_num_ores = 5,
-	clust_size     = 3,
-	y_max          = 31000,
-	y_min          = -31000,
-})
-
-minetest.register_ore({
-	ore_type       = "scatter",
-	ore            = "elepower_dynamics:stone_with_nickel",
-	wherein        = "default:stone",
 	clust_scarcity = 15 * 15 * 15,
 	clust_num_ores = 5,
 	clust_size     = 3,

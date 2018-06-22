@@ -162,27 +162,12 @@ end
 
 minetest.register_abm({
 	nodenames = {"group:ele_provider"},
-	label = "elepowerPowerGraphSource",
-	interval   = 1,
-	chance     = 1,
-	action = function(pos, node, active_object_count, active_object_count_wider)
+	label     = "elepower Power Transfer Tick",
+	interval  = 1,
+	chance    = 1,
+	action    = function(pos, node, active_object_count, active_object_count_wider)
 		local meta  = minetest.get_meta(pos)
 		local meta1 = nil
-
-		-- Check if a provider is attached to a network.
-		-- If that network has been abolished, we will use this node as the network's root this time.
-		local netwrkto = meta:get_string("ele_network")
-		if netwrkto ~= "" and netwrkto ~= nil then
-			if not ele.helpers.get_item_group(node.name, "ele_storage") then
-				local lpos = minetest.string_to_pos(netwrkto)
-				if ele.helpers.get_item_group(minetest.get_node(lpos).name, "ele_provider") then
-					return
-				else
-					ele.graphcache[netwrkto] = nil
-				end
-				meta:set_string("ele_network", "")
-			end
-		end
 
 		local users     = {}
 		local providers = {}
@@ -200,10 +185,12 @@ minetest.register_abm({
 		}
 
 		local branches = {}
-		for _,pos1 in pairs(positions) do
+		for _,pos1 in ipairs(positions) do
 			local pnode = minetest.get_node(pos1)
 			local name  = pnode.name
-			local networked = ele.helpers.get_item_group(name, "ele_machine") or ele.helpers.get_item_group(name, "ele_conductor")
+			local networked = ele.helpers.get_item_group(name, "ele_machine") or
+				ele.helpers.get_item_group(name, "ele_conductor")
+
 			if networked then
 				branches[#branches + 1] = pos1
 			end
@@ -243,14 +230,13 @@ minetest.register_abm({
 			end
 
 			-- Sharing: Determine how much each user gets
-			local user_supply = (pw_supply - pw_demand) / #users
-			local user_gets, user_storage = give_node_power(ndv, user_supply)
+			local user_gets, user_storage = give_node_power(ndv, (pw_supply - pw_demand))
 			pw_demand = pw_demand + user_gets
 
-			local user_meta = minetest.get_meta(ndv)
-			user_meta:set_int("storage", user_storage + user_gets)
-
 			if user_gets > 0 then
+				local user_meta = minetest.get_meta(ndv)
+				user_meta:set_int("storage", user_storage + user_gets)
+
 				-- Set timer on this node
 				local t = minetest.get_node_timer(ndv)
 				if not t:is_started() then
@@ -289,7 +275,7 @@ local function check_connections(pos)
 		{x=pos.x,   y=pos.y,   z=pos.z+1},
 		{x=pos.x,   y=pos.y,   z=pos.z-1}}
 
-	for _,connected_pos in pairs(positions) do
+	for _,connected_pos in ipairs(positions) do
 		local name = minetest.get_node(connected_pos).name
 		if ele.helpers.get_item_group(name, "ele_conductor") or ele.helpers.get_item_group(name, "ele_machine") then
 			table.insert(connections, connected_pos)
@@ -306,8 +292,9 @@ function ele.clear_networks(pos)
 	local placed = name ~= "air"
 	local positions = check_connections(pos)
 	if #positions < 1 then return end
+	local hash_pos = minetest.hash_node_position(pos)
 	local dead_end = #positions == 1
-	for _,connected_pos in pairs(positions) do
+	for _,connected_pos in ipairs(positions) do
 		local networks = ele.graphcache.devices[minetest.hash_node_position(connected_pos)] or
 			{minetest.pos_to_string(connected_pos)}
 
@@ -328,17 +315,15 @@ function ele.clear_networks(pos)
 
 						for _, int_net in ipairs(network_ids) do
 							if ele.graphcache[int_net] then
-								local c_pos = minetest.string_to_pos(int_net)
 								local network = ele.graphcache[int_net]
 
 								-- Actually add it to the (cached) network
-								if not ele.graphcache.devices[minetest.hash_node_position(pos)] then
-									ele.graphcache.devices[minetest.hash_node_position(pos)] = {}
+								if not ele.graphcache.devices[hash_pos] then
+									ele.graphcache.devices[hash_pos] = {}
 								end
 
-								local t = ele.graphcache.devices[minetest.hash_node_position(pos)]
-								if not table_has_string(t, int_net) then
-									table.insert(t, int_net)
+								if not table_has_string(ele.graphcache.devices[hash_pos], int_net) then
+									table.insert(ele.graphcache.devices[hash_pos], int_net)
 								end
 
 								if ele.helpers.get_item_group(name, "ele_conductor") then
@@ -379,7 +364,7 @@ function ele.clear_networks(pos)
 									ele.graphcache[int_net] = nil
 								else
 									-- Search for and remove device
-									ele.graphcache.devices[minetest.hash_node_position(pos)] = nil
+									ele.graphcache.devices[hash_pos] = nil
 									for tblname, table in pairs(network) do
 										if type(table) == "table" then
 											for devicenum, device in pairs(table) do

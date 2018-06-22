@@ -3,6 +3,7 @@
 -- Overrides --
 ---------------
 
+-- Remove iron_lump -> steel_ingot, because dynamics adds iron ingot
 minetest.clear_craft({type = "cooking", output = "default:steel_ingot"})
 
 -----------

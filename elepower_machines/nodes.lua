@@ -1,5 +1,4 @@
 -- Nodes other than machines.
--- Machines are registered in `register.lua`!
 
 minetest.register_node("elepower_machines:machine_block", {
 	description = "Machine Block\nSafe for decoration",

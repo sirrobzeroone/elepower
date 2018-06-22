@@ -1,12 +1,11 @@
 
+--*****************--
+-- MACHINE RECIPES --
+--*****************--
+
 --------------
 -- Alloying --
 --------------
-
-elepm.register_craft_type("alloy", {
-	description = "Alloying",
-	inputs      = 2,
-})
 
 local alloy_recipes = {
 	{
@@ -21,6 +20,10 @@ local alloy_recipes = {
 	{
 		recipe = { "default:iron_ingot 3", "elepower_dynamics:nickel_ingot" },
 		output = "elepower_dynamics:invar_ingot 4",
+	},
+	{
+		recipe = { "default:gold_ingot 2", "elepower_dynamics:invar_ingot" },
+		output = "elepower_dynamics:electrum_ingot 3",
 	}
 }
 
@@ -34,31 +37,9 @@ for _,i in pairs(alloy_recipes) do
 	})
 end
 
-elepm.register_crafter("elepower_machines:alloy_furnace", {
-	description = "Alloy Furnace",
-	craft_type = "alloy",
-	ele_active_node = true,
-	tiles = {
-		"elepower_machine_top.png", "elepower_machine_base.png", "elepower_machine_side.png",
-		"elepower_machine_side.png", "elepower_machine_side.png", "elepower_alloy_furnace.png",
-	},
-	ele_active_nodedef = {
-		tiles = {
-			"elepower_machine_top.png", "elepower_machine_base.png", "elepower_machine_side.png",
-			"elepower_machine_side.png", "elepower_machine_side.png", "elepower_alloy_furnace_active.png",
-		},
-	},
-	groups = {oddly_breakable_by_hand = 1}
-})
-
 --------------
 -- Grinding --
 --------------
-
-elepm.register_craft_type("grind", {
-	description = "Grinding",
-	inputs      = 1,
-})
 
 local keywords = { _ingot = 1, _lump = 2, _block = 9, block = 9 }
 for mat, data in pairs(elepd.registered_dusts) do
@@ -90,54 +71,9 @@ for mat, data in pairs(elepd.registered_dusts) do
 	end
 end
 
-elepm.register_crafter("elepower_machines:pulverizer", {
-	description = "Pulverizer",
-	craft_type = "grind",
-	ele_active_node = true,
-	ele_usage = 32,
-	tiles = {
-		"elepower_machine_top.png", "elepower_machine_base.png", "elepower_machine_side.png",
-		"elepower_machine_side.png", "elepower_machine_side.png", "elepower_grinder.png",
-	},
-	ele_active_nodedef = {
-		tiles = {
-			"elepower_machine_top.png", "elepower_machine_base.png", "elepower_machine_side.png",
-			"elepower_machine_side.png", "elepower_machine_side.png", "elepower_grinder_active.png",
-		},
-	},
-	groups = {oddly_breakable_by_hand = 1}
-})
-
--------------
--- Furnace --
--------------
-
-elepm.register_crafter("elepower_machines:furnace", {
-	description = "Powered Furnace",
-	craft_type = "cooking",
-	ele_active_node = true,
-	ele_usage = 32,
-	tiles = {
-		"elepower_machine_top.png", "elepower_machine_base.png", "elepower_machine_side.png",
-		"elepower_machine_side.png", "elepower_machine_side.png", "elepower_furnace.png",
-	},
-	ele_active_nodedef = {
-		tiles = {
-			"elepower_machine_top.png", "elepower_machine_base.png", "elepower_machine_side.png",
-			"elepower_machine_side.png", "elepower_machine_side.png", "elepower_furnace_active.png",
-		},
-	},
-	groups = {oddly_breakable_by_hand = 1}
-})
-
 -------------
 -- Sawmill --
 -------------
-
-elepm.register_craft_type("saw", {
-	description = "Sawmilling",
-	inputs      = 1,
-})
 
 -- Register all logs as sawable, if we can find a planks version
 minetest.after(0.2, function ()
@@ -171,56 +107,11 @@ minetest.after(0.2, function ()
 	end
 end)
 
-elepm.register_crafter("elepower_machines:sawmill", {
-	description = "Sawmill",
-	craft_type = "saw",
-	ele_usage = 32,
-	tiles = {
-		"elepower_machine_top.png", "elepower_machine_base.png", "elepower_machine_side.png",
-		"elepower_machine_side.png", "elepower_machine_side.png", "elepower_sawmill.png",
-	},
-	groups = {oddly_breakable_by_hand = 1}
-})
-
-----------------------
--- Power Generation --
-----------------------
-
-elepm.register_fuel_generator("elepower_machines:generator", {
-	description = "Coal-fired Generator",
-	ele_active_node = true,
-	ele_capacity = 6400,
-	tiles = {
-		"elepower_machine_top.png", "elepower_machine_base.png", "elepower_machine_side.png",
-		"elepower_machine_side.png", "elepower_machine_side.png", "elepower_generator.png",
-	},
-	ele_active_nodedef = {
-		tiles = {
-			"elepower_machine_top.png", "elepower_machine_base.png", "elepower_machine_side.png",
-			"elepower_machine_side.png", "elepower_machine_side.png", "elepower_generator_active.png",
-		}
-	},
-	groups = {oddly_breakable_by_hand = 1}
-})
-
--------------------
--- Power Storage --
--------------------
-
-elepm.register_storage("elepower_machines:power_cell", {
-	description = "Power Cell",
-	ele_capacity = 16000,
-	tiles = {
-		"elepower_machine_top.png", "elepower_machine_base.png", "elepower_machine_side.png",
-		"elepower_machine_side.png", "elepower_machine_side.png", "elepower_power_cell.png",
-	},
-	groups = {oddly_breakable_by_hand = 1}
-})
-
 --******************--
 -- CRAFTING RECIPES --
 --******************--
 
+-- Machine block
 minetest.register_craft({
 	output = "elepower_machines:machine_block",
 	recipe = {
