@@ -84,105 +84,105 @@ local function fluid_targets(p_pos, pos)
 	return targets
 end
 
------------------------
--- Main Transfer ABM --
------------------------
+function elefluid.transfer_timer_tick(pos, elapsed)
+	local refresh = true
+	local meta    = minetest.get_meta(pos)
+	local node    = minetest.get_node(pos)
+	local meta1   = nil
+	local targets = {}
 
-minetest.register_abm({
-	nodenames = {"group:elefluid_transport_source"},
-	label     = "elepower Fluid Transfer Tick",
-	interval  = 1,
-	chance    = 1,
-	action    = function(pos, node, active_object_count, active_object_count_wider)
-		local meta  = minetest.get_meta(pos)
-		local meta1 = nil
+	-- Only allow the node directly behind to be a start of a network
+	local tpos  = vector.add(minetest.facedir_to_dir(node.param2), pos)
+	local tname = minetest.get_node(tpos).name
+	if not ele.helpers.get_item_group(tname, "elefluid_transport") and
+		not ele.helpers.get_item_group(tname, "fluid_container") then
+		minetest.forceload_free_block(pos)
+		return
+	end
 
-		local targets = {}
+	-- Retrieve network
+	targets = fluid_targets(pos, tpos)
 
-		-- Only allow the node directly behind to be a start of a network
-		local tpos  = vector.add(minetest.facedir_to_dir(node.param2), pos)
-		local tname = minetest.get_node(tpos).name
-		if not ele.helpers.get_item_group(tname, "elefluid_transport") and
-			not ele.helpers.get_item_group(tname, "fluid_container") then
-			minetest.forceload_free_block(pos)
-			return
-		end
+	-- No targets, don't proceed
+	if #targets == 0 then
+		return true
+	end
 
-		-- Retrieve network
-		minetest.forceload_block(pos)
-		targets = fluid_targets(pos, tpos)
+	-- Begin transfer
+	local srcpos  = ele.helpers.face_front(pos, node.param2)
+	local srcnode = minetest.get_node(srcpos)
 
-		-- No targets, don't proceed
-		if #targets == 0 then
-			return
-		end
+	-- Make sure source node is not air
+	if not srcnode or srcnode.name == "air" then
+		return true
+	end
 
-		-- Begin transfer
-		local srcpos  = ele.helpers.face_front(pos, node.param2)
-		local srcnode = minetest.get_node(srcpos)
+	-- Make sure source node is a registered fluid container
+	if not ele.helpers.get_item_group(srcnode.name, "fluid_container") then
+		return true
+	end
 
-		-- Make sure source node is not air
-		if not srcnode or srcnode.name == "air" then
-			return
-		end
+	local srcmeta = minetest.get_meta(srcpos)
+	local srcdef  = minetest.registered_nodes[srcnode.name]
+	local buffers = fluid_lib.get_node_buffers(srcpos)
+	if not buffers then return true end
 
-		-- Make sure source node is a registered fluid container
-		if not ele.helpers.get_item_group(srcnode.name, "fluid_container") then
-			return
-		end
+	-- Limit the amount of fluid pumped per cycle
+	local pcapability = ele.helpers.get_node_property(meta, pos, "fluid_pump_capacity")
+	local pumped      = 0
 
-		local srcmeta = minetest.get_meta(srcpos)
-		local srcdef  = minetest.registered_nodes[srcnode.name]
-		local buffers = fluid_lib.get_node_buffers(srcpos)
-		if not buffers then return nil end
+	-- Transfer some fluid here
+	for _,pos in pairs(targets) do
+		if not vector.equals(pos, srcpos) then
+			if pumped >= pcapability then break end
+			local pp = fluid_lib.get_node_buffers(pos)
 
-		-- Limit the amount of fluid pumped per cycle
-		local pcapability = ele.helpers.get_node_property(meta, pos, "fluid_pump_capacity")
-		local pumped      = 0
+			local changed = false
 
-		-- Transfer some fluid here
-		for _,pos in pairs(targets) do
-			if not vector.equals(pos, srcpos) then
-				if pumped >= pcapability then break end
-				local pp = fluid_lib.get_node_buffers(pos)
+			if pp ~= nil then
+				for name in pairs(pp) do
+					for bname in pairs(buffers) do
+						if pumped >= pcapability then break end
+						local buffer_data = fluid_lib.get_buffer_data(srcpos, bname)
+						local target_data = fluid_lib.get_buffer_data(pos, name)
 
-				local changed = false
-
-				if pp ~= nil then
-					for name in pairs(pp) do
-						for bname in pairs(buffers) do
-							if pumped >= pcapability then break end
-							local buffer_data = fluid_lib.get_buffer_data(srcpos, bname)
-							local target_data = fluid_lib.get_buffer_data(pos, name)
-
-							if (target_data.fluid == buffer_data.fluid or target_data.fluid == "") and
-								buffer_data.fluid ~= "" and buffer_data.amount > 0 and
-								(buffer_data.drainable == nil or buffer_data.drainable == true) and
-								fluid_lib.buffer_accepts_fluid(pos, name, buffer_data.fluid) then
-								
-								if fluid_lib.can_insert_into_buffer(pos, name, buffer_data.fluid, pcapability) > 0 then
-									local res_f, count = fluid_lib.take_from_buffer(srcpos, bname, pcapability)
-									if count > 0 then
-										fluid_lib.insert_into_buffer(pos, name, res_f, count)
-										pumped = pumped + count
-										changed = true
-									end
+						if (target_data.fluid == buffer_data.fluid or target_data.fluid == "") and
+							buffer_data.fluid ~= "" and buffer_data.amount > 0 and
+							(buffer_data.drainable == nil or buffer_data.drainable == true) and
+							fluid_lib.buffer_accepts_fluid(pos, name, buffer_data.fluid) then
+							
+							if fluid_lib.can_insert_into_buffer(pos, name, buffer_data.fluid, pcapability) > 0 then
+								local res_f, count = fluid_lib.take_from_buffer(srcpos, bname, pcapability)
+								if count > 0 then
+									fluid_lib.insert_into_buffer(pos, name, res_f, count)
+									pumped = pumped + count
+									changed = true
 								end
 							end
 						end
 					end
 				end
+			end
 
-				if changed then
-					minetest.get_node_timer(srcpos):start(1.0)
-					minetest.get_node_timer(pos):start(1.0)
-				end
+			if changed then
+				minetest.get_node_timer(srcpos):start(1.0)
+				minetest.get_node_timer(pos):start(1.0)
 			end
 		end
-	end,
-})
+	end
 
-function elefluid.clear_networks(pos)
-	-- TODO: Fluid network cache
+	return refresh
+end
+
+function elefluid.refresh_node(pos)
+	minetest.get_node_timer(pos):start(1.0)
 	return
 end
+
+minetest.register_lbm({
+    label = "Fluid Transfer Tick",
+    name = "elepower_fapi:fluid_transfer_tick",
+    nodenames = {"group:elefluid_transport_source"},
+    run_at_every_load = true,
+    action = elefluid.refresh_node,
+})

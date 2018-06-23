@@ -10,6 +10,7 @@ function elefluid.register_transfer_node(nodename, nodedef)
 	nodedef.groups["elefluid_transport_source"] = 1
 	nodedef.paramtype2 = "facedir"
 	nodedef.legacy_facedir_simple = true
+	nodedef.on_timer = elefluid.transfer_timer_tick
 
 	local orig_construct = nodedef.on_construct
 	nodedef.on_construct = function (pos)
@@ -17,14 +18,14 @@ function elefluid.register_transfer_node(nodename, nodedef)
 		meta:set_int("fluid_store", 0)
 		meta:set_string("fluid", "")
 
-		elefluid.clear_networks(pos)
+		elefluid.refresh_node(pos)
 
 		if orig_construct then
 			orig_construct(pos)
 		end
 	end
 
-	nodedef.after_destruct = elefluid.clear_networks
+	nodedef.after_destruct = elefluid.refresh_node
 
 	-- Default transfer capacity
 	if not nodedef.ele_fluid_pump_capacity then
