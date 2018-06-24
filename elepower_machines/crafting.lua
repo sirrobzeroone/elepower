@@ -123,6 +123,19 @@ minetest.register_craft({
 	}
 })
 
+-- Grindstone
+minetest.register_craft({
+	output = "elepower_machines:grindstone",
+	recipe = {
+		{"group:stone", "group:stone", "group:stone"},
+		{"default:flint", "default:flint", "default:flint"},
+		{"group:cobble", "group:cobble", "group:cobble"},
+	},
+	replacements = {
+		{"bucket:bucket_lava", "bucket:bucket_empty"}
+	}
+})
+
 -- Machine block
 minetest.register_craft({
 	output = "elepower_machines:machine_block",

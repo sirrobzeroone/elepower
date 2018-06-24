@@ -88,3 +88,21 @@ function elepm.get_coal_alloy_furnace_formspec(fuel_percent, item_percent)
 		"listring[current_player;main]"..
 		default.get_hotbar_bg(0, 4.25)
 end
+
+function elepm.get_grindstone_formspec(item_percent)
+	return "size[8,8.5]"..
+		default.gui_bg..
+		default.gui_bg_img..
+		default.gui_slots..
+		"list[context;src;1.6,1;1,1;]"..
+		"image[3.5,1;1,1;gui_furnace_arrow_bg.png^[lowpart:"..
+		(item_percent)..":gui_furnace_arrow_fg.png^[transformR270]"..
+		"list[context;dst;4.5,1;2,1;]"..
+		"list[current_player;main;0,4.25;8,1;]"..
+		"list[current_player;main;0,5.5;8,3;8]"..
+		"listring[context;dst]"..
+		"listring[current_player;main]"..
+		"listring[context;src]"..
+		"listring[current_player;main]"..
+		default.get_hotbar_bg(0, 4.25)
+end

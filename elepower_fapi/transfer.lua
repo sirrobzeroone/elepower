@@ -86,9 +86,13 @@ end
 
 function elefluid.transfer_timer_tick(pos, elapsed)
 	local refresh = true
+	local node    = minetest.get_node_or_nil(pos)
+
+	if not node then
+		return false
+	end
+
 	local meta    = minetest.get_meta(pos)
-	local node    = minetest.get_node(pos)
-	local meta1   = nil
 	local targets = {}
 
 	-- Only allow the node directly behind to be a start of a network

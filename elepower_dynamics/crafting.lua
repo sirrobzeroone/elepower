@@ -227,6 +227,10 @@ minetest.register_craft({
 		"elepower_dynamics:viridisium_dust",
 		"elepower_dynamics:viridisium_dust",
 		"elepower_dynamics:viridisium_dust",
+		"elepower_dynamics:copper_dust",
+		"elepower_dynamics:copper_dust",
+		"elepower_dynamics:copper_dust",
+		"elepower_dynamics:copper_dust",
 		"farming:seed_wheat",
 	}
 })
