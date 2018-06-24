@@ -211,6 +211,27 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	output = "elepower_dynamics:pcb_blank",
+	recipe = {
+		{"default:copper_ingot", "default:copper_ingot", "default:copper_ingot"},
+		{"default:copper_ingot", "default:mese_crystal", "default:copper_ingot"},
+		{"default:gold_ingot", "elepower_dynamics:viridisium_ingot", "default:gold_ingot"},
+	}
+})
+
+minetest.register_craft({
+	type = "shapeless",
+	output = "elepower_dynamics:acidic_compound",
+	recipe = {
+		"elepower_dynamics:viridisium_dust",
+		"elepower_dynamics:viridisium_dust",
+		"elepower_dynamics:viridisium_dust",
+		"elepower_dynamics:viridisium_dust",
+		"farming:seed_wheat",
+	}
+})
+
+minetest.register_craft({
 	output = "elepower_dynamics:integrated_circuit",
 	recipe = {
 		{"elepower_dynamics:chip", "elepower_dynamics:chip", "elepower_dynamics:chip"},

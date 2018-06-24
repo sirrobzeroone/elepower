@@ -81,10 +81,37 @@ minetest.register_craftitem("elepower_dynamics:tree_tap", {
 	groups = {treetap = 1, static_component = 1}
 })
 
+minetest.register_craftitem("elepower_dynamics:pcb_blank", {
+	description = "Printed Circuit Board (PCB) Blank",
+	inventory_image = "elepower_blank_pcb.png",
+	liquids_pointable = true,
+	groups = {blank_board = 1, static_component = 1}
+})
+
 minetest.register_craftitem("elepower_dynamics:pcb", {
 	description = "Printed Circuit Board (PCB)",
 	inventory_image = "elepower_pcb.png",
 	groups = {pcb = 1, static_component = 1}
+})
+
+minetest.register_craftitem("elepower_dynamics:acidic_compound", {
+	description = "Acidic Compound\nUsed to make Etching Acid",
+	inventory_image = "elepower_acidic_compound.png",
+	liquids_pointable = true,
+	groups = {acid = 1, static_component = 1},
+	on_place = function (itemstack, placer, pointed_thing)
+		local pos  = pointed_thing.under
+		local node = minetest.get_node(pos)
+		
+		if not node.name == "water_source" then
+			return itemstack
+		end
+
+		minetest.set_node(pos, {name = "elepower_dynamics:etching_acid_source"})
+		itemstack:take_item(1)
+
+		return itemstack
+	end,
 })
 
 -- Electronics

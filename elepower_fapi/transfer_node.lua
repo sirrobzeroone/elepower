@@ -83,8 +83,7 @@ function elefluid.register_transfer_duct(nodename, nodedef)
 		connects_to = {
 			"group:elefluid_transport",
 			"group:elefluid_transport_source",
-			"group:fluid_container",
-			"group:fluidity_tank"
+			"group:fluid_container"
 		},
 	}
 
@@ -94,8 +93,8 @@ function elefluid.register_transfer_duct(nodename, nodedef)
 		end
 	end
 
-	nodedef.on_construct = elefluid.clear_networks
-	nodedef.after_destruct = elefluid.clear_networks
+--	nodedef.on_construct = elefluid.refresh_node
+--	nodedef.after_destruct = elefluid.refresh_node
 
 	minetest.register_node(nodename, nodedef)
 end

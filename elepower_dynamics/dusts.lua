@@ -106,7 +106,7 @@ elepd.register_dust("viridisium", {
 })
 
 elepd.register_dust("wood", {
-	description = "Wood Shavings",
+	description = "Sawdust",
 	force_description = true,
 	color = "#847454"
 })
