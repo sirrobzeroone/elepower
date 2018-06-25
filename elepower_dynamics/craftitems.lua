@@ -103,7 +103,7 @@ minetest.register_craftitem("elepower_dynamics:acidic_compound", {
 		local pos  = pointed_thing.under
 		local node = minetest.get_node(pos)
 		
-		if not node.name == "water_source" then
+		if node.name ~= "default:water_source" then
 			return itemstack
 		end
 

@@ -71,6 +71,13 @@ for mat, data in pairs(elepd.registered_dusts) do
 	end
 end
 
+-- Other recipes
+elepm.register_craft({
+	type   = "grind",
+	recipe = { "farming:wheat" },
+	output = "farming:flour 2"
+})
+
 -------------
 -- Sawmill --
 -------------
@@ -217,5 +224,19 @@ minetest.register_craft({
 		{"", "elepower_dynamics:fluid_duct", ""},
 		{"group:glass", "elepower_machines:machine_block", "group:glass"},
 		{"elepower_dynamics:steel_gear", "elepower_dynamics:servo_valve", "elepower_dynamics:steel_gear"},
+	}
+})
+
+-- Lava Cooler
+minetest.register_craft({
+	output = "elepower_machines:lava_cooler",
+	recipe = {
+		{"bucket:bucket_water", "elepower_dynamics:control_circuit", "bucket:bucket_lava"},
+		{"elepower_dynamics:fluid_duct", "elepower_machines:machine_block", "elepower_dynamics:fluid_duct"},
+		{"elepower_dynamics:servo_valve", "elepower_dynamics:tin_gear", "elepower_dynamics:servo_valve"},
+	},
+	replacements = {
+		{"bucket:bucket_water", "bucket:bucket_empty"},
+		{"bucket:bucket_lava", "bucket:bucket_empty"},
 	}
 })

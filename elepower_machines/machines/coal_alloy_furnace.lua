@@ -12,16 +12,14 @@ local function allow_metadata_inventory_put(pos, listname, index, stack, player)
 	local meta = minetest.get_meta(pos)
 	local inv = meta:get_inventory()
 	if listname == "fuel" then
-		if minetest.get_craft_result({method="fuel", width=1, items={stack}}).time ~= 0 then
-			return stack:get_count()
-		else
+		if minetest.get_craft_result({method="fuel", width=1, items={stack}}).time == 0 then
 			return 0
 		end
-	elseif listname == "src" then
-		return stack:get_count()
 	elseif listname == "dst" then
 		return 0
 	end
+	
+	return stack:get_count()
 end
 
 local function allow_metadata_inventory_move(pos, from_list, from_index, to_list, to_index, count, player)
