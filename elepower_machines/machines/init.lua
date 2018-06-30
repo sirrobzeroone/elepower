@@ -1,4 +1,5 @@
 
+-- Basic
 dofile(elepm.modpath.."/machines/bases/init.lua")
 dofile(elepm.modpath.."/machines/accumulator.lua")
 dofile(elepm.modpath.."/machines/furnace.lua")
@@ -10,3 +11,6 @@ dofile(elepm.modpath.."/machines/sawmill.lua")
 dofile(elepm.modpath.."/machines/generator.lua")
 dofile(elepm.modpath.."/machines/storage.lua")
 dofile(elepm.modpath.."/machines/lava_cooler.lua")
+
+-- Hardened
+dofile(elepm.modpath.."/machines/assembler.lua")

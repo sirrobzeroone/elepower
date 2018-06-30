@@ -8,7 +8,7 @@ elepd.modpath = modpath
 
 dofile(modpath.."/conduits.lua")
 dofile(modpath.."/craftitems.lua")
-dofile(modpath.."/plastic.lua")
+dofile(modpath.."/compat/init.lua")
 dofile(modpath.."/tools.lua")
 dofile(modpath.."/nodes.lua")
 dofile(modpath.."/liquids.lua")

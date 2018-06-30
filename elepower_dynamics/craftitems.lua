@@ -178,6 +178,12 @@ minetest.register_craftitem("elepower_dynamics:control_circuit", {
 	groups = {ic = 2, assembled_component = 1, control_circuit = 1}
 })
 
+minetest.register_craftitem("elepower_dynamics:micro_circuit", {
+	description = "Microcontroller Circuit",
+	inventory_image = "elepower_ic_3.png",
+	groups = {ic = 3, assembled_component = 1, control_circuit = 2}
+})
+
 ---------------
 -- Overrides --
 ---------------

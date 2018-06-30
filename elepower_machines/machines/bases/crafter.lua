@@ -25,6 +25,7 @@ function elepm.register_crafter(nodename, nodedef)
 		local machine_speed = nodedef.craft_speed or 1
 
 		local capacity = ele.helpers.get_node_property(meta, pos, "capacity")
+		local time     = meta:get_int("src_time")
 
 		while true do
 			local result  = elepm.get_recipe(craft_type, inv:get_list("src"))
@@ -45,7 +46,7 @@ function elepm.register_crafter(nodename, nodedef)
 				
 				if result.time == 0 then
 					meta:set_string("formspec", ele.formspec.get_crafter_formspec(craft_type, pow_percent))
-					meta:set_int("src_time", 0)
+					time = 0
 					meta:set_string("infotext", ("%s Idle"):format(nodedef.description) ..
 						"\n" .. ele.capacity_text(capacity, storage))
 				else
@@ -63,7 +64,7 @@ function elepm.register_crafter(nodename, nodedef)
 			-- One step
 			meta:set_int("storage", storage - usage)
 			pow_percent = math.floor((storage / capacity) * 100)
-			meta:set_int("src_time", meta:get_int("src_time") + ele.helpers.round(machine_speed * 10))
+			time = time + ele.helpers.round(machine_speed * 10)
 			meta:set_string("infotext", ("%s Active"):format(nodedef.description) ..
 				"\n" .. ele.capacity_text(capacity, storage))
 
@@ -76,8 +77,8 @@ function elepm.register_crafter(nodename, nodedef)
 				ele.helpers.swap_node(pos, active_node)
 			end
 
-			if meta:get_int("src_time") <= ele.helpers.round(result.time * 10) then
-				local pct = math.floor((meta:get_int("src_time") / ele.helpers.round(result.time * 10)) * 100)
+			if time <= ele.helpers.round(result.time * 10) then
+				local pct = math.floor((time / ele.helpers.round(result.time * 10)) * 100)
 				meta:set_string("formspec", ele.formspec.get_crafter_formspec(craft_type, pow_percent, pct))
 				break
 			end
@@ -104,16 +105,18 @@ function elepm.register_crafter(nodename, nodedef)
 			if not room_for_output then
 				ele.helpers.swap_node(pos, machine_node)
 				meta:set_string("formspec", ele.formspec.get_crafter_formspec(craft_type, pow_percent))
-				meta:set_int("src_time", ele.helpers.round(result.time*10))
+				time = ele.helpers.round(result.time*10)
 				meta:set_string("infotext", ("%s Output Full!"):format(nodedef.description) ..
 					"\n" .. ele.capacity_text(capacity, storage))
 				break
 			end
 
-			meta:set_int("src_time", meta:get_int("src_time") - ele.helpers.round(result.time*10))
+			time = 0
 			inv:set_list("src", result.new_input)
 			inv:set_list("dst", inv:get_list("dst_tmp"))
 		end
+
+		meta:set_int("src_time", time)
 
 		return refresh
 	end

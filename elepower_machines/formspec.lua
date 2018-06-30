@@ -11,12 +11,32 @@ function ele.formspec.get_crafter_formspec(craft_type, power, percent)
 			  (percent)..":gui_furnace_arrow_fg.png^[transformR270]"
 	end
 
+	local in_width  = input_size
+	local in_height = 1
+
+	for n = 2, 4 do
+		if input_size % n == 0 and input_size ~= n then
+			in_width  = input_size / n
+			in_height = input_size / n
+		end
+	end
+
+	local y = 1.5
+	local x = 1.5
+	if in_height == 2 then
+		y = 1
+		x = 1
+	elseif in_height >= 3 then
+		y = 0.5
+		x = 1
+	end
+
 	return "size[8,8.5]"..
 		default.gui_bg..
 		default.gui_bg_img..
 		default.gui_slots..
 		ele.formspec.power_meter(power)..
-		"list[context;src;1.5,1.5;"..input_size..",1;]"..
+		"list[context;src;"..x..","..y..";"..in_width..","..in_height..";]"..
 		bar..
 		"list[context;dst;5,1;2,2;]"..
 		"list[current_player;main;0,4.25;8,1;]"..
