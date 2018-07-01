@@ -97,7 +97,7 @@ local function preserve_metadata(pos, oldnode, oldmeta, drops)
 	for i,stack in pairs(drops) do
 		local stack_meta = stack:get_meta()
 		stack_meta:set_int("storage", storage)
-		stack_meta:set_string("description", nodedesc.."\nCharge: " .. storage .. "/" .. capacity .. " " .. ele.unit)
+		stack_meta:set_string("description", nodedesc .. "\n" .. ele.capacity_text(capacity, storage))
 		drops[i] = stack
 	end
 

@@ -193,7 +193,7 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "elepower_dynamics:chip",
+	output = "elepower_dynamics:chip 3",
 	recipe = {
 		{"homedecor:plastic_sheeting", "homedecor:plastic_sheeting", "homedecor:plastic_sheeting"},
 		{"default:mese_crystal", "dye:black", "default:mese_crystal"},
@@ -202,7 +202,7 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "elepower_dynamics:capacitor",
+	output = "elepower_dynamics:capacitor 3",
 	recipe = {
 		{"homedecor:plastic_sheeting", "homedecor:plastic_sheeting", "homedecor:plastic_sheeting"},
 		{"moreores:silver_ingot", "default:mese_crystal", "moreores:silver_ingot"},
@@ -241,15 +241,6 @@ minetest.register_craft({
 		{"elepower_dynamics:chip", "elepower_dynamics:chip", "elepower_dynamics:chip"},
 		{"elepower_dynamics:capacitor", "elepower_dynamics:pcb", "elepower_dynamics:capacitor"},
 		{"default:copper_ingot", "default:mese_crystal", "default:gold_ingot"},
-	}
-})
-
-minetest.register_craft({
-	output = "elepower_dynamics:control_circuit",
-	recipe = {
-		{"elepower_dynamics:chip", "elepower_dynamics:chip", "elepower_dynamics:chip"},
-		{"elepower_dynamics:capacitor", "elepower_dynamics:integrated_circuit", "elepower_dynamics:capacitor"},
-		{"default:gold_ingot", "elepower_dynamics:viridisium_ingot", "default:gold_ingot"},
 	}
 })
 

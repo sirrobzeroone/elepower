@@ -75,6 +75,24 @@ minetest.register_craftitem("elepower_dynamics:carbon_sheet", {
 	groups = {carbon_fiber_sheet = 1, sheet = 1}
 })
 
+minetest.register_craftitem("elepower_dynamics:silicon", {
+	description = "Silicon",
+	inventory_image = "elepower_silicon.png",
+	groups = {silicon = 1, lump = 1}
+})
+
+minetest.register_craftitem("elepower_dynamics:silicon_wafer", {
+	description = "Silicon Wafer",
+	inventory_image = "elepower_silicon_wafer.png",
+	groups = {wafer = 1}
+})
+
+minetest.register_craftitem("elepower_dynamics:silicon_wafer_solar", {
+	description = "Silicon Wafer\nFor Solar Panel Crafting",
+	inventory_image = "elepower_silicon_wafer_solar.png",
+	groups = {wafer = 2}
+})
+
 minetest.register_craftitem("elepower_dynamics:tree_tap", {
 	description = "Steel Treetap",
 	inventory_image = "elepower_tree_tap.png",
@@ -117,13 +135,13 @@ minetest.register_craftitem("elepower_dynamics:acidic_compound", {
 -- Electronics
 
 minetest.register_craftitem("elepower_dynamics:wound_copper_coil", {
-	description = "Wound Copper Coil",
+	description = "Wound Copper Coil\nTier 1 Coil",
 	inventory_image = "elepower_copper_coil.png",
 	groups = {copper = 1, coil = 1, component = 1}
 })
 
 minetest.register_craftitem("elepower_dynamics:wound_silver_coil", {
-	description = "Wound Silver Coil",
+	description = "Wound Silver Coil\nTier 2 Coil",
 	inventory_image = "elepower_silver_coil.png",
 	groups = {silver = 1, coil = 1, component = 1}
 })
@@ -135,21 +153,33 @@ minetest.register_craftitem("elepower_dynamics:copper_wire", {
 })
 
 minetest.register_craftitem("elepower_dynamics:induction_coil", {
-	description = "Induction Coil",
+	description = "Induction Coil\nTier 3 Coil",
 	inventory_image = "elepower_induction_coil.png",
 	groups = {induction_coil = 1, component = 1}
 })
 
 minetest.register_craftitem("elepower_dynamics:induction_coil_advanced", {
-	description = "Advanced Induction Coil\nSuitable for high-power applications",
+	description = "Advanced Induction Coil\nSuitable for high-power applications\nTier 4 Coil",
 	inventory_image = "elepower_induction_coil_advanced.png",
 	groups = {induction_coil = 1, component = 1}
 })
 
 minetest.register_craftitem("elepower_dynamics:chip", {
-	description = "Chip",
+	description = "Chip\nTier 1 Chip",
 	inventory_image = "elepower_chip.png",
-	groups = {ic = 2, component = 1}
+	groups = {chip = 1, component = 1}
+})
+
+minetest.register_craftitem("elepower_dynamics:microcontroller", {
+	description = "Microcontroller\nTier 2 Chip",
+	inventory_image = "elepower_microcontroller.png",
+	groups = {chip = 2, component = 1}
+})
+
+minetest.register_craftitem("elepower_dynamics:soc", {
+	description = "System on a Chip (SoC)\nTier 3 Chip",
+	inventory_image = "elepower_soc.png",
+	groups = {chip = 3, component = 1}
 })
 
 minetest.register_craftitem("elepower_dynamics:capacitor", {
@@ -167,21 +197,21 @@ minetest.register_craftitem("elepower_dynamics:servo_valve", {
 })
 
 minetest.register_craftitem("elepower_dynamics:integrated_circuit", {
-	description = "Integrated Circuit",
+	description = "Integrated Circuit\nTier 1 Circuit",
 	inventory_image = "elepower_ic.png",
-	groups = {ic = 1, assembled_component = 1}
+	groups = {circuit = 1, assembled_component = 1}
 })
 
 minetest.register_craftitem("elepower_dynamics:control_circuit", {
-	description = "Integrated Control Circuit",
+	description = "Integrated Control Circuit\nTier 2 Circuit",
 	inventory_image = "elepower_ic_2.png",
-	groups = {ic = 2, assembled_component = 1, control_circuit = 1}
+	groups = {circuit = 2, assembled_component = 1, control_circuit = 1}
 })
 
 minetest.register_craftitem("elepower_dynamics:micro_circuit", {
-	description = "Microcontroller Circuit",
+	description = "Microcontroller Circuit\nTier 3 Circuit",
 	inventory_image = "elepower_ic_3.png",
-	groups = {ic = 3, assembled_component = 1, control_circuit = 2}
+	groups = {circuit = 3, assembled_component = 1, control_circuit = 2}
 })
 
 ---------------

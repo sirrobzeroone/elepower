@@ -1,7 +1,7 @@
 
-----------------------
--- Ground materials --
-----------------------
+-----------
+-- Gears --
+-----------
 
 elepd.registered_gears = {}
 
@@ -19,84 +19,33 @@ function elepd.register_gear(mat, data)
 		inventory_image = "elepower_gear.png^[multiply:" .. data.color,
 		groups          = {
 			["gear_" .. mat] = 1,
-			dust = 1
+			gear = 1
 		}
 	})
 end
 
--- Default dust list
+-- Default gear list
+local gears = {
+	{"bronze",     "Bronze",     "#fa7b26"},
+	{"copper",     "Copper",     "#fcb15f"},
+	{"gold",       "Gold",       "#ffff47"},
+	{"steel",      "Steel",      "#ffffff"},
+	{"tin",        "Tin",        "#c1c1c1"},
+	{"mithril",    "Mithril",    "#8686df"},
+	{"silver",     "Silver",     "#d7e2e8"},
+	{"lead",       "Lead",       "#aeaedc"},
+	{"iron",       "Iron",       "#dddddd"},
+	{"coal",       "Coal",       "#222222"},
+	{"diamond",    "Diamond",    "#02c1e8"},
+	{"nickel",     "Nickel",     "#d6d5ab"},
+	{"invar",      "Invar",      "#9fa5b2"},
+	{"electrum",   "Electrum",   "#ebeb90"},
+	{"viridisium", "Viridisium", "#5b9751"},
+}
 
-elepd.register_gear("bronze", {
-	description = "Bronze",
-	color = "#fa7b26"
-})
-
-elepd.register_gear("copper", {
-	description = "Copper",
-	color = "#fcb15f"
-})
-
-elepd.register_gear("gold", {
-	description = "Gold",
-	color = "#ffff47"
-})
-
-elepd.register_gear("steel", {
-	description = "Steel", 
-	color = "#ffffff"
-})
-
-elepd.register_gear("tin", {
-	description = "Tin", 
-	color = "#c1c1c1"
-})
-
-elepd.register_gear("mithril", {
-	description = "Mithril",
-	color = "#8686df"
-})
-
-elepd.register_gear("silver", {
-	description = "Silver",
-	color = "#d7e2e8"
-})
-
-elepd.register_gear("lead", {
-	description = "Lead",
-	color = "#aeaedc"
-})
-
-elepd.register_gear("iron", {
-	description = "Iron",
-	color = "#dddddd"
-})
-
-elepd.register_gear("diamond", {
-	description = "Diamond",
-	color = "#02c1e8"
-})
-
-elepd.register_gear("wood", {
-	description = "Wood",
-	color = "#847454"
-})
-
-elepd.register_gear("nickel", {
-	description = "Nickel",
-	color = "#d6d5ab"
-})
-
-elepd.register_gear("invar", {
-	description = "Invar",
-	color = "#9fa5b2"
-})
-
-elepd.register_gear("electrum", {
-	description = "Electrum",
-	color = "#ebeb90"
-})
-
-elepd.register_gear("viridisium", {
-	description = "Viridisium",
-	color = "#5b9751"
-})
+for _,gear in ipairs(gears) do
+	elepd.register_gear(gear[1], {
+		description       = gear[2],
+		color             = gear[3]
+	})
+end

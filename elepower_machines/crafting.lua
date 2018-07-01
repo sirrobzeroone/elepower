@@ -24,7 +24,11 @@ local alloy_recipes = {
 	{
 		recipe = { "default:gold_ingot 2", "elepower_dynamics:invar_ingot" },
 		output = "elepower_dynamics:electrum_ingot 3",
-	}
+	},
+	{
+		recipe = { "elepower_dynamics:silicon", "elepower_dynamics:gold_dust 4" },
+		output = "elepower_dynamics:silicon_wafer",
+	},
 }
 
 -- Register alloy furnace recipes
@@ -78,6 +82,20 @@ elepm.register_craft({
 	output = "farming:flour 2"
 })
 
+elepm.register_craft({
+	type   = "grind",
+	recipe = { "default:desert_sand 4" },
+	output = "elepower_dynamics:silicon",
+	time   = 8,
+})
+
+elepm.register_craft({
+	type   = "grind",
+	recipe = { "elepower_dynamics:silicon_wafer" },
+	output = "elepower_dynamics:silicon_wafer_solar",
+	time   = 18,
+})
+
 -------------
 -- Sawmill --
 -------------
@@ -113,6 +131,43 @@ minetest.after(0.2, function ()
 		})
 	end
 end)
+
+---------------
+-- Soldering --
+---------------
+
+local soldering_recipes = {
+	{
+		recipe = { "elepower_dynamics:silicon_wafer", "elepower_dynamics:chip 4", "elepower_dynamics:lead_ingot 2" },
+		output = "elepower_dynamics:microcontroller",
+		time   = 8,
+	},
+	{
+		recipe = { "elepower_dynamics:silicon_wafer", "elepower_dynamics:microcontroller 4", "elepower_dynamics:electrum_ingot 2" },
+		output = "elepower_dynamics:soc",
+		time   = 28,
+	},
+	{
+		recipe = { "elepower_dynamics:microcontroller", "elepower_dynamics:control_circuit", "elepower_dynamics:capacitor 5" },
+		output = "elepower_dynamics:micro_circuit",
+		time   = 18,
+	},
+	{
+		recipe = { "elepower_dynamics:chip 8", "elepower_dynamics:integrated_circuit 2", "elepower_dynamics:capacitor 4" },
+		output = "elepower_dynamics:control_circuit",
+		time   = 20,
+	}
+}
+
+-- Register solderer recipes
+for _,i in pairs(soldering_recipes) do
+	elepm.register_craft({
+		type   = "solder",
+		recipe = i.recipe,
+		output = i.output,
+		time   = i.time or 4
+	})
+end
 
 --******************--
 -- CRAFTING RECIPES --
@@ -173,6 +228,20 @@ minetest.register_craft({
 			"elepower_dynamics:wound_copper_coil",
 			"elepower_machines:coal_alloy_furnace",
 			"elepower_dynamics:wound_copper_coil"
+		},
+	}
+})
+
+-- Solderer
+minetest.register_craft({
+	output = "elepower_machines:solderer",
+	recipe = {
+		{"", "elepower_dynamics:integrated_circuit", ""},
+		{"elepower_dynamics:chip", "elepower_machines:machine_block", "elepower_dynamics:chip"},
+		{
+			"elepower_dynamics:invar_gear",
+			"elepower_dynamics:wound_copper_coil",
+			"elepower_dynamics:invar_gear"
 		},
 	}
 })

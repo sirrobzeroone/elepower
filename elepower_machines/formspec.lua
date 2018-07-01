@@ -25,9 +25,11 @@ function ele.formspec.get_crafter_formspec(craft_type, power, percent)
 	local x = 1.5
 	if in_height == 2 then
 		y = 1
-		x = 1
 	elseif in_height >= 3 then
 		y = 0.5
+	end
+
+	if in_width >= 2 then
 		x = 1
 	end
 

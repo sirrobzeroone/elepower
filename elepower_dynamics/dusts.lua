@@ -29,84 +29,29 @@ function elepd.register_dust(mat, data)
 end
 
 -- Default dust list
+local dusts = {
+	{"bronze",     "Bronze",     "#fa7b26"},
+	{"copper",     "Copper",     "#fcb15f"},
+	{"gold",       "Gold",       "#ffff47"},
+	{"steel",      "Steel",      "#ffffff"},
+	{"tin",        "Tin",        "#c1c1c1"},
+	{"mithril",    "Mithril",    "#8686df"},
+	{"silver",     "Silver",     "#d7e2e8"},
+	{"lead",       "Lead",       "#aeaedc"},
+	{"iron",       "Iron",       "#dddddd"},
+	{"coal",       "Coal",       "#222222"},
+	{"diamond",    "Diamond",    "#02c1e8"},
+	{"nickel",     "Nickel",     "#d6d5ab"},
+	{"invar",      "Invar",      "#9fa5b2"},
+	{"electrum",   "Electrum",   "#ebeb90"},
+	{"viridisium", "Viridisium", "#5b9751"},
+	{"wood",       "Sawdust",    "#847454", true}
+}
 
-elepd.register_dust("bronze", {
-	description = "Bronze",
-	color = "#fa7b26"
-})
-
-elepd.register_dust("copper", {
-	description = "Copper",
-	color = "#fcb15f"
-})
-
-elepd.register_dust("gold", {
-	description = "Gold",
-	color = "#ffff47"
-})
-
-elepd.register_dust("steel", {
-	description = "Steel", 
-	color = "#ffffff"
-})
-
-elepd.register_dust("tin", {
-	description = "Tin", 
-	color = "#c1c1c1"
-})
-
-elepd.register_dust("mithril", {
-	description = "Mithril",
-	color = "#8686df"
-})
-
-elepd.register_dust("silver", {
-	description = "Silver",
-	color = "#d7e2e8"
-})
-
-elepd.register_dust("lead", {
-	description = "Lead",
-	color = "#aeaedc"
-})
-
-elepd.register_dust("iron", {
-	description = "Iron",
-	color = "#dddddd"
-})
-
-elepd.register_dust("coal", {
-	description = "Coal",
-	color = "#222222"
-})
-
-elepd.register_dust("diamond", {
-	description = "Diamond",
-	color = "#02c1e8"
-})
-
-elepd.register_dust("nickel", {
-	description = "Nickel",
-	color = "#d6d5ab"
-})
-
-elepd.register_dust("invar", {
-	description = "Invar",
-	color = "#9fa5b2"
-})
-
-elepd.register_dust("electrum", {
-	description = "Electrum",
-	color = "#ebeb90"
-})
-
-elepd.register_dust("viridisium", {
-	description = "Viridisium",
-	color = "#5b9751"
-})
-
-elepd.register_dust("wood", {
-	description = "Sawdust",
-	force_description = true,
-	color = "#847454"
-})
+for _,dust in ipairs(dusts) do
+	elepd.register_dust(dust[1], {
+		description       = dust[2],
+		color             = dust[3],
+		force_description = dust[4],
+	})
+end
