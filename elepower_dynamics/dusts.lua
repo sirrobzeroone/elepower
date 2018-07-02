@@ -45,6 +45,7 @@ local dusts = {
 	{"invar",      "Invar",      "#9fa5b2"},
 	{"electrum",   "Electrum",   "#ebeb90"},
 	{"viridisium", "Viridisium", "#5b9751"},
+	{"zinc",       "Zinc",       "#598a9e"},
 	{"wood",       "Sawdust",    "#847454", true}
 }
 

@@ -56,3 +56,20 @@ function elefarm.formspec.tree_processor(timer, power, fluid_buffer, water_buffe
 		"listring[current_player;main]"..
 		default.get_hotbar_bg(0, 4.25)
 end
+
+function elefarm.formspec.spawner_formspec(timer, power)
+	return "size[8,8.5]"..
+		default.gui_bg..
+		default.gui_bg_img..
+		default.gui_slots..
+		ele.formspec.power_meter(power)..
+		bar(1, 0, 100-timer)..
+		"list[context;src;3.5,1.5;1,1;]"..
+		"image[3.5,1.5;1,1;elefarming_egg_silhouette.png]"..
+		"list[current_player;main;0,4.25;8,1;]"..
+		"list[current_player;main;0,5.5;8,3;8]"..
+		"listring[current_player;main]"..
+		"listring[context;src]"..
+		"listring[current_player;main]"..
+		default.get_hotbar_bg(0, 4.25)
+end

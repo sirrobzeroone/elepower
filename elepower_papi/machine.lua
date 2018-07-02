@@ -47,7 +47,8 @@ local function can_dig(pos, player)
 	return inv:is_empty("dst") and inv:is_empty("src")
 end
 
-local function allow_metadata_inventory_put(pos, listname, index, stack, player)
+ele.default = {}
+function ele.default.allow_metadata_inventory_put(pos, listname, index, stack, player)
 	if minetest.is_protected(pos, player:get_player_name()) then
 		return 0
 	end
@@ -59,14 +60,14 @@ local function allow_metadata_inventory_put(pos, listname, index, stack, player)
 	return stack:get_count()
 end
 
-local function allow_metadata_inventory_move(pos, from_list, from_index, to_list, to_index, count, player)
+function ele.default.allow_metadata_inventory_move(pos, from_list, from_index, to_list, to_index, count, player)
 	local meta = minetest.get_meta(pos)
 	local inv = meta:get_inventory()
 	local stack = inv:get_stack(from_list, from_index)
-	return allow_metadata_inventory_put(pos, to_list, to_index, stack, player)
+	return ele.default.allow_metadata_inventory_put(pos, to_list, to_index, stack, player)
 end
 
-local function allow_metadata_inventory_take(pos, listname, index, stack, player)
+function ele.default.allow_metadata_inventory_take(pos, listname, index, stack, player)
 	if minetest.is_protected(pos, player:get_player_name()) then
 		return 0
 	end
@@ -74,7 +75,7 @@ local function allow_metadata_inventory_take(pos, listname, index, stack, player
 	return stack:get_count()
 end
 
-local function metadata_inventory_changed(pos)
+function ele.default.metadata_inventory_changed(pos)
 	local t = minetest.get_node_timer(pos)
 
 	if not t:is_started() then
@@ -258,26 +259,26 @@ function ele.register_machine(nodename, nodedef)
 
 	-- Default metadata handlers for "src" and "dst"
 	if not nodedef.allow_metadata_inventory_put then
-		nodedef.allow_metadata_inventory_put  = allow_metadata_inventory_put
-		nodedef.allow_metadata_inventory_move = allow_metadata_inventory_move
+		nodedef.allow_metadata_inventory_put  = ele.default.allow_metadata_inventory_put
+		nodedef.allow_metadata_inventory_move = ele.default.allow_metadata_inventory_move
 	end
 
 	if not nodedef.allow_metadata_inventory_take then
-		nodedef.allow_metadata_inventory_take = allow_metadata_inventory_take
+		nodedef.allow_metadata_inventory_take = ele.default.allow_metadata_inventory_take
 	end
 
 	-- Default metadata changed handlers for inventories
 	-- Starts the timer on the node
 	if not nodedef.on_metadata_inventory_move then
-		nodedef.on_metadata_inventory_move = metadata_inventory_changed
+		nodedef.on_metadata_inventory_move = ele.default.metadata_inventory_changed
 	end
 
 	if not nodedef.on_metadata_inventory_put then
-		nodedef.on_metadata_inventory_put  = metadata_inventory_changed
+		nodedef.on_metadata_inventory_put  = ele.default.metadata_inventory_changed
 	end
 
 	if not nodedef.on_metadata_inventory_take then
-		nodedef.on_metadata_inventory_take = metadata_inventory_changed
+		nodedef.on_metadata_inventory_take = ele.default.metadata_inventory_changed
 	end
 
 	ele.register_base_device(nodename, nodedef)

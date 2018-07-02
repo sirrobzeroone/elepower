@@ -41,6 +41,12 @@ minetest.register_craftitem("elepower_dynamics:viridisium_ingot", {
 	groups = {viridisium = 1, ingot = 1}
 })
 
+minetest.register_craftitem("elepower_dynamics:zinc_ingot", {
+	description = "Zinc Ingot",
+	inventory_image = "elepower_zinc_ingot.png",
+	groups = {zinc = 1, ingot = 1}
+})
+
 -- Lumps
 
 minetest.register_craftitem("elepower_dynamics:lead_lump", {
@@ -59,6 +65,12 @@ minetest.register_craftitem("elepower_dynamics:viridisium_lump", {
 	description = "Viridisium Lump",
 	inventory_image = "elepower_viridisium_lump.png",
 	groups = {viridisium = 1, lump = 1}
+})
+
+minetest.register_craftitem("elepower_dynamics:zinc_lump", {
+	description = "Zinc Lump",
+	inventory_image = "elepower_zinc_lump.png",
+	groups = {zinc = 1, lump = 1}
 })
 
 -- Special

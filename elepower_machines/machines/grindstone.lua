@@ -89,7 +89,7 @@ local function grindstone_timer(pos, elapsed)
 	meta:set_string("formspec", elepm.get_grindstone_formspec(percentile))
 	meta:set_int("src_time", time)
 	meta:set_int("src_time_max", target_time)
-	meta:set_string("infotext", "Grindstone: ".. percentile .. "%")
+	meta:set_string("infotext", "Grindstone: ".. percentile .. "%\nPunch me to progress!")
 
 	return refresh
 end

@@ -267,6 +267,12 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	type   = "cooking",
+	output = "elepower_dynamics:zinc_ingot",
+	recipe = "elepower_dynamics:zinc_lump"
+})
+
+minetest.register_craft({
 	type     = "cooking",
 	output   = "elepower_dynamics:viridisium_ingot",
 	recipe   = "elepower_dynamics:viridisium_lump",
@@ -303,3 +309,33 @@ for mat, data in pairs(elepd.registered_gears) do
 		end
 	end
 end
+
+-----------
+-- Nodes --
+-----------
+
+local function blockcraft(mat)
+	local ingot = "elepower_dynamics:" .. mat .. "_ingot"
+	local block = "elepower_dynamics:" .. mat .. "_block"
+	minetest.register_craft({
+		type   = "shapeless",
+		output = block,
+		recipe = {
+			ingot, ingot, ingot,
+			ingot, ingot, ingot,
+			ingot, ingot, ingot,
+		}
+	})
+
+	minetest.register_craft({
+		type   = "shapeless",
+		output = ingot .. " 9",
+		recipe = { block },
+	})
+end
+
+blockcraft("viridisium")
+blockcraft("nickel")
+blockcraft("invar")
+blockcraft("lead")
+blockcraft("zinc")
