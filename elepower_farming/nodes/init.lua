@@ -14,7 +14,7 @@ dofile(elefarm.modpath.."/nodes/harvester.lua")
 dofile(elefarm.modpath.."/nodes/tree_extractor.lua")
 dofile(elefarm.modpath.."/nodes/tree_processor.lua")
 
--- Mobs redo support
+-- Mobs Redo support
 if minetest.get_modpath("mobs") ~= nil and mobs.mod and mobs.mod == "redo" then
 	dofile(elefarm.modpath.."/nodes/spawner.lua")
 end

@@ -51,6 +51,20 @@ function ele.formspec.get_crafter_formspec(craft_type, power, percent)
 		default.get_hotbar_bg(0, 4.25)
 end
 
+function ele.formspec.get_lava_generator_formspec(power, percent, buffer)
+	return "size[8,8.5]"..
+		default.gui_bg..
+		default.gui_bg_img..
+		default.gui_slots..
+		ele.formspec.power_meter(power)..
+		ele.formspec.fluid_bar(7, 0, buffer)..
+		"image[3.5,1.5;1,1;default_furnace_fire_bg.png^[lowpart:"..
+		(percent)..":default_furnace_fire_fg.png]"..
+		"list[current_player;main;0,4.25;8,1;]"..
+		"list[current_player;main;0,5.5;8,3;8]"..
+		default.get_hotbar_bg(0, 4.25)
+end
+
 function ele.formspec.get_generator_formspec(power, percent)
 	return "size[8,8.5]"..
 		default.gui_bg..

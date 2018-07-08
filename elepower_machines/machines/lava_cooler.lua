@@ -32,6 +32,7 @@ local function lava_cooler_timer(pos, elapsed)
 	local recipe  = meta:get_string("recipe")
 	local consume = cooler_recipes[recipe]
 	local time    = meta:get_int("src_time")
+	local active  = "Active"
 
 	if storage > usage then
 		if coolant_buffer.amount >= 1000 and hot_buffer.amount >= 1000 then
@@ -62,8 +63,11 @@ local function lava_cooler_timer(pos, elapsed)
 				refresh = true
 			end
 		else
+			active = "Idle"
 			refresh = false
 		end
+	else
+		active = "Idle"
 	end
 
 	local power = math.floor(100 * storage / capacity)
@@ -71,6 +75,7 @@ local function lava_cooler_timer(pos, elapsed)
 
 	meta:set_int("src_time", time)
 	meta:set_int("storage", storage)
+	meta:set_string("infotext", ("Lava Cooler %s\n%s"):format(active, ele.capacity_text(capacity, storage)))
 
 	meta:set_string("formspec", elepm.get_lava_cooler_formspec(timer, coolant_buffer, hot_buffer, 
 		power, cooler_recipes, recipe))

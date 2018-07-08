@@ -162,7 +162,7 @@ minetest.register_craft({
 	output = "elepower_dynamics:wound_silver_coil",
 	recipe = {
 		{"", "moreores:silver_ingot", ""},
-		{"moreores:silver_ingot", "elepower_dynamics:iron_ingot", "moreores:silver_ingot"},
+		{"moreores:silver_ingot", "elepower_dynamics:zinc_ingot", "moreores:silver_ingot"},
 		{"", "moreores:silver_ingot", ""}
 	}
 })

@@ -42,7 +42,7 @@ local pw = minetest.get_modpath("pipeworks") ~= nil
 ]]
 
 local function can_dig(pos, player)
-	local meta = minetest.get_meta(pos);
+	local meta = minetest.get_meta(pos)
 	local inv = meta:get_inventory()
 	return inv:is_empty("dst") and inv:is_empty("src")
 end
@@ -180,7 +180,19 @@ function ele.register_base_device(nodename, nodedef)
 
 	-- Pipeworks support
 	if pw and nodedef.groups and (nodedef.groups["tubedevice"] or nodedef.groups["tube"]) then
-		nodedef['tube'] = tube
+		if nodedef['tube'] == false then
+			nodedef['tube'] = nil
+			nodedef.groups["tubedevice"] = 0
+			nodedef.groups["tube"] = 0
+		elseif nodedef['tube'] then
+			for key,val in pairs(tube) do
+				if not nodedef['tube'][key] then
+					nodedef['tube'][key] = val
+				end
+			end
+		else
+			nodedef['tube'] = tube
+		end
 	end
 
 	-- Finally, register the damn thing already

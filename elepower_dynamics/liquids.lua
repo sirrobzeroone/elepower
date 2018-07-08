@@ -89,3 +89,10 @@ minetest.register_node("elepower_dynamics:etching_acid_flowing", {
 
 bucket.register_liquid("elepower_dynamics:etching_acid_source", "elepower_dynamics:etching_acid_flowing",
 		"elepower_dynamics:bucket_etching_acid",   "#410800", "Etching Acid Bucket")
+
+-- Virtual "fluid"
+minetest.register_node("elepower_dynamics:steam", {
+	description = "Steam",
+	groups      = {not_in_creative_inventory = 1},
+	tiles       = {"elepower_steam.png"},
+})

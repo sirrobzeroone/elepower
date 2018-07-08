@@ -309,3 +309,13 @@ minetest.register_craft({
 		{"bucket:bucket_lava", "bucket:bucket_empty"},
 	}
 })
+
+-- Lava Generator
+minetest.register_craft({
+	output = "elepower_machines:lava_generator",
+	recipe = {
+		{"elepower_dynamics:wound_silver_coil", "elepower_dynamics:control_circuit", "elepower_dynamics:wound_silver_coil"},
+		{"default:brick", "elepower_machines:machine_block", "default:brick"},
+		{"elepower_dynamics:invar_gear", "elepower_dynamics:servo_valve", "elepower_dynamics:invar_gear"},
+	},
+})

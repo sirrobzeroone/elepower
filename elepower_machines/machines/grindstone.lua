@@ -109,6 +109,7 @@ ele.register_base_device("elepower_machines:grindstone", {
 
 		meta:set_string("formspec", elepm.get_grindstone_formspec(0))
 	end,
+	tube = false,
 	allow_metadata_inventory_put = allow_metadata_inventory_put,
 	allow_metadata_inventory_take = allow_metadata_inventory_take,
 	allow_metadata_inventory_move = allow_metadata_inventory_move,
