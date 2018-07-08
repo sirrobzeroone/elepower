@@ -25,7 +25,11 @@ function elefluid.register_transfer_node(nodename, nodedef)
 		end
 	end
 
-	nodedef.after_destruct = elefluid.refresh_node
+	nodedef.on_punch = function (pos, node, puncher, pointed_thing)
+		local meta  = minetest.get_meta(pos)
+		minetest.get_node_timer(pos):start(1.0)
+		minetest.node_punch(pos, node, puncher, pointed_thing)
+	end
 
 	-- Default transfer capacity
 	if not nodedef.ele_fluid_pump_capacity then
