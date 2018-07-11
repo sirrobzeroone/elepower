@@ -4,11 +4,16 @@ function ele.formspec.get_crafter_formspec(craft_type, power, percent)
 	local craftstats  = elepm.craft.types[craft_type]
 	local input_size  = craftstats.inputs
 
-	local bar = "image[4,1.5;1,1;gui_furnace_arrow_bg.png^[transformR270]"
+	local gui_name = "gui_furnace_arrow"
+	if craftstats.gui_name then
+		gui_name = craftstats.gui_name
+	end
+
+	local bar = "image[4,1.5;1,1;"..gui_name.."_bg.png^[transformR270]"
 	
 	if percent ~= nil then
-		bar = "image[4,1.5;1,1;gui_furnace_arrow_bg.png^[lowpart:"..
-			  (percent)..":gui_furnace_arrow_fg.png^[transformR270]"
+		bar = "image[4,1.5;1,1;"..gui_name.."_bg.png^[lowpart:"..
+			  (percent)..":"..gui_name.."_fg.png^[transformR270]"
 	end
 
 	local in_width  = input_size
@@ -51,7 +56,7 @@ function ele.formspec.get_crafter_formspec(craft_type, power, percent)
 		default.get_hotbar_bg(0, 4.25)
 end
 
-function ele.formspec.get_lava_generator_formspec(power, percent, buffer)
+function ele.formspec.get_fluid_generator_formspec(power, percent, buffer)
 	return "size[8,8.5]"..
 		default.gui_bg..
 		default.gui_bg_img..

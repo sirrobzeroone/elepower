@@ -26,7 +26,6 @@ function elefluid.register_transfer_node(nodename, nodedef)
 	end
 
 	nodedef.on_punch = function (pos, node, puncher, pointed_thing)
-		local meta  = minetest.get_meta(pos)
 		minetest.get_node_timer(pos):start(1.0)
 		minetest.node_punch(pos, node, puncher, pointed_thing)
 	end

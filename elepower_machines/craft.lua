@@ -6,7 +6,8 @@ function elepm.register_craft_type(name, def)
 	elepm.craft.types[name] = {
 		inputs      = def.inputs or 2,
 		description = def.description or name,
-		time        = def.time or 0
+		time        = def.time or 0,
+		gui_name    = def.gui_name,
 	}
 
 	elepm.craft[name] = {}
