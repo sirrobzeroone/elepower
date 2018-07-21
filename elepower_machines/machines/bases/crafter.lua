@@ -1,6 +1,63 @@
 -- This is a crafter type machine base.
 -- It accepts a recipe type registered beforehand.
 
+-- Specialized formspec for crafters
+function ele.formspec.get_crafter_formspec(craft_type, power, percent)
+	local craftstats  = elepm.craft.types[craft_type]
+	local input_size  = craftstats.inputs
+
+	local gui_name = "gui_furnace_arrow"
+	if craftstats.gui_name then
+		gui_name = craftstats.gui_name
+	end
+
+	local bar = "image[4,1.5;1,1;"..gui_name.."_bg.png^[transformR270]"
+
+	if percent ~= nil then
+		bar = "image[4,1.5;1,1;"..gui_name.."_bg.png^[lowpart:"..
+			  (percent)..":"..gui_name.."_fg.png^[transformR270]"
+	end
+
+	local in_width  = input_size
+	local in_height = 1
+
+	for n = 2, 4 do
+		if input_size % n == 0 and input_size ~= n then
+			in_width  = input_size / n
+			in_height = input_size / n
+		end
+	end
+
+	local y = 1.5
+	local x = 1.5
+	if in_height == 2 then
+		y = 1
+	elseif in_height >= 3 then
+		y = 0.5
+	end
+
+	if in_width >= 2 then
+		x = 1
+	end
+
+	return "size[8,8.5]"..
+		default.gui_bg..
+		default.gui_bg_img..
+		default.gui_slots..
+		ele.formspec.power_meter(power)..
+		"list[context;src;"..x..","..y..";"..in_width..","..in_height..";]"..
+		bar..
+		"list[context;dst;5,1;2,2;]"..
+		"list[current_player;main;0,4.25;8,1;]"..
+		"list[current_player;main;0,5.5;8,3;8]"..
+		"listring[current_player;main]"..
+		"listring[context;src]"..
+		"listring[current_player;main]"..
+		"listring[context;dst]"..
+		"listring[current_player;main]"..
+		default.get_hotbar_bg(0, 4.25)
+end
+
 function elepm.register_crafter(nodename, nodedef)
 	local craft_type = nodedef.craft_type
 	if not craft_type or not elepm.craft.types[craft_type] then

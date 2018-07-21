@@ -1,4 +1,21 @@
 
+local function get_formspec(power, percent)
+	return "size[8,8.5]"..
+		default.gui_bg..
+		default.gui_bg_img..
+		default.gui_slots..
+		ele.formspec.power_meter(power)..
+		"list[context;src;3,1.5;1,1;]"..
+		"image[4,1.5;1,1;default_furnace_fire_bg.png^[lowpart:"..
+		percent..":default_furnace_fire_fg.png]"..
+		"list[current_player;main;0,4.25;8,1;]"..
+		"list[current_player;main;0,5.5;8,3;8]"..
+		"listring[current_player;main]"..
+		"listring[context;src]"..
+		"listring[current_player;main]"..
+		default.get_hotbar_bg(0, 4.25)
+end
+
 function elepm.register_fuel_generator(nodename, nodedef)
 	if not nodedef.groups then
 		nodedef.groups = {}
@@ -58,7 +75,7 @@ function elepm.register_fuel_generator(nodename, nodedef)
 					ele.helpers.swap_node(pos, active_node)
 				end
 			else
-				meta:set_string("formspec", ele.formspec.get_generator_formspec(pow_percent, 0))
+				meta:set_string("formspec", get_formspec(pow_percent, 0))
 				meta:set_string("infotext", ("%s Idle"):format(nodedef.description) ..
 					"\n" .. ele.capacity_text(capacity, storage))
 				ele.helpers.swap_node(pos, nodename)
@@ -68,7 +85,7 @@ function elepm.register_fuel_generator(nodename, nodedef)
 		if burn_totaltime == 0 then burn_totaltime = 1 end
 
 		local percent = math.floor((burn_time / burn_totaltime) * 100)
-		meta:set_string("formspec", ele.formspec.get_generator_formspec(pow_percent, percent))
+		meta:set_string("formspec", get_formspec(pow_percent, percent))
 		meta:set_string("infotext", ("%s Active"):format(nodedef.description) ..
 			"\n" .. ele.capacity_text(capacity, storage))
 
@@ -83,7 +100,7 @@ function elepm.register_fuel_generator(nodename, nodedef)
 		local capacity = ele.helpers.get_node_property(meta, pos, "capacity")
 		local storage  = ele.helpers.get_node_property(meta, pos, "storage")
 
-		meta:set_string("formspec", ele.formspec.get_generator_formspec(math.floor((storage / capacity) * 100), 0))
+		meta:set_string("formspec", get_formspec(math.floor((storage / capacity) * 100), 0))
 	end
 
 	ele.register_machine(nodename, nodedef)

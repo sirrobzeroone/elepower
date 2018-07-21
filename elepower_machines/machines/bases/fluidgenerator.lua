@@ -1,4 +1,18 @@
 
+local function get_formspec(power, percent, buffer)
+	return "size[8,8.5]"..
+		default.gui_bg..
+		default.gui_bg_img..
+		default.gui_slots..
+		ele.formspec.power_meter(power)..
+		ele.formspec.fluid_bar(7, 0, buffer)..
+		"image[3.5,1.5;1,1;default_furnace_fire_bg.png^[lowpart:"..
+		(percent)..":default_furnace_fire_fg.png]"..
+		"list[current_player;main;0,4.25;8,1;]"..
+		"list[current_player;main;0,5.5;8,3;8]"..
+		default.get_hotbar_bg(0, 4.25)
+end
+
 -- A generator that creates power using a fuel
 function ele.register_fluid_generator(nodename, nodedef)
 	local fuel  = nodedef.fuel
@@ -67,7 +81,7 @@ function ele.register_fluid_generator(nodename, nodedef)
 					local active_node = nodename.."_active"
 					ele.helpers.swap_node(pos, active_node)
 				else
-					meta:set_string("formspec", ele.formspec.get_fluid_generator_formspec(pow_percent, 0, flbuffer))
+					meta:set_string("formspec", get_formspec(pow_percent, 0, flbuffer))
 					meta:set_string("infotext", ("%s Idle\n%s\n%s"):format(nodedef.description,
 						ele.capacity_text(capacity, storage), fluid_lib.buffer_to_string(flbuffer)))
 
@@ -78,7 +92,7 @@ function ele.register_fluid_generator(nodename, nodedef)
 			if burn_totaltime == 0 then burn_totaltime = 1 end
 
 			local percent = math.floor((burn_time / burn_totaltime) * 100)
-			meta:set_string("formspec", ele.formspec.get_fluid_generator_formspec(pow_percent, percent, flbuffer))
+			meta:set_string("formspec", get_formspec(pow_percent, percent, flbuffer))
 			meta:set_string("infotext", ("%s Active\n%s\n%s"):format(nodedef.description,
 				ele.capacity_text(capacity, storage), fluid_lib.buffer_to_string(flbuffer)))
 
@@ -92,7 +106,7 @@ function ele.register_fluid_generator(nodename, nodedef)
 			local capacity = ele.helpers.get_node_property(meta, pos, "capacity")
 			local storage  = ele.helpers.get_node_property(meta, pos, "storage")
 
-			meta:set_string("formspec", ele.formspec.get_fluid_generator_formspec(math.floor((storage / capacity) * 100), 0))
+			meta:set_string("formspec", get_formspec(math.floor((storage / capacity) * 100), 0))
 		end
 	}
 

@@ -9,3 +9,4 @@ elenuclear.modpath = modpath
 dofile(modpath.."/craftitems.lua")
 dofile(modpath.."/nodes.lua")
 dofile(modpath.."/fluids.lua")
+dofile(modpath.."/crafting.lua")

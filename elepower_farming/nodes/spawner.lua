@@ -89,6 +89,23 @@ local function spawn(pos, mob)
 	return
 end
 
+local function get_formspec(timer, power)
+	return "size[8,8.5]"..
+		default.gui_bg..
+		default.gui_bg_img..
+		default.gui_slots..
+		ele.formspec.power_meter(power)..
+		ele.formspec.create_bar(1, 0, 100 - timer, "#00ff11", true)..
+		"list[context;src;3.5,1.5;1,1;]"..
+		"image[3.5,1.5;1,1;elefarming_egg_silhouette.png]"..
+		"list[current_player;main;0,4.25;8,1;]"..
+		"list[current_player;main;0,5.5;8,3;8]"..
+		"listring[current_player;main]"..
+		"listring[context;src]"..
+		"listring[current_player;main]"..
+		default.get_hotbar_bg(0, 4.25)
+end
+
 local function on_timer(pos, elapsed)
 	local refresh = false
 	local meta = minetest.get_meta(pos)
@@ -136,7 +153,7 @@ local function on_timer(pos, elapsed)
 	local power_percent = math.floor((storage / capacity)*100)
 	local work_percent  = math.floor((work / SPAWNER_TICK)*100)
 
-	meta:set_string("formspec", elefarm.formspec.spawner_formspec(work_percent, power_percent))
+	meta:set_string("formspec", get_formspec(work_percent, power_percent))
 	meta:set_int("storage", storage)
 	meta:set_int("src_time", work)
 
@@ -167,7 +184,7 @@ ele.register_machine("elepower_farming:spawner", {
 		inv:set_size("src", 1)
 
 		meta:set_int("src_time", 0)
-		meta:set_string("formspec", elefarm.formspec.spawner_formspec(0,0))
+		meta:set_string("formspec", get_formspec(0,0))
 	end,
 	can_dig  = can_dig,
 	on_timer = on_timer,

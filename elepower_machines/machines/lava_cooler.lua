@@ -16,6 +16,41 @@ local cooler_recipes = {
 	},
 }
 
+local function get_formspec(item_percent, coolant_buffer, hot_buffer, power, recipes, recipe)
+	local rclist = {}
+
+	local x = 2.5
+	for j in pairs(recipes) do
+		if j == recipe then
+			rclist[#rclist + 1] = "item_image["..x..",0;1,1;"..j.."]"
+		else
+			rclist[#rclist + 1] = "item_image_button[".. x ..",0;1,1;"..j..";"..j..";]"
+		end
+		x = x + 1
+	end
+
+	return "size[8,8.5]"..
+		default.gui_bg..
+		default.gui_bg_img..
+		default.gui_slots..
+		ele.formspec.power_meter(power)..
+		ele.formspec.fluid_bar(1, 0, coolant_buffer)..
+		ele.formspec.fluid_bar(7, 0, hot_buffer)..
+		"list[context;dst;3.5,1.5;1,1;]"..
+		"image[2.5,1.5;1,1;gui_furnace_arrow_bg.png^[lowpart:"..
+		(item_percent)..":gui_furnace_arrow_fg.png^[transformR270]"..
+		"image[4.5,1.5;1,1;gui_furnace_arrow_bg.png^[lowpart:"..
+		(item_percent)..":gui_furnace_arrow_fg.png^[transformFXR90]"..
+		table.concat(rclist, "")..
+		"list[current_player;main;0,4.25;8,1;]"..
+		"list[current_player;main;0,5.5;8,3;8]"..
+		"listring[current_player;main]"..
+		"listring[context;dst]"..
+		"listring[current_player;main]"..
+		default.get_hotbar_bg(0, 4.25)
+end
+
+
 local function lava_cooler_timer(pos, elapsed)
 	local refresh = false
 
@@ -77,7 +112,7 @@ local function lava_cooler_timer(pos, elapsed)
 	meta:set_int("storage", storage)
 	meta:set_string("infotext", ("Lava Cooler %s\n%s"):format(active, ele.capacity_text(capacity, storage)))
 
-	meta:set_string("formspec", elepm.get_lava_cooler_formspec(timer, coolant_buffer, hot_buffer, 
+	meta:set_string("formspec", get_formspec(timer, coolant_buffer, hot_buffer, 
 		power, cooler_recipes, recipe))
 
 	return refresh
@@ -107,7 +142,7 @@ ele.register_machine("elepower_machines:lava_cooler", {
 		inv:set_size("dst", 1)
 
 		meta:set_string("recipe", "default:cobble")
-		meta:set_string("formspec", elepm.get_lava_cooler_formspec(0,nil,nil,0,cooler_recipes, "default:cobble"))
+		meta:set_string("formspec", get_formspec(0,nil,nil,0,cooler_recipes, "default:cobble"))
 	end,
 	on_timer = lava_cooler_timer,
 	on_receive_fields = function (pos, formname, fields, sender)

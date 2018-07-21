@@ -51,6 +51,23 @@ local ranges = {
 	},
 }
 
+local function get_formspec(timer, power)
+	return "size[8,10]"..
+		default.gui_bg..
+		default.gui_bg_img..
+		default.gui_slots..
+		ele.formspec.power_meter(power)..
+		ele.formspec.create_bar(1, 0, 100 - timer, "#00ff11", true)..
+		"list[context;layout;2.5,0;3,3;]"..
+		"list[context;src;0,3.5;8,2;]"..
+		"list[current_player;main;0,5.75;8,1;]"..
+		"list[current_player;main;0,7;8,3;8]"..
+		"listring[current_player;main]"..
+		"listring[context;src]"..
+		"listring[current_player;main]"..
+		default.get_hotbar_bg(0, 5.75)
+end
+
 local function can_dig(pos, player)
 	local meta = minetest.get_meta(pos)
 	local inv = meta:get_inventory()
@@ -238,7 +255,7 @@ local function on_timer(pos, elapsed)
 	local power_percent = math.floor((storage / capacity)*100)
 	local work_percent  = math.floor((work / PLANTER_TICK)*100)
 
-	meta:set_string("formspec", elefarm.formspec.planter_formspec(work_percent, power_percent))
+	meta:set_string("formspec", get_formspec(work_percent, power_percent))
 	meta:set_int("storage", storage)
 	meta:set_int("src_time", work)
 
@@ -270,7 +287,7 @@ ele.register_base_device("elepower_farming:planter", {
 
 		meta:set_int("src_time", 0)
 
-		meta:set_string("formspec", elefarm.formspec.planter_formspec(0,0))
+		meta:set_string("formspec", get_formspec(0,0))
 	end,
 	allow_metadata_inventory_put  = allow_metadata_inventory_put,
 	allow_metadata_inventory_take = allow_metadata_inventory_take,

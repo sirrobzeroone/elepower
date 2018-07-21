@@ -1,4 +1,24 @@
 
+local function get_formspec(power)
+	return "size[8,8.5]"..
+		default.gui_bg..
+		default.gui_bg_img..
+		default.gui_slots..
+		ele.formspec.power_meter(power)..
+		"image[2,0.5;1,1;gui_furnace_arrow_bg.png^[transformR180]"..
+		"list[context;out;2,1.5;1,1;]"..
+		"image[5,0.5;1,1;gui_furnace_arrow_bg.png]"..
+		"list[context;in;5,1.5;1,1;]"..
+		"list[current_player;main;0,4.25;8,1;]"..
+		"list[current_player;main;0,5.5;8,3;8]"..
+		"listring[current_player;main]"..
+		"listring[context;out]"..
+		"listring[current_player;main]"..
+		"listring[context;in]"..
+		"listring[current_player;main]"..
+		default.get_hotbar_bg(0, 4.25)
+end
+
 local function can_dig(pos, player)
 	local meta = minetest.get_meta(pos);
 	local inv = meta:get_inventory()
@@ -34,7 +54,7 @@ function elepm.register_storage(nodename, nodedef)
 		local rounded = math.floor(percent * 100)
 
 		ele.helpers.swap_node(pos, nodename .. "_" .. level)
-		meta:set_string("formspec", ele.formspec.get_storage_formspec(rounded))
+		meta:set_string("formspec", get_formspec(rounded))
 		meta:set_string("infotext", ("%s Active"):format(nodedef.description) .. "\n" ..
 			ele.capacity_text(capacity, storage))
 
@@ -112,7 +132,7 @@ function elepm.register_storage(nodename, nodedef)
 		local inv  = meta:get_inventory()
 		inv:set_size("out", 1)
 		inv:set_size("in", 1)
-		meta:set_string("formspec", ele.formspec.get_storage_formspec(0))
+		meta:set_string("formspec", get_formspec(0))
 	end
 
 	for i = 0, levels do

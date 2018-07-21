@@ -8,7 +8,6 @@ elepm.modpath = modpath
 
 -- Utility
 dofile(modpath.."/craft.lua")
-dofile(modpath.."/formspec.lua")
 
 -- Machines
 dofile(modpath.."/machines/init.lua")

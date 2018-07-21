@@ -29,6 +29,10 @@ local alloy_recipes = {
 		recipe = { "elepower_dynamics:silicon", "elepower_dynamics:gold_dust 4" },
 		output = "elepower_dynamics:silicon_wafer",
 	},
+	{
+		recipe = { "default:coal_lump", "elepower_dynamics:coal_dust 4" },
+		output = "elepower_dynamics:graphite_ingot",
+	},
 }
 
 -- Register alloy furnace recipes

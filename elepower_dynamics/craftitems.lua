@@ -47,6 +47,12 @@ minetest.register_craftitem("elepower_dynamics:zinc_ingot", {
 	groups = {zinc = 1, ingot = 1}
 })
 
+minetest.register_craftitem("elepower_dynamics:graphite_ingot", {
+	description = "Graphite Ingot",
+	inventory_image = "elepower_graphite_ingot.png",
+	groups = {graphite = 1, ingot = 1}
+})
+
 -- Lumps
 
 minetest.register_craftitem("elepower_dynamics:lead_lump", {

@@ -1,4 +1,22 @@
 
+local function get_formspec(item_percent)
+	return "size[8,8.5]"..
+		default.gui_bg..
+		default.gui_bg_img..
+		default.gui_slots..
+		"list[context;src;1.6,1;1,1;]"..
+		"image[3.5,1;1,1;gui_furnace_arrow_bg.png^[lowpart:"..
+		(item_percent)..":gui_furnace_arrow_fg.png^[transformR270]"..
+		"list[context;dst;4.5,1;2,1;]"..
+		"list[current_player;main;0,4.25;8,1;]"..
+		"list[current_player;main;0,5.5;8,3;8]"..
+		"listring[context;dst]"..
+		"listring[current_player;main]"..
+		"listring[context;src]"..
+		"listring[current_player;main]"..
+		default.get_hotbar_bg(0, 4.25)
+end
+
 local function can_dig(pos, player)
 	local meta = minetest.get_meta(pos);
 	local inv = meta:get_inventory()
@@ -46,7 +64,7 @@ local function grindstone_timer(pos, elapsed)
 	if not recipe or recipe.time == 0 then
 		meta:set_int("src_time", 0)
 		meta:set_int("src_time_max", 0)
-		meta:set_string("formspec", elepm.get_grindstone_formspec(0))
+		meta:set_string("formspec", get_formspec(0))
 		meta:set_string("infotext", "No recipe")
 		return
 	end
@@ -86,7 +104,7 @@ local function grindstone_timer(pos, elapsed)
 	end
 
 	local percentile  = math.floor(100 * time / target_time)
-	meta:set_string("formspec", elepm.get_grindstone_formspec(percentile))
+	meta:set_string("formspec", get_formspec(percentile))
 	meta:set_int("src_time", time)
 	meta:set_int("src_time_max", target_time)
 	meta:set_string("infotext", "Grindstone: ".. percentile .. "%\nPunch me to progress!")
@@ -107,7 +125,7 @@ ele.register_base_device("elepower_machines:grindstone", {
 		inv:set_size("src", 1)
 		inv:set_size("dst", 2)
 
-		meta:set_string("formspec", elepm.get_grindstone_formspec(0))
+		meta:set_string("formspec", get_formspec(0))
 	end,
 	tube = false,
 	allow_metadata_inventory_put = allow_metadata_inventory_put,

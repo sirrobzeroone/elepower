@@ -1,16 +1,28 @@
 
--- Basic
-dofile(elepm.modpath.."/machines/bases/init.lua")
-dofile(elepm.modpath.."/machines/accumulator.lua")
-dofile(elepm.modpath.."/machines/furnace.lua")
-dofile(elepm.modpath.."/machines/alloy_furnace.lua")
-dofile(elepm.modpath.."/machines/coal_alloy_furnace.lua")
-dofile(elepm.modpath.."/machines/pulverizer.lua")
-dofile(elepm.modpath.."/machines/grindstone.lua")
-dofile(elepm.modpath.."/machines/sawmill.lua")
-dofile(elepm.modpath.."/machines/generator.lua")
-dofile(elepm.modpath.."/machines/storage.lua")
-dofile(elepm.modpath.."/machines/lava_cooler.lua")
-dofile(elepm.modpath.."/machines/solderer.lua")
-dofile(elepm.modpath.."/machines/lava_generator.lua")
-dofile(elepm.modpath.."/machines/steam_turbine.lua")
+local mp = elepm.modpath .. "/machines/"
+
+-- Bases
+dofile(mp .. "bases/init.lua")
+
+-- Generation
+dofile(mp .. "generator.lua")
+dofile(mp .. "lava_generator.lua")
+dofile(mp .. "steam_turbine.lua")
+
+-- Storage
+dofile(mp .. "storage.lua")
+
+-- Processing
+dofile(mp .. "furnace.lua")
+dofile(mp .. "sawmill.lua")
+dofile(mp .. "pulverizer.lua")
+dofile(mp .. "grindstone.lua")
+
+-- Crafter
+dofile(mp .. "alloy_furnace.lua")
+dofile(mp .. "coal_alloy_furnace.lua")
+dofile(mp .. "solderer.lua")
+
+-- Other
+dofile(mp .. "accumulator.lua")
+dofile(mp .. "lava_cooler.lua")

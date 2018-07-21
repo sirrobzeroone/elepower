@@ -1,4 +1,27 @@
 
+local function get_formspec(fuel_percent, item_percent)
+	return "size[8,8.5]"..
+		default.gui_bg..
+		default.gui_bg_img..
+		default.gui_slots..
+		"list[context;src;2,0.5;2,1;]"..
+		"list[context;fuel;2.5,2.5;1,1;]"..
+		"image[2.5,1.5;1,1;default_furnace_fire_bg.png^[lowpart:"..
+		(100-fuel_percent)..":default_furnace_fire_fg.png]"..
+		"image[4,1.5;1,1;gui_furnace_arrow_bg.png^[lowpart:"..
+		(item_percent)..":gui_furnace_arrow_fg.png^[transformR270]"..
+		"list[context;dst;5,0.96;2,2;]"..
+		"list[current_player;main;0,4.25;8,1;]"..
+		"list[current_player;main;0,5.5;8,3;8]"..
+		"listring[context;dst]"..
+		"listring[current_player;main]"..
+		"listring[context;src]"..
+		"listring[current_player;main]"..
+		"listring[context;fuel]"..
+		"listring[current_player;main]"..
+		default.get_hotbar_bg(0, 4.25)
+end
+
 local function can_dig(pos, player)
 	local meta = minetest.get_meta(pos);
 	local inv = meta:get_inventory()
@@ -144,11 +167,11 @@ local function alloy_furnace_timer(pos, elapsed)
 	if fuel_totaltime ~= 0 then
 		active = "Active"
 		local fuel_percent = math.floor(fuel_time / fuel_totaltime * 100)
-		formspec = elepm.get_coal_alloy_furnace_formspec(fuel_percent, item_percent)
+		formspec = get_formspec(fuel_percent, item_percent)
 		ele.helpers.swap_node(pos, "elepower_machines:coal_alloy_furnace_active")
 		result = true
 	else
-		formspec = elepm.get_coal_alloy_furnace_formspec(100, 0)
+		formspec = get_formspec(100, 0)
 		ele.helpers.swap_node(pos, "elepower_machines:coal_alloy_furnace")
 		minetest.get_node_timer(pos):stop()
 	end
@@ -205,7 +228,7 @@ ele.register_base_device("elepower_machines:coal_alloy_furnace", {
 		inv:set_size("dst", 4)
 		inv:set_size("fuel", 1)
 
-		meta:set_string("formspec", elepm.get_coal_alloy_furnace_formspec(100, 0))
+		meta:set_string("formspec", get_formspec(100, 0))
 	end,
 	allow_metadata_inventory_put = allow_metadata_inventory_put,
 	allow_metadata_inventory_take = allow_metadata_inventory_take,
