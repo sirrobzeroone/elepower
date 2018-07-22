@@ -20,6 +20,28 @@ minetest.register_craft({
 })
 
 elepm.register_craft({
+	type   = "enrichment",
+	output = { "elepower_nuclear:uranium_dust", "elepower_nuclear:depleted_uranium_dust 3"},
+	recipe = { "elepower_nuclear:uranium_lump 4" },
+	time   = 30,
+})
+
+elepm.register_craft({
+	type   = "enrichment",
+	output = { "elepower_nuclear:uranium_dust", "elepower_nuclear:depleted_uranium_dust", "elepower_nuclear:nuclear_waste 2"},
+	recipe = { "elepower_nuclear:depleted_uranium_dust 4" },
+	time   = 40,
+})
+
+elepm.register_craft({
+	type   = "enrichment",
+	output = { "elepower_nuclear:depleted_uranium_dust", "elepower_nuclear:nuclear_waste 3"},
+	recipe = { "elepower_nuclear:nuclear_waste 4" },
+	time   = 50,
+})
+
+-- Graphite rods
+elepm.register_craft({
 	type   = "grind",
 	recipe = { "elepower_dynamics:graphite_ingot" },
 	output = "elepower_nuclear:graphite_rod 3",

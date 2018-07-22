@@ -3,7 +3,7 @@
 ele.formspec = {}
 
 function ele.formspec.create_bar(x, y, metric, color, small)
-	if not metric or metric < 0 then metric = 0 end
+	if not metric or type(metric) ~= "number" or metric < 0 then metric = 0 end
 
 	local width = 1
 	local gauge = "image[0,0;1,2.8;elepower_gui_gauge.png]"
