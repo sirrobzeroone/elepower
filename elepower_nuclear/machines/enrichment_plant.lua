@@ -31,7 +31,7 @@ elepm.register_crafter("elepower_nuclear:enrichment_plant", {
 	description = "Enrichment Plant",
 	craft_type = "enrichment",
 	tiles = {
-		"elenuclear_machine_top.png",  "elenuclear_machine_top.png",  "elenuclear_machine_side.png",
+		"elenuclear_machine_top.png",  "elepower_lead_block.png",  "elenuclear_machine_side.png",
 		"elenuclear_machine_side.png", "elenuclear_machine_side.png", "elenuclear_enrichment_plant.png",
 	},
 	groups = {ele_user = 1, cracky = 3},

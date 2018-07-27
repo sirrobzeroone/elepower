@@ -31,17 +31,22 @@ minetest.register_craftitem("elepower_nuclear:nuclear_waste", {
 
 minetest.register_craftitem("elepower_nuclear:fuel_rod_empty", {
 	description = "Empty Fuel Rod",
-	inventory_image = "elenuclear_fuel_rod_empty.png"
+	inventory_image = "elenuclear_fuel_rod_empty.png",
+	max_stack = 1,
 })
 
 minetest.register_craftitem("elepower_nuclear:fuel_rod_fissile", {
-	description = "Fissile Fuel Rod",
-	inventory_image = "elenuclear_fuel_rod_fissile.png"
+	description = "Fissile Fuel Rod\nLasts 2 hours (7200 seconds)",
+	inventory_image = "elenuclear_fuel_rod_fissile.png",
+	groups = { fissile_fuel = 1 },
+	fissile_count = 7200,
+	max_stack = 1,
 })
 
 minetest.register_craftitem("elepower_nuclear:fuel_rod_depleted", {
-	description = "Depleted Fuel Rod",
-	inventory_image = "elenuclear_fuel_rod_depleted.png"
+	description = "Depleted Fuel Rod\nCan not be used in a reactor anymore",
+	inventory_image = "elenuclear_fuel_rod_depleted.png",
+	max_stack = 1,
 })
 
 --------------------------

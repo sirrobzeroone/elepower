@@ -36,7 +36,7 @@ elepm.register_craft({
 elepm.register_craft({
 	type   = "enrichment",
 	output = { "elepower_nuclear:depleted_uranium_dust", "elepower_nuclear:nuclear_waste 3"},
-	recipe = { "elepower_nuclear:nuclear_waste 4" },
+	recipe = { "elepower_nuclear:nuclear_waste 5" },
 	time   = 50,
 })
 

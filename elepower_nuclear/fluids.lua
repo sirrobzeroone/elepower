@@ -14,7 +14,7 @@ minetest.register_node("elepower_nuclear:coolant", {
 
 minetest.register_node("elepower_nuclear:coolant_hot", {
 	description = "Coolant (hot)",
-	groups      = {not_in_creative_inventory = 1, oddly_breakable_by_hand = 1, coolant = 1},
+	groups      = {not_in_creative_inventory = 1, oddly_breakable_by_hand = 1, coolant = 1, hot = 1},
 	tiles       = {"elenuclear_hot_coolant.png"},
 })
 
