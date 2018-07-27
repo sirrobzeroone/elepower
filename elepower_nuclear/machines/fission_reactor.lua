@@ -13,7 +13,6 @@
 				Hot coolant
 		..in order to keep the heat below critical. Any other detected node will either be MOLTEN or ACTIVATED (TODO) (you don't want this!)
 	Reactor core will be replaced by a molten core when the heat reaches 100%. All components and fuel will be lost!
-	Do NOT run the reactor at 100% power 100% percent of the time! Keep some control rods partially inserted at all times.
 ]]
 
 local AREA_SIZE = 8
@@ -33,7 +32,7 @@ local function calculate_fitness(pos)
 
 	local ids = {
 		c_water = minetest.get_content_id("default:water_source"),
-		c_lava  = minetest.get_content_id("default:lava"),
+		c_lava  = minetest.get_content_id("default:lava_source"),
 	}
 
 	local excession = 0
@@ -220,6 +219,7 @@ local function reactor_core_timer(pos)
 	local meta = minetest.get_meta(pos)
 	local inv  = meta:get_inventory()
 	local headless = false
+	local fuel_reactor = 0
 
 	-- SAFEGUARD: Expect a controller to be above the core
 	local controller_pos  = {x = pos.x, y = pos.y + 1, z = pos.z}
@@ -270,7 +270,7 @@ local function reactor_core_timer(pos)
 	end
 
 	if power_setting > 0 then
-		local fuel_reactor = fuel_after_depletion(inv)
+		fuel_reactor = fuel_after_depletion(inv)
 		if fuel_reactor == 0 then
 			-- Enforce zero power setting when no fuel present
 			power_setting = 0
@@ -292,7 +292,7 @@ local function reactor_core_timer(pos)
 			if heat > ceiling then
 				heat = heat - 1
 			else
-				heat = heat + 1
+				heat = heat + fuel_reactor
 			end
 		end
 	elseif heat > 0 then
@@ -306,11 +306,25 @@ local function reactor_core_timer(pos)
 		return false
 	end
 
+	-- Nothing left to do in this timer, exit
+	if power_setting == 0 and heat == 0 then
+		meta:set_int("heat", heat)
+		meta:set_string("formspec", get_core_formspec(heat, power_setting))
+		return false
+	end
+
 	-- Expect a fluid port below the core
+	-- TODO: Allow multiple fluid ports in the core's affected area
 	local fluid_port_pos  = {x = pos.x, y = pos.y - 1, z = pos.z}
 	local fluid_port_node = minetest.get_node_or_nil(fluid_port_pos)
 	if fluid_port_node ~= nil and fluid_port_node.name == "elepower_nuclear:reactor_fluid_port" then
-		-- TODO: Heat coolant
+		local fpmeta = minetest.get_meta(fluid_port_pos)
+
+		if fpmeta:get_int("burst") == 0 and heat > 0 then
+			fpmeta:set_int("burst", 1)
+			minetest.get_node_timer(fluid_port_pos):start(1.0)
+			heat = heat - 1
+		end
 	end
 
 	meta:set_int("heat", heat)
@@ -332,10 +346,24 @@ local function reactor_controller_timer(pos)
 	meta:set_int("setting", 100 - (averg / 4))
 	meta:set_string("formspec", get_controller_formspec(settings, meta:get_int("selected")))
 
+	-- Ping the core
+	local core_pos  = {x = pos.x, y = pos.y - 1, z = pos.z}
+	local core_node = minetest.get_node_or_nil(core_pos)
+	if core_node and core_node.name == "elepower_nuclear:fission_core" then
+		local timer = minetest.get_node_timer(core_pos)
+		if not timer:is_started() then
+			timer:start(1.0)
+		end
+	end
+
 	return false
 end
 
 local function reactor_controller_manage(pos, formname, fields, sender)
+	if sender and sender ~= "" and minetest.is_protected(pos, sender:get_player_name()) then
+		return
+	end
+
 	local meta     = minetest.get_meta(pos)
 	local selected = meta:get_int("selected")
 	local change   = false
@@ -384,12 +412,40 @@ local function reactor_controller_manage(pos, formname, fields, sender)
 	end
 
 	if change then
-		minetest.get_node_timer(pos):start(1.0)
+		minetest.get_node_timer(pos):start(0.2)
 	end
 end
 
 local function reactor_port_timer(pos)
-	return false
+	local refresh = false
+	local meta = minetest.get_meta(pos)
+	local cool = fluid_lib.get_buffer_data(pos, "cool")
+	local hot  = fluid_lib.get_buffer_data(pos, "hot")
+
+	local heat_burst = meta:get_int("burst")
+	if heat_burst > 0 then
+		-- Convert a bucket of cold coolant into hot coolant
+
+		local coolant = math.min(cool.amount, 1000)
+		if coolant > 0 and hot.amount + coolant < hot.capacity then
+			meta:set_int("burst", 0)
+
+			cool.amount = cool.amount - coolant
+			hot.amount  = hot.amount  + coolant
+
+			refresh = true
+
+			meta:set_string("cool_fluid", "elepower_nuclear:coolant_source")
+			meta:set_string("hot_fluid", "elepower_nuclear:hot_coolant_source")
+
+			meta:set_int("cool_fluid_storage", cool.amount)
+			meta:set_int("hot_fluid_storage",  hot.amount)
+		end
+	end
+
+	meta:set_string("formspec", get_port_formspec(cool, hot))
+
+	return refresh
 end
 
 -- Reactor Core
@@ -469,20 +525,33 @@ ele.register_base_device("elepower_nuclear:reactor_fluid_port", {
 	on_timer = reactor_port_timer,
 	on_construct = function (pos)
 		local meta = minetest.get_meta(pos)
-		local inv  = meta:get_inventory()
+
+		meta:set_string("cool_fluid", "elepower_nuclear:coolant_source")
+		meta:set_string("hot_fluid", "elepower_nuclear:hot_coolant_source")
 
 		meta:set_string("formspec", get_port_formspec())
 	end,
 	fluid_buffers = {
 		cool = {
 			capacity  = 16000,
-			accepts   = {"default:water_source", "elepower_nuclear:coolant"},
+			accepts   = {"default:water_source", "elepower_nuclear:coolant_source"},
 			drainable = false,
 		},
 		hot = {
 			capacity  = 16000,
-			accepts   = {"elepower_nuclear:coolant_hot"},
+			accepts   = {"elepower_nuclear:hot_coolant_source"},
 			drainable = true,
 		}
 	},
+})
+
+-- Load reactor cores
+minetest.register_lbm({
+    label = "Refresh Reactors on load",
+    name = "elepower_nuclear:fission_core",
+    nodenames = {"elepower_nuclear:fission_core"},
+    run_at_every_load = true,
+    action = function (pos)
+		minetest.get_node_timer(pos):start(1.0)
+    end,
 })
