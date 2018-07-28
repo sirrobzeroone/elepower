@@ -1,5 +1,5 @@
 
-local function get_formspec(power)
+local function get_formspec_default(power)
 	return "size[8,8.5]"..
 		default.gui_bg..
 		default.gui_bg_img..
@@ -41,6 +41,13 @@ function elepm.register_storage(nodename, nodedef)
 	nodedef.groups["ele_provider"] = 1
 
 	nodedef.can_dig = can_dig
+
+	-- Allow for custom formspec
+	local get_formspec = get_formspec_default
+	if nodedef.get_formspec then
+		get_formspec = nodedef.get_formspec
+		nodedef.get_formspec = nil
+	end
 
 	nodedef.on_timer = function (pos, elapsed)
 		local meta    = minetest.get_meta(pos)

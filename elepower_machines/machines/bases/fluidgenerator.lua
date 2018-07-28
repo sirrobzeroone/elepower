@@ -1,5 +1,5 @@
 
-local function get_formspec(power, percent, buffer)
+local function get_formspec_default(power, percent, buffer)
 	return "size[8,8.5]"..
 		default.gui_bg..
 		default.gui_bg_img..
@@ -30,6 +30,13 @@ function ele.register_fluid_generator(nodename, nodedef)
 		end
 
 		break
+	end
+
+	-- Allow for custom formspec
+	local get_formspec = get_formspec_default
+	if nodedef.get_formspec then
+		get_formspec = nodedef.get_formspec
+		nodedef.get_formspec = nil
 	end
 
 	local defaults = {

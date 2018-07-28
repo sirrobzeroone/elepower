@@ -1,5 +1,5 @@
 
-local function get_formspec(power, percent)
+local function get_formspec_default(power, percent)
 	return "size[8,8.5]"..
 		default.gui_bg..
 		default.gui_bg_img..
@@ -25,6 +25,13 @@ function elepm.register_fuel_generator(nodename, nodedef)
 	nodedef.groups["ele_provider"] = 1
 	nodedef.groups["tubedevice"]   = 1
 	nodedef.groups["tubedevice_receiver"] = 1
+
+	-- Allow for custom formspec
+	local get_formspec = get_formspec_default
+	if nodedef.get_formspec then
+		get_formspec = nodedef.get_formspec
+		nodedef.get_formspec = nil
+	end
 
 	nodedef.on_timer = function (pos, elapsed)
 		local meta = minetest.get_meta(pos)
