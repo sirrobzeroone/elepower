@@ -65,3 +65,8 @@ minetest.register_craftitem("elepower_nuclear:graphite_rod", {
 	description = "Graphite Rod",
 	inventory_image = "elenuclear_graphite_rod.png"
 })
+
+minetest.register_craftitem("elepower_nuclear:graphite_moderator", {
+	description = "Graphite Moderator",
+	inventory_image = "elenuclear_graphite_moderator.png"
+})

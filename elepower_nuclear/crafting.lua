@@ -19,6 +19,56 @@ minetest.register_craft({
 	}
 })
 
+-- Graphite Moderator
+minetest.register_craft({
+	output = "elepower_nuclear:graphite_moderator",
+	recipe = {
+		{"", "elepower_nuclear:graphite_rod", ""},
+		{"elepower_nuclear:graphite_rod", "elepower_dynamics:graphite_ingot", "elepower_nuclear:graphite_rod"},
+		{"", "elepower_nuclear:graphite_rod", ""},
+	}
+})
+
+-- Reactor Controller
+minetest.register_craft({
+	output = "elepower_nuclear:fission_controller",
+	recipe = {
+		{"elepower_dynamics:wound_copper_coil", "elepower_nuclear:graphite_moderator", "elepower_dynamics:wound_copper_coil"},
+		{"elepower_nuclear:graphite_moderator", "elepower_nuclear:machine_block", "elepower_nuclear:graphite_moderator"},
+		{"elepower_dynamics:viridisium_gear", "elepower_nuclear:graphite_moderator", "elepower_dynamics:viridisium_gear"},
+	}
+})
+
+-- Reactor Core
+minetest.register_craft({
+	output = "elepower_nuclear:fission_core",
+	recipe = {
+		{"elepower_dynamics:induction_coil_advanced", "elepower_dynamics:graphite_ingot", "elepower_dynamics:induction_coil_advanced"},
+		{"elepower_nuclear:graphite_moderator", "elepower_nuclear:machine_block", "elepower_nuclear:graphite_moderator"},
+		{"elepower_dynamics:viridisium_gear", "elepower_dynamics:copper_plate", "elepower_dynamics:viridisium_gear"},
+	}
+})
+
+-- Reactor Fluid Port
+minetest.register_craft({
+	output = "elepower_nuclear:reactor_fluid_port",
+	recipe = {
+		{"elepower_dynamics:portable_tank", "elepower_dynamics:copper_plate", "elepower_dynamics:portable_tank"},
+		{"elepower_nuclear:graphite_moderator", "elepower_nuclear:machine_block", "elepower_nuclear:graphite_moderator"},
+		{"elepower_dynamics:viridisium_gear", "elepower_dynamics:copper_plate", "elepower_dynamics:viridisium_gear"},
+	}
+})
+
+-- Heat Exchanger
+minetest.register_craft({
+	output = "elepower_nuclear:heat_exchanger",
+	recipe = {
+		{"elepower_dynamics:portable_tank", "elepower_dynamics:copper_plate", "elepower_dynamics:portable_tank"},
+		{"elepower_dynamics:copper_plate",  "elepower_nuclear:machine_block", "elepower_dynamics:copper_plate"},
+		{"elepower_dynamics:portable_tank", "elepower_dynamics:copper_plate", "elepower_dynamics:portable_tank"},
+	}
+})
+
 elepm.register_craft({
 	type   = "enrichment",
 	output = { "elepower_nuclear:uranium_dust", "elepower_nuclear:depleted_uranium_dust 3"},

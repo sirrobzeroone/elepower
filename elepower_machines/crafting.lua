@@ -160,6 +160,16 @@ local soldering_recipes = {
 		recipe = { "elepower_dynamics:chip 8", "elepower_dynamics:integrated_circuit 2", "elepower_dynamics:capacitor 4" },
 		output = "elepower_dynamics:control_circuit",
 		time   = 20,
+	},
+	{
+		recipe = { "elepower_dynamics:wound_copper_coil 4", "elepower_dynamics:wound_silver_coil 2", "elepower_dynamics:copper_wire" },
+		output = "elepower_dynamics:induction_coil",
+		time   = 16,
+	},
+	{
+		recipe = { "elepower_dynamics:induction_coil 4", "elepower_dynamics:copper_wire", "elepower_dynamics:viridisium_dust 2" },
+		output = "elepower_dynamics:induction_coil_advanced",
+		time   = 18,
 	}
 }
 

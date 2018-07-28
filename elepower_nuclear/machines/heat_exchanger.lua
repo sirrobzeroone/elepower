@@ -9,10 +9,8 @@ local function get_formspec(heat, cold, water, steam)
 		"image[3.5,1;1,1;gui_furnace_arrow_bg.png^[transformR270]"..
 		ele.formspec.fluid_bar(6, 0, water)..
 		ele.formspec.fluid_bar(7, 0, steam)..
-		"list[context;dst;5,1;1,1;]"..
 		"list[current_player;main;0,4.25;8,1;]"..
 		"list[current_player;main;0,5.5;8,3;8]"..
-		"listring[context;dst]"..
 		"listring[current_player;main]"..
 		default.get_hotbar_bg(0, 4.25)
 end
