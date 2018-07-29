@@ -49,7 +49,9 @@ end
 -- Grinding --
 --------------
 
-local keywords = { _ingot = 1, _lump = 2, _block = 9, block = 9 }
+local keywords  = { _ingot = 1, _lump = 2, _block = 9, block = 9 }
+local ingot_map = {}
+local block_map = {}
 for mat, data in pairs(elepd.registered_dusts) do
 	local kwfound = nil
 	for keyword,count in pairs(keywords) do
@@ -57,6 +59,8 @@ for mat, data in pairs(elepd.registered_dusts) do
 		if found then
 			if keyword == "_ingot" and not kwfound then
 				kwfound = found
+			elseif keyword == "_block" or keyword == "block" and not block_map[mat] then
+				block_map[mat] = data.item
 			end
 
 			-- Grind recipe for material
@@ -71,6 +75,7 @@ for mat, data in pairs(elepd.registered_dusts) do
 
 	-- Add dust -> ingot smelting
 	if kwfound then
+		ingot_map[mat] = kwfound
 		minetest.register_craft({
 			type   = "cooking",
 			recipe = data.item,
@@ -99,6 +104,23 @@ elepm.register_craft({
 	output = "elepower_dynamics:silicon_wafer_solar",
 	time   = 18,
 })
+
+-----------------
+-- Compressing --
+-----------------
+
+for mat, ingot in pairs(ingot_map) do
+	local plate = "elepower_dynamics:" .. mat .. "_plate"
+
+	if minetest.registered_items[plate] then
+		elepm.register_craft({
+			type   = "compress",
+			recipe = { ingot .. " 2" },
+			output = plate,
+			time   = 4,
+		})
+	end
+end
 
 -------------
 -- Sawmill --
@@ -332,4 +354,53 @@ minetest.register_craft({
 		{"default:brick", "elepower_machines:machine_block", "default:brick"},
 		{"elepower_dynamics:invar_gear", "elepower_dynamics:servo_valve", "elepower_dynamics:invar_gear"},
 	},
+})
+
+-- Compressor Piston
+minetest.register_craft({
+	output = "elepower_machines:compressor_piston",
+	recipe = {
+		{"", "default:steel_ingot", ""},
+		{"", "default:steel_ingot", ""},
+		{"default:bronze_ingot", "default:bronze_ingot", "default:bronze_ingot"},
+	}
+})
+
+minetest.register_craft({
+	output = "elepower_machines:compressor_piston",
+	recipe = {
+		{"", "default:steel_ingot", ""},
+		{"", "default:steel_ingot", ""},
+		{"", "elepower_dynamics:bronze_plate", ""},
+	}
+})
+
+-- Compressor
+minetest.register_craft({
+	output = "elepower_machines:compressor",
+	recipe = {
+		{"elepower_dynamics:integrated_circuit", "elepower_machines:compressor_piston", "elepower_dynamics:wound_copper_coil"},
+		{"elepower_dynamics:steel_gear", "elepower_machines:machine_block", "elepower_dynamics:steel_gear"},
+		{"default:steel_ingot", "elepower_machines:compressor_piston", "default:steel_ingot"},
+	}
+})
+
+-- Turbine blades
+minetest.register_craft({
+	output = "elepower_machines:turbine_blades",
+	recipe = {
+		{"elepower_dynamics:steel_plate", "elepower_dynamics:steel_plate", "elepower_dynamics:steel_plate"},
+		{"elepower_dynamics:steel_plate", "default:steel_ingot",           "elepower_dynamics:steel_plate"},
+		{"elepower_dynamics:steel_plate", "elepower_dynamics:steel_plate", "elepower_dynamics:steel_plate"},
+	}
+})
+
+-- Steam Turbine
+minetest.register_craft({
+	output = "elepower_machines:steam_turbine",
+	recipe = {
+		{"elepower_dynamics:induction_coil", "elepower_machines:turbine_blades", "elepower_dynamics:induction_coil"},
+		{"elepower_dynamics:steel_plate", "elepower_machines:machine_block", "elepower_dynamics:steel_plate"},
+		{"elepower_dynamics:invar_gear", "elepower_machines:turbine_blades", "elepower_dynamics:invar_gear"},
+	}
 })

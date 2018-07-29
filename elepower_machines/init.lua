@@ -14,6 +14,7 @@ dofile(modpath.."/machines/init.lua")
 
 -- Other
 dofile(modpath.."/nodes.lua")
+dofile(modpath.."/craftitems.lua")
 
 -- Crafting recipes
 dofile(modpath.."/crafting.lua")
