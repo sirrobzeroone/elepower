@@ -60,7 +60,7 @@ for mat, data in pairs(elepd.registered_dusts) do
 			if keyword == "_ingot" and not kwfound then
 				kwfound = found
 			elseif keyword == "_block" or keyword == "block" and not block_map[mat] then
-				block_map[mat] = data.item
+				block_map[mat] = found
 			end
 
 			-- Grind recipe for material
@@ -110,13 +110,13 @@ elepm.register_craft({
 -----------------
 
 for mat, ingot in pairs(ingot_map) do
-	local plate = "elepower_dynamics:" .. mat .. "_plate"
+	local plate = elepd.registered_plates[mat]
 
-	if minetest.registered_items[plate] then
+	if plate then
 		elepm.register_craft({
 			type   = "compress",
 			recipe = { ingot .. " 2" },
-			output = plate,
+			output = plate.item,
 			time   = 4,
 		})
 	end
