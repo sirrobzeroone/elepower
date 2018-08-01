@@ -98,13 +98,6 @@ elepm.register_craft({
 	time   = 8,
 })
 
-elepm.register_craft({
-	type   = "grind",
-	recipe = { "elepower_dynamics:silicon_wafer" },
-	output = "elepower_dynamics:silicon_wafer_solar",
-	time   = 18,
-})
-
 -----------------
 -- Compressing --
 -----------------
@@ -121,6 +114,40 @@ for mat, ingot in pairs(ingot_map) do
 		})
 	end
 end
+
+-- Detect sands
+for name in pairs(minetest.registered_nodes) do
+	if name:match("sand") and not name:match("sandstone") then
+		local sand      = name
+		local sandstone = name .. "stone"
+		if minetest.registered_nodes[sandstone] then
+			elepm.register_craft({
+				type   = "compress",
+				recipe = { sand .. " 4" },
+				output = sandstone,
+				time   = 1,
+			})
+
+			-- Find block as well
+			local ssblock = sandstone .. "_block"
+			if minetest.registered_nodes[ssblock] then
+				elepm.register_craft({
+					type   = "compress",
+					recipe = { sandstone .. " 4" },
+					output = ssblock,
+					time   = 1,
+				})
+			end
+		end
+	end
+end
+
+elepm.register_craft({
+	type   = "compress",
+	recipe = { "elepower_dynamics:viridisium_block 9" },
+	output = "elepower_dynamics:xycrone_lump",
+	time   = 20,
+})
 
 -------------
 -- Sawmill --

@@ -153,8 +153,9 @@ function ele.register_base_device(nodename, nodedef)
 			local meta = minetest.get_meta(pos)
 			meta:set_int("storage", 0)
 		end
-
+		
 		ele.clear_networks(pos)
+
 		if original_on_construct then
 			original_on_construct(pos)
 		end
@@ -170,8 +171,23 @@ function ele.register_base_device(nodename, nodedef)
 	end
 
 	-- Save storage amount when picked up
-	nodedef.preserve_metadata = preserve_metadata
-	nodedef.after_place_node  = retrieve_metadata
+	local original_preserve_metadata = nodedef.preserve_metadata
+	nodedef.preserve_metadata = function (pos, oldnode, oldmeta, drops)
+		drops = preserve_metadata(pos, oldnode, oldmeta, drops)
+		if original_preserve_metadata then
+			drops = original_preserve_metadata(pos, oldnode, oldmeta, drops)
+		end
+		return drops
+	end
+
+	local original_after_place_node = nodedef.after_place_node
+	nodedef.after_place_node = function(pos, placer, itemstack, pointed_thing)
+		local ret = retrieve_metadata(pos, placer, itemstack, pointed_thing)
+		if original_after_place_node then
+			ret = original_after_place_node(pos, placer, itemstack, pointed_thing)
+		end
+		return ret
+	end
 
 	-- Prevent digging when there's items inside
 	if not nodedef.can_dig then

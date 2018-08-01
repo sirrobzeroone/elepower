@@ -23,7 +23,6 @@ function ele.tools.groupcaps(itemstack)
 	local meta    = itemstack:get_meta()
 	local itemdef = minetest.registered_items[itemstack:get_name()]
 
-	local toolcaps = itemdef.tool_capabilities
 	if wear == 65535 then
 		meta:set_tool_capabilities({})
 	else

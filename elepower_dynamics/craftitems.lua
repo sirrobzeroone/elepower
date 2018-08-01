@@ -79,6 +79,12 @@ minetest.register_craftitem("elepower_dynamics:zinc_lump", {
 	groups = {zinc = 1, lump = 1}
 })
 
+minetest.register_craftitem("elepower_dynamics:xycrone_lump", {
+	description = "Xycrone\nUsed for Quantum Superpositioning\nUnstable",
+	inventory_image = "elepower_xycrone.png",
+	groups = {xycrone = 1, lump = 1}
+})
+
 -- Special
 
 minetest.register_craftitem("elepower_dynamics:carbon_fiber", {
@@ -105,8 +111,8 @@ minetest.register_craftitem("elepower_dynamics:silicon_wafer", {
 	groups = {wafer = 1}
 })
 
-minetest.register_craftitem("elepower_dynamics:silicon_wafer_solar", {
-	description = "Silicon Wafer\nFor Solar Panel Crafting",
+minetest.register_craftitem("elepower_dynamics:silicon_wafer_doped", {
+	description = "Doped Silicon Wafer\nFor Solar Panel Crafting",
 	inventory_image = "elepower_silicon_wafer_solar.png",
 	groups = {wafer = 2}
 })
@@ -118,7 +124,7 @@ minetest.register_craftitem("elepower_dynamics:tree_tap", {
 })
 
 minetest.register_craftitem("elepower_dynamics:pcb_blank", {
-	description = "Printed Circuit Board (PCB) Blank",
+	description = "Printed Circuit Board (PCB) Blank\nUse Etching Acid to etch",
 	inventory_image = "elepower_blank_pcb.png",
 	liquids_pointable = true,
 	groups = {blank_board = 1, static_component = 1}
