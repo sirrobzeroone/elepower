@@ -38,7 +38,7 @@ local function matter_receiver_timer(pos)
 	end
 
 	meta:set_string("formspec", get_formspec(pow_percent, name, player))
-	meta:set_string("infotext", "Matter Receiver\n" .. ele.capacity_text(capacity, storage))
+	meta:set_string("infotext", name .. "\n" .. ele.capacity_text(capacity, storage))
 
 	return false
 end
@@ -107,6 +107,10 @@ ele.register_machine("elepower_wireless:matter_receiver", {
 		if fields["name"] and fields["key_enter"] == "true" then
 			meta:set_string("name", fields["name"])
 			minetest.get_node_timer(pos):start(0.2)
+
+			local strname = minetest.pos_to_string(pos)
+			if not elewi.loaded_receivers[strname] then return end
+			elewi.loaded_receivers[strname].name = fields["name"]
 		end
 	end,
 	after_destruct = function (pos)

@@ -31,8 +31,9 @@ local function matter_transmitter_timer(pos)
 	local usage    = ele.helpers.get_node_property(meta, pos, "usage")
 
 	local pow_percent = math.floor((storage / capacity) * 100)
+	local tpos = minetest.string_to_pos(target)
 
-	if storage >= usage then
+	if storage >= usage and tpos then
 		ele.helpers.swap_node(pos, "elepower_wireless:matter_transmitter_active")
 	else
 		ele.helpers.swap_node(pos, "elepower_wireless:matter_transmitter")
@@ -44,7 +45,7 @@ local function matter_transmitter_timer(pos)
 	end
 
 	meta:set_string("formspec", get_formspec(pow_percent, name, player, target))
-	meta:set_string("infotext", "Matter Transmitter\n" .. ele.capacity_text(capacity, storage) .. extra)
+	meta:set_string("infotext", name .. "\n" .. ele.capacity_text(capacity, storage) .. extra)
 
 	return false
 end
@@ -112,6 +113,11 @@ ele.register_machine("elepower_wireless:matter_transmitter", {
 		local meta = minetest.get_meta(pos)
 		if fields["name"] and fields["key_enter"] == "true" then
 			meta:set_string("name", fields["name"])
+			minetest.get_node_timer(pos):start(0.2)
+
+			local strname = minetest.pos_to_string(pos)
+			if not elewi.loaded_transmitters[strname] then return end
+			elewi.loaded_transmitters[strname].name = fields["name"]
 		end
 	end,
 	after_destruct = function (pos)
