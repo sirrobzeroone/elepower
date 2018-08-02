@@ -80,7 +80,7 @@ minetest.register_craftitem("elepower_dynamics:zinc_lump", {
 })
 
 minetest.register_craftitem("elepower_dynamics:xycrone_lump", {
-	description = "Xycrone\nUsed for Quantum Superpositioning\nUnstable",
+	description = "Xycrone\nUsed for Quantum Entanglement\nUnstable",
 	inventory_image = "elepower_xycrone.png",
 	groups = {xycrone = 1, lump = 1}
 })

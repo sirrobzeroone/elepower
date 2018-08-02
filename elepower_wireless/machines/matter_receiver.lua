@@ -68,6 +68,8 @@ ele.register_machine("elepower_wireless:matter_receiver", {
 		"elewireless_teleport_top.png", "elewireless_device_side.png^elepower_power_port.png", "elewireless_device_side.png",
 		"elewireless_device_side.png", "elewireless_device_side.png", "elewireless_device_side.png"
 	},
+	drawtype = "nodebox",
+	node_box = elewi.slab_nodebox,
 	ele_active_node = true,
 	ele_active_nodedef = {
 		tiles = {

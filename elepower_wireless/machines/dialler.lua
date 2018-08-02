@@ -118,7 +118,7 @@ local function dialler_timer(pos)
 		ele.helpers.swap_node(pos, "elepower_wireless:dialler")
 	end
 
-	local transmitters = get_transmitters_in_range(pos, player, transmitter, 16)
+	local transmitters = get_transmitters_in_range(pos, player, transmitter, 8)
 	local receivers    = {}
 	if transmitter then
 		receivers = get_player_receivers(player)
@@ -135,6 +135,13 @@ ele.register_machine("elepower_wireless:dialler", {
 	tiles = {
 		"elewireless_device_side.png", "elewireless_device_side.png", "elewireless_device_side.png",
 		"elewireless_device_side.png", "elewireless_device_side.png", "elewireless_dialler_inactive.png"
+	},
+	drawtype = "nodebox",
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{-0.5000, -0.5000, 0.4375, 0.5000, 0.5000, 0.5000}
+		}
 	},
 	ele_active_node = true,
 	ele_active_nodedef = {
@@ -172,7 +179,7 @@ ele.register_machine("elepower_wireless:dialler", {
 		local trans = minetest.string_to_pos(meta:get_string("transmitter"))
 
 		local player = sender:get_player_name()
-		local transmitters = get_transmitters_in_range(pos, player, trans, 16)
+		local transmitters = get_transmitters_in_range(pos, player, trans, 8)
 		local receivers = {}
 		if trans then
 			receivers = get_player_receivers(player)
