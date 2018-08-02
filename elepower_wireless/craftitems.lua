@@ -35,6 +35,7 @@ ele.register_tool("elepower_wireless:wireless_porter", {
 
 		-- Teleport player
 		player:set_pos(top)
+		-- TODO: Sound
 		nmeta:set_int("storage", nstorage - nusage)
 
 		-- Add wear
@@ -61,7 +62,7 @@ ele.register_tool("elepower_wireless:wireless_porter", {
 		local strpos = minetest.pos_to_string(pos)
 		local curpos = minetest.string_to_pos(meta:get_string("receiver"))
 
-		if (curpos and curpos ~= "") and curpos == strpos then
+		if (curpos and curpos ~= "") and curpos == pos then
 			minetest.chat_send_player(player, "Wireless Porter is already bound to this location!")
 			return itemstack
 		end
