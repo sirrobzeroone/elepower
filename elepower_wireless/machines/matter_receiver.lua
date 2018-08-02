@@ -106,6 +106,7 @@ ele.register_machine("elepower_wireless:matter_receiver", {
 		local meta = minetest.get_meta(pos)
 		if fields["name"] and fields["key_enter"] == "true" then
 			meta:set_string("name", fields["name"])
+			minetest.get_node_timer(pos):start(0.2)
 		end
 	end,
 	after_destruct = function (pos)

@@ -42,6 +42,7 @@ local function get_formspec(power, player, transmitters, receivers)
 		ele.formspec.power_meter(power)..
 		"textlist[1,0;6.8,2.5;transmitter;" .. table.concat(list_tr, ",") .. tr_spc .. "]"..
 		"textlist[1,3;6.8,2.5;receiver;" .. table.concat(list_re, ",") .. re_spc .. "]"..
+		"button[6,5.75;2,0.25;refresh;Refresh]"..
 		"label[0,5.75;Owned by " .. player .. "]"..
 		"list[current_player;main;0,6.25;8,1;]"..
 		"list[current_player;main;0,7.5;8,3;8]"..
@@ -155,6 +156,11 @@ ele.register_machine("elepower_wireless:dialler", {
 	end,
 	on_receive_fields = function (pos, formname, fields, sender)
 		if sender and sender ~= "" and minetest.is_protected(pos, sender:get_player_name()) then
+			return
+		end
+
+		if fields["refresh"] then
+			minetest.get_node_timer(pos):start(0.2)
 			return
 		end
 

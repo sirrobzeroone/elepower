@@ -141,19 +141,25 @@ minetest.register_abm({
 				local tpos = minetest.string_to_pos(meta:get_string("target"))
 
 				if tpos then
-					local storage  = ele.helpers.get_node_property(meta, pos, "storage")
-					local usage    = ele.helpers.get_node_property(meta, pos, "usage")
+					local tnode = minetest.get_node_or_nil(tpos)
+					if tnode and ele.helpers.get_item_group(tnode.name, "matter_receiver") then
+						local storage  = ele.helpers.get_node_property(meta, pos, "storage")
+						local usage    = ele.helpers.get_node_property(meta, pos, "usage")
 
-					if storage >= usage then
-						local top     = vector.add(tpos, {x = 0, y = 1, z = 0})
-						local topnode = minetest.get_node_or_nil(top)
+						if storage >= usage then
+							local top     = vector.add(tpos, {x = 0, y = 1, z = 0})
+							local topnode = minetest.get_node_or_nil(top)
 
-						if not topnode or topnode.name == "air" then
-							player:set_pos(top)
-							meta:set_int("storage", storage - usage)
-							-- TODO: Sound
-							break
+							if not topnode or topnode.name == "air" then
+								player:set_pos(top)
+								meta:set_int("storage", storage - usage)
+								-- TODO: Sound
+								break
+							end
 						end
+					else
+						meta:set_string("target", "")
+						minetest.get_node_timer(pos):start(0.2)
 					end
 				end
 			end
