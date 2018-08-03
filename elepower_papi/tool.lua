@@ -23,10 +23,19 @@ function ele.tools.groupcaps(itemstack)
 	local meta    = itemstack:get_meta()
 	local itemdef = minetest.registered_items[itemstack:get_name()]
 
-	if wear == 65535 then
+	if wear == 65535 and meta:get_int("disable") ~= 1 then
+		local prvcaps = itemstack:get_tool_capabilities()
+		meta:set_string("toolcaps", minetest.serialize(prvcaps))
 		meta:set_tool_capabilities({})
-	else
-		meta:set_tool_capabilities(nil)
+		meta:set_int("disable", 1)
+
+		return itemstack
+	end
+
+	if wear ~= 65535 and meta:get_int("disable") == 1 then
+		local prvcaps = minetest.deserialize(meta:get_string("toolcaps"))
+		meta:set_tool_capabilities(prvcaps)
+		meta:set_int("disable", 0)
 	end
 
 	return itemstack
@@ -42,7 +51,10 @@ function ele.tools.update_tool_wear(itemstack)
 	local percent  = storage / capacity
 	local wear     = math.floor((1-percent) * 65535)
 
-	meta:set_string("description", itemdef.description .. "\n" .. ele.capacity_text(capacity, storage))
+	local tooldesc = meta:get_string("tool_description")
+	if tooldesc == "" then tooldesc = itemdef.description end
+
+	meta:set_string("description", tooldesc .. "\n" .. ele.capacity_text(capacity, storage))
 
 	itemstack:set_wear(wear)
 	itemstack = ele.tools.groupcaps(itemstack)
@@ -70,15 +82,17 @@ function ele.register_tool(toolname, tooldef)
 		end
 	end
 
+	-- Apply wear
 	tooldef.after_use = function (itemstack, user, node, digparams)
 		local meta    = itemstack:get_meta()
 		local storage = ele.tools.get_tool_property(itemstack, "storage")
+		local usage   = ele.tools.get_tool_property(itemstack, "usage")
 
 		if digparams.wear == 0 then
 			return itemstack
 		end
 
-		storage = storage - math.floor(digparams.wear / 16)
+		storage = storage - usage
 		if storage < 0 then
 			storage = 0
 		end
