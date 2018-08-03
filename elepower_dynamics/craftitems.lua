@@ -214,6 +214,12 @@ minetest.register_craftitem("elepower_dynamics:capacitor", {
 
 -- Assembled Components
 
+minetest.register_craftitem("elepower_dynamics:motor", {
+	description = "Motor",
+	inventory_image = "elepower_motor.png",
+	groups = {motor = 1, component = 1}
+})
+
 minetest.register_craftitem("elepower_dynamics:servo_valve", {
 	description = "Servo Valve",
 	inventory_image = "elepower_servo_valve.png",

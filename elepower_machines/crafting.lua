@@ -267,7 +267,7 @@ minetest.register_craft({
 	recipe = {
 		{"elepower_dynamics:viridisium_ingot", "default:steel_ingot", "elepower_dynamics:viridisium_ingot"},
 		{"default:steel_ingot", "default:mese_crystal", "default:steel_ingot"},
-		{"elepower_dynamics:viridisium_ingot", "elepower_dynamics:tin_gear", "elepower_dynamics:viridisium_ingot"},
+		{"elepower_dynamics:viridisium_ingot", "elepower_dynamics:motor", "elepower_dynamics:viridisium_ingot"},
 	}
 })
 
