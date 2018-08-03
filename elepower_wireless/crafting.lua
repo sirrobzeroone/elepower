@@ -35,6 +35,6 @@ minetest.register_craft({
 	recipe = {
 		{"elepower_dynamics:wound_silver_coil", "elepower_dynamics:xycrone_lump", "elepower_dynamics:wound_silver_coil"},
 		{"elepower_dynamics:xycrone_lump", "elepower_dynamics:copper_wire", "elepower_dynamics:xycrone_lump"},
-		{"elepower_dynamics:wound_silver_coil", "elepower_dynamics:xycrone_lump", "elepower_dynamics:wound_silver_coil"},
+		{"elepower_dynamics:wound_silver_coil", "elepower_dynamics:battery", "elepower_dynamics:wound_silver_coil"},
 	}
 })

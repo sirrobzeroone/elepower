@@ -232,6 +232,10 @@ for _,i in pairs(soldering_recipes) do
 	})
 end
 
+-------------
+-- Canning --
+-------------
+
 --******************--
 -- CRAFTING RECIPES --
 --******************--
@@ -345,7 +349,7 @@ minetest.register_craft({
 	recipe = {
 		{"elepower_dynamics:lead_ingot", "elepower_dynamics:control_circuit", "elepower_dynamics:lead_ingot"},
 		{"elepower_dynamics:wound_copper_coil", "elepower_machines:machine_block", "elepower_dynamics:wound_copper_coil"},
-		{"elepower_dynamics:lead_ingot", "elepower_dynamics:diamond_gear", "elepower_dynamics:lead_ingot"},
+		{"elepower_dynamics:lead_ingot", "elepower_dynamics:battery", "elepower_dynamics:lead_ingot"},
 	}
 })
 
@@ -429,5 +433,15 @@ minetest.register_craft({
 		{"elepower_dynamics:induction_coil", "elepower_machines:turbine_blades", "elepower_dynamics:induction_coil"},
 		{"elepower_dynamics:steel_plate", "elepower_machines:machine_block", "elepower_dynamics:steel_plate"},
 		{"elepower_dynamics:invar_gear", "elepower_machines:turbine_blades", "elepower_dynamics:invar_gear"},
+	}
+})
+
+-- Canning Machine
+minetest.register_craft({
+	output = "elepower_machines:canning_machine",
+	recipe = {
+		{"elepower_dynamics:wound_copper_coil", "elepower_dynamics:tree_tap", "elepower_dynamics:wound_copper_coil"},
+		{"elepower_dynamics:tin_can", "elepower_machines:machine_block", "elepower_dynamics:tin_can"},
+		{"elepower_dynamics:steel_gear", "elepower_dynamics:tin_gear", "elepower_dynamics:steel_gear"},
 	}
 })

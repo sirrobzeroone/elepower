@@ -69,6 +69,28 @@ minetest.register_craft({
 	}
 })
 
+-- Empty Fuel Rod
+minetest.register_craft({
+	output = "elepower_nuclear:fuel_rod_empty",
+	recipe = {
+		{"elepower_dynamics:graphite_ingot", "", "elepower_dynamics:graphite_ingot"},
+		{"elepower_dynamics:graphite_ingot", "", "elepower_dynamics:graphite_ingot"},
+		{"elepower_dynamics:graphite_ingot", "elepower_dynamics:graphite_ingot", "elepower_dynamics:graphite_ingot"},
+	}
+})
+
+-- Graphite Rod
+elepm.register_craft({
+	type   = "grind",
+	recipe = { "elepower_dynamics:graphite_ingot" },
+	output = "elepower_nuclear:graphite_rod 3",
+	time   = 6,
+})
+
+------------------------
+-- Enrichment recipes --
+------------------------
+
 elepm.register_craft({
 	type   = "enrichment",
 	output = { "elepower_nuclear:uranium_dust", "elepower_nuclear:depleted_uranium_dust 3"},
@@ -90,10 +112,13 @@ elepm.register_craft({
 	time   = 50,
 })
 
--- Graphite rods
+-----------
+-- Other --
+-----------
+
 elepm.register_craft({
-	type   = "grind",
-	recipe = { "elepower_dynamics:graphite_ingot" },
-	output = "elepower_nuclear:graphite_rod 3",
-	time   = 6,
+	type   = "can",
+	recipe = {"elepower_nuclear:uranium_dust 8", "elepower_nuclear:fuel_rod_empty"},
+	output = "elepower_nuclear:fuel_rod_fissile",
+	time   = 16
 })

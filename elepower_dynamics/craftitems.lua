@@ -123,6 +123,12 @@ minetest.register_craftitem("elepower_dynamics:tree_tap", {
 	groups = {treetap = 1, static_component = 1}
 })
 
+minetest.register_craftitem("elepower_dynamics:tin_can", {
+	description = "Tin Can",
+	inventory_image = "elepower_tin_can.png",
+	groups = {can = 1, food_grade = 1}
+})
+
 minetest.register_craftitem("elepower_dynamics:pcb_blank", {
 	description = "Printed Circuit Board (PCB) Blank\nUse Etching Acid to etch",
 	inventory_image = "elepower_blank_pcb.png",
@@ -218,6 +224,12 @@ minetest.register_craftitem("elepower_dynamics:motor", {
 	description = "Motor",
 	inventory_image = "elepower_motor.png",
 	groups = {motor = 1, component = 1}
+})
+
+minetest.register_craftitem("elepower_dynamics:battery", {
+	description = "Battery",
+	inventory_image = "elepower_battery.png",
+	groups = {battery = 1, component = 1}
 })
 
 minetest.register_craftitem("elepower_dynamics:servo_valve", {
