@@ -470,6 +470,7 @@ ele.register_base_device("elepower_nuclear:fission_core", {
 
 		meta:set_string("formspec", get_core_formspec(0,0,false))
 	end,
+	can_dig = can_dig,
 	allow_metadata_inventory_put  = allow_metadata_inventory_put,
 	allow_metadata_inventory_move = allow_metadata_inventory_move,
 	allow_metadata_inventory_take = ele.default.allow_metadata_inventory_take,

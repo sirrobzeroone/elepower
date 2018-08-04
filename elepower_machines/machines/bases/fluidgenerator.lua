@@ -47,6 +47,7 @@ function ele.register_fluid_generator(nodename, nodedef)
 		},
 		tube = false,
 		on_timer = function (pos, elapsed)
+			local refresh  = false
 			local meta     = minetest.get_meta(pos)
 			local nodename = nodename
 
@@ -59,44 +60,49 @@ function ele.register_fluid_generator(nodename, nodedef)
 
 			-- Fluid buffer
 			local flbuffer = fluid_lib.get_buffer_data(pos, buffer_name)
+			local pow_percent
 			if not flbuffer or flbuffer.fluid == "" then return false end
 
-			-- If more to burn and the energy produced was used: produce some more
-			if burn_time > 0 then
-				if storage + generation > capacity then
-					return false
+			while true do
+				-- If more to burn and the energy produced was used: produce some more
+				if burn_time > 0 then
+					if storage + generation > capacity then
+						break
+					end
+
+					meta:set_int("storage", storage + generation)
+
+					burn_time = burn_time - 1
+					meta:set_int("burn_time", burn_time)
 				end
 
-				meta:set_int("storage", storage + generation)
+				pow_percent = math.floor((storage / capacity) * 100)
 
-				burn_time = burn_time - 1
-				meta:set_int("burn_time", burn_time)
-			end
+				-- Burn another bucket of lava
+				if burn_time == 0 then
+					local inv = meta:get_inventory()
+					if flbuffer.amount >= 1000 then
+						meta:set_int("burn_time", btime)
+						meta:set_int("burn_totaltime", btime)
 
-			local pow_percent = math.floor((storage / capacity) * 100)
+						-- Take lava
+						flbuffer.amount = flbuffer.amount - 1000
 
-			-- Burn another bucket of lava
-			if burn_time == 0 then
-				local inv = meta:get_inventory()
-				if flbuffer.amount >= 1000 then
-					meta:set_int("burn_time", btime)
-					meta:set_int("burn_totaltime", btime)
+						local active_node = nodename.."_active"
+						ele.helpers.swap_node(pos, active_node)
 
-					-- Take lava
-					flbuffer.amount = flbuffer.amount - 1000
+						refresh = true
+					else
+						meta:set_string("formspec", get_formspec(pow_percent, 0, flbuffer))
+						meta:set_string("infotext", ("%s Idle\n%s\n%s"):format(nodedef.description,
+							ele.capacity_text(capacity, storage), fluid_lib.buffer_to_string(flbuffer)))
 
-					local active_node = nodename.."_active"
-					ele.helpers.swap_node(pos, active_node)
-				else
-					meta:set_string("formspec", get_formspec(pow_percent, 0, flbuffer))
-					meta:set_string("infotext", ("%s Idle\n%s\n%s"):format(nodedef.description,
-						ele.capacity_text(capacity, storage), fluid_lib.buffer_to_string(flbuffer)))
-
-					ele.helpers.swap_node(pos, nodename)
-					return false
+						ele.helpers.swap_node(pos, nodename)
+					end
 				end
+				if burn_totaltime == 0 then burn_totaltime = 1 end
+				break
 			end
-			if burn_totaltime == 0 then burn_totaltime = 1 end
 
 			local percent = math.floor((burn_time / burn_totaltime) * 100)
 			meta:set_string("formspec", get_formspec(pow_percent, percent, flbuffer))
@@ -105,7 +111,7 @@ function ele.register_fluid_generator(nodename, nodedef)
 
 			meta:set_int(buffer_name .. "_fluid_storage", flbuffer.amount)
 
-			return true
+			return refresh
 		end,
 		on_construct = function (pos)
 			local meta = minetest.get_meta(pos)

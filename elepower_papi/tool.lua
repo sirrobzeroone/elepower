@@ -1,6 +1,8 @@
 
 ele.tools = {}
 
+local creative = minetest.settings:get_bool("creative_mode")
+
 -- Get a tool property
 function ele.tools.get_tool_property(itemstack, param)
 	local meta  = itemstack:get_meta()
@@ -23,7 +25,7 @@ function ele.tools.groupcaps(itemstack)
 	local meta    = itemstack:get_meta()
 	local itemdef = minetest.registered_items[itemstack:get_name()]
 
-	if wear == 65535 and meta:get_int("disable") ~= 1 then
+	if wear == 65535 and meta:get_int("disable") ~= 1 and not creative then
 		local prvcaps = itemstack:get_tool_capabilities()
 		meta:set_string("toolcaps", minetest.serialize(prvcaps))
 		meta:set_tool_capabilities({})
@@ -121,7 +123,7 @@ function ele.register_tool(toolname, tooldef)
 			local usage   = ele.tools.get_tool_property(itemstack, "usage")
 			local pos     = pointed_thing.under
 
-			if not pos or storage < usage then
+			if not pos or (storage < usage and not creative) then
 				return nil
 			end
 
