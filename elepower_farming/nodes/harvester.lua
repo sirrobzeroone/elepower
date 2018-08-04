@@ -64,6 +64,14 @@ local function harvest(pos, harvested, fdir)
 						shots = shots - 1
 					end
 				end
+			elseif check_node and ele.helpers.get_item_group(check_node.name, "tree") then
+				local success = elefarm.tc.capitate_tree(vector.subtract(check_pos, {x=0,y=1,z=0}))
+				if success then
+					shots = 0
+					for _,i in pairs(success) do
+						harvested[#harvested + 1] = i
+					end
+				end
 			end
 		end
 	end

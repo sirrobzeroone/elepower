@@ -82,8 +82,14 @@ function ele.register_tool(toolname, tooldef)
 		end
 	end
 
+	local original_after_use = tooldef.after_use
+
 	-- Apply wear
 	tooldef.after_use = function (itemstack, user, node, digparams)
+		if original_after_use then
+			itemstack = original_after_use(itemstack, user, node, digparams)
+		end
+
 		local meta    = itemstack:get_meta()
 		local storage = ele.tools.get_tool_property(itemstack, "storage")
 		local usage   = ele.tools.get_tool_property(itemstack, "usage")
@@ -101,6 +107,35 @@ function ele.register_tool(toolname, tooldef)
 		itemstack = ele.tools.update_tool_wear(itemstack)
 
 		return itemstack
+	end
+
+	-- Special uses tools
+	if tooldef.on_use then
+		local original_on_use = tooldef.on_use
+		tooldef.on_use = function (itemstack, player, pointed_thing)
+			if not player or minetest.is_protected(pos, player:get_player_name()) then
+				return itemstack
+			end
+
+			local storage = ele.tools.get_tool_property(itemstack, "storage")
+			local usage   = ele.tools.get_tool_property(itemstack, "usage")
+			local pos     = pointed_thing.under
+
+			if not pos or storage < usage then
+				return nil
+			end
+
+			local original_stack = ItemStack(itemstack)
+			itemstack = original_on_use(itemstack, player, pointed_thing)
+
+			if not itemstack then
+				return nil
+			end
+
+			local node = minetest.get_node(pos)
+
+			return tooldef.after_use(itemstack, player, node, {wear = 1, time = 0, diggable = true})
+		end
 	end
 
 	minetest.register_tool(toolname, tooldef)
