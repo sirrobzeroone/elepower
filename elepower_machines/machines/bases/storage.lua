@@ -58,10 +58,9 @@ function elepm.register_storage(nodename, nodedef)
 
 		local percent = storage / capacity
 		local level   = math.floor(percent * levels)
-		local rounded = math.floor(percent * 100)
 
 		ele.helpers.swap_node(pos, nodename .. "_" .. level)
-		meta:set_string("formspec", get_formspec(rounded))
+		meta:set_string("formspec", get_formspec({capacity = capacity, storage = storage}))
 		meta:set_string("infotext", ("%s Active"):format(nodedef.description) .. "\n" ..
 			ele.capacity_text(capacity, storage))
 
@@ -139,7 +138,9 @@ function elepm.register_storage(nodename, nodedef)
 		local inv  = meta:get_inventory()
 		inv:set_size("out", 1)
 		inv:set_size("in", 1)
-		meta:set_string("formspec", get_formspec(0))
+
+		local capacity = ele.helpers.get_node_property(meta, pos, "capacity")
+		meta:set_string("formspec", get_formspec({ capacity = capacity, storage = 0 }))
 	end
 
 	for i = 0, levels do

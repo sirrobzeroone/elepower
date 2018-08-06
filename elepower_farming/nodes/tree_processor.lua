@@ -131,7 +131,7 @@ local function on_timer(pos, elapsed)
 	end
 
 	local timer = 0
-	local power = math.floor(100 * storage / capacity)
+	local power = {capacity = capacity, storage = storage}
 	if time_max > 0 then
 		timer = math.floor(100 * time / time_max)
 	end
@@ -167,7 +167,9 @@ ele.register_machine("elepower_farming:tree_processor", {
 		local inv  = meta:get_inventory()
 
 		inv:set_size("dst", 1)
-		meta:set_string("formspec", get_formspec(0, 0))
+		
+		local capacity = ele.helpers.get_node_property(meta, pos, "capacity")
+		meta:set_string("formspec", get_formspec(0, {capacity = capacity, storage = 0}))
 	end,
 	tiles = {
 		"elefarming_machine_tree_processor.png", "elefarming_machine_base.png", "elefarming_machine_side.png",

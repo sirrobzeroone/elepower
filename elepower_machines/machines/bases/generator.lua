@@ -49,13 +49,14 @@ function elepm.register_fuel_generator(nodename, nodedef)
 				return false
 			end
 
-			meta:set_int("storage", storage + generation)
+			storage = storage + generation
+			meta:set_int("storage", storage)
 
 			burn_time = burn_time - 1
 			meta:set_int("burn_time", burn_time)
 		end
 
-		local pow_percent = math.floor((storage / capacity) * 100)
+		local pow_buffer = {capacity = capacity, storage = storage}
 
 		-- Burn another piece of fuel
 		if burn_time == 0 then
@@ -82,7 +83,7 @@ function elepm.register_fuel_generator(nodename, nodedef)
 					ele.helpers.swap_node(pos, active_node)
 				end
 			else
-				meta:set_string("formspec", get_formspec(pow_percent, 0))
+				meta:set_string("formspec", get_formspec(pow_buffer, 0))
 				meta:set_string("infotext", ("%s Idle"):format(nodedef.description) ..
 					"\n" .. ele.capacity_text(capacity, storage))
 				ele.helpers.swap_node(pos, nodename)
@@ -92,7 +93,7 @@ function elepm.register_fuel_generator(nodename, nodedef)
 		if burn_totaltime == 0 then burn_totaltime = 1 end
 
 		local percent = math.floor((burn_time / burn_totaltime) * 100)
-		meta:set_string("formspec", get_formspec(pow_percent, percent))
+		meta:set_string("formspec", get_formspec(pow_buffer, percent))
 		meta:set_string("infotext", ("%s Active"):format(nodedef.description) ..
 			"\n" .. ele.capacity_text(capacity, storage))
 
@@ -107,7 +108,7 @@ function elepm.register_fuel_generator(nodename, nodedef)
 		local capacity = ele.helpers.get_node_property(meta, pos, "capacity")
 		local storage  = ele.helpers.get_node_property(meta, pos, "storage")
 
-		meta:set_string("formspec", get_formspec(math.floor((storage / capacity) * 100), 0))
+		meta:set_string("formspec", get_formspec({capacity = capacity, storage = storage}, 0))
 	end
 
 	ele.register_machine(nodename, nodedef)

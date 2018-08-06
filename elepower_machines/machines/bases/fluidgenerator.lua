@@ -60,7 +60,7 @@ function ele.register_fluid_generator(nodename, nodedef)
 
 			-- Fluid buffer
 			local flbuffer = fluid_lib.get_buffer_data(pos, buffer_name)
-			local pow_percent
+			local pow_buffer
 			if not flbuffer or flbuffer.fluid == "" then return false end
 
 			while true do
@@ -70,13 +70,14 @@ function ele.register_fluid_generator(nodename, nodedef)
 						break
 					end
 
-					meta:set_int("storage", storage + generation)
+					storage = storage + generation
+					meta:set_int("storage", storage)
 
 					burn_time = burn_time - 1
 					meta:set_int("burn_time", burn_time)
 				end
 
-				pow_percent = math.floor((storage / capacity) * 100)
+				pow_buffer = {capacity = capacity, storage = storage}
 
 				-- Burn another bucket of lava
 				if burn_time == 0 then
@@ -93,7 +94,7 @@ function ele.register_fluid_generator(nodename, nodedef)
 
 						refresh = true
 					else
-						meta:set_string("formspec", get_formspec(pow_percent, 0, flbuffer))
+						meta:set_string("formspec", get_formspec(pow_buffer, 0, flbuffer))
 						meta:set_string("infotext", ("%s Idle\n%s\n%s"):format(nodedef.description,
 							ele.capacity_text(capacity, storage), fluid_lib.buffer_to_string(flbuffer)))
 
@@ -105,7 +106,7 @@ function ele.register_fluid_generator(nodename, nodedef)
 			end
 
 			local percent = math.floor((burn_time / burn_totaltime) * 100)
-			meta:set_string("formspec", get_formspec(pow_percent, percent, flbuffer))
+			meta:set_string("formspec", get_formspec(pow_buffer, percent, flbuffer))
 			meta:set_string("infotext", ("%s Active\n%s\n%s"):format(nodedef.description,
 				ele.capacity_text(capacity, storage), fluid_lib.buffer_to_string(flbuffer)))
 
@@ -119,7 +120,7 @@ function ele.register_fluid_generator(nodename, nodedef)
 			local capacity = ele.helpers.get_node_property(meta, pos, "capacity")
 			local storage  = ele.helpers.get_node_property(meta, pos, "storage")
 
-			meta:set_string("formspec", get_formspec(math.floor((storage / capacity) * 100), 0))
+			meta:set_string("formspec", get_formspec({capacity = capacity, storage = storage}, 0))
 		end
 	}
 

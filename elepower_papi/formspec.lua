@@ -19,6 +19,13 @@ function ele.formspec.create_bar(x, y, metric, color, small)
 		gauge
 end
 
-function ele.formspec.power_meter(pw_percent)
-	return ele.formspec.create_bar(0, 0, pw_percent, "#00a1ff")
+function ele.formspec.power_meter(capacitor)
+	if not capacitor then
+		capacitor = { capacity = 8000, storage = 0 }
+	end
+
+	local pw_percent = math.floor(100 * capacitor.storage / capacitor.capacity)
+
+	return ele.formspec.create_bar(0, 0, pw_percent, "#00a1ff") ..
+		"tooltip[0,0;1,2.5;Power Buffer\n" .. ele.capacity_text(capacitor.capacity, capacitor.storage) .. "]"
 end

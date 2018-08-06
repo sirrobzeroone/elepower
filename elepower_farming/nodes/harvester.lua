@@ -135,10 +135,10 @@ local function on_timer(pos, elapsed)
 		ele.helpers.swap_node(pos, "elepower_farming:harvester")
 	end
 
-	local power_percent = math.floor((storage / capacity)*100)
+	local power = {capacity = capacity, storage = storage}
 	local work_percent  = math.floor((work / HARVESTER_TICK)*100)
 
-	meta:set_string("formspec", get_formspec(work_percent, power_percent, sludge))
+	meta:set_string("formspec", get_formspec(work_percent, power, sludge))
 	meta:set_int("storage", storage)
 	meta:set_int("src_time", work)
 
@@ -179,7 +179,8 @@ ele.register_machine("elepower_farming:harvester", {
 
 		meta:set_int("src_time", 0)
 
-		meta:set_string("formspec", get_formspec(0, 0))
+		local capacity = ele.helpers.get_node_property(meta, pos, "capacity")
+		meta:set_string("formspec", get_formspec(0, {capacity = capacity, storage = 0}))
 
 		local node = minetest.get_node(pos)
 	end,

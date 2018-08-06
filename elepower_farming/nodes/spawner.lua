@@ -150,10 +150,10 @@ local function on_timer(pos, elapsed)
 	meta:set_string("infotext", ("Powered Mob Spawner %s\nMob: %s\n%s"):format(
 		active, mob_desc, ele.capacity_text(capacity, storage)))
 
-	local power_percent = math.floor((storage / capacity)*100)
+	local power = {capacity = capacity, storage = storage}
 	local work_percent  = math.floor((work / SPAWNER_TICK)*100)
 
-	meta:set_string("formspec", get_formspec(work_percent, power_percent))
+	meta:set_string("formspec", get_formspec(work_percent, power))
 	meta:set_int("storage", storage)
 	meta:set_int("src_time", work)
 
@@ -184,7 +184,9 @@ ele.register_machine("elepower_farming:spawner", {
 		inv:set_size("src", 1)
 
 		meta:set_int("src_time", 0)
-		meta:set_string("formspec", get_formspec(0,0))
+
+		local capacity = ele.helpers.get_node_property(meta, pos, "capacity")
+		meta:set_string("formspec", get_formspec(0, {capacity = capacity, storage = 0}))
 	end,
 	can_dig  = can_dig,
 	on_timer = on_timer,

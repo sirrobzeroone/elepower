@@ -105,7 +105,7 @@ local function lava_cooler_timer(pos, elapsed)
 		active = "Idle"
 	end
 
-	local power = math.floor(100 * storage / capacity)
+	local power = {capacity = capacity, storage = storage}
 	local timer = math.floor(100 * time / TIME)
 
 	meta:set_int("src_time", time)
