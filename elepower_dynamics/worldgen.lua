@@ -1,4 +1,6 @@
 
+local easycrafting = minetest.settings:get("elepower_easy_crafting") == true
+
 --------------
 -- Worldgen --
 --------------
@@ -64,38 +66,40 @@ minetest.register_ore({
 
 -- Viridisium
 
-minetest.register_ore({
-	ore_type       = "scatter",
-	ore            = "elepower_dynamics:stone_with_viridisium",
-	wherein        = "default:stone",
-	clust_scarcity = 25 * 25 * 25,
-	clust_num_ores = 5,
-	clust_size     = 3,
-	y_max          = -1028,
-	y_min          = -31000,
-})
+if not easycrafting then
+	minetest.register_ore({
+		ore_type       = "scatter",
+		ore            = "elepower_dynamics:stone_with_viridisium",
+		wherein        = "default:stone",
+		clust_scarcity = 25 * 25 * 25,
+		clust_num_ores = 5,
+		clust_size     = 3,
+		y_max          = -1028,
+		y_min          = -31000,
+	})
 
-minetest.register_ore({
-	ore_type       = "scatter",
-	ore            = "elepower_dynamics:stone_with_viridisium",
-	wherein        = "default:stone",
-	clust_scarcity = 20 * 20 * 20,
-	clust_num_ores = 5,
-	clust_size     = 3,
-	y_max          = -8096,
-	y_min          = -31000,
-})
+	minetest.register_ore({
+		ore_type       = "scatter",
+		ore            = "elepower_dynamics:stone_with_viridisium",
+		wherein        = "default:stone",
+		clust_scarcity = 20 * 20 * 20,
+		clust_num_ores = 5,
+		clust_size     = 3,
+		y_max          = -8096,
+		y_min          = -31000,
+	})
 
-minetest.register_ore({
-	ore_type       = "scatter",
-	ore            = "elepower_dynamics:stone_with_viridisium",
-	wherein        = "default:stone",
-	clust_scarcity = 10 * 10 * 10,
-	clust_num_ores = 5,
-	clust_size     = 3,
-	y_max          = -12000,
-	y_min          = -31000,
-})
+	minetest.register_ore({
+		ore_type       = "scatter",
+		ore            = "elepower_dynamics:stone_with_viridisium",
+		wherein        = "default:stone",
+		clust_scarcity = 10 * 10 * 10,
+		clust_num_ores = 5,
+		clust_size     = 3,
+		y_max          = -12000,
+		y_min          = -31000,
+	})
+end
 
 -- Zinc
 

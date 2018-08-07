@@ -15,7 +15,7 @@ minetest.register_craft({
 	recipe = {
 		{"elepower_dynamics:induction_coil_advanced", "elepower_dynamics:soc", "elepower_dynamics:induction_coil_advanced"},
 		{"elepower_nuclear:graphite_rod", "elepower_nuclear:machine_block", "elepower_nuclear:graphite_rod"},
-		{"elepower_dynamics:wound_silver_coil", "elepower_dynamics:viridisium_gear", "elepower_dynamics:wound_silver_coil"},
+		{"elepower_dynamics:wound_silver_coil", "elepower_dynamics:electrum_gear", "elepower_dynamics:wound_silver_coil"},
 	}
 })
 
@@ -35,7 +35,7 @@ minetest.register_craft({
 	recipe = {
 		{"elepower_dynamics:wound_copper_coil", "elepower_nuclear:graphite_moderator", "elepower_dynamics:wound_copper_coil"},
 		{"elepower_nuclear:graphite_moderator", "elepower_nuclear:machine_block", "elepower_nuclear:graphite_moderator"},
-		{"elepower_dynamics:viridisium_gear", "elepower_nuclear:graphite_moderator", "elepower_dynamics:viridisium_gear"},
+		{"elepower_dynamics:electrum_gear", "elepower_nuclear:graphite_moderator", "elepower_dynamics:electrum_gear"},
 	}
 })
 
@@ -45,7 +45,7 @@ minetest.register_craft({
 	recipe = {
 		{"elepower_dynamics:induction_coil_advanced", "elepower_dynamics:graphite_ingot", "elepower_dynamics:induction_coil_advanced"},
 		{"elepower_nuclear:graphite_moderator", "elepower_nuclear:machine_block", "elepower_nuclear:graphite_moderator"},
-		{"elepower_dynamics:viridisium_gear", "elepower_dynamics:copper_plate", "elepower_dynamics:viridisium_gear"},
+		{"elepower_dynamics:electrum_gear", "elepower_dynamics:copper_plate", "elepower_dynamics:electrum_gear"},
 	}
 })
 
@@ -55,7 +55,7 @@ minetest.register_craft({
 	recipe = {
 		{"elepower_dynamics:portable_tank", "elepower_dynamics:copper_plate", "elepower_dynamics:portable_tank"},
 		{"elepower_nuclear:graphite_moderator", "elepower_nuclear:machine_block", "elepower_nuclear:graphite_moderator"},
-		{"elepower_dynamics:viridisium_gear", "elepower_dynamics:copper_plate", "elepower_dynamics:viridisium_gear"},
+		{"elepower_dynamics:electrum_gear", "elepower_dynamics:copper_plate", "elepower_dynamics:electrum_gear"},
 	}
 })
 

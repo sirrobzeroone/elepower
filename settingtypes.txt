@@ -1,0 +1,5 @@
+[Crafting]
+
+# Enable easier crafting recipes for Elepower
+# Removes viridisium (which is fairly rare) as a component.
+elepower_easy_crafting (Easy Crafting Recipes) bool false

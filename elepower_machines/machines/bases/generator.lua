@@ -34,6 +34,7 @@ function elepm.register_fuel_generator(nodename, nodedef)
 	end
 
 	nodedef.on_timer = function (pos, elapsed)
+		local refresh = false
 		local meta = minetest.get_meta(pos)
 
 		local burn_time      = meta:get_int("burn_time")
@@ -56,48 +57,53 @@ function elepm.register_fuel_generator(nodename, nodedef)
 			meta:set_int("burn_time", burn_time)
 		end
 
-		local pow_buffer = {capacity = capacity, storage = storage}
+		local pow_buffer = {capacity = capacity, storage = storage, usage = 0}
 
-		-- Burn another piece of fuel
-		if burn_time == 0 then
-			local inv = meta:get_inventory()
-			if not inv:is_empty("src") then 
-				local fuellist        = inv:get_list("src")
-				local fuel, afterfuel = minetest.get_craft_result({method = "fuel", width = 1, items = fuellist})
+		while true do
+			-- Burn another piece of fuel
+			if burn_time == 0 then
+				local inv = meta:get_inventory()
+				if not inv:is_empty("src") then 
+					local fuellist        = inv:get_list("src")
+					local fuel, afterfuel = minetest.get_craft_result({method = "fuel", width = 1, items = fuellist})
 
-				if not fuel or fuel.time == 0 then
-					ele.helpers.swap_node(pos, nodename)
-					return false
-				end
-
-				meta:set_int("burn_time", fuel.time)
-				meta:set_int("burn_totaltime", fuel.time)
-				inv:set_stack("src", 1, afterfuel.items[1])
-
-				if nodedef.ele_active_node then
-					local active_node = nodename.."_active"
-					if nodedef.ele_active_node ~= true then
-						active_node = nodedef.ele_active_node
+					if not fuel or fuel.time == 0 then
+						ele.helpers.swap_node(pos, nodename)
+						break
 					end
 
-					ele.helpers.swap_node(pos, active_node)
+					meta:set_int("burn_time", fuel.time)
+					meta:set_int("burn_totaltime", fuel.time)
+					inv:set_stack("src", 1, afterfuel.items[1])
+					pow_buffer.usage = generation
+
+					if nodedef.ele_active_node then
+						local active_node = nodename.."_active"
+						if nodedef.ele_active_node ~= true then
+							active_node = nodedef.ele_active_node
+						end
+
+						ele.helpers.swap_node(pos, active_node)
+					end
+
+					refresh = true
+				else
+					meta:set_string("formspec", get_formspec(pow_buffer, 0))
+					meta:set_string("infotext", ("%s Idle"):format(nodedef.description) ..
+						"\n" .. ele.capacity_text(capacity, storage))
+					ele.helpers.swap_node(pos, nodename)
 				end
-			else
-				meta:set_string("formspec", get_formspec(pow_buffer, 0))
-				meta:set_string("infotext", ("%s Idle"):format(nodedef.description) ..
-					"\n" .. ele.capacity_text(capacity, storage))
-				ele.helpers.swap_node(pos, nodename)
-				return false
 			end
+			if burn_totaltime == 0 then burn_totaltime = 1 end
+			break
 		end
-		if burn_totaltime == 0 then burn_totaltime = 1 end
 
 		local percent = math.floor((burn_time / burn_totaltime) * 100)
 		meta:set_string("formspec", get_formspec(pow_buffer, percent))
 		meta:set_string("infotext", ("%s Active"):format(nodedef.description) ..
 			"\n" .. ele.capacity_text(capacity, storage))
 
-		return true
+		return refresh
 	end
 
 	nodedef.on_construct = function (pos)
@@ -108,7 +114,7 @@ function elepm.register_fuel_generator(nodename, nodedef)
 		local capacity = ele.helpers.get_node_property(meta, pos, "capacity")
 		local storage  = ele.helpers.get_node_property(meta, pos, "storage")
 
-		meta:set_string("formspec", get_formspec({capacity = capacity, storage = storage}, 0))
+		meta:set_string("formspec", get_formspec({capacity = capacity, storage = storage, usage = 0}, 0))
 	end
 
 	ele.register_machine(nodename, nodedef)

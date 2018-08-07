@@ -252,7 +252,7 @@ local function on_timer(pos, elapsed)
 		refresh = true
 	end
 
-	local power = {capacity = capacity, storage = storage}
+	local power = {capacity = capacity, storage = storage, usage = usage}
 	local work_percent  = math.floor((work / PLANTER_TICK)*100)
 
 	meta:set_string("formspec", get_formspec(work_percent, power))

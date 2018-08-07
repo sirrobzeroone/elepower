@@ -96,13 +96,14 @@ function elepm.register_crafter(nodename, nodedef)
 			local usage   = ele.helpers.get_node_property(meta, pos, "usage")
 			local storage = ele.helpers.get_node_property(meta, pos, "storage")
 
-			local pow_buffer = {capacity = capacity, storage = storage}
+			local pow_buffer = {capacity = capacity, storage = storage, usage = 0}
 
 			local power_operation = false
 
 			-- Determine if there is enough power for this action
 			if result.time ~= 0 and storage >= usage then
 				power_operation = true
+				pow_buffer.usage = usage
 			end
 
 			if result.time == 0 or not power_operation then
@@ -127,7 +128,7 @@ function elepm.register_crafter(nodename, nodedef)
 
 			-- One step
 			meta:set_int("storage", storage - usage)
-			pow_buffer = {capacity = capacity, storage = storage}
+			pow_buffer = {capacity = capacity, storage = storage, usage = usage}
 			time = time + ele.helpers.round(machine_speed * 10)
 			meta:set_string("infotext", ("%s Active"):format(nodedef.description) ..
 				"\n" .. ele.capacity_text(capacity, storage))
@@ -194,7 +195,7 @@ function elepm.register_crafter(nodename, nodedef)
 
 		local storage  = ele.helpers.get_node_property(meta, pos, "storage")
 		local capacity = ele.helpers.get_node_property(meta, pos, "capacity")
-		local pow_buffer = {capacity = capacity, storage = storage}
+		local pow_buffer = {capacity = capacity, storage = storage, usage = 0}
 		meta:set_string("formspec", get_formspec(craft_type, pow_buffer, nil, pos))
 	end
 

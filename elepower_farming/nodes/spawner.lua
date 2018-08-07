@@ -150,7 +150,7 @@ local function on_timer(pos, elapsed)
 	meta:set_string("infotext", ("Powered Mob Spawner %s\nMob: %s\n%s"):format(
 		active, mob_desc, ele.capacity_text(capacity, storage)))
 
-	local power = {capacity = capacity, storage = storage}
+	local power = {capacity = capacity, storage = storage, usage = usage}
 	local work_percent  = math.floor((work / SPAWNER_TICK)*100)
 
 	meta:set_string("formspec", get_formspec(work_percent, power))

@@ -1,4 +1,6 @@
 
+local easycrafting = minetest.settings:get("elepower_easy_crafting") == "true"
+
 --*****************--
 -- MACHINE RECIPES --
 --*****************--
@@ -142,12 +144,21 @@ for name in pairs(minetest.registered_nodes) do
 	end
 end
 
-elepm.register_craft({
-	type   = "compress",
-	recipe = { "elepower_dynamics:viridisium_block 9" },
-	output = "elepower_dynamics:xycrone_lump",
-	time   = 20,
-})
+if easycrafting then
+	elepm.register_craft({
+		type   = "compress",
+		recipe = { "default:steel_block 9" },
+		output = "elepower_dynamics:xycrone_lump",
+		time   = 20,
+	})
+else
+	elepm.register_craft({
+		type   = "compress",
+		recipe = { "elepower_dynamics:viridisium_block 9" },
+		output = "elepower_dynamics:xycrone_lump",
+		time   = 20,
+	})
+end
 
 -------------
 -- Sawmill --
@@ -188,6 +199,10 @@ end)
 ---------------
 -- Soldering --
 ---------------
+local induction_dust = "elepower_dynamics:viridisium_dust"
+if easycrafting then
+	induction_dust = "elepower_dynamics:zinc_dust"
+end
 
 local soldering_recipes = {
 	{
@@ -216,7 +231,7 @@ local soldering_recipes = {
 		time   = 16,
 	},
 	{
-		recipe = { "elepower_dynamics:induction_coil 4", "elepower_dynamics:copper_wire", "elepower_dynamics:viridisium_dust 2" },
+		recipe = { "elepower_dynamics:induction_coil 4", "elepower_dynamics:copper_wire", induction_dust .. " 2" },
 		output = "elepower_dynamics:induction_coil_advanced",
 		time   = 18,
 	}
@@ -265,11 +280,16 @@ minetest.register_craft({
 	}
 })
 
+local ingot_machine = "elepower_dynamics:viridisium_ingot"
+if easycrafting then
+	ingot_machine = "default:steel_ingot"
+end
+
 -- Machine block
 minetest.register_craft({
 	output = "elepower_machines:machine_block",
 	recipe = {
-		{"elepower_dynamics:viridisium_ingot", "default:steel_ingot", "elepower_dynamics:viridisium_ingot"},
+		{ingot_machine, "default:steel_ingot", ingot_machine},
 		{"default:steel_ingot", "default:mese_crystal", "default:steel_ingot"},
 		{"elepower_dynamics:viridisium_ingot", "elepower_dynamics:motor", "elepower_dynamics:viridisium_ingot"},
 	}

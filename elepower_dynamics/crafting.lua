@@ -1,4 +1,6 @@
 
+local easycrafting = minetest.settings:get("elepower_easy_crafting") == "true"
+
 ---------------
 -- Overrides --
 ---------------
@@ -125,16 +127,6 @@ minetest.register_craft({
 	}
 })
 
--- Fluid Transfer Node
-minetest.register_craft({
-	output = "elepower_dynamics:fluid_transfer_node",
-	recipe = {
-		{"group:stone",  "elepower_dynamics:control_circuit",  "group:stone"},
-		{"elepower_dynamics:viridisium_gear", "elepower_dynamics:servo_valve", "elepower_dynamics:viridisium_gear"},
-		{"group:stone",  "elepower_dynamics:fluid_duct",  "group:stone"},
-	}
-})
-
 -- Portable Tank
 minetest.register_craft({
 	output = "elepower_dynamics:portable_tank",
@@ -210,30 +202,73 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_craft({
-	output = "elepower_dynamics:pcb_blank",
-	recipe = {
-		{"default:copper_ingot", "default:copper_ingot", "default:copper_ingot"},
-		{"default:copper_ingot", "default:mese_crystal", "default:copper_ingot"},
-		{"default:gold_ingot", "elepower_dynamics:viridisium_ingot", "default:gold_ingot"},
-	}
-})
+if easycrafting then
+	minetest.register_craft({
+		output = "elepower_dynamics:pcb_blank",
+		recipe = {
+			{"default:copper_ingot", "default:copper_ingot", "default:copper_ingot"},
+			{"default:copper_ingot", "default:mese_crystal", "default:copper_ingot"},
+			{"default:gold_ingot", "default:gold_ingot", "default:gold_ingot"},
+		}
+	})
 
-minetest.register_craft({
-	type = "shapeless",
-	output = "elepower_dynamics:acidic_compound",
-	recipe = {
-		"elepower_dynamics:viridisium_dust",
-		"elepower_dynamics:viridisium_dust",
-		"elepower_dynamics:viridisium_dust",
-		"elepower_dynamics:viridisium_dust",
-		"elepower_dynamics:copper_dust",
-		"elepower_dynamics:copper_dust",
-		"elepower_dynamics:copper_dust",
-		"elepower_dynamics:copper_dust",
-		"farming:seed_wheat",
-	}
-})
+	minetest.register_craft({
+		type = "shapeless",
+		output = "elepower_dynamics:acidic_compound",
+		recipe = {
+			"elepower_dynamics:copper_dust",
+			"elepower_dynamics:copper_dust",
+			"elepower_dynamics:copper_dust",
+			"elepower_dynamics:copper_dust",
+			"farming:seed_wheat",
+		}
+	})
+
+	-- Fluid Transfer Node
+	minetest.register_craft({
+		output = "elepower_dynamics:fluid_transfer_node",
+		recipe = {
+			{"group:stone",  "elepower_dynamics:control_circuit",  "group:stone"},
+			{"elepower_dynamics:electrum_gear", "elepower_dynamics:servo_valve", "elepower_dynamics:electrum_gear"},
+			{"group:stone",  "elepower_dynamics:fluid_duct",  "group:stone"},
+		}
+	})
+else
+	minetest.register_craft({
+		output = "elepower_dynamics:pcb_blank",
+		recipe = {
+			{"default:copper_ingot", "default:copper_ingot", "default:copper_ingot"},
+			{"default:copper_ingot", "default:mese_crystal", "default:copper_ingot"},
+			{"default:gold_ingot", "elepower_dynamics:viridisium_ingot", "default:gold_ingot"},
+		}
+	})
+
+	minetest.register_craft({
+		type = "shapeless",
+		output = "elepower_dynamics:acidic_compound",
+		recipe = {
+			"elepower_dynamics:viridisium_dust",
+			"elepower_dynamics:viridisium_dust",
+			"elepower_dynamics:viridisium_dust",
+			"elepower_dynamics:viridisium_dust",
+			"elepower_dynamics:copper_dust",
+			"elepower_dynamics:copper_dust",
+			"elepower_dynamics:copper_dust",
+			"elepower_dynamics:copper_dust",
+			"farming:seed_wheat",
+		}
+	})
+
+	-- Fluid Transfer Node
+	minetest.register_craft({
+		output = "elepower_dynamics:fluid_transfer_node",
+		recipe = {
+			{"group:stone",  "elepower_dynamics:control_circuit",  "group:stone"},
+			{"elepower_dynamics:viridisium_gear", "elepower_dynamics:servo_valve", "elepower_dynamics:viridisium_gear"},
+			{"group:stone",  "elepower_dynamics:fluid_duct",  "group:stone"},
+		}
+	})
+end
 
 minetest.register_craft({
 	output = "elepower_dynamics:integrated_circuit",

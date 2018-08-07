@@ -77,7 +77,7 @@ function ele.register_fluid_generator(nodename, nodedef)
 					meta:set_int("burn_time", burn_time)
 				end
 
-				pow_buffer = {capacity = capacity, storage = storage}
+				pow_buffer = {capacity = capacity, storage = storage, usage = 0}
 
 				-- Burn another bucket of lava
 				if burn_time == 0 then
@@ -88,6 +88,7 @@ function ele.register_fluid_generator(nodename, nodedef)
 
 						-- Take lava
 						flbuffer.amount = flbuffer.amount - 1000
+						pow_buffer.usage = generation
 
 						local active_node = nodename.."_active"
 						ele.helpers.swap_node(pos, active_node)
@@ -120,7 +121,7 @@ function ele.register_fluid_generator(nodename, nodedef)
 			local capacity = ele.helpers.get_node_property(meta, pos, "capacity")
 			local storage  = ele.helpers.get_node_property(meta, pos, "storage")
 
-			meta:set_string("formspec", get_formspec({capacity = capacity, storage = storage}, 0))
+			meta:set_string("formspec", get_formspec({capacity = capacity, storage = storage, usage = 0}, 0))
 		end
 	}
 

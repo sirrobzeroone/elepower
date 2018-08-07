@@ -21,11 +21,18 @@ end
 
 function ele.formspec.power_meter(capacitor)
 	if not capacitor then
-		capacitor = { capacity = 8000, storage = 0 }
+		capacitor = { capacity = 8000, storage = 0, usage = 0 }
 	end
 
 	local pw_percent = math.floor(100 * capacitor.storage / capacitor.capacity)
+	local usage = capacitor.usage
+	if not usage then
+		usage = 0
+	end
 
 	return ele.formspec.create_bar(0, 0, pw_percent, "#00a1ff") ..
-		"tooltip[0,0;1,2.5;Power Buffer\n" .. ele.capacity_text(capacitor.capacity, capacitor.storage) .. "]"
+		"tooltip[0,0;1,2.5;"..
+		minetest.colorize("#c60303", "Energy Storage\n")..
+		minetest.colorize("#0399c6", ele.capacity_text(capacitor.capacity, capacitor.storage))..
+		minetest.colorize("#565656", "\nPower Used / Generated: " .. usage .. " " .. ele.unit) .. "]"
 end
