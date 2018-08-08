@@ -233,6 +233,15 @@ if easycrafting then
 			{"group:stone",  "elepower_dynamics:fluid_duct",  "group:stone"},
 		}
 	})
+
+	minetest.register_craft({
+		output = "elepower_dynamics:battery 2",
+		recipe = {
+			{"elepower_dynamics:zinc_dust", "elepower_dynamics:wound_copper_coil", "elepower_dynamics:lead_dust"},
+			{"elepower_dynamics:tin_plate", "default:mese_crystal_fragment", "elepower_dynamics:tin_plate"},
+			{"elepower_dynamics:tin_plate", "default:mese_crystal_fragment", "elepower_dynamics:tin_plate"},
+		}
+	})
 else
 	minetest.register_craft({
 		output = "elepower_dynamics:pcb_blank",
@@ -268,6 +277,15 @@ else
 			{"group:stone",  "elepower_dynamics:fluid_duct",  "group:stone"},
 		}
 	})
+
+	minetest.register_craft({
+		output = "elepower_dynamics:battery 2",
+		recipe = {
+			{"elepower_dynamics:zinc_dust", "elepower_dynamics:wound_copper_coil", "elepower_dynamics:lead_dust"},
+			{"elepower_dynamics:tin_plate", "default:mese_crystal", "elepower_dynamics:tin_plate"},
+			{"elepower_dynamics:tin_plate", "default:mese_crystal", "elepower_dynamics:tin_plate"},
+		}
+	})
 end
 
 minetest.register_craft({
@@ -285,15 +303,6 @@ minetest.register_craft({
 		{"default:steel_ingot", "elepower_dynamics:wound_copper_coil", "default:steel_ingot"},
 		{"elepower_dynamics:copper_wire", "elepower_dynamics:wound_copper_coil", "elepower_dynamics:copper_wire"},
 		{"default:steel_ingot", "elepower_dynamics:capacitor", "default:steel_ingot"},
-	}
-})
-
-minetest.register_craft({
-	output = "elepower_dynamics:battery 2",
-	recipe = {
-		{"elepower_dynamics:zinc_dust", "elepower_dynamics:wound_copper_coil", "elepower_dynamics:lead_dust"},
-		{"elepower_dynamics:tin_plate", "default:mese_crystal", "elepower_dynamics:tin_plate"},
-		{"elepower_dynamics:tin_plate", "default:mese_crystal", "elepower_dynamics:tin_plate"},
 	}
 })
 

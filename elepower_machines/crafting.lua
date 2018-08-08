@@ -87,18 +87,48 @@ for mat, data in pairs(elepd.registered_dusts) do
 end
 
 -- Other recipes
-elepm.register_craft({
-	type   = "grind",
-	recipe = { "farming:wheat" },
-	output = "farming:flour 2"
-})
 
-elepm.register_craft({
-	type   = "grind",
-	recipe = { "default:desert_sand 4" },
-	output = "elepower_dynamics:silicon",
-	time   = 8,
-})
+local grinding_recipes = {
+	{
+		recipe = { "farming:wheat" },
+		output = "farming:flour 2",
+		time   = 4,
+	},
+	{
+		recipe = { "default:desert_sand 4" },
+		output = "elepower_dynamics:silicon",
+	},
+	{
+		recipe = { "default:sand 4" },
+		output = "elepower_dynamics:silicon",
+	},
+	{
+		recipe = { "default:cobble" },
+		output = "default:gravel 4",
+	},
+	{
+		recipe = { "default:gravel" },
+		output = "default:sand 4",
+	},
+	{
+		recipe = { "default:mese" },
+		output = "default:mese_crystal 9",
+	},
+	{
+		recipe = { "default:mese_crystal" },
+		output = "default:mese_crystal_fragment 9",
+	}
+}
+
+-- Register solderer recipes
+for _,i in pairs(grinding_recipes) do
+	elepm.register_craft({
+		type   = "grind",
+		recipe = i.recipe,
+		output = i.output,
+		time   = i.time or 8,
+	})
+end
 
 -----------------
 -- Compressing --
@@ -130,6 +160,14 @@ for name in pairs(minetest.registered_nodes) do
 				time   = 1,
 			})
 
+			-- Also give a grinding recipe to get the sand back
+			elepm.register_craft({
+				type   = "grind",
+				recipe = { sandstone },
+				output = sand .. " 4",
+				time   = 5,
+			})
+
 			-- Find block as well
 			local ssblock = sandstone .. "_block"
 			if minetest.registered_nodes[ssblock] then
@@ -159,6 +197,20 @@ else
 		time   = 20,
 	})
 end
+
+elepm.register_craft({
+	type   = "compress",
+	recipe = { "default:mese_crystal_fragment 9" },
+	output = "default:mese_crystal",
+	time   = 1,
+})
+
+elepm.register_craft({
+	type   = "compress",
+	recipe = { "default:mese_crystal 9" },
+	output = "default:mese",
+	time   = 1,
+})
 
 -------------
 -- Sawmill --
@@ -199,6 +251,7 @@ end)
 ---------------
 -- Soldering --
 ---------------
+
 local induction_dust = "elepower_dynamics:viridisium_dust"
 if easycrafting then
 	induction_dust = "elepower_dynamics:zinc_dust"
