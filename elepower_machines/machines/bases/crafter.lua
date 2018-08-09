@@ -89,18 +89,19 @@ function elepm.register_crafter(nodename, nodedef)
 		local machine_speed = nodedef.craft_speed or 1
 
 		local capacity = ele.helpers.get_node_property(meta, pos, "capacity")
+		local usage    = ele.helpers.get_node_property(meta, pos, "usage")
+		local storage  = ele.helpers.get_node_property(meta, pos, "storage")
 		local time     = meta:get_int("src_time")
+		local res_time = 0
+
+		local pow_buffer = {capacity = capacity, storage = storage, usage = 0}
 
 		while true do
 			local result  = elepm.get_recipe(craft_type, inv:get_list("src"))
-			local usage   = ele.helpers.get_node_property(meta, pos, "usage")
-			local storage = ele.helpers.get_node_property(meta, pos, "storage")
-
-			local pow_buffer = {capacity = capacity, storage = storage, usage = 0}
-
 			local power_operation = false
 
 			-- Determine if there is enough power for this action
+			res_time = result.time
 			if result.time ~= 0 and storage >= usage then
 				power_operation = true
 				pow_buffer.usage = usage
@@ -110,13 +111,10 @@ function elepm.register_crafter(nodename, nodedef)
 				ele.helpers.swap_node(pos, machine_node)
 				
 				if result.time == 0 then
-					meta:set_string("formspec", get_formspec(craft_type, pow_buffer, nil, pos))
 					time = 0
 					meta:set_string("infotext", ("%s Idle"):format(nodedef.description) ..
 						"\n" .. ele.capacity_text(capacity, storage))
 				else
-					local pct = math.floor((ele.helpers.round(result.time * 10) / meta:get_int("src_time")) * 100)
-					meta:set_string("formspec", get_formspec(craft_type, pow_buffer, pct, pos))
 					meta:set_string("infotext", ("%s Out of Power!"):format(nodedef.description) ..
 						"\n" .. ele.capacity_text(capacity, storage))
 				end
@@ -143,8 +141,6 @@ function elepm.register_crafter(nodename, nodedef)
 			end
 
 			if time <= ele.helpers.round(result.time * 10) then
-				local pct = math.floor((time / ele.helpers.round(result.time * 10)) * 100)
-				meta:set_string("formspec", get_formspec(craft_type, pow_buffer, pct, pos))
 				break
 			end
 
@@ -169,8 +165,7 @@ function elepm.register_crafter(nodename, nodedef)
 
 			if not room_for_output then
 				ele.helpers.swap_node(pos, machine_node)
-				meta:set_string("formspec", get_formspec(craft_type, pow_buffer, nil, pos))
-				time = ele.helpers.round(result.time*10)
+				time = ele.helpers.round(res_time*10)
 				meta:set_string("infotext", ("%s Output Full!"):format(nodedef.description) ..
 					"\n" .. ele.capacity_text(capacity, storage))
 				break
@@ -179,8 +174,15 @@ function elepm.register_crafter(nodename, nodedef)
 			time = 0
 			inv:set_list("src", result.new_input)
 			inv:set_list("dst", inv:get_list("dst_tmp"))
+			break
 		end
 
+		local pct = 0
+		if res_time > 0 and time > 0 then
+			pct = math.floor((time / ele.helpers.round(res_time * 10)) * 100)
+		end
+
+		meta:set_string("formspec", get_formspec(craft_type, pow_buffer, pct, pos))
 		meta:set_int("src_time", time)
 
 		return refresh
