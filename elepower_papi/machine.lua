@@ -217,7 +217,7 @@ function ele.register_base_device(nodename, nodedef)
 	local original_after_dig_node = nodedef.after_dig_node
 	nodedef.after_dig_node = function(pos, placer, itemstack, pointed_thing)
 		if tlsupp then
-			tubelib.add_node(pos, nodename)
+			tubelib.remove_node(pos)
 		end
 
 		if original_after_dig_node then
