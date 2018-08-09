@@ -2,6 +2,7 @@
 -- Machine definitions
 
 local pw = minetest.get_modpath("pipeworks") ~= nil
+local tl = minetest.get_modpath("tubelib") ~= nil
 
 --[[
 	Groups:
@@ -144,8 +145,25 @@ local tube = {
 	connect_sides = {left = 1, right = 1, back = 1, top = 1, bottom = 1},
 }
 
+local tubelib_tube = {
+	on_pull_item = function(pos, side, player_name)
+		local meta = minetest.get_meta(pos)
+		return tubelib.get_item(meta, "dst")
+	end,
+	on_push_item = function(pos, side, item, player_name)
+		local meta = minetest.get_meta(pos)
+		return tubelib.put_item(meta, "src", item)
+	end,
+	on_unpull_item = function(pos, side, item, player_name)
+		local meta = minetest.get_meta(pos)
+		return tubelib.put_item(meta, "dst", item)
+	end,
+}
+
 -- Register a base device
 function ele.register_base_device(nodename, nodedef)
+	local tlsupp = tl and nodedef.groups and (nodedef.groups["tubedevice"] or nodedef.groups["tube"])
+
 	-- Override construct callback
 	local original_on_construct = nodedef.on_construct
 	nodedef.on_construct = function (pos)
@@ -165,6 +183,7 @@ function ele.register_base_device(nodename, nodedef)
 	local original_after_destruct = nodedef.after_destruct
 	nodedef.after_destruct = function (pos)
 		ele.clear_networks(pos)
+
 		if original_after_destruct then
 			original_after_destruct(pos)
 		end
@@ -183,11 +202,29 @@ function ele.register_base_device(nodename, nodedef)
 	local original_after_place_node = nodedef.after_place_node
 	nodedef.after_place_node = function(pos, placer, itemstack, pointed_thing)
 		local ret = retrieve_metadata(pos, placer, itemstack, pointed_thing)
+
+		if tlsupp then
+			tubelib.add_node(pos, nodename)
+		end
+
 		if original_after_place_node then
 			ret = original_after_place_node(pos, placer, itemstack, pointed_thing)
 		end
+
 		return ret
 	end
+
+	local original_after_dig_node = nodedef.after_dig_node
+	nodedef.after_dig_node = function(pos, placer, itemstack, pointed_thing)
+		if tlsupp then
+			tubelib.add_node(pos, nodename)
+		end
+
+		if original_after_dig_node then
+			return original_after_dig_node(pos, placer, itemstack, pointed_thing)
+		end
+	end
+
 
 	-- Prevent digging when there's items inside
 	if not nodedef.can_dig then
@@ -213,11 +250,12 @@ function ele.register_base_device(nodename, nodedef)
 
 	-- Finally, register the damn thing already
 	minetest.register_node(nodename, nodedef)
+	local active_name = nil
 
 	-- Register an active variant if configured.
 	if nodedef.ele_active_node then
 		local active_nodedef = ele.helpers.table_copy(nodedef)
-		local active_name = nodename.."_active"
+		active_name = nodename.."_active"
 		
 		if nodedef.ele_active_node ~= true then
 			active_name = nodedef.ele_active_node
@@ -236,6 +274,18 @@ function ele.register_base_device(nodename, nodedef)
 		active_nodedef.groups["not_in_creative_inventory"] = 1
 		active_nodedef.drop = nodename
 		minetest.register_node(active_name, active_nodedef)
+	end
+
+
+	-- tubelib support
+	if tlsupp then
+		local extras = {}
+
+		if active_name then
+			extras = {active_name}
+		end
+
+		tubelib.register_node(nodename, extras, tubelib_tube)
 	end
 end
 
