@@ -136,6 +136,7 @@ end
 
 for mat, ingot in pairs(ingot_map) do
 	local plate = elepd.registered_plates[mat]
+	local dust  = elepd.registered_dusts[mat]
 
 	if plate then
 		elepm.register_craft({
@@ -144,6 +145,15 @@ for mat, ingot in pairs(ingot_map) do
 			output = plate.item,
 			time   = 4,
 		})
+
+		if dust then
+			elepm.register_craft({
+				type   = "grind",
+				recipe = { plate.item },
+				output = dust.item .. " 2",
+				time   = 6,
+			})
+		end
 	end
 end
 
