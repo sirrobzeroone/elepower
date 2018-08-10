@@ -48,3 +48,13 @@ minetest.register_craft({
 		{"elepower_dynamics:copper_gear", "elepower_dynamics:servo_valve", "elepower_dynamics:copper_gear"},
 	}
 })
+
+-- Composter
+minetest.register_craft({
+	output = "elepower_farming:composter",
+	recipe = {
+		{"elepower_dynamics:motor", "bucket:bucket_empty", "elepower_dynamics:motor"},
+		{"elepower_dynamics:electrum_gear", "elepower_farming:device_frame", "elepower_dynamics:electrum_gear"},
+		{"elepower_dynamics:copper_gear", "elepower_dynamics:servo_valve", "elepower_dynamics:copper_gear"},
+	}
+})
