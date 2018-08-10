@@ -148,14 +148,17 @@ local tube = {
 local tubelib_tube = {
 	on_pull_item = function(pos, side, player_name)
 		local meta = minetest.get_meta(pos)
+		minetest.get_node_timer(pos):start(1.0)
 		return tubelib.get_item(meta, "dst")
 	end,
 	on_push_item = function(pos, side, item, player_name)
 		local meta = minetest.get_meta(pos)
+		minetest.get_node_timer(pos):start(1.0)
 		return tubelib.put_item(meta, "src", item)
 	end,
 	on_unpull_item = function(pos, side, item, player_name)
 		local meta = minetest.get_meta(pos)
+		minetest.get_node_timer(pos):start(1.0)
 		return tubelib.put_item(meta, "dst", item)
 	end,
 }

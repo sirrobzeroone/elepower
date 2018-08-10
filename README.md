@@ -23,5 +23,5 @@ Powered tools that you can simply recharge instead of crafting them again.
 ### Farming
 Farming automation machines: automatic planting and harvesting of crops.
 
-### (Planned) Nuclear
-Nuclear power. Both fission and fusion will be presented!
+### Nuclear
+Nuclear power. Both fission and fusion will (soon) be presented!
