@@ -103,3 +103,23 @@ function ele.helpers.comma_value(n) -- credit http://richard.warburton.it
 	local left,num,right = string.match(n,'^([^%d]*%d)(%d*)(.-)$')
 	return left..(num:reverse():gsub('(%d%d%d)','%1,'):reverse())..right
 end
+
+function ele.helpers.state_enabled(meta, pos, state)
+	if not state then
+		state = meta:get_int("state")
+	end
+
+	if state == 0 then
+		return true
+	elseif state == 1 then
+		return false
+	end
+
+	if state == 2 and meta:get_int("signal_interrupt") == 1 then
+		return true
+	elseif state == 3 and meta:get_int("signal_interrupt") == 0 then
+		return true
+	end
+
+	return false
+end

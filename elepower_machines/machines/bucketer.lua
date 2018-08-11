@@ -1,5 +1,5 @@
 
-local function get_formspec(mode, buffer)
+local function get_formspec(mode, buffer, state)
 	if not mode then
 		mode = 0
 	end
@@ -13,6 +13,7 @@ local function get_formspec(mode, buffer)
 		default.gui_bg..
 		default.gui_bg_img..
 		default.gui_slots..
+		ele.formspec.state_switcher(0, 0, state)..
 		ele.formspec.fluid_bar(7, 0.75, buffer)..
 		"list[context;src;3.5,1;1,1;]"..
 		"list[context;dst;3.5,2;1,1;]"..
@@ -35,38 +36,44 @@ local function on_timer(pos, elapsed)
 
 	local buffer = fluid_lib.get_buffer_data(pos, "input")
 	local mode   = meta:get_int("mode")
+	local state  = meta:get_int("state")
+
+	local is_enabled = ele.helpers.state_enabled(meta, pos, state)
 
 	local bucket_slot = inv:get_stack("src", 1)
 	local bucket_name = bucket_slot:get_name()
-	if mode == 0 and bucket_name == "bucket:bucket_empty" and buffer.amount >= 1000 then
-		-- Fill bucket
-		local bitem = bucket.liquids[buffer.fluid]
-		if bitem and bitem.itemname then
-			local bstack = ItemStack(bitem.itemname)
-			if inv:room_for_item("dst", bstack) then
-				inv:add_item("dst", bstack)
-				buffer.amount = buffer.amount - 1000
 
-				bucket_slot:take_item()
-				inv:set_stack("src", 1, bucket_slot)
+	if is_enabled then
+		if mode == 0 and bucket_name == "bucket:bucket_empty" and buffer.amount >= 1000 then
+			-- Fill bucket
+			local bitem = bucket.liquids[buffer.fluid]
+			if bitem and bitem.itemname then
+				local bstack = ItemStack(bitem.itemname)
+				if inv:room_for_item("dst", bstack) then
+					inv:add_item("dst", bstack)
+					buffer.amount = buffer.amount - 1000
 
-				refresh = true
+					bucket_slot:take_item()
+					inv:set_stack("src", 1, bucket_slot)
+
+					refresh = true
+				end
 			end
-		end
-	elseif mode == 1 and bucket.get_liquid_for_bucket(bucket_name) then
-		-- Empty bucket
-		local fluid = bucket.get_liquid_for_bucket(bucket_name)
-		if buffer.fluid == fluid or buffer.fluid == "" then
-			local bitem = ItemStack("bucket:bucket_empty")
-			if inv:room_for_item("dst", bitem) and buffer.amount + 1000 <= buffer.capacity then
-				buffer.amount = buffer.amount + 1000
-				buffer.fluid  = fluid
-				inv:add_item("dst", bitem)
+		elseif mode == 1 and bucket.get_liquid_for_bucket(bucket_name) then
+			-- Empty bucket
+			local fluid = bucket.get_liquid_for_bucket(bucket_name)
+			if buffer.fluid == fluid or buffer.fluid == "" then
+				local bitem = ItemStack("bucket:bucket_empty")
+				if inv:room_for_item("dst", bitem) and buffer.amount + 1000 <= buffer.capacity then
+					buffer.amount = buffer.amount + 1000
+					buffer.fluid  = fluid
+					inv:add_item("dst", bitem)
 
-				bucket_slot:take_item()
-				inv:set_stack("src", 1, bucket_slot)
+					bucket_slot:take_item()
+					inv:set_stack("src", 1, bucket_slot)
 
-				refresh = true
+					refresh = true
+				end
 			end
 		end
 	end
@@ -114,6 +121,7 @@ ele.register_base_device("elepower_machines:bucketer", {
 			accepts   = true,
 		},
 	},
+	paramtype2 = "facedir",
 	on_timer = on_timer,
 	on_construct = function (pos)
 		local meta = minetest.get_meta(pos)

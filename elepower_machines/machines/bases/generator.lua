@@ -1,10 +1,11 @@
 
-local function get_formspec_default(power, percent)
+local function get_formspec_default(power, percent, state)
 	return "size[8,8.5]"..
 		default.gui_bg..
 		default.gui_bg_img..
 		default.gui_slots..
 		ele.formspec.power_meter(power)..
+		ele.formspec.state_switcher(7, 0, state)..
 		"list[context;src;3,1.5;1,1;]"..
 		"image[4,1.5;1,1;default_furnace_fire_bg.png^[lowpart:"..
 		percent..":default_furnace_fire_fg.png]"..
@@ -44,22 +45,34 @@ function elepm.register_fuel_generator(nodename, nodedef)
 		local generation = ele.helpers.get_node_property(meta, pos, "usage")
 		local storage    = ele.helpers.get_node_property(meta, pos, "storage")
 
-		-- If more to burn and the energy produced was used: produce some more
-		if burn_time > 0 then
-			if storage + generation > capacity then
-				return false
-			end
-
-			storage = storage + generation
-			meta:set_int("storage", storage)
-
-			burn_time = burn_time - 1
-			meta:set_int("burn_time", burn_time)
-		end
+		local state = meta:get_int("state")
+		local is_enabled = ele.helpers.state_enabled(meta, pos, state)
+		local status = "Idle"
 
 		local pow_buffer = {capacity = capacity, storage = storage, usage = 0}
 
 		while true do
+			if not is_enabled then
+				status = "Off"
+				break
+			end
+
+			-- If more to burn and the energy produced was used: produce some more
+			if burn_time > 0 then
+				if storage + generation > capacity then
+					return false
+				end
+
+				storage = storage + generation
+				pow_buffer.storage = storage
+				meta:set_int("storage", storage)
+
+				burn_time = burn_time - 1
+				meta:set_int("burn_time", burn_time)
+			end
+
+			status = "Active"
+
 			-- Burn another piece of fuel
 			if burn_time == 0 then
 				local inv = meta:get_inventory()
@@ -88,9 +101,7 @@ function elepm.register_fuel_generator(nodename, nodedef)
 
 					refresh = true
 				else
-					meta:set_string("formspec", get_formspec(pow_buffer, 0))
-					meta:set_string("infotext", ("%s Idle"):format(nodedef.description) ..
-						"\n" .. ele.capacity_text(capacity, storage))
+					status = "Idle"
 					ele.helpers.swap_node(pos, nodename)
 				end
 			end
@@ -99,8 +110,8 @@ function elepm.register_fuel_generator(nodename, nodedef)
 		end
 
 		local percent = math.floor((burn_time / burn_totaltime) * 100)
-		meta:set_string("formspec", get_formspec(pow_buffer, percent))
-		meta:set_string("infotext", ("%s Active"):format(nodedef.description) ..
+		meta:set_string("formspec", get_formspec(pow_buffer, percent, state))
+		meta:set_string("infotext", ("%s %s"):format(nodedef.description, status) ..
 			"\n" .. ele.capacity_text(capacity, storage))
 
 		return refresh

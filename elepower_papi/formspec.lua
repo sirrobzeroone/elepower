@@ -1,6 +1,28 @@
 -- Formspec helpers
 
 ele.formspec = {}
+ele.formspec.gui_switcher_icons = {
+	[0] = "elepower_gui_check.png",
+	"elepower_gui_cancel.png",
+	"mesecons_wire_on.png",
+	"mesecons_wire_off.png",
+}
+
+function ele.formspec.state_switcher(x, y, state)
+	if not state then state = 0 end
+	local icon = ele.formspec.gui_switcher_icons[state]
+	local statedesc = ele.default.states[state]
+
+	if statedesc then
+		statedesc = statedesc.d
+	else
+		statedesc = ""
+	end
+	statedesc = statedesc .. "\nPress to toggle"
+
+	return "image_button["..x..","..y..";1,1;"..icon..";cyclestate;]"..
+		"tooltip[cyclestate;"..statedesc.."]"
+end
 
 function ele.formspec.create_bar(x, y, metric, color, small)
 	if not metric or type(metric) ~= "number" or metric < 0 then metric = 0 end

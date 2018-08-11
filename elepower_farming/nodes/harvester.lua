@@ -79,11 +79,12 @@ local function harvest(pos, harvested, fdir)
 	return harvested
 end
 
-local function get_formspec(timer, power, sludge)
+local function get_formspec(timer, power, sludge, state)
 	return "size[8,8.5]"..
 		default.gui_bg..
 		default.gui_bg_img..
 		default.gui_slots..
+		ele.formspec.state_switcher(7, 2.5, state)..
 		ele.formspec.power_meter(power)..
 		ele.formspec.fluid_bar(7, 0, sludge)..
 		ele.formspec.create_bar(1, 0, 100 - timer, "#00ff11", true)..
@@ -108,7 +109,11 @@ local function on_timer(pos, elapsed)
 	local work   = meta:get_int("src_time")
 	local sludge = fluid_lib.get_buffer_data(pos, "sludge")
 
-	if storage > usage and sludge.amount + SLUDGE_PRODUCED < sludge.capacity then
+	local state = meta:get_int("state")
+	local is_enabled = ele.helpers.state_enabled(meta, pos, state)
+	local active = "Idle"
+
+	if storage > usage and sludge.amount + SLUDGE_PRODUCED < sludge.capacity and is_enabled then
 		if work == HARVESTER_TICK then
 			local harvested = {}
 
@@ -129,16 +134,24 @@ local function on_timer(pos, elapsed)
 			work = work + 1
 		end
 
+		active = "Active"
 		refresh = true
 		ele.helpers.swap_node(pos, "elepower_farming:harvester_active")
 	else
+		if not is_enabled then
+			active = "Off"
+		end
+
 		ele.helpers.swap_node(pos, "elepower_farming:harvester")
 	end
 
 	local power = {capacity = capacity, storage = storage, usage = usage}
 	local work_percent  = math.floor((work / HARVESTER_TICK)*100)
 
-	meta:set_string("formspec", get_formspec(work_percent, power, sludge))
+	meta:set_string("formspec", get_formspec(work_percent, power, sludge, state))
+	meta:set_string("infotext", ("Harvester %s\n%s"):format(active,
+		ele.capacity_text(capacity, storage)))
+
 	meta:set_int("storage", storage)
 	meta:set_int("src_time", work)
 

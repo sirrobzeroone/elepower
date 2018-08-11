@@ -2,7 +2,7 @@
 -- It accepts a recipe type registered beforehand.
 
 -- Specialized formspec for crafters
-function ele.formspec.get_crafter_formspec(craft_type, power, percent)
+function ele.formspec.get_crafter_formspec(craft_type, power, percent, pos, state)
 	local craftstats  = elepm.craft.types[craft_type]
 	local input_size  = craftstats.inputs
 
@@ -45,6 +45,7 @@ function ele.formspec.get_crafter_formspec(craft_type, power, percent)
 		default.gui_bg_img..
 		default.gui_slots..
 		ele.formspec.power_meter(power)..
+		ele.formspec.state_switcher(7, 0, state)..
 		"list[context;src;"..x..","..y..";"..in_width..","..in_height..";]"..
 		bar..
 		"list[context;dst;5,1;2,2;]"..
@@ -92,11 +93,21 @@ function elepm.register_crafter(nodename, nodedef)
 		local usage    = ele.helpers.get_node_property(meta, pos, "usage")
 		local storage  = ele.helpers.get_node_property(meta, pos, "storage")
 		local time     = meta:get_int("src_time")
+		local state    = meta:get_int("state")
+		local status   = "Idle"
+
+		local is_enabled = ele.helpers.state_enabled(meta, pos, state)
 		local res_time = 0
 
 		local pow_buffer = {capacity = capacity, storage = storage, usage = 0}
 
 		while true do
+			if not is_enabled then
+				time = 0
+				status = "Off"
+				break
+			end
+
 			local result  = elepm.get_recipe(craft_type, inv:get_list("src"))
 			local power_operation = false
 
@@ -112,24 +123,22 @@ function elepm.register_crafter(nodename, nodedef)
 				
 				if result.time == 0 then
 					time = 0
-					meta:set_string("infotext", ("%s Idle"):format(nodedef.description) ..
-						"\n" .. ele.capacity_text(capacity, storage))
+					status = "Idle"
 				else
-					meta:set_string("infotext", ("%s Out of Power!"):format(nodedef.description) ..
-						"\n" .. ele.capacity_text(capacity, storage))
+					status = "Out of Power!"
 				end
 
 				break
 			end
 
 			refresh = true
+			status = "Active"
 
 			-- One step
-			meta:set_int("storage", storage - usage)
+			storage = storage - usage
+			meta:set_int("storage", storage)
 			pow_buffer = {capacity = capacity, storage = storage, usage = usage}
 			time = time + ele.helpers.round(machine_speed * 10)
-			meta:set_string("infotext", ("%s Active"):format(nodedef.description) ..
-				"\n" .. ele.capacity_text(capacity, storage))
 
 			if nodedef.ele_active_node then
 				local active_node = nodename.."_active"
@@ -166,8 +175,7 @@ function elepm.register_crafter(nodename, nodedef)
 			if not room_for_output then
 				ele.helpers.swap_node(pos, machine_node)
 				time = ele.helpers.round(res_time*10)
-				meta:set_string("infotext", ("%s Output Full!"):format(nodedef.description) ..
-					"\n" .. ele.capacity_text(capacity, storage))
+				status = "Output Full!"
 				break
 			end
 
@@ -182,7 +190,9 @@ function elepm.register_crafter(nodename, nodedef)
 			pct = math.floor((time / ele.helpers.round(res_time * 10)) * 100)
 		end
 
-		meta:set_string("formspec", get_formspec(craft_type, pow_buffer, pct, pos))
+		meta:set_string("formspec", get_formspec(craft_type, pow_buffer, pct, pos, state))
+		meta:set_string("infotext", ("%s %s"):format(nodedef.description, status) ..
+			"\n" .. ele.capacity_text(capacity, storage))
 		meta:set_int("src_time", time)
 
 		return refresh

@@ -16,7 +16,7 @@ local cooler_recipes = {
 	},
 }
 
-local function get_formspec(item_percent, coolant_buffer, hot_buffer, power, recipes, recipe)
+local function get_formspec(item_percent, coolant_buffer, hot_buffer, power, recipes, recipe, state)
 	local rclist = {}
 
 	local x = 2.5
@@ -34,6 +34,7 @@ local function get_formspec(item_percent, coolant_buffer, hot_buffer, power, rec
 		default.gui_bg_img..
 		default.gui_slots..
 		ele.formspec.power_meter(power)..
+		ele.formspec.state_switcher(3.5, 2.5, state)..
 		ele.formspec.fluid_bar(1, 0, coolant_buffer)..
 		ele.formspec.fluid_bar(7, 0, hot_buffer)..
 		"list[context;dst;3.5,1.5;1,1;]"..
@@ -49,7 +50,6 @@ local function get_formspec(item_percent, coolant_buffer, hot_buffer, power, rec
 		"listring[current_player;main]"..
 		default.get_hotbar_bg(0, 4.25)
 end
-
 
 local function lava_cooler_timer(pos, elapsed)
 	local refresh = false
@@ -69,7 +69,10 @@ local function lava_cooler_timer(pos, elapsed)
 	local time    = meta:get_int("src_time")
 	local active  = "Active"
 
-	if storage > usage then
+	local state = meta:get_int("state")
+	local is_enabled = ele.helpers.state_enabled(meta, pos, state)
+
+	if storage > usage and is_enabled then
 		if coolant_buffer.amount >= 1000 and hot_buffer.amount >= 1000 then
 			if time >= TIME then
 				local room_for_output = true
@@ -101,6 +104,8 @@ local function lava_cooler_timer(pos, elapsed)
 			active = "Idle"
 			refresh = false
 		end
+	elseif not is_enabled then
+		active = "Off"
 	else
 		active = "Idle"
 	end
@@ -113,7 +118,7 @@ local function lava_cooler_timer(pos, elapsed)
 	meta:set_string("infotext", ("Lava Cooler %s\n%s"):format(active, ele.capacity_text(capacity, storage)))
 
 	meta:set_string("formspec", get_formspec(timer, coolant_buffer, hot_buffer, 
-		power, cooler_recipes, recipe))
+		power, cooler_recipes, recipe, state))
 
 	return refresh
 end
@@ -142,7 +147,7 @@ ele.register_machine("elepower_machines:lava_cooler", {
 		inv:set_size("dst", 1)
 
 		meta:set_string("recipe", "default:cobble")
-		meta:set_string("formspec", get_formspec(0,nil,nil,0,cooler_recipes, "default:cobble"))
+		meta:set_string("formspec", get_formspec(0,nil,nil,nil,cooler_recipes, "default:cobble"))
 	end,
 	on_timer = lava_cooler_timer,
 	on_receive_fields = function (pos, formname, fields, sender)

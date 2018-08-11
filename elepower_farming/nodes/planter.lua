@@ -51,12 +51,13 @@ local ranges = {
 	},
 }
 
-local function get_formspec(timer, power)
+local function get_formspec(timer, power, state)
 	return "size[8,10]"..
 		default.gui_bg..
 		default.gui_bg_img..
 		default.gui_slots..
 		ele.formspec.power_meter(power)..
+		ele.formspec.state_switcher(7, 0, state)..
 		ele.formspec.create_bar(1, 0, 100 - timer, "#00ff11", true)..
 		"list[context;layout;2.5,0;3,3;]"..
 		"list[context;src;0,3.5;8,2;]"..
@@ -231,7 +232,11 @@ local function on_timer(pos, elapsed)
 
 	local work = meta:get_int("src_time")
 
-	if storage > usage then
+	local state = meta:get_int("state")
+	local is_enabled = ele.helpers.state_enabled(meta, pos, state)
+	local active = "Idle"
+
+	if storage > usage and is_enabled then
 		if work == PLANTER_TICK then
 			local planted = 0
 			for index, slot in ipairs(inv:get_list("layout")) do
@@ -249,13 +254,19 @@ local function on_timer(pos, elapsed)
 			work = work + 1
 		end
 
+		active = "Active"
 		refresh = true
+	elseif not is_enabled then
+		active = "Off"
 	end
 
 	local power = {capacity = capacity, storage = storage, usage = usage}
 	local work_percent  = math.floor((work / PLANTER_TICK)*100)
 
-	meta:set_string("formspec", get_formspec(work_percent, power))
+	meta:set_string("formspec", get_formspec(work_percent, power, state))
+	meta:set_string("infotext", ("Planter %s\n%s"):format(active,
+		ele.capacity_text(capacity, storage)))
+
 	meta:set_int("storage", storage)
 	meta:set_int("src_time", work)
 

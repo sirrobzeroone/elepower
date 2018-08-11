@@ -1,10 +1,11 @@
 
-local function get_formspec_default(power, percent, buffer)
+local function get_formspec_default(power, percent, buffer, state)
 	return "size[8,8.5]"..
 		default.gui_bg..
 		default.gui_bg_img..
 		default.gui_slots..
 		ele.formspec.power_meter(power)..
+		ele.formspec.state_switcher(7, 2.5, state)..
 		ele.formspec.fluid_bar(7, 0, buffer)..
 		"image[3.5,1.5;1,1;default_furnace_fire_bg.png^[lowpart:"..
 		(percent)..":default_furnace_fire_fg.png]"..
@@ -58,12 +59,21 @@ function ele.register_fluid_generator(nodename, nodedef)
 			local generation = ele.helpers.get_node_property(meta, pos, "usage")
 			local storage    = ele.helpers.get_node_property(meta, pos, "storage")
 
+			local state = meta:get_int("state")
+			local is_enabled = ele.helpers.state_enabled(meta, pos, state)
+
 			-- Fluid buffer
 			local flbuffer = fluid_lib.get_buffer_data(pos, buffer_name)
-			local pow_buffer
-			if not flbuffer or flbuffer.fluid == "" then return false end
+			local pow_buffer = {capacity = capacity, storage = storage, usage = 0}
+			local status = "Idle"
 
 			while true do
+				if not flbuffer or flbuffer.fluid == "" then break end
+				if not is_enabled then
+					status = "Off"
+					break
+				end
+
 				-- If more to burn and the energy produced was used: produce some more
 				if burn_time > 0 then
 					if storage + generation > capacity then
@@ -77,7 +87,7 @@ function ele.register_fluid_generator(nodename, nodedef)
 					meta:set_int("burn_time", burn_time)
 				end
 
-				pow_buffer = {capacity = capacity, storage = storage, usage = 0}
+				status = "Active"
 
 				-- Burn another bucket of lava
 				if burn_time == 0 then
@@ -95,10 +105,7 @@ function ele.register_fluid_generator(nodename, nodedef)
 
 						refresh = true
 					else
-						meta:set_string("formspec", get_formspec(pow_buffer, 0, flbuffer))
-						meta:set_string("infotext", ("%s Idle\n%s\n%s"):format(nodedef.description,
-							ele.capacity_text(capacity, storage), fluid_lib.buffer_to_string(flbuffer)))
-
+						status = "Idle"
 						ele.helpers.swap_node(pos, nodename)
 					end
 				end
@@ -107,8 +114,8 @@ function ele.register_fluid_generator(nodename, nodedef)
 			end
 
 			local percent = math.floor((burn_time / burn_totaltime) * 100)
-			meta:set_string("formspec", get_formspec(pow_buffer, percent, flbuffer))
-			meta:set_string("infotext", ("%s Active\n%s\n%s"):format(nodedef.description,
+			meta:set_string("formspec", get_formspec(pow_buffer, percent, flbuffer, state))
+			meta:set_string("infotext", ("%s %s\n%s\n%s"):format(nodedef.description, status,
 				ele.capacity_text(capacity, storage), fluid_lib.buffer_to_string(flbuffer)))
 
 			meta:set_int(buffer_name .. "_fluid_storage", flbuffer.amount)

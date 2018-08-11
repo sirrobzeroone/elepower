@@ -2,6 +2,7 @@
 -- Machine definitions
 
 local pw = minetest.get_modpath("pipeworks") ~= nil
+local mc = minetest.get_modpath("mesecons") ~= nil
 local tl = minetest.get_modpath("tubelib") ~= nil
 
 --[[
@@ -84,6 +85,14 @@ function ele.default.metadata_inventory_changed(pos)
 	end
 end
 
+-- State machine descriptions
+ele.default.states = {
+	[0] = {s = "on", d = "Always on", e = "toggle"},
+	{s = "off", d = "Always off", e = "toggle"},
+	{s = "signal", d = "Enable by Mesecons signal", e = "mesecons"},
+	{s = "interrupt", d = "Disable by Mesecons signal", e = "mesecons"},
+}
+
 -- Preserve power storage in the item stack dropped
 local function preserve_metadata(pos, oldnode, oldmeta, drops)
 	local meta     = minetest.get_meta(pos)
@@ -125,6 +134,7 @@ function ele.capacity_text(capacity, storage)
 		ele.helpers.comma_value(capacity), ele.unit)
 end
 
+-- API support
 local tube = {
 	insert_object = function(pos, node, stack, direction)
 		local meta = minetest.get_meta(pos)
@@ -162,6 +172,55 @@ local tubelib_tube = {
 		return tubelib.put_item(meta, "dst", item)
 	end,
 }
+
+local mesecons_def = {}
+if mc then
+	mesecons_def = {
+		effector = {
+			action_on = function (pos, node)
+				local meta = minetest.get_meta(pos)
+				meta:set_int("signal_interrupt", 1)
+			end,
+			action_off = function (pos, node)
+				local meta = minetest.get_meta(pos)
+				meta:set_int("signal_interrupt", 0)
+			end,
+			action_change = function (pos, node)
+				local t = minetest.get_node_timer(pos)
+				if not t:is_started() then
+					t:start(1.0)
+				end
+			end,
+		}
+	}
+end
+
+-- Functions
+
+local function switch_state(pos, state_def)
+	local meta  = minetest.get_meta(pos)
+	local state = meta:get_int("state")
+	local states = {}
+	for id,state in pairs(ele.default.states) do
+		if state_def[state.e] then
+			states[#states + 1] = id
+		end
+	end
+
+	if #states == 0 then return end
+
+	state = state + 1
+	if state >= #states then
+		state = 0
+	end
+	state = states[state + 1]
+	meta:set_int("state", state)
+
+	local t = minetest.get_node_timer(pos)
+	if not t:is_started() then
+		t:start(1.0)
+	end
+end
 
 -- Register a base device
 function ele.register_base_device(nodename, nodedef)
@@ -228,10 +287,14 @@ function ele.register_base_device(nodename, nodedef)
 		end
 	end
 
-
 	-- Prevent digging when there's items inside
 	if not nodedef.can_dig then
 		nodedef.can_dig = can_dig
+	end
+
+	-- Explicitly allow the disabling of the state machine
+	if nodedef.groups["state_machine"] ~= 0 and not nodedef["states"] then
+		nodedef.states = {toggle = true}
 	end
 
 	-- Pipeworks support
@@ -248,6 +311,32 @@ function ele.register_base_device(nodename, nodedef)
 			end
 		else
 			nodedef['tube'] = tube
+		end
+	end
+
+	-- Mesecons support
+	if mc then
+		nodedef["mesecons"] = mesecons_def
+		if nodedef.groups["state_machine"] ~= 1 then
+			nodedef.states["mesecons"] = true
+		end
+	end
+
+	-- STATE MACHINE
+	local original_on_receive_fields = nodedef.on_receive_fields
+	nodedef.on_receive_fields = function (pos, formname, fields, sender)
+		if sender and sender ~= "" and minetest.is_protected(pos, sender:get_player_name()) then
+			return
+		end
+
+		if nodedef.states then
+			if fields["cyclestate"] then
+				switch_state(pos, nodedef.states)
+			end
+		end
+
+		if original_on_receive_fields then
+			return original_on_receive_fields(pos, formname, fields, sender)
 		end
 	end
 
