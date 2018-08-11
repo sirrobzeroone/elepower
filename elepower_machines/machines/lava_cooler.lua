@@ -72,6 +72,8 @@ local function lava_cooler_timer(pos, elapsed)
 	local state = meta:get_int("state")
 	local is_enabled = ele.helpers.state_enabled(meta, pos, state)
 
+	local power = {capacity = capacity, storage = storage, usage = 0}
+
 	if storage > usage and is_enabled then
 		if coolant_buffer.amount >= 1000 and hot_buffer.amount >= 1000 then
 			if time >= TIME then
@@ -98,6 +100,7 @@ local function lava_cooler_timer(pos, elapsed)
 			else
 				time    = time + 1
 				storage = storage - usage
+				power.usage = usage
 				refresh = true
 			end
 		else
@@ -110,7 +113,6 @@ local function lava_cooler_timer(pos, elapsed)
 		active = "Idle"
 	end
 
-	local power = {capacity = capacity, storage = storage}
 	local timer = math.floor(100 * time / TIME)
 
 	meta:set_int("src_time", time)

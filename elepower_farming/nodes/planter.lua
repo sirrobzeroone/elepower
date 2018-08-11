@@ -234,6 +234,7 @@ local function on_timer(pos, elapsed)
 
 	local state = meta:get_int("state")
 	local is_enabled = ele.helpers.state_enabled(meta, pos, state)
+	local power = {capacity = capacity, storage = storage, usage = 0}
 	local active = "Idle"
 
 	if storage > usage and is_enabled then
@@ -256,11 +257,11 @@ local function on_timer(pos, elapsed)
 
 		active = "Active"
 		refresh = true
+		power.usage = usage
 	elseif not is_enabled then
 		active = "Off"
 	end
 
-	local power = {capacity = capacity, storage = storage, usage = usage}
 	local work_percent  = math.floor((work / PLANTER_TICK)*100)
 
 	meta:set_string("formspec", get_formspec(work_percent, power, state))

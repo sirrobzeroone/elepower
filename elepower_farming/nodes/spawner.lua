@@ -126,6 +126,8 @@ local function on_timer(pos, elapsed)
 	local mob_desc = "None"
 	local active   = "Active"
 
+	local power = {capacity = capacity, storage = storage, usage = 0}
+
 	if storage > usage and not egg_slot:is_empty() and ele.helpers.get_item_group(egg_name, "spawn_egg") and is_enabled then
 		local mob_name = egg_name:gsub("_set", "")
 
@@ -147,6 +149,7 @@ local function on_timer(pos, elapsed)
 
 		refresh = true
 		mob_desc = minetest.registered_items[mob_name].description
+		power.usage = usage
 	elseif not is_enabled then
 		active = "Off"
 	else
@@ -157,7 +160,6 @@ local function on_timer(pos, elapsed)
 	meta:set_string("infotext", ("Powered Mob Spawner %s\nMob: %s\n%s"):format(
 		active, mob_desc, ele.capacity_text(capacity, storage)))
 
-	local power = {capacity = capacity, storage = storage, usage = usage}
 	local work_percent  = math.floor((work / SPAWNER_TICK)*100)
 
 	meta:set_string("formspec", get_formspec(work_percent, power, state))

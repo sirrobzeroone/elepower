@@ -65,6 +65,7 @@ function elepm.register_fuel_generator(nodename, nodedef)
 
 				storage = storage + generation
 				pow_buffer.storage = storage
+				pow_buffer.usage = generation
 				meta:set_int("storage", storage)
 
 				burn_time = burn_time - 1

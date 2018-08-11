@@ -4,8 +4,8 @@ ele.formspec = {}
 ele.formspec.gui_switcher_icons = {
 	[0] = "elepower_gui_check.png",
 	"elepower_gui_cancel.png",
-	"mesecons_wire_on.png",
-	"mesecons_wire_off.png",
+	"mesecons_wire_on.png^elepower_gui_mese_mask.png^\\[makealpha\\:255,0,0",
+	"mesecons_wire_off.png^elepower_gui_mese_mask.png^\\[makealpha\\:255,0,0",
 }
 
 function ele.formspec.state_switcher(x, y, state)

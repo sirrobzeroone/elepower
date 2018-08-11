@@ -113,6 +113,8 @@ local function on_timer(pos, elapsed)
 	local is_enabled = ele.helpers.state_enabled(meta, pos, state)
 	local active = "Idle"
 
+	local power = {capacity = capacity, storage = storage, usage = 0}
+
 	if storage > usage and sludge.amount + SLUDGE_PRODUCED < sludge.capacity and is_enabled then
 		if work == HARVESTER_TICK then
 			local harvested = {}
@@ -136,6 +138,7 @@ local function on_timer(pos, elapsed)
 
 		active = "Active"
 		refresh = true
+		power.usage = usage
 		ele.helpers.swap_node(pos, "elepower_farming:harvester_active")
 	else
 		if not is_enabled then
@@ -145,7 +148,6 @@ local function on_timer(pos, elapsed)
 		ele.helpers.swap_node(pos, "elepower_farming:harvester")
 	end
 
-	local power = {capacity = capacity, storage = storage, usage = usage}
 	local work_percent  = math.floor((work / HARVESTER_TICK)*100)
 
 	meta:set_string("formspec", get_formspec(work_percent, power, sludge, state))

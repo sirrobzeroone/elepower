@@ -173,27 +173,24 @@ local tubelib_tube = {
 	end,
 }
 
-local mesecons_def = {}
-if mc then
-	mesecons_def = {
-		effector = {
-			action_on = function (pos, node)
-				local meta = minetest.get_meta(pos)
-				meta:set_int("signal_interrupt", 1)
-			end,
-			action_off = function (pos, node)
-				local meta = minetest.get_meta(pos)
-				meta:set_int("signal_interrupt", 0)
-			end,
-			action_change = function (pos, node)
-				local t = minetest.get_node_timer(pos)
-				if not t:is_started() then
-					t:start(1.0)
-				end
-			end,
-		}
+local mesecons_def = {
+	effector = {
+		action_on = function (pos, node)
+			local meta = minetest.get_meta(pos)
+			meta:set_int("signal_interrupt", 1)
+		end,
+		action_off = function (pos, node)
+			local meta = minetest.get_meta(pos)
+			meta:set_int("signal_interrupt", 0)
+		end,
+		action_change = function (pos, node)
+			local t = minetest.get_node_timer(pos)
+			if not t:is_started() then
+				t:start(1.0)
+			end
+		end,
 	}
-end
+}
 
 -- Functions
 
