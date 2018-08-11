@@ -28,3 +28,4 @@ dofile(mp .. "canning_machine.lua")
 -- Other
 dofile(mp .. "accumulator.lua")
 dofile(mp .. "lava_cooler.lua")
+dofile(mp .. "bucketer.lua")

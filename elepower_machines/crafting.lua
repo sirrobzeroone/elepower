@@ -528,3 +528,13 @@ minetest.register_craft({
 		{"elepower_dynamics:steel_gear", "elepower_dynamics:tin_gear", "elepower_dynamics:steel_gear"},
 	}
 })
+
+-- Bucketer
+minetest.register_craft({
+	output = "elepower_machines:bucketer",
+	recipe = {
+		{"", "elepower_dynamics:portable_tank", ""},
+		{"elepower_dynamics:tin_can", "elepower_machines:machine_block", "elepower_dynamics:tin_can"},
+		{"elepower_dynamics:servo_valve", "elepower_dynamics:tin_gear", "elepower_dynamics:servo_valve"},
+	}
+})
