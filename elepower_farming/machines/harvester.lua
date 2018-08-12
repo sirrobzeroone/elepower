@@ -113,9 +113,9 @@ local function on_timer(pos, elapsed)
 	local is_enabled = ele.helpers.state_enabled(meta, pos, state)
 	local active = "Idle"
 
-	local power = {capacity = capacity, storage = storage, usage = 0}
+	local pow_buffer = {capacity = capacity, storage = storage, usage = 0}
 
-	if storage > usage and sludge.amount + SLUDGE_PRODUCED < sludge.capacity and is_enabled then
+	if pow_buffer.storage > usage and sludge.amount + SLUDGE_PRODUCED < sludge.capacity and is_enabled then
 		if work == HARVESTER_TICK then
 			local harvested = {}
 
@@ -123,7 +123,7 @@ local function on_timer(pos, elapsed)
 
 			work = 0
 			if #harvested > 0 then
-				storage = storage - usage
+				pow_buffer.storage = pow_buffer.storage - usage
 				sludge.amount = sludge.amount + SLUDGE_PRODUCED
 				for _,itm in ipairs(harvested) do
 					local stack = ItemStack(itm)
@@ -138,7 +138,7 @@ local function on_timer(pos, elapsed)
 
 		active = "Active"
 		refresh = true
-		power.usage = usage
+		pow_buffer.usage = usage
 		ele.helpers.swap_node(pos, "elepower_farming:harvester_active")
 	else
 		if not is_enabled then
@@ -150,11 +150,11 @@ local function on_timer(pos, elapsed)
 
 	local work_percent  = math.floor((work / HARVESTER_TICK)*100)
 
-	meta:set_string("formspec", get_formspec(work_percent, power, sludge, state))
+	meta:set_string("formspec", get_formspec(work_percent, pow_buffer, sludge, state))
 	meta:set_string("infotext", ("Harvester %s\n%s"):format(active,
 		ele.capacity_text(capacity, storage)))
 
-	meta:set_int("storage", storage)
+	meta:set_int("storage", pow_buffer.storage)
 	meta:set_int("src_time", work)
 
 	meta:set_string("sludge_fluid", "elepower_farming:sludge_source")

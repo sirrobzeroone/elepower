@@ -160,7 +160,7 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "elepower_dynamics:copper_wire",
+	output = "elepower_dynamics:copper_wire 8",
 	recipe = {
 		{"default:copper_ingot", "default:copper_ingot", "default:copper_ingot"},
 		{"default:copper_ingot", "",                     "default:copper_ingot"},

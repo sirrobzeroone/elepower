@@ -8,5 +8,6 @@ elefarm.modpath = modpath
 
 dofile(modpath.."/treecutter.lua")
 dofile(modpath.."/craftitems.lua")
-dofile(modpath.."/nodes/init.lua")
+dofile(modpath.."/nodes.lua")
+dofile(modpath.."/machines/init.lua")
 dofile(modpath.."/crafting.lua")

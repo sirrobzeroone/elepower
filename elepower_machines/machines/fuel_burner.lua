@@ -22,6 +22,6 @@ ele.register_fluid_generator("elepower_machines:fuel_burner", {
 			},
 		}
 	},
-	fuel_burn_time = 4,
+	fuel_burn_time = 8,
 	fuel_usage = 100,
 })

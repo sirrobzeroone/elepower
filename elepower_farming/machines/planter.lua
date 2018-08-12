@@ -234,10 +234,10 @@ local function on_timer(pos, elapsed)
 
 	local state = meta:get_int("state")
 	local is_enabled = ele.helpers.state_enabled(meta, pos, state)
-	local power = {capacity = capacity, storage = storage, usage = 0}
+	local pow_buffer = {capacity = capacity, storage = storage, usage = 0}
 	local active = "Idle"
 
-	if storage > usage and is_enabled then
+	if pow_buffer.storage > usage and is_enabled then
 		if work == PLANTER_TICK then
 			local planted = 0
 			for index, slot in ipairs(inv:get_list("layout")) do
@@ -249,7 +249,7 @@ local function on_timer(pos, elapsed)
 
 			work = 0
 			if planted > 0 then
-				storage = storage - usage
+				pow_buffer.storage = pow_buffer.storage - usage
 			end
 		else
 			work = work + 1
@@ -257,18 +257,18 @@ local function on_timer(pos, elapsed)
 
 		active = "Active"
 		refresh = true
-		power.usage = usage
+		pow_buffer.usage = usage
 	elseif not is_enabled then
 		active = "Off"
 	end
 
 	local work_percent  = math.floor((work / PLANTER_TICK)*100)
 
-	meta:set_string("formspec", get_formspec(work_percent, power, state))
+	meta:set_string("formspec", get_formspec(work_percent, pow_buffer, state))
 	meta:set_string("infotext", ("Planter %s\n%s"):format(active,
 		ele.capacity_text(capacity, storage)))
 
-	meta:set_int("storage", storage)
+	meta:set_int("storage", pow_buffer.storage)
 	meta:set_int("src_time", work)
 
 	return refresh
