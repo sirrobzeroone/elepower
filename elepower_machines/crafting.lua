@@ -368,6 +368,16 @@ minetest.register_craft({
 	}
 })
 
+-- Liquid Fuel Combustion Generator
+minetest.register_craft({
+	output = "elepower_machines:fuel_burner",
+	recipe = {
+		{"elepower_dynamics:wound_copper_coil", "elepower_dynamics:integrated_circuit", "elepower_dynamics:wound_copper_coil"},
+		{"default:brick", "elepower_dynamics:portable_tank", "default:brick"},
+		{"elepower_dynamics:servo_valve", "elepower_machines:generator", "elepower_dynamics:servo_valve"},
+	}
+})
+
 -- Alloy Furnace
 minetest.register_craft({
 	output = "elepower_machines:alloy_furnace",

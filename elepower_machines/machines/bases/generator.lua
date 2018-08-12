@@ -63,10 +63,8 @@ function elepm.register_fuel_generator(nodename, nodedef)
 					return false
 				end
 
-				storage = storage + generation
-				pow_buffer.storage = storage
+				pow_buffer.storage = pow_buffer.storage + generation
 				pow_buffer.usage = generation
-				meta:set_int("storage", storage)
 
 				burn_time = burn_time - 1
 				meta:set_int("burn_time", burn_time)
@@ -113,7 +111,9 @@ function elepm.register_fuel_generator(nodename, nodedef)
 		local percent = math.floor((burn_time / burn_totaltime) * 100)
 		meta:set_string("formspec", get_formspec(pow_buffer, percent, state))
 		meta:set_string("infotext", ("%s %s"):format(nodedef.description, status) ..
-			"\n" .. ele.capacity_text(capacity, storage))
+			"\n" .. ele.capacity_text(capacity, pow_buffer.storage))
+
+		meta:set_int("storage", pow_buffer.storage)
 
 		return refresh
 	end

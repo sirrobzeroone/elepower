@@ -113,7 +113,7 @@ function elepm.register_crafter(nodename, nodedef)
 
 			-- Determine if there is enough power for this action
 			res_time = result.time
-			if result.time ~= 0 and storage >= usage then
+			if result.time ~= 0 and pow_buffer.storage >= usage then
 				power_operation = true
 				pow_buffer.usage = usage
 			end
@@ -135,9 +135,7 @@ function elepm.register_crafter(nodename, nodedef)
 			status = "Active"
 
 			-- One step
-			storage = storage - usage
-			meta:set_int("storage", storage)
-			pow_buffer = {capacity = capacity, storage = storage, usage = usage}
+			pow_buffer.storage = pow_buffer.storage - usage
 			time = time + ele.helpers.round(machine_speed * 10)
 
 			if nodedef.ele_active_node then
@@ -193,7 +191,9 @@ function elepm.register_crafter(nodename, nodedef)
 		meta:set_string("formspec", get_formspec(craft_type, pow_buffer, pct, pos, state))
 		meta:set_string("infotext", ("%s %s"):format(nodedef.description, status) ..
 			"\n" .. ele.capacity_text(capacity, storage))
+
 		meta:set_int("src_time", time)
+		meta:set_int("storage", pow_buffer.storage)
 
 		return refresh
 	end

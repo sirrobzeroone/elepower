@@ -18,7 +18,7 @@ function elepm.register_craft(craftdef)
 		return nil
 	end
 
-	if craftdef.type == "cooking" then
+	if craftdef.type == "cooking" or craftdef.type == "fuel" then
 		minetest.register_craft(craftdef)
 		return
 	end

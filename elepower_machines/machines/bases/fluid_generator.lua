@@ -16,20 +16,14 @@ end
 
 -- A generator that creates power using a fuel
 function ele.register_fluid_generator(nodename, nodedef)
-	local fuel  = nodedef.fuel
-	local btime = nodedef.fuel_burn_time or 60
-
+	local btime  = nodedef.fuel_burn_time or 8
+	local busage = nodedef.fuel_usage or 1000
 	local buffer_name = nil
 
 	-- Autodetect fluid buffer and the fuel if necessary
 	if not nodedef.fluid_buffers then return nil end
 	for buf,data in pairs(nodedef.fluid_buffers) do
 		buffer_name = buf
-
-		if not fuel and data.accepts and type(data.accepts) == "table" then
-			fuel = data.accepts[1]
-		end
-
 		break
 	end
 
@@ -68,7 +62,6 @@ function ele.register_fluid_generator(nodename, nodedef)
 			local status = "Idle"
 
 			while true do
-				if not flbuffer or flbuffer.fluid == "" then break end
 				if not is_enabled then
 					status = "Off"
 					break
@@ -80,28 +73,38 @@ function ele.register_fluid_generator(nodename, nodedef)
 						break
 					end
 
-					storage = storage + generation
-					meta:set_int("storage", storage)
+					pow_buffer.storage = pow_buffer.storage + generation
+					pow_buffer.usage = generation
 
 					burn_time = burn_time - 1
 					meta:set_int("burn_time", burn_time)
+
+					refresh = true
 				end
 
 				status = "Active"
 
 				-- Burn another bucket of lava
 				if burn_time == 0 then
+					if not flbuffer or flbuffer.fluid == "" then break end
+
 					local inv = meta:get_inventory()
-					if flbuffer.amount >= 1000 then
+					if flbuffer.amount >= busage then
 						meta:set_int("burn_time", btime)
 						meta:set_int("burn_totaltime", btime)
 
 						-- Take lava
-						flbuffer.amount = flbuffer.amount - 1000
+						flbuffer.amount = flbuffer.amount - busage
 						pow_buffer.usage = generation
 
-						local active_node = nodename.."_active"
-						ele.helpers.swap_node(pos, active_node)
+						if nodedef.ele_active_node then
+							local active_node = nodename .. "_active"
+							if nodedef.ele_active_node ~= true then
+								active_node = nodedef.ele_active_node
+							end
+
+							ele.helpers.swap_node(pos, active_node)
+						end
 
 						refresh = true
 					else
@@ -116,9 +119,10 @@ function ele.register_fluid_generator(nodename, nodedef)
 			local percent = math.floor((burn_time / burn_totaltime) * 100)
 			meta:set_string("formspec", get_formspec(pow_buffer, percent, flbuffer, state))
 			meta:set_string("infotext", ("%s %s\n%s\n%s"):format(nodedef.description, status,
-				ele.capacity_text(capacity, storage), fluid_lib.buffer_to_string(flbuffer)))
+				ele.capacity_text(capacity, pow_buffer.storage), fluid_lib.buffer_to_string(flbuffer)))
 
 			meta:set_int(buffer_name .. "_fluid_storage", flbuffer.amount)
+			meta:set_int("storage", pow_buffer.storage)
 
 			return refresh
 		end,
@@ -132,7 +136,8 @@ function ele.register_fluid_generator(nodename, nodedef)
 		end
 	}
 
-	nodedef.fuel = nil
+	nodedef.fuel_burn_time = nil
+	nodedef.fuel_usage = nil
 
 	for key,val in pairs(defaults) do
 		if not nodedef[key] then
