@@ -233,15 +233,6 @@ if easycrafting then
 			{"group:stone",  "elepower_dynamics:fluid_duct",  "group:stone"},
 		}
 	})
-
-	minetest.register_craft({
-		output = "elepower_dynamics:battery 2",
-		recipe = {
-			{"elepower_dynamics:zinc_dust", "elepower_dynamics:wound_copper_coil", "elepower_dynamics:lead_dust"},
-			{"elepower_dynamics:tin_plate", "default:mese_crystal_fragment", "elepower_dynamics:tin_plate"},
-			{"elepower_dynamics:tin_plate", "default:mese_crystal_fragment", "elepower_dynamics:tin_plate"},
-		}
-	})
 else
 	minetest.register_craft({
 		output = "elepower_dynamics:pcb_blank",
@@ -260,11 +251,11 @@ else
 			"elepower_dynamics:viridisium_dust",
 			"elepower_dynamics:viridisium_dust",
 			"elepower_dynamics:viridisium_dust",
-			"elepower_dynamics:copper_dust",
-			"elepower_dynamics:copper_dust",
-			"elepower_dynamics:copper_dust",
-			"elepower_dynamics:copper_dust",
 			"farming:seed_wheat",
+			"elepower_dynamics:copper_dust",
+			"elepower_dynamics:copper_dust",
+			"elepower_dynamics:copper_dust",
+			"elepower_dynamics:copper_dust",
 		}
 	})
 
@@ -277,16 +268,25 @@ else
 			{"group:stone",  "elepower_dynamics:fluid_duct",  "group:stone"},
 		}
 	})
-
-	minetest.register_craft({
-		output = "elepower_dynamics:battery 2",
-		recipe = {
-			{"elepower_dynamics:zinc_dust", "elepower_dynamics:wound_copper_coil", "elepower_dynamics:lead_dust"},
-			{"elepower_dynamics:tin_plate", "default:mese_crystal", "elepower_dynamics:tin_plate"},
-			{"elepower_dynamics:tin_plate", "default:mese_crystal", "elepower_dynamics:tin_plate"},
-		}
-	})
 end
+
+minetest.register_craft({
+	output = "elepower_dynamics:battery 2",
+	recipe = {
+		{"elepower_dynamics:zinc_dust", "elepower_dynamics:wound_copper_coil", "elepower_dynamics:lead_dust"},
+		{"elepower_dynamics:tin_plate", "default:mese_crystal_fragment", "elepower_dynamics:tin_plate"},
+		{"elepower_dynamics:tin_plate", "default:mese_crystal_fragment", "elepower_dynamics:tin_plate"},
+	}
+})
+
+minetest.register_craft({
+	output = "elepower_dynamics:lcd_panel",
+	recipe = {
+		{"dye:red", "dye:green", "dye:blue"},
+		{"moreores:silver_ingot", "elepower_dynamics:wound_copper_coil", "moreores:silver_ingot"},
+		{"", "default:meselamp", ""}
+	}
+})
 
 minetest.register_craft({
 	output = "elepower_dynamics:integrated_circuit",

@@ -31,7 +31,7 @@ minetest.register_craft({
 	recipe = {
 		{"elepower_dynamics:wound_silver_coil", "elepower_dynamics:soc", "elepower_dynamics:wound_silver_coil"},
 		{"elepower_dynamics:wound_copper_coil", "default:steelblock", "elepower_dynamics:wound_copper_coil"},
-		{"elepower_dynamics:electrum_gear", ingot, "elepower_dynamics:electrum_gear"},
+		{"elepower_dynamics:electrum_gear", "elepower_dynamics:lcd_panel", "elepower_dynamics:electrum_gear"},
 	}
 })
 

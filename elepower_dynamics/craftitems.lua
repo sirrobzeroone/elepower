@@ -256,6 +256,12 @@ minetest.register_craftitem("elepower_dynamics:micro_circuit", {
 	groups = {circuit = 3, assembled_component = 1, control_circuit = 2}
 })
 
+minetest.register_craftitem("elepower_dynamics:lcd_panel", {
+	description = "LCD Panel",
+	inventory_image = "elepower_lcd_panel.png",
+	groups = {lcd = 1, assembled_component = 1}
+})
+
 ---------------
 -- Overrides --
 ---------------
