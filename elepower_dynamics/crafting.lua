@@ -92,6 +92,16 @@ minetest.register_craft({
 	}
 })
 
+-- Bucket
+
+minetest.register_craft({
+	output = 'bucket:bucket_empty',
+	recipe = {
+		{'elepower_dynamics:iron_ingot', '', 'elepower_dynamics:iron_ingot'},
+		{'', 'elepower_dynamics:iron_ingot', ''},
+	}
+})
+
 -----------
 -- Nodes --
 -----------

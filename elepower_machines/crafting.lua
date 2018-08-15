@@ -323,10 +323,8 @@ minetest.register_craft({
 	output = "elepower_machines:coal_alloy_furnace",
 	recipe = {
 		{"default:brick", "default:brick", "default:brick"},
-		{"default:furnace", "bucket:bucket_lava", "default:furnace"}
-	},
-	replacements = {
-		{"bucket:bucket_lava", "bucket:bucket_empty"}
+		{"default:furnace", "", "default:furnace"},
+		{"default:brick", "default:brick", "default:brick"},
 	}
 })
 
@@ -337,9 +335,6 @@ minetest.register_craft({
 		{"group:stone", "group:stone", "group:stone"},
 		{"default:flint", "default:flint", "default:flint"},
 		{"group:cobble", "group:cobble", "group:cobble"},
-	},
-	replacements = {
-		{"bucket:bucket_lava", "bucket:bucket_empty"}
 	}
 })
 
@@ -354,7 +349,7 @@ minetest.register_craft({
 	recipe = {
 		{ingot_machine, "default:steel_ingot", ingot_machine},
 		{"default:steel_ingot", "default:mese_crystal", "default:steel_ingot"},
-		{"elepower_dynamics:viridisium_ingot", "elepower_dynamics:motor", "elepower_dynamics:viridisium_ingot"},
+		{ingot_machine, "elepower_dynamics:motor", ingot_machine},
 	}
 })
 
