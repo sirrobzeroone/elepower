@@ -262,6 +262,12 @@ minetest.register_craftitem("elepower_dynamics:lcd_panel", {
 	groups = {lcd = 1, assembled_component = 1}
 })
 
+minetest.register_craftitem("elepower_dynamics:pv_cell", {
+	description = "Photovoltaic Cell",
+	inventory_image = "elepower_pv_cell.png",
+	groups = {pv = 1, assembled_component = 1}
+})
+
 ---------------
 -- Overrides --
 ---------------
