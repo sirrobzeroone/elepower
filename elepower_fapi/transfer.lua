@@ -64,9 +64,10 @@ local function fluid_targets(p_pos, pos)
 	local all_nodes = {}
 
 	local node = minetest.get_node(pos)
+	local ndef = minetest.registered_nodes[node.name]
 	if node and ele.helpers.get_item_group(node.name, "elefluid_transport") then
 		add_duct_node(all_nodes, pos, pnodeid, queue)
-	elseif node and ele.helpers.get_item_group(node.name, "fluid_container") then
+	elseif node and ndef['node_io_put_liquid'] and ndef['node_io_room_for_liquid'] then
 		queue = {p_pos}
 	end
 
@@ -98,8 +99,9 @@ function elefluid.transfer_timer_tick(pos, elapsed)
 	-- Only allow the node directly behind to be a start of a network
 	local tpos  = vector.add(minetest.facedir_to_dir(node.param2), pos)
 	local tname = minetest.get_node(tpos).name
+	local ndef  = minetest.registered_nodes[tname]
 	if not ele.helpers.get_item_group(tname, "elefluid_transport") and
-		not ele.helpers.get_item_group(tname, "fluid_container") then
+		not ndef['node_io_put_liquid'] and ndef['node_io_room_for_liquid'] then
 		minetest.forceload_free_block(pos)
 		return
 	end
@@ -121,15 +123,24 @@ function elefluid.transfer_timer_tick(pos, elapsed)
 		return true
 	end
 
+	local srcdef = minetest.registered_nodes[srcnode.name]
+
 	-- Make sure source node is a registered fluid container
-	if not ele.helpers.get_item_group(srcnode.name, "fluid_container") then
-		return true
+	if not srcdef['node_io_take_liquid'] or not srcdef['node_io_can_take_liquid'] then
+		return false
 	end
+
+	local c = srcdef.node_io_can_take_liquid(srcpos, srcnode, "")
+	if not c then return false end
 
 	local srcmeta = minetest.get_meta(srcpos)
 	local srcdef  = minetest.registered_nodes[srcnode.name]
-	local buffers = fluid_lib.get_node_buffers(srcpos)
-	if not buffers then return true end
+	local fl_size = srcdef.node_io_get_liquid_size(srcpos, srcnode, "")
+	local buffers = {}
+	for i = 1, fl_size do
+		buffers[i] = srcdef.node_io_get_liquid_name(srcpos, srcnode, "", i)
+	end
+	if not #buffers then return true end
 
 	-- Limit the amount of fluid pumped per cycle
 	local pcapability = ele.helpers.get_node_property(meta, pos, "fluid_pump_capacity")
@@ -139,29 +150,37 @@ function elefluid.transfer_timer_tick(pos, elapsed)
 	for _,pos in pairs(targets) do
 		if not vector.equals(pos, srcpos) then
 			if pumped >= pcapability then break end
-			local pp = fluid_lib.get_node_buffers(pos)
+			local destnode = minetest.get_node(pos)
+			local destdef  = minetest.registered_nodes[destnode.name]
+			local pp = nil
+
+			if destdef['node_io_can_put_liquid'] then
+				if destdef.node_io_can_put_liquid(pos, destnode, "") then
+					pp = {}
+					local fl_size = destdef.node_io_get_liquid_size(pos, destnode, "")
+					for i = 1, fl_size do
+						pp[i] = destdef.node_io_get_liquid_name(pos, destnode, "", i)
+					end
+					if not #pp then pp = nil end
+				end
+			end
 
 			local changed = false
 
 			if pp ~= nil then
-				for name in pairs(pp) do
-					for bname in pairs(buffers) do
+				for bindex,bfluid in pairs(pp) do
+					for aindex,afluid in pairs(buffers) do
 						if pumped >= pcapability then break end
-						local buffer_data = fluid_lib.get_buffer_data(srcpos, bname)
-						local target_data = fluid_lib.get_buffer_data(pos, name)
-
-						if (target_data.fluid == buffer_data.fluid or target_data.fluid == "") and
-							buffer_data.fluid ~= "" and buffer_data.amount > 0 and
-							(buffer_data.drainable == nil or buffer_data.drainable == true) and
-							fluid_lib.buffer_accepts_fluid(pos, name, buffer_data.fluid) then
-							
-							if fluid_lib.can_insert_into_buffer(pos, name, buffer_data.fluid, pcapability) > 0 then
-								local res_f, count = fluid_lib.take_from_buffer(srcpos, bname, pcapability)
-								if count > 0 then
-									fluid_lib.insert_into_buffer(pos, name, res_f, count)
-									pumped = pumped + count
-									changed = true
+						if (afluid == bfluid or bfluid == "") then
+							local defi = srcdef.node_io_take_liquid(srcpos, srcnode, "", nil, afluid, pcapability)
+							if defi.millibuckets > 0 then
+								local idef = destdef.node_io_room_for_liquid(pos, destnode, "", afluid, defi.millibuckets)
+								if idef > 0 then
+									local lo = destdef.node_io_put_liquid(pos, destnode, "", nil, afluid, idef)
+									idef = idef - lo
 								end
+								pumped = pumped + idef
+								changed = true
 							end
 						end
 					end

@@ -311,6 +311,46 @@ function ele.register_base_device(nodename, nodedef)
 		end
 	end
 
+	-- Node IO Support
+	if minetest.get_modpath("node_io") and (nodedef.groups["tubedevice"] or nodedef.groups["tube"]) then
+		nodedef.node_io_can_put_item = function(pos, node, side) return true end
+		nodedef.node_io_room_for_item = function(pos, node, side, itemstack, count)
+			local meta = minetest.get_meta(pos)
+			local inv = meta:get_inventory()
+			local istack_real = ItemStack(itemstack)
+			istack_real:set_count(count)
+			return inv:room_for_item("src", istack_real)
+		end
+		nodedef.node_io_put_item = function(pos, node, side, putter, itemstack)
+			local meta = minetest.get_meta(pos)
+			local inv = meta:get_inventory()
+			return inv:add_item("src", itemstack)
+		end
+		nodedef.node_io_can_take_item = function(pos, node, side) return true end
+		nodedef.node_io_get_item_size = function(pos, node, side)
+			local meta = minetest.get_meta(pos)
+			local inv = meta:get_inventory()
+			return inv:get_size("dst")
+		end
+		nodedef.node_io_get_item_name = function(pos, node, side, index)
+			local meta = minetest.get_meta(pos)
+			local inv = meta:get_inventory()
+			return inv:get_stack("dst", index):get_name()
+		end
+		nodedef.node_io_get_item_stack = function(pos, node, side, index)
+			local meta = minetest.get_meta(pos)
+			local inv = meta:get_inventory()
+			return inv:get_stack("dst", index)
+		end
+		nodedef.node_io_take_item = function(pos, node, side, taker, want_item, want_count)
+			local meta = minetest.get_meta(pos)
+			local inv = meta:get_inventory()
+			local stack = ItemStack(want_item)
+			stack:set_count(want_count)
+			return inv:take_item("dst", stack)
+		end
+	end
+
 	-- Mesecons support
 	if mc then
 		nodedef["mesecons"] = mesecons_def
@@ -375,6 +415,14 @@ function ele.register_base_device(nodename, nodedef)
 		end
 
 		tubelib.register_node(nodename, extras, tubelib_tube)
+	end
+
+	-- nodeio fluids
+	if nodedef.groups and nodedef.groups['fluid_container'] then
+		fluid_lib.register_node(nodename)
+		if active_name then
+			fluid_lib.register_node(active_name)
+		end
 	end
 end
 
