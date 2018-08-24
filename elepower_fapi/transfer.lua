@@ -29,13 +29,14 @@ local function check_node(targets, all_nodes, pos, p_pos, pnodeid, queue)
 	ele.helpers.get_or_load_node(pos)
 	local node = minetest.get_node(pos)
 	local meta = minetest.get_meta(pos)
+	local ndef = minetest.registered_nodes[node.name]
 
 	if ele.helpers.get_item_group(node.name, "elefluid_transport") then
 		add_duct_node(all_nodes, pos, pnodeid, queue)
 		return
 	end
 
-	if not ele.helpers.get_item_group(node.name, "fluid_container") then
+	if not ndef['node_io_can_put_liquid'] or not ndef['node_io_can_put_liquid'](pos, node, "") then
 		return
 	end
 
@@ -67,7 +68,7 @@ local function fluid_targets(p_pos, pos)
 	local ndef = minetest.registered_nodes[node.name]
 	if node and ele.helpers.get_item_group(node.name, "elefluid_transport") then
 		add_duct_node(all_nodes, pos, pnodeid, queue)
-	elseif node and ndef['node_io_put_liquid'] and ndef['node_io_room_for_liquid'] then
+	elseif node and ndef['node_io_can_put_liquid'] and ndef['node_io_can_put_liquid'](pos, node, "") then
 		queue = {p_pos}
 	end
 
@@ -98,10 +99,10 @@ function elefluid.transfer_timer_tick(pos, elapsed)
 
 	-- Only allow the node directly behind to be a start of a network
 	local tpos  = vector.add(minetest.facedir_to_dir(node.param2), pos)
-	local tname = minetest.get_node(tpos).name
-	local ndef  = minetest.registered_nodes[tname]
-	if not ele.helpers.get_item_group(tname, "elefluid_transport") and
-		not ndef['node_io_put_liquid'] and ndef['node_io_room_for_liquid'] then
+	local tnode = minetest.get_node(tpos)
+	local ndef  = minetest.registered_nodes[tnode.name]
+	if not ele.helpers.get_item_group(tnode.name, "elefluid_transport") and
+		(not ndef['node_io_can_put_liquid'] or not ndef['node_io_can_put_liquid'](tpos, tnode, "")) then
 		minetest.forceload_free_block(pos)
 		return
 	end
@@ -126,7 +127,7 @@ function elefluid.transfer_timer_tick(pos, elapsed)
 	local srcdef = minetest.registered_nodes[srcnode.name]
 
 	-- Make sure source node is a registered fluid container
-	if not srcdef['node_io_take_liquid'] or not srcdef['node_io_can_take_liquid'] then
+	if not srcdef['node_io_can_take_liquid'] then
 		return false
 	end
 
@@ -172,15 +173,16 @@ function elefluid.transfer_timer_tick(pos, elapsed)
 					for aindex,afluid in pairs(buffers) do
 						if pumped >= pcapability then break end
 						if (afluid == bfluid or bfluid == "") then
-							local defi = srcdef.node_io_take_liquid(srcpos, srcnode, "", nil, afluid, pcapability)
-							if defi.millibuckets > 0 then
-								local idef = destdef.node_io_room_for_liquid(pos, destnode, "", afluid, defi.millibuckets)
-								if idef > 0 then
-									local lo = destdef.node_io_put_liquid(pos, destnode, "", nil, afluid, idef)
-									idef = idef - lo
+							local idef = destdef.node_io_room_for_liquid(pos, destnode, "", afluid, pcapability)
+							if idef > 0 then
+								local fluidcount = srcdef.node_io_get_liquid_stack(srcpos, srcnode, "", aindex):get_count()
+								local defc = math.min(fluidcount, idef)
+								local defi = srcdef.node_io_take_liquid(srcpos, srcnode, "", nil, afluid, defc)
+								if defi.millibuckets > 0 then
+									local lo = destdef.node_io_put_liquid(pos, destnode, "", nil, afluid, defi.millibuckets)
+									pumped = pumped + (defi.millibuckets - lo)
+									changed = true
 								end
-								pumped = pumped + idef
-								changed = true
 							end
 						end
 					end

@@ -59,6 +59,9 @@ minetest.register_abm({
 		buffer.amount = buffer.amount + give
 
 		meta:set_int("water_fluid_storage", buffer.amount)
+		meta:set_string("water_fluid", "default:water_source")
 		meta:set_string("infotext", fluid_lib.buffer_to_string(buffer))
 	end
 })
+
+fluid_lib.register_node("elepower_machines:accumulator")
