@@ -117,7 +117,6 @@ ele.register_base_device("elepower_machines:bucketer", {
 	fluid_buffers = {
 		input = {
 			capacity  = 8000,
-			drainable = false,
 			accepts   = true,
 		},
 	},
