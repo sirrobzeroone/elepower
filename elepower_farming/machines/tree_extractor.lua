@@ -67,3 +67,5 @@ minetest.register_abm({
 		meta:set_string("infotext", fluid_lib.buffer_to_string(buffer))
 	end
 })
+
+fluid_lib.register_node("elepower_farming:tree_extractor")
