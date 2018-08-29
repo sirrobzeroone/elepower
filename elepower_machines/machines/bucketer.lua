@@ -44,9 +44,22 @@ local function on_timer(pos, elapsed)
 	local bucket_name = bucket_slot:get_name()
 
 	if is_enabled then
-		if mode == 0 and bucket_name == "bucket:bucket_empty" and buffer.amount >= 1000 then
+		if mode == 0 and (bucket_name == "bucket:bucket_empty" or
+			bucket_name == "elepower_dynamics:gas_container") and buffer.amount >= 1000 then
 			-- Fill bucket
-			local bitem = bucket.liquids[buffer.fluid]
+			local bitem
+			if minetest.get_item_group(buffer.fluid, "gas") > 0 then
+				bitem = ele.gases[buffer.fluid]
+				if bucket_name ~= "elepower_dynamics:gas_container" then
+					bitem = nil
+				end
+			else
+				bitem = bucket.liquids[buffer.fluid]
+				if bucket_name ~= "bucket:bucket_empty" then
+					bitem = nil
+				end
+			end
+
 			if bitem and bitem.itemname then
 				local bstack = ItemStack(bitem.itemname)
 				if inv:room_for_item("dst", bstack) then
@@ -59,11 +72,24 @@ local function on_timer(pos, elapsed)
 					refresh = true
 				end
 			end
-		elseif mode == 1 and bucket.get_liquid_for_bucket(bucket_name) then
+		elseif mode == 1 and (bucket.get_liquid_for_bucket(bucket_name) or ele.get_gas_for_container(bucket_name)) then
 			-- Empty bucket
-			local fluid = bucket.get_liquid_for_bucket(bucket_name)
+			local fluid
+			local gas = false
+
+			if minetest.get_item_group(bucket_name, "gas_container") > 0 then
+				gas = true
+				fluid = ele.get_gas_for_container(bucket_name)
+			else
+				fluid = bucket.get_liquid_for_bucket(bucket_name)
+			end
+			
 			if buffer.fluid == fluid or buffer.fluid == "" then
 				local bitem = ItemStack("bucket:bucket_empty")
+				if gas then
+					bitem = ItemStack("elepower_dynamics:gas_container")
+				end
+
 				if inv:room_for_item("dst", bitem) and buffer.amount + 1000 <= buffer.capacity then
 					buffer.amount = buffer.amount + 1000
 					buffer.fluid  = fluid

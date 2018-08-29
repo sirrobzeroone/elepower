@@ -30,6 +30,10 @@ minetest.register_node("elepower_nuclear:helium", {
 	tiles       = {"elenuclear_helium.png"},
 })
 
+ele.register_gas(nil, "Tritium", "elepower_nuclear:tritium")
+ele.register_gas(nil, "Deuterium", "elepower_nuclear:deuterium")
+ele.register_gas(nil, "Helium", "elepower_nuclear:helium")
+
 ------------
 -- Fluids --
 ------------

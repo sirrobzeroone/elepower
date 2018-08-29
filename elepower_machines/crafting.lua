@@ -543,3 +543,13 @@ minetest.register_craft({
 		{"elepower_dynamics:servo_valve", "elepower_dynamics:tin_gear", "elepower_dynamics:servo_valve"},
 	}
 })
+
+-- Electrolyzer
+minetest.register_craft({
+	output = "elepower_machines:electrolyzer",
+	recipe = {
+		{"elepower_dynamics:copper_plate", "elepower_dynamics:integrated_circuit", "elepower_dynamics:zinc_plate"},
+		{"bucket:bucket_empty", "elepower_machines:machine_block", "elepower_dynamics:gas_container"},
+		{"elepower_dynamics:servo_valve", "elepower_dynamics:wound_copper_coil", "elepower_dynamics:servo_valve"},
+	}
+})

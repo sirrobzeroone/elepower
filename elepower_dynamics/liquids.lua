@@ -93,6 +93,24 @@ bucket.register_liquid("elepower_dynamics:etching_acid_source", "elepower_dynami
 -- Virtual "fluid"
 minetest.register_node("elepower_dynamics:steam", {
 	description = "Steam",
-	groups      = {not_in_creative_inventory = 1},
+	groups      = {not_in_creative_inventory = 1, gas = 1},
+	tiles       = {"elepower_steam.png"},
+})
+
+minetest.register_node("elepower_dynamics:oxygen", {
+	description = "Oxygen",
+	groups      = {not_in_creative_inventory = 1, gas = 1},
+	tiles       = {"elepower_steam.png"},
+})
+
+minetest.register_node("elepower_dynamics:hydrogen", {
+	description = "Hydrogen",
+	groups      = {not_in_creative_inventory = 1, gas = 1},
+	tiles       = {"elepower_steam.png"},
+})
+
+minetest.register_node("elepower_dynamics:nitrogen", {
+	description = "Nitrogen",
+	groups      = {not_in_creative_inventory = 1, gas = 1},
 	tiles       = {"elepower_steam.png"},
 })

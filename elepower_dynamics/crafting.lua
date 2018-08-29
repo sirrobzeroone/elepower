@@ -324,6 +324,15 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_craft({
+	output = "elepower_dynamics:gas_container 8",
+	recipe = {
+		{"elepower_dynamics:steel_plate", "", "elepower_dynamics:steel_plate"},
+		{"elepower_dynamics:steel_plate", "", "elepower_dynamics:steel_plate"},
+		{"", "elepower_dynamics:steel_plate", ""}
+	}
+})
+
 --------------
 -- Smelting --
 --------------

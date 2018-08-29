@@ -25,6 +25,7 @@ dofile(mp .. "coal_alloy_furnace.lua")
 dofile(mp .. "solderer.lua")
 dofile(mp .. "compressor.lua")
 dofile(mp .. "canning_machine.lua")
+dofile(mp .. "electrolyzer.lua")
 
 -- Other
 dofile(mp .. "accumulator.lua")

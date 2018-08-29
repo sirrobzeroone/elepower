@@ -87,6 +87,20 @@ elepm.register_craft({
 	time   = 6,
 })
 
+-- Cold Coolant
+minetest.register_craft({
+	output = "elepower_nuclear:bucket_coolant",
+	recipe = {
+		{"elepower_dynamics:nitrogen_container", "elepower_dynamics:nitrogen_container", "elepower_dynamics:nitrogen_container"},
+		{"",  "bucket:bucket_water", ""},
+		{"", "elepower_dynamics:acidic_compound", ""},
+	},
+	replacements = {
+		{'elepower_dynamics:nitrogen_container', "elepower_dynamics:gas_container"},
+		{'bucket:bucket_water', "bucket:bucket_empty"}
+	}
+})
+
 ------------------------
 -- Enrichment recipes --
 ------------------------
