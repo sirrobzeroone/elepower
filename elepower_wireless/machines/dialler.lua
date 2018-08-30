@@ -110,7 +110,7 @@ local function dialler_timer(pos)
 	local usage    = ele.helpers.get_node_property(meta, pos, "usage")
 
 	local transmitter = minetest.string_to_pos(meta:get_string("transmitter"))
-	local pow_percent = math.floor((storage / capacity) * 100)
+	local pow_buffer = {capacity = capacity, storage = storage, usage = usage}
 
 	if storage >= usage then
 		ele.helpers.swap_node(pos, "elepower_wireless:dialler_active")
@@ -124,7 +124,7 @@ local function dialler_timer(pos)
 		receivers = get_player_receivers(player)
 	end
 
-	meta:set_string("formspec", get_formspec(pow_percent, player, transmitters, receivers))
+	meta:set_string("formspec", get_formspec(pow_buffer, player, transmitters, receivers))
 	meta:set_string("infotext", "Dialler\n" .. ele.capacity_text(capacity, storage))
 
 	return false

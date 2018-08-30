@@ -30,7 +30,7 @@ local function matter_transmitter_timer(pos)
 	local storage  = ele.helpers.get_node_property(meta, pos, "storage")
 	local usage    = ele.helpers.get_node_property(meta, pos, "usage")
 
-	local pow_percent = math.floor((storage / capacity) * 100)
+	local pow_buffer = {capacity = capacity, storage = storage, usage = usage}
 	local tpos = minetest.string_to_pos(target)
 
 	if storage >= usage and tpos then
@@ -44,7 +44,7 @@ local function matter_transmitter_timer(pos)
 		extra = "\nDialled to " .. target
 	end
 
-	meta:set_string("formspec", get_formspec(pow_percent, name, player, target))
+	meta:set_string("formspec", get_formspec(pow_buffer, name, player, target))
 	meta:set_string("infotext", name .. "\n" .. ele.capacity_text(capacity, storage) .. extra)
 
 	return false

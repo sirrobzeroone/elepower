@@ -119,7 +119,7 @@ minetest.register_craft({
 
 -- Conduit
 minetest.register_craft({
-	output = "elepower_dynamics:conduit 6",
+	output = "elepower_dynamics:conduit 8",
 	recipe = {
 		{"elepower_dynamics:lead_ingot",  "elepower_dynamics:lead_ingot",  "elepower_dynamics:lead_ingot"},
 		{"elepower_dynamics:copper_wire", "elepower_dynamics:copper_wire", "elepower_dynamics:copper_wire"},
@@ -129,7 +129,7 @@ minetest.register_craft({
 
 -- Duct
 minetest.register_craft({
-	output = "elepower_dynamics:fluid_duct 6",
+	output = "elepower_dynamics:fluid_duct 8",
 	recipe = {
 		{"group:glass",  "group:glass",  "group:glass"},
 		{"elepower_dynamics:lead_ingot", "elepower_dynamics:lead_ingot", "elepower_dynamics:lead_ingot"},
@@ -236,7 +236,7 @@ if easycrafting then
 
 	-- Fluid Transfer Node
 	minetest.register_craft({
-		output = "elepower_dynamics:fluid_transfer_node",
+		output = "elepower_dynamics:fluid_transfer_node 3",
 		recipe = {
 			{"group:stone",  "elepower_dynamics:control_circuit",  "group:stone"},
 			{"elepower_dynamics:electrum_gear", "elepower_dynamics:servo_valve", "elepower_dynamics:electrum_gear"},

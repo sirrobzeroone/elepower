@@ -29,7 +29,7 @@ local function matter_receiver_timer(pos)
 	local storage  = ele.helpers.get_node_property(meta, pos, "storage")
 	local usage    = ele.helpers.get_node_property(meta, pos, "usage")
 
-	local pow_percent = math.floor((storage / capacity) * 100)
+	local pow_percent = {capacity = capacity, storage = storage, usage = usage}
 
 	if storage >= usage then
 		ele.helpers.swap_node(pos, "elepower_wireless:matter_receiver_active")

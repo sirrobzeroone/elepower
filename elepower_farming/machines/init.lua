@@ -1,7 +1,6 @@
 
 local mp = elefarm.modpath.."/machines/"
 
-dofile(mp.."fluids.lua")
 dofile(mp.."planter.lua")
 dofile(mp.."harvester.lua")
 dofile(mp.."tree_extractor.lua")

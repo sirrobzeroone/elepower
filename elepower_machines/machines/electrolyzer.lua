@@ -9,13 +9,21 @@ elepm.electrolyzer_recipes = {
 		time = 20
 	},
 	{
+		recipe = "elepower_nuclear:heavy_water 1000",
+		output = {
+			"elepower_nuclear:deuterium 600",
+			"elepower_dynamics:oxygen 400",
+		},
+		time = 20,
+	},
+	{
 		recipe = "elepower_farming:biomass_source 1000",
 		output = {
 			"elepower_dynamics:nitrogen 400",
 			"elepower_dynamics:oxygen 600",
 		},
 		time = 16,
-	}
+	},
 }
 
 local function get_formspec(time, power, input, out1, out2, state)
@@ -159,17 +167,18 @@ ele.register_machine("elepower_machines:electrolyzer", {
 	on_timer = electrolyzer_timer,
 	fluid_buffers = {
 		input = {
-			accepts = {"default:water_source", "elepower_nuclear:heavy_water", "group:biomass"},
+			accepts = {"default:water_source", "elepower_nuclear:heavy_water",
+				"group:biomass", "group:electrolysis_recipe"},
 			drainable = false,
 			capacity = 8000,
 		},
 		out1 = {
-			accepts = {"group:gas"},
+			accepts = {"group:gas", "group:electrolysis_result"},
 			drainable = true,
 			capacity = 8000,
 		},
 		out2 = {
-			accepts = {"group:gas"},
+			accepts = {"group:gas", "group:electrolysis_result"},
 			drainable = true,
 			capacity = 8000,
 		},
