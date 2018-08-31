@@ -32,6 +32,8 @@ minetest.register_craftitem("elepower_dynamics:gas_container", {
 	groups = {gas_container = 1}
 })
 
+ele.register_gas(nil, "Steam", "elepower_dynamics:steam")
+
 ele.register_gas("elepower_dynamics:hydrogen_container", "Hydrogen",
 	"elepower_dynamics:hydrogen", "elepower_gas_hydrogen.png")
 
@@ -40,3 +42,4 @@ ele.register_gas("elepower_dynamics:oxygen_container", "Oxygen",
 
 ele.register_gas("elepower_dynamics:nitrogen_container", "Nitrogen",
 	"elepower_dynamics:nitrogen", "elepower_gas_nitrogen.png")
+

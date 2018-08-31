@@ -136,3 +136,14 @@ elepm.register_craft({
 	output = "elepower_nuclear:fuel_rod_fissile",
 	time   = 16
 })
+
+elepm.register_craft({
+	type   = "grind",
+	recipe = {"elepower_nuclear:fuel_rod_depleted"},
+	output = {
+		"elepower_nuclear:depleted_uranium_dust 3",
+		"elepower_nuclear:nuclear_waste 5",
+		"elepower_nuclear:fuel_rod_empty"
+	},
+	time = 16
+})

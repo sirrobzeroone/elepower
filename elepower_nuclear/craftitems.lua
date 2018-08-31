@@ -23,7 +23,7 @@ minetest.register_craftitem("elepower_nuclear:depleted_uranium_dust", {
 })
 
 minetest.register_craftitem("elepower_nuclear:nuclear_waste", {
-	description = "Nuclear Waste\nMostly unusable",
+	description = "Nuclear Waste\nMostly unusable for nuclear fission",
 	inventory_image = "elenuclear_uranium_waste.png"
 })
 

@@ -2,7 +2,7 @@
 dofile(elenuclear.modpath.."/machines/init.lua")
 
 minetest.register_node("elepower_nuclear:machine_block", {
-	description = "Radiation-shielded Lead Machine Chassis",
+	description = "Radiation-shielded Lead Machine Chassis\nContains dangerous ionizing radiation",
 	tiles = {
 		"elenuclear_machine_top.png", "elepower_lead_block.png", "elenuclear_machine_block.png",
 		"elenuclear_machine_block.png", "elenuclear_machine_block.png", "elenuclear_machine_block.png",

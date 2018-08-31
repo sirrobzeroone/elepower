@@ -299,6 +299,15 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	output = "elepower_dynamics:pv_cell",
+	recipe = {
+		{"group:glass", "group:glass", "group:glass"},
+		{"dye:blue", "elepower_dynamics:silicon_wafer_doped", "dye:blue"},
+		{"default:mese_crystal_fragment", "elepower_dynamics:wound_copper_coil", "default:mese_crystal_fragment"}
+	}
+})
+
+minetest.register_craft({
 	output = "elepower_dynamics:integrated_circuit",
 	recipe = {
 		{"elepower_dynamics:chip", "elepower_dynamics:chip", "elepower_dynamics:chip"},

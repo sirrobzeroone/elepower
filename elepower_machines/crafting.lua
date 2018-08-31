@@ -28,12 +28,17 @@ local alloy_recipes = {
 		output = "elepower_dynamics:electrum_ingot 3",
 	},
 	{
-		recipe = { "elepower_dynamics:silicon", "elepower_dynamics:gold_dust 4" },
+		recipe = { "elepower_dynamics:silicon", "elepower_dynamics:coal_dust 2" },
 		output = "elepower_dynamics:silicon_wafer",
 	},
 	{
 		recipe = { "default:coal_lump", "elepower_dynamics:coal_dust 4" },
 		output = "elepower_dynamics:graphite_ingot",
+	},
+	{
+		recipe = { "elepower_dynamics:silicon_wafer", "elepower_dynamics:gold_dust 4" },
+		output = "elepower_dynamics:silicon_wafer_doped",
+		time   = 8,
 	},
 }
 
@@ -269,12 +274,12 @@ end
 
 local soldering_recipes = {
 	{
-		recipe = { "elepower_dynamics:silicon_wafer", "elepower_dynamics:chip 4", "elepower_dynamics:lead_ingot 2" },
+		recipe = { "elepower_dynamics:silicon_wafer_doped", "elepower_dynamics:chip 4", "elepower_dynamics:lead_ingot 2" },
 		output = "elepower_dynamics:microcontroller",
 		time   = 8,
 	},
 	{
-		recipe = { "elepower_dynamics:silicon_wafer", "elepower_dynamics:microcontroller 4", "elepower_dynamics:electrum_ingot 2" },
+		recipe = { "default:copper_ingot 4", "elepower_dynamics:microcontroller 4", "elepower_dynamics:electrum_ingot 2" },
 		output = "elepower_dynamics:soc",
 		time   = 28,
 	},
