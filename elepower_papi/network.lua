@@ -145,7 +145,7 @@ local function give_node_power(pos, available)
 	if available >= inrush then
 		total_add = inrush
 	elseif available < inrush then
-		total_add = inrush - available
+		total_add = available
 	end
 
 	if total_add + storage > capacity then
@@ -225,7 +225,7 @@ minetest.register_abm({
 
 		-- Give power to users
 		for _,ndv in ipairs(users) do
-			if pw_demand >= pw_supply then
+			if pw_demand > pw_supply then
 				break
 			end
 
