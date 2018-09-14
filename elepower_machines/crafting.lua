@@ -197,21 +197,12 @@ for name in pairs(minetest.registered_nodes) do
 	end
 end
 
-if easycrafting then
-	elepm.register_craft({
-		type   = "compress",
-		recipe = { "default:steel_block 9" },
-		output = "elepower_dynamics:xycrone_lump",
-		time   = 20,
-	})
-else
-	elepm.register_craft({
-		type   = "compress",
-		recipe = { "elepower_dynamics:viridisium_block 9" },
-		output = "elepower_dynamics:xycrone_lump",
-		time   = 20,
-	})
-end
+elepm.register_craft({
+	type   = "compress",
+	recipe = { "elepower_dynamics:viridisium_block 9" },
+	output = "elepower_dynamics:xycrone_lump",
+	time   = 20,
+})
 
 elepm.register_craft({
 	type   = "compress",
@@ -533,7 +524,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_machines:canning_machine",
 	recipe = {
-		{"elepower_dynamics:wound_copper_coil", "elepower_dynamics:tree_tap", "elepower_dynamics:wound_copper_coil"},
+		{"elepower_dynamics:wound_copper_coil", "elepower_machines:compressor_piston", "elepower_dynamics:wound_copper_coil"},
 		{"elepower_dynamics:tin_can", "elepower_machines:machine_block", "elepower_dynamics:tin_can"},
 		{"elepower_dynamics:steel_gear", "elepower_dynamics:tin_gear", "elepower_dynamics:steel_gear"},
 	}

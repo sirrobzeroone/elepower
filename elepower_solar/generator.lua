@@ -34,6 +34,7 @@ function elesolar.register_solar_generator(nodename, nodedef)
 		},
 		tube = false,
 		ele_usage = 8,
+		ele_capacity = 64,
 		on_timer = function (pos, elapsed)
 			local refresh  = true
 			local meta     = minetest.get_meta(pos)

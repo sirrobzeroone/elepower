@@ -1,17 +1,17 @@
 
 local tree_fluid_recipes = {
 	["elepower_farming:tree_sap_source"] = {
-		water  = 100,
-		amount = 100,
+		water  = 1000,
+		amount = 1000,
 		time   = 5,
 		output = {
 			fluid  = "elepower_farming:biomass_source",
-			amount = 80,
+			amount = 40,
 		},
 	},
 	["elepower_farming:resin_source"] = {
-		water  = 100,
-		amount = 100,
+		water  = 1000,
+		amount = 1000,
 		time   = 5,
 		output = {
 			fluid  = "elepower_farming:biomass_source",

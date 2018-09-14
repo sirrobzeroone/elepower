@@ -198,7 +198,7 @@ minetest.register_craft({
 	output = "elepower_dynamics:chip 6",
 	recipe = {
 		{"homedecor:plastic_sheeting", "homedecor:plastic_sheeting", "homedecor:plastic_sheeting"},
-		{"default:mese_crystal", "dye:black", "default:mese_crystal"},
+		{"default:mese_crystal", "group:color_black", "default:mese_crystal"},
 		{"default:copper_ingot", "moreores:silver_ingot", "default:copper_ingot"},
 	}
 })
@@ -208,7 +208,7 @@ minetest.register_craft({
 	recipe = {
 		{"homedecor:plastic_sheeting", "homedecor:plastic_sheeting", "homedecor:plastic_sheeting"},
 		{"moreores:silver_ingot", "default:mese_crystal", "moreores:silver_ingot"},
-		{"default:copper_ingot", "dye:violet", "default:copper_ingot"},
+		{"default:copper_ingot", "group:color_violet", "default:copper_ingot"},
 	}
 })
 
@@ -292,7 +292,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_dynamics:lcd_panel",
 	recipe = {
-		{"dye:red", "dye:green", "dye:blue"},
+		{"group:color_red", "group:color_green", "group:color_blue"},
 		{"moreores:silver_ingot", "elepower_dynamics:wound_copper_coil", "moreores:silver_ingot"},
 		{"", "default:meselamp", ""}
 	}
@@ -302,7 +302,7 @@ minetest.register_craft({
 	output = "elepower_dynamics:pv_cell",
 	recipe = {
 		{"group:glass", "group:glass", "group:glass"},
-		{"dye:blue", "elepower_dynamics:silicon_wafer_doped", "dye:blue"},
+		{"group:color_blue", "elepower_dynamics:silicon_wafer_doped", "group:color_blue"},
 		{"default:mese_crystal_fragment", "elepower_dynamics:wound_copper_coil", "default:mese_crystal_fragment"}
 	}
 })

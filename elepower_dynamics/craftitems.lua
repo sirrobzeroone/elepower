@@ -112,7 +112,7 @@ minetest.register_craftitem("elepower_dynamics:silicon_wafer", {
 })
 
 minetest.register_craftitem("elepower_dynamics:silicon_wafer_doped", {
-	description = "Doped Silicon Wafer\nFor Solar Panel Crafting",
+	description = "Doped Silicon Wafer",
 	inventory_image = "elepower_silicon_wafer_solar.png",
 	groups = {wafer = 2}
 })
