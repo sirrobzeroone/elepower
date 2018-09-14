@@ -144,7 +144,7 @@ function elepm.register_storage(nodename, nodedef)
 	end
 
 	for i = 0, levels do
-		local cpdef = ele.helpers.table_copy(nodedef)
+		local cpdef = table.copy(nodedef)
 
 		-- Add overlay to the tile texture
 		if cpdef.tiles and cpdef.tiles[6] and i > 0 then

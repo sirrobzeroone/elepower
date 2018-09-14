@@ -391,7 +391,7 @@ function ele.register_base_device(nodename, nodedef)
 
 	-- Register an active variant if configured.
 	if nodedef.ele_active_node then
-		local active_nodedef = ele.helpers.table_copy(nodedef)
+		local active_nodedef = table.copy(nodedef)
 		active_name = nodename.."_active"
 		
 		if nodedef.ele_active_node ~= true then
@@ -412,7 +412,6 @@ function ele.register_base_device(nodename, nodedef)
 		active_nodedef.drop = nodename
 		minetest.register_node(active_name, active_nodedef)
 	end
-
 
 	-- tubelib support
 	if tlsupp then

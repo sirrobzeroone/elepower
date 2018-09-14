@@ -5,18 +5,6 @@
 
 ele.helpers = {}
 
-function ele.helpers.table_copy(tab)
-    local retval = {}
-    for k, v in pairs(tab) do
-    	if type(v) == "table" then
-    		retval[k] = ele.helpers.table_copy(v)
-    	else
-        	retval[k] = v
-        end
-    end
-    return retval
-end
-
 function ele.helpers.round(v)
 	return math.floor(v + 0.5)
 end
@@ -25,7 +13,7 @@ function ele.helpers.swap_node(pos, noded)
 	local node = minetest.get_node(pos)
 	
 	if type(noded) ~= "table" then
-		local n = ele.helpers.table_copy(node)
+		local n = table.copy(node)
 		n.name = noded
 		noded = n
 	end
@@ -90,7 +78,7 @@ end
 
 function ele.helpers.face_front(pos, fd)
 	local back = minetest.facedir_to_dir(fd)
-	local front = ele.helpers.table_copy(back)
+	local front = table.copy(back)
 
 	front.x = front.x * -1 + pos.x
 	front.y = front.y * -1 + pos.y
