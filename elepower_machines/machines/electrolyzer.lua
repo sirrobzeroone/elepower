@@ -9,7 +9,7 @@ elepm.electrolyzer_recipes = {
 		time = 20
 	},
 	{
-		recipe = "elepower_nuclear:heavy_water 1000",
+		recipe = "elepower_nuclear:heavy_water_source 1000",
 		output = {
 			"elepower_nuclear:deuterium 600",
 			"elepower_dynamics:oxygen 400",
@@ -167,7 +167,7 @@ ele.register_machine("elepower_machines:electrolyzer", {
 	on_timer = electrolyzer_timer,
 	fluid_buffers = {
 		input = {
-			accepts = {"default:water_source", "elepower_nuclear:heavy_water",
+			accepts = {"default:water_source", "elepower_nuclear:heavy_water_source",
 				"group:biomass", "group:electrolysis_recipe"},
 			drainable = false,
 			capacity = 8000,

@@ -15,6 +15,17 @@ local function get_formspec(heat, cold, water, steam)
 		default.get_hotbar_bg(0, 4.25)
 end
 
+local heat_recipes = {
+	["elepower_nuclear:hot_coolant_source"] = {
+		out = "elepower_nuclear:coolant_source",
+		factor = 1,
+	},
+	["elepower_nuclear:helium_plasma"] = {
+		out = "elepower_nuclear:helium",
+		factor = 8,
+	},
+}
+
 local function heat_exchanger_timer(pos)
 	local meta = minetest.get_meta(pos)
 	local change = false
@@ -24,15 +35,25 @@ local function heat_exchanger_timer(pos)
 	local water = fluid_lib.get_buffer_data(pos, "water")
 	local steam = fluid_lib.get_buffer_data(pos, "steam")
 
-	-- See if we have enough hot coolant
-	if heat.amount >= 1000 then
-		local water_convert = math.min(water.amount, 1000)
-		if steam.amount + water_convert > steam.capacity then
-			water_convert = steam.capacity - steam.amount
+	while true do
+		if heat.amount < 1000 or heat.fluid == "" or not heat_recipes[heat.fluid] then
+			break
 		end
 
-		if water_convert > 0 then
-			if cold.amount + 1000 < cold.capacity then
+		-- See if we have enough hot coolant
+		if heat.amount >= 1000 and heat.fluid ~= "" then
+			local damnt = heat_recipes[heat.fluid]
+			local water_convert = math.min(water.amount, 1000 * damnt.factor)
+
+			if cold.fluid ~= damnt.fluid and cold.fluid ~= "" then
+				break
+			end
+
+			if steam.amount + water_convert > steam.capacity then
+				water_convert = steam.capacity - steam.amount
+			end
+
+			if water_convert > 0 and cold.amount + 1000 < cold.capacity then
 				-- Conversion
 				heat.amount = heat.amount - 1000
 				cold.amount = cold.amount + 1000
@@ -40,13 +61,16 @@ local function heat_exchanger_timer(pos)
 				water.amount = water.amount - water_convert
 				steam.amount = steam.amount + water_convert
 
+				cold.fluid = damnt.out
 				change = true
 			end
 		end
+
+		break
 	end
 
 	if change then
-		meta:set_string("cold_fluid", "elepower_nuclear:coolant_source")
+		meta:set_string("cold_fluid", cold.fluid)
 		meta:set_string("steam_fluid", "elepower_dynamics:steam")
 
 		meta:set_int("heat_fluid_storage", heat.amount)
@@ -58,7 +82,7 @@ local function heat_exchanger_timer(pos)
 
 	meta:set_string("formspec", get_formspec(heat, cold, water, steam))
 
-	return false
+	return change
 end
 
 ele.register_machine("elepower_nuclear:heat_exchanger", {
@@ -71,12 +95,12 @@ ele.register_machine("elepower_nuclear:heat_exchanger", {
 	fluid_buffers = {
 		heat = {
 			capacity  = 8000,
-			accepts   = {"elepower_nuclear:hot_coolant_source"},
+			accepts   = {"elepower_nuclear:hot_coolant_source", "elepower_nuclear:helium_plasma"},
 			drainable = false,
 		},
 		cold = {
 			capacity  = 8000,
-			accepts   = {"elepower_nuclear:coolant_source"},
+			accepts   = {"elepower_nuclear:coolant_source", "elepower_nuclear:helium"},
 			drainable = true,
 		},
 		water = {
