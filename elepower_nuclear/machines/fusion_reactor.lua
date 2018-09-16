@@ -16,6 +16,17 @@ local reactor_structure = {}
 
 local controller_pos = {x = 7, z = 14}
 
+local reactions = {
+	{
+		input1 = "elepower_nuclear:deuterium 1000",     -- 1st input fluid
+		input2 = "elepower_nuclear:tritium 1000",       -- 2nd input fluid
+		output = "elepower_nuclear:helium_plasma 2000", -- output fluid
+		power_ignite = 16000, -- ignition cost
+		power_upkeep = 1000,  -- reaction sustain cost
+		time = 360,           -- reaction time
+	}
+}
+
 -- Determine the validity of the structure from the position of the controller
 local function determine_structure(pos, player)
 	local node = minetest.get_node_or_nil(pos)
@@ -116,6 +127,26 @@ local function controller_formspec(in1, in2, out, power, time, state)
 		ele.formspec.state_switcher(7, 2.5, state)
 end
 
+local function get_recipe(i1, i2)
+	local result = {time = 0}
+
+	for _, d in pairs(reactions) do
+		local i1a = ItemStack(d.input1)
+		local i2a = ItemStack(d.input2)
+
+		if (i1a:get_name() == i1.fluid and i1.amount >= i1a:get_count()) and
+			(i2a:get_name() == i2.fluid and i2.amount >= i2a:get_count()) then
+			result = d
+			result.out = ItemStack(result.output)
+			result.i1 = i1a
+			result.i2 = i2a
+			break
+		end
+	end
+
+	return result
+end
+
 local function controller_timer(pos)
 	local refresh = false
 	local meta = minetest.get_meta(pos)
@@ -147,19 +178,88 @@ local function controller_timer(pos)
 	local storage    = ele.helpers.get_node_property(meta, pos, "storage")
 	local pow_buffer = {capacity = capacity, storage = storage, usage = 0}
 
-	meta:set_string("formspec", controller_formspec(in1_buffer, in2_buffer, out_buffer, pow_buffer, 0, 0))
-
-	-- Factors:
-	-- 1. Power. Power keeps these stats up:
-	--   1. Field Strength
-	--   2. Internal Temperature
-	-- 2. Fuel
+	local time     = meta:get_int("src_time")
+	local time_res = meta:get_int("src_time_max")
 
 	-- Deuterium + Tritium -> Helium Plasma
-	-- Ignition temperature: 2000K (70% scale)
-	-- Field strength: >90%
-	-- 1000 + 1000 mB of fuel : 2600 sec, 675 neutrons/s
-	-- Helium plasma will be used to create electricity via heat exchange.
+	while true do
+		local recipe = get_recipe(in1_buffer, in2_buffer)
+		if recipe.time == 0 then break end
+
+		if time_res == 0 then
+			if recipe.power_ignite > pow_buffer.storage then
+				break
+			end
+
+			pow_buffer.storage = pow_buffer.storage - recipe.power_ignite
+			pow_buffer.usage = recipe.power_ignite
+
+			time_res = recipe.time
+			time = 0
+			refresh = true
+			break
+		end
+
+		-- Cool the reaction down when out of power (aka stop it)
+		if recipe.power_upkeep > pow_buffer.storage then
+			time = 0
+			time_res = 0
+			break
+		end
+
+		refresh = true
+		pow_buffer.storage = pow_buffer.storage - recipe.power_upkeep
+		pow_buffer.usage = recipe.power_upkeep
+
+		if time ~= time_res then
+			time = time + 1
+			break
+		end
+
+		if (recipe.out:get_name() ~= out_buffer.fluid and out_buffer.fluid ~= "") or
+			((recipe.out:get_count()) + out_buffer.amount > out_buffer.capacity) then
+			break
+		end
+
+		out_buffer.fluid = recipe.out:get_name()
+		out_buffer.amount = out_buffer.amount + recipe.out:get_count()
+
+		in1_buffer.amount = in1_buffer.amount - result.i1:get_count()
+		in2_buffer.amount = in2_buffer.amount - result.i2:get_count()
+
+		if in1_buffer.amount == 0 then
+			in1_buffer.fluid = ""
+		end
+
+		if in2_buffer.amount == 0 then
+			in2_buffer.fluid = ""
+		end
+
+		time = 0
+		time_res = 0
+		break
+	end
+
+	meta:set_string("in1_fluid", in1_buffer.fluid)
+	meta:set_int("in1_fluid_storage", in1_buffer.amount)
+
+	meta:set_string("in2_fluid", in2_buffer.fluid)
+	meta:set_int("in2_fluid_storage", in2_buffer.amount)
+
+	meta:set_string("out_fluid", out_buffer.fluid)
+	meta:set_int("out_fluid_storage", out_buffer.amount)
+
+	meta:set_int("src_time", time)
+	meta:set_int("src_time_max", time_res)
+
+	meta:set_int("storage", pow_buffer.storage)
+
+	local pcrt = 0
+	if time_res > 0 then
+		pcrt = math.floor(100 * time / time_res)
+	end
+
+	meta:set_string("formspec", controller_formspec(in1_buffer, in2_buffer, out_buffer, pow_buffer, 0, pcrt))
 
 	return refresh
 end
@@ -167,6 +267,7 @@ end
 local function get_port_controller(pos)
 	local meta = minetest.get_meta(pos)
 	local ctrl = minetest.string_to_pos(meta:get_string("ctrl"))
+	if not ctrl then return nil end
 	local ctrl_node = minetest.get_node_or_nil(ctrl)
 
 	if not ctrl_node or ctrl_node.name ~= "elepower_nuclear:reactor_controller" then
@@ -303,7 +404,7 @@ minetest.register_node("elepower_nuclear:reactor_power", {
 	},
 	ele_capacity = 8000,
 	ele_usage = 0,
-	ele_inrush = 64,
+	ele_inrush = 500,
 	on_timer = power_timer,
 	on_destruct = port_destruct,
 })
