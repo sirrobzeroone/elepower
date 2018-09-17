@@ -259,7 +259,11 @@ minetest.register_abm({
 					pw_demand = pw_demand - pw_storage
 					smeta:set_int("storage", 0)
 				end
-				minetest.get_node_timer(spos):start(1.0)
+
+				local t = minetest.get_node_timer(spos)
+				if not t:is_started() then
+					t:start(1.0)
+				end
 			end
 		end
 	end,

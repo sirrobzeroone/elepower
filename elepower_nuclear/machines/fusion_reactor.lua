@@ -333,7 +333,7 @@ local function power_timer(pos)
 		end
 	end
 
-	meta:set_string("infotext", ("Feeding controller at %s\nLocal %s"):format(
+	meta:set_string("infotext", ("Connected to controller at %s\nLocal %s"):format(
 		minetest.pos_to_string(ctrl), ele.capacity_text(localc, locals)))
 
 	return refresh
@@ -348,7 +348,7 @@ local function port_timer(pos)
 		return false
 	end
 
-	meta:set_string("infotext", "Feeding controller at " .. minetest.pos_to_string(ctrl))
+	meta:set_string("infotext", "Connected to controller at " .. minetest.pos_to_string(ctrl))
 	return false
 end
 

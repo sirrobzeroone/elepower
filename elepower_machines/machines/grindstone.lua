@@ -146,7 +146,7 @@ ele.register_base_device("elepower_machines:grindstone", {
 		local sttm  = meta:get_int("src_time_max")
 
 		if sttm > 0 then
-			meta:set_int("src_time", stime + 1)
+			meta:set_int("src_time", stime + 5)
 			minetest.get_node_timer(pos):start(0.2)
 		end
 
