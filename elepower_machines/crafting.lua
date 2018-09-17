@@ -330,7 +330,7 @@ minetest.register_craft({
 	recipe = {
 		{"group:stone", "group:stone", "group:stone"},
 		{"default:flint", "default:flint", "default:flint"},
-		{"default:cobblestone", "default:cobblestone", "default:cobblestone"},
+		{"default:cobble", "default:cobble", "default:cobble"},
 	}
 })
 
