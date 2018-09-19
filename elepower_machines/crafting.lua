@@ -442,7 +442,7 @@ minetest.register_craft({
 	output = "elepower_machines:accumulator",
 	recipe = {
 		{"", "elepower_dynamics:fluid_duct", ""},
-		{"group:glass", "elepower_machines:machine_block", "group:glass"},
+		{"default:glass", "elepower_machines:machine_block", "default:glass"},
 		{"elepower_dynamics:steel_gear", "elepower_dynamics:servo_valve", "elepower_dynamics:steel_gear"},
 	}
 })

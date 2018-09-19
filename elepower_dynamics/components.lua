@@ -15,7 +15,7 @@ local list_def = {
 	{material = "electrum",   description = "Electrum",   color = "#ebeb90", dust = true, plate = true, gear = true},
 	{material = "viridisium", description = "Viridisium", color = "#5b9751", dust = true, plate = true, gear = true},
 	{material = "zinc",       description = "Zinc",       color = "#598a9e", dust = true, plate = true},
-	{material = "coal",       description = "Coal",       color = "#0d0d0d", dust = true},
+	{material = "coal",       description = "Coal",       color = "#0b0b0b", dust = true},
 	{material = "wood",       description = "Wood",       color = "#847454", dust = "Sawdust", gear = true}
 }
 

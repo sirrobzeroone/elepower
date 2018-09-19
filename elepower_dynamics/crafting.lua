@@ -131,9 +131,9 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_dynamics:fluid_duct 8",
 	recipe = {
-		{"group:glass",  "group:glass",  "group:glass"},
+		{"default:glass",  "default:glass",  "default:glass"},
 		{"elepower_dynamics:lead_ingot", "elepower_dynamics:lead_ingot", "elepower_dynamics:lead_ingot"},
-		{"group:glass",  "group:glass",  "group:glass"},
+		{"default:glass",  "default:glass",  "default:glass"},
 	}
 })
 
@@ -141,8 +141,8 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_dynamics:portable_tank",
 	recipe = {
-		{"group:glass", "elepower_dynamics:fluid_duct", "group:glass"},
-		{"group:glass", "group:glass", "group:glass"},
+		{"default:glass", "elepower_dynamics:fluid_duct", "default:glass"},
+		{"default:glass", "default:glass", "default:glass"},
 		{"default:bronze_ingot",  "default:bronze_ingot", "default:bronze_ingot"},
 	}
 })
@@ -301,7 +301,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_dynamics:pv_cell",
 	recipe = {
-		{"group:glass", "group:glass", "group:glass"},
+		{"default:glass", "default:glass", "default:glass"},
 		{"group:color_blue", "elepower_dynamics:silicon_wafer_doped", "group:color_blue"},
 		{"default:mese_crystal_fragment", "elepower_dynamics:wound_copper_coil", "default:mese_crystal_fragment"}
 	}
