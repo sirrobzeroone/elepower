@@ -1,6 +1,4 @@
 
-local easycrafting = minetest.settings:get("elepower_easy_crafting") == "true"
-
 --*****************--
 -- MACHINE RECIPES --
 --*****************--
@@ -258,11 +256,6 @@ end)
 -- Soldering --
 ---------------
 
-local induction_dust = "elepower_dynamics:viridisium_dust"
-if easycrafting then
-	induction_dust = "elepower_dynamics:zinc_dust"
-end
-
 local soldering_recipes = {
 	{
 		recipe = { "elepower_dynamics:silicon_wafer_doped", "elepower_dynamics:chip 4", "elepower_dynamics:lead_ingot 2" },
@@ -290,7 +283,7 @@ local soldering_recipes = {
 		time   = 16,
 	},
 	{
-		recipe = { "elepower_dynamics:induction_coil 4", "elepower_dynamics:copper_wire", induction_dust .. " 2" },
+		recipe = { "elepower_dynamics:induction_coil 4", "elepower_dynamics:copper_wire", "elepower_dynamics:zinc_dust 2" },
 		output = "elepower_dynamics:induction_coil_advanced",
 		time   = 18,
 	}
@@ -334,18 +327,13 @@ minetest.register_craft({
 	}
 })
 
-local ingot_machine = "elepower_dynamics:viridisium_ingot"
-if easycrafting then
-	ingot_machine = "default:steel_ingot"
-end
-
 -- Machine block
 minetest.register_craft({
 	output = "elepower_machines:machine_block",
 	recipe = {
-		{ingot_machine, "default:steel_ingot", ingot_machine},
+		{"elepower_dynamics:electrum_ingot", "default:steel_ingot", "elepower_dynamics:electrum_ingot"},
 		{"default:steel_ingot", "default:mese_crystal", "default:steel_ingot"},
-		{ingot_machine, "elepower_dynamics:motor", ingot_machine},
+		{"elepower_dynamics:electrum_ingot", "elepower_dynamics:motor", "elepower_dynamics:electrum_ingot"},
 	}
 })
 

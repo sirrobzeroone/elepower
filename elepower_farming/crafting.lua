@@ -1,10 +1,4 @@
 
-local easycrafting = minetest.settings:get("elepower_easy_crafting") == "true"
-local ingot = "elepower_dynamics:viridisium_ingot"
-if easycrafting then
-	ingot = "elepower_dynamics:wound_copper_coil"
-end
-
 -----------
 -- Nodes --
 -----------
@@ -23,7 +17,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_farming:planter",
 	recipe = {
-		{ingot, "elepower_dynamics:control_circuit", ingot},
+		{"elepower_dynamics:nickel_ingot", "elepower_dynamics:control_circuit", "elepower_dynamics:nickel_ingot"},
 		{"farming:hoe_steel", "elepower_farming:device_frame", "farming:hoe_steel"},
 		{"elepower_dynamics:wound_copper_coil", "elepower_dynamics:motor", "elepower_dynamics:wound_copper_coil"},
 	}
@@ -33,7 +27,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_farming:harvester",
 	recipe = {
-		{ingot, "elepower_dynamics:control_circuit", ingot},
+		{"elepower_dynamics:nickel_ingot", "elepower_dynamics:control_circuit", "elepower_dynamics:nickel_ingot"},
 		{"default:axe_steel", "elepower_farming:device_frame", "farming:hoe_steel"},
 		{"elepower_dynamics:motor", "elepower_dynamics:diamond_gear", "elepower_dynamics:motor"},
 	}
