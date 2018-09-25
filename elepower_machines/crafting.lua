@@ -18,7 +18,7 @@ local alloy_recipes = {
 		output = "default:bronze_ingot 3",
 	},
 	{
-		recipe = { "default:iron_ingot 3", "elepower_dynamics:nickel_ingot" },
+		recipe = { "elepower_dynamics:iron_ingot 3", "elepower_dynamics:nickel_ingot" },
 		output = "elepower_dynamics:invar_ingot 4",
 	},
 	{
