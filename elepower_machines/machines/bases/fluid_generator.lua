@@ -84,7 +84,7 @@ function ele.register_fluid_generator(nodename, nodedef)
 
 				status = "Active"
 
-				-- Burn another bucket of lava
+				-- Burn another bucket of fluid fuel
 				if burn_time == 0 then
 					if not flbuffer or flbuffer.fluid == "" then break end
 
@@ -93,7 +93,7 @@ function ele.register_fluid_generator(nodename, nodedef)
 						meta:set_int("burn_time", btime)
 						meta:set_int("burn_totaltime", btime)
 
-						-- Take lava
+						-- Take fluid fuel
 						flbuffer.amount = flbuffer.amount - busage
 						pow_buffer.usage = generation
 
@@ -110,6 +110,8 @@ function ele.register_fluid_generator(nodename, nodedef)
 					else
 						status = "Idle"
 						ele.helpers.swap_node(pos, nodename)
+
+						refresh = false
 					end
 				end
 				if burn_totaltime == 0 then burn_totaltime = 1 end

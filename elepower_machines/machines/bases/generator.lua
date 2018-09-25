@@ -60,7 +60,7 @@ function elepm.register_fuel_generator(nodename, nodedef)
 			-- If more to burn and the energy produced was used: produce some more
 			if burn_time > 0 then
 				if storage + generation > capacity then
-					return false
+					break
 				end
 
 				pow_buffer.storage = pow_buffer.storage + generation
@@ -68,6 +68,8 @@ function elepm.register_fuel_generator(nodename, nodedef)
 
 				burn_time = burn_time - 1
 				meta:set_int("burn_time", burn_time)
+
+				refresh = true
 			end
 
 			status = "Active"
@@ -102,6 +104,8 @@ function elepm.register_fuel_generator(nodename, nodedef)
 				else
 					status = "Idle"
 					ele.helpers.swap_node(pos, nodename)
+
+					refresh = false
 				end
 			end
 			if burn_totaltime == 0 then burn_totaltime = 1 end
