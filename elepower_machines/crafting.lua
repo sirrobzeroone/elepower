@@ -327,6 +327,15 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_craft({
+	output = "elepower_machines:crank",
+	recipe = {
+		{"group:stick", "group:stick", "group:stick"},
+		{"", "", "group:stick"},
+		{"", "", "group:stick"},
+	}
+})
+
 -- Machine block
 minetest.register_craft({
 	output = "elepower_machines:machine_block",

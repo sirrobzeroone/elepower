@@ -107,7 +107,7 @@ local function grindstone_timer(pos, elapsed)
 	meta:set_string("formspec", get_formspec(percentile))
 	meta:set_int("src_time", time)
 	meta:set_int("src_time_max", target_time)
-	meta:set_string("infotext", "Grindstone: ".. percentile .. "%\nPunch me to progress!")
+	meta:set_string("infotext", "Grindstone: ".. percentile .. "%")
 
 	return refresh
 end
@@ -115,7 +115,7 @@ end
 ele.register_base_device("elepower_machines:grindstone", {
 	description = "Grindstone\nA medieval pulverizer",
 	tiles = {
-		"elepower_cfalloy_top.png", "elepower_cfalloy_bottom.png", "elepower_grinder_side.png",
+		"elepower_grinder_top.png", "elepower_cfalloy_bottom.png", "elepower_grinder_side.png",
 		"elepower_grinder_side.png", "elepower_grinder_side.png", "elepower_grinder_side.png"
 	},
 	on_construct = function (pos)
@@ -140,16 +140,43 @@ ele.register_base_device("elepower_machines:grindstone", {
 		tubedevice = 1,
 		cracky = 2,
 	},
-	on_punch = function (pos, node, puncher, pointed_thing)
-		local meta  = minetest.get_meta(pos)
-		local stime = meta:get_int("src_time")
-		local sttm  = meta:get_int("src_time_max")
+})
 
-		if sttm > 0 then
-			meta:set_int("src_time", stime + 5)
-			minetest.get_node_timer(pos):start(0.2)
+minetest.register_node("elepower_machines:crank", {
+	description = "Hand Crank",
+	groups = {choppy = 1, oddly_breakable_by_hand = 1},
+	tiles = {"default_wood.png"},
+	drawtype = "nodebox",
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{-0.3750, -0.1250, -0.03125, 0.03125, -0.06250, 0.03125},
+			{-0.03125, -0.5000, -0.03125, 0.03125, -0.1250, 0.03125}
+		}
+	},
+	on_rightclick = function (pos, node, clicker, itemstack, pointed_thing)
+		local gpos  = vector.add(pos, {x = 0, y = -1, z = 0})
+		local gnode = minetest.get_node_or_nil(gpos)
+
+		if not gnode or gnode.name ~= "elepower_machines:grindstone" then
+			return itemstack
 		end
 
-		minetest.node_punch(pos, node, puncher, pointed_thing)
+		local gmeta = minetest.get_meta(gpos)
+
+		-- Advance grindstone
+		local stime = gmeta:get_int("src_time")
+		local sttm  = gmeta:get_int("src_time_max")
+
+		if sttm > 0 then
+			gmeta:set_int("src_time", stime + 5)
+
+			local t = minetest.get_node_timer(gpos)
+			if not t:is_started() then
+				t:start(0.2)
+			end
+		end
+
+		return itemstack
 	end
 })
