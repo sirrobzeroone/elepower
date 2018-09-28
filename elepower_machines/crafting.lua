@@ -195,26 +195,31 @@ for name in pairs(minetest.registered_nodes) do
 	end
 end
 
-elepm.register_craft({
-	type   = "compress",
-	recipe = { "elepower_dynamics:viridisium_block 9" },
-	output = "elepower_dynamics:xycrone_lump",
-	time   = 20,
-})
+local compressor_recipes = {
+	{
+		recipe = { "elepower_dynamics:viridisium_block 9" },
+		output = "elepower_dynamics:xycrone_lump",
+		time   = 20,
+	},
+	{
+		recipe = { "default:mese_crystal_fragment 9" },
+		output = "default:mese_crystal",
+	},
+	{
+		recipe = { "default:mese_crystal 9" },
+		output = "default:mese",
+	}
+}
 
-elepm.register_craft({
-	type   = "compress",
-	recipe = { "default:mese_crystal_fragment 9" },
-	output = "default:mese_crystal",
-	time   = 1,
-})
-
-elepm.register_craft({
-	type   = "compress",
-	recipe = { "default:mese_crystal 9" },
-	output = "default:mese",
-	time   = 1,
-})
+-- Register compressor recipes
+for _,i in pairs(compressor_recipes) do
+	elepm.register_craft({
+		type   = "compress",
+		recipe = i.recipe,
+		output = i.output,
+		time   = i.time or 1
+	})
+end
 
 -------------
 -- Sawmill --

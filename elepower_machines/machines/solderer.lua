@@ -12,6 +12,6 @@ elepm.register_crafter("elepower_machines:solderer", {
 		"elepower_machine_side.png", "elepower_machine_side.png", "elepower_solderer.png",
 	},
 	groups = {oddly_breakable_by_hand = 1, cracky = 2},
-	ele_capacity = 28000,
-	ele_usage    = 128,
+	ele_usage = 128,
+	ele_inrush = 128,
 })

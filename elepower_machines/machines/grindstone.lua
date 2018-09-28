@@ -1,4 +1,6 @@
 
+local SPEED = 3
+
 local function get_formspec(item_percent)
 	return "size[8,8.5]"..
 		default.gui_bg..
@@ -169,7 +171,7 @@ minetest.register_node("elepower_machines:crank", {
 		local sttm  = gmeta:get_int("src_time_max")
 
 		if sttm > 0 then
-			gmeta:set_int("src_time", stime + 5)
+			gmeta:set_int("src_time", stime + SPEED)
 
 			local t = minetest.get_node_timer(gpos)
 			if not t:is_started() then

@@ -165,6 +165,8 @@ ele.register_machine("elepower_machines:electrolyzer", {
 	},
 	groups = {fluid_container = 1, cracky = 1, ele_user = 1},
 	on_timer = electrolyzer_timer,
+	ele_usage = 128,
+	ele_inrush = 128,
 	fluid_buffers = {
 		input = {
 			accepts = {"default:water_source", "elepower_nuclear:heavy_water_source",
