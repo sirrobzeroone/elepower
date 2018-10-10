@@ -115,15 +115,15 @@ function ele.register_tool(toolname, tooldef)
 	if tooldef.on_use then
 		local original_on_use = tooldef.on_use
 		tooldef.on_use = function (itemstack, player, pointed_thing)
-			if not player or minetest.is_protected(pos, player:get_player_name()) then
+			local pos = pointed_thing.under
+			if not pos or not player or minetest.is_protected(pos, player:get_player_name()) then
 				return itemstack
 			end
 
 			local storage = ele.tools.get_tool_property(itemstack, "storage")
 			local usage   = ele.tools.get_tool_property(itemstack, "usage")
-			local pos     = pointed_thing.under
 
-			if not pos or (storage < usage and not creative) then
+			if storage < usage and not creative then
 				return nil
 			end
 
