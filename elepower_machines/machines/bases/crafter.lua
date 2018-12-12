@@ -78,7 +78,7 @@ function crafter_timer (pos, elapsed)
 	local capacity = ele.helpers.get_node_property(meta, pos, "capacity")
 	local usage    = ele.helpers.get_node_property(meta, pos, "usage")
 	local storage  = ele.helpers.get_node_property(meta, pos, "storage")
-	local speed    = ele.helpers.get_node_property(meta, pos, "craft_speed") or 1
+	local speed    = ele.helpers.get_node_property(meta, pos, "craft_speed")
 	local time     = meta:get_int("src_time")
 	local state    = meta:get_int("state")
 	local status   = "Idle"
@@ -90,6 +90,9 @@ function crafter_timer (pos, elapsed)
 
 	local pow_buffer = {capacity = capacity, storage = storage, usage = 0}
 
+	-- Default craft speed is 1
+	if speed == 0 then speed = 1 end
+
 	while true do
 		if not is_enabled then
 			time = 0
@@ -97,7 +100,7 @@ function crafter_timer (pos, elapsed)
 			break
 		end
 
-		local result  = elepm.get_recipe(machine_def.craft_type, inv:get_list("src"))
+		local result = elepm.get_recipe(machine_def.craft_type, inv:get_list("src"))
 		local power_operation = false
 
 		-- Determine if there is enough power for this action
