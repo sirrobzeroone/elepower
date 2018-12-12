@@ -51,8 +51,8 @@ local function calculate_fitness(pos)
 			local dp = minetest.get_name_from_content_id(data[i])
 			if excession <= 16 and (ele.helpers.get_item_group(dp, "ele_reactor_component") or
 				ele.helpers.get_item_group(dp, "ele_neutron_absorbant") or
-				ele.helpers.get_item_group(dp, "elefluid_transport_source") or
-				ele.helpers.get_item_group(dp, "elefluid_transport") or
+				ele.helpers.get_item_group(dp, "fluid_transport_source") or
+				ele.helpers.get_item_group(dp, "fluid_transport") or
 				ele.helpers.get_item_group(dp, "tube") or
 				ele.helpers.get_item_group(dp, "tubedevice")) then
 				hu = hu - 1

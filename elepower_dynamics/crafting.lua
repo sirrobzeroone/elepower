@@ -125,16 +125,6 @@ minetest.register_craft({
 	}
 })
 
--- Duct
-minetest.register_craft({
-	output = "elepower_dynamics:fluid_duct 8",
-	recipe = {
-		{"default:glass",  "default:glass",  "default:glass"},
-		{"elepower_dynamics:lead_ingot", "elepower_dynamics:lead_ingot", "elepower_dynamics:lead_ingot"},
-		{"default:glass",  "default:glass",  "default:glass"},
-	}
-})
-
 -- Portable Tank
 minetest.register_craft({
 	output = "elepower_dynamics:portable_tank",
@@ -223,8 +213,9 @@ minetest.register_craft({
 })
 
 -- Fluid Transfer Node
+minetest.clear_craft({output = "fluid_transfer:fluid_transfer_pump"})
 minetest.register_craft({
-	output = "elepower_dynamics:fluid_transfer_node 3",
+	output = "fluid_transfer:fluid_transfer_pump 3",
 	recipe = {
 		{"group:stone",  "elepower_dynamics:control_circuit",  "group:stone"},
 		{"elepower_dynamics:electrum_gear", "elepower_dynamics:servo_valve", "elepower_dynamics:electrum_gear"},

@@ -253,3 +253,6 @@ minetest.register_craftitem("elepower_dynamics:pv_cell", {
 ---------------
 -- Overrides --
 ---------------
+
+minetest.register_alias("elepower_dynamics:fluid_transfer_node", "fluid_transfer:fluid_transfer_pump")
+minetest.register_alias("elepower_dynamics:fluid_duct", "fluid_transfer:fluid_duct")
