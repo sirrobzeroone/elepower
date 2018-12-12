@@ -38,6 +38,11 @@ local alloy_recipes = {
 		output = "elepower_dynamics:silicon_wafer_doped",
 		time   = 8,
 	},
+	{
+		recipe = { "default:obsidian_glass", "elepower_dynamics:lead_ingot 4" },
+		output = "elepower_dynamics:hardened_glass 4",
+		time   = 8,
+	},
 }
 
 -- Register alloy furnace recipes

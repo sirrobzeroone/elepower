@@ -96,19 +96,28 @@ ele.default.states = {
 -- Preserve power storage in the item stack dropped
 local function preserve_metadata(pos, oldnode, oldmeta, drops)
 	local meta     = minetest.get_meta(pos)
-	local capacity = ele.helpers.get_node_property(meta, pos, "capacity")
 	local storage  = ele.helpers.get_node_property(meta, pos, "storage")
+	local capacity = ele.helpers.get_node_property(meta, pos, "capacity")
 
-	local nodedesc  = minetest.registered_nodes[oldnode.name].description
+	local nodedesc = minetest.registered_nodes[oldnode.name].description
+	local partsstr = meta:get_string("components")
 
-	if storage == 0 then
+	if storage == 0 and partsstr == "" then
 		return drops
 	end
 
 	for i,stack in pairs(drops) do
 		local stack_meta = stack:get_meta()
 		stack_meta:set_int("storage", storage)
-		stack_meta:set_string("description", nodedesc .. "\n" .. ele.capacity_text(capacity, storage))
+
+		local desc = ele.capacity_text(capacity, storage)
+
+		if partsstr ~= "" then
+			stack_meta:set_string("components", partsstr)
+			desc = desc .. "\n" .. minetest.colorize("#9647ff", "Modified Device")
+		end
+
+		stack_meta:set_string("description", nodedesc .. "\n" .. desc)
 		drops[i] = stack
 	end
 
@@ -119,11 +128,24 @@ end
 local function retrieve_metadata(pos, placer, itemstack, pointed_thing)
 	local item_meta = itemstack:get_meta()
 	local storage   = item_meta:get_int("storage")
-	
-	if storage and storage > 0 then
+	local partsstr  = item_meta:get_string("components")
+
+	if storage > 0 or partsstr ~= "" then
 		local meta = minetest.get_meta(pos)
+
 		meta:set_int("storage", storage)
-		minetest.get_node_timer(pos):start(1.0)
+		if partsstr ~= "" then
+			meta:set_string("components", partsstr)
+
+			if elepm then
+				elepm.handle_machine_upgrades(pos)
+			end
+		else
+			local t = minetest.get_node_timer(pos)
+			if not t:is_started() then
+				t:start(1.0)
+			end
+		end
 	end
 
 	return false
@@ -216,6 +238,17 @@ local function switch_state(pos, state_def)
 	local t = minetest.get_node_timer(pos)
 	if not t:is_started() then
 		t:start(1.0)
+	end
+end
+
+-- Patch a table
+local function apply_patches (table, patches)
+	for k,v in pairs(patches) do
+		if table[k] and type(table[k]) == "table" then
+			apply_patches(table[k], v)
+		else
+			table[k] = v
+		end
 	end
 end
 
@@ -393,23 +426,31 @@ function ele.register_base_device(nodename, nodedef)
 	if nodedef.ele_active_node then
 		local active_nodedef = table.copy(nodedef)
 		active_name = nodename.."_active"
-		
+
 		if nodedef.ele_active_node ~= true then
 			active_name = nodedef.ele_active_node
+
+			if i ~= 1 then
+				active_name = active_name .. "_" .. i
+			end
 		end
 
 		if nodedef.ele_active_nodedef then
-			for k,v in pairs(nodedef.ele_active_nodedef) do
-				active_nodedef[k] = v
-			end
+			apply_patches(active_nodedef, nodedef.ele_active_nodedef)
 
 			nodedef.ele_active_nodedef        = nil
 			active_nodedef.ele_active_nodedef = nil
 		end
 
+		-- Remove formspec functions from active nodedefs
+		if active_nodedef.get_formspec then
+			active_nodedef.get_formspec = nil
+		end
+
 		active_nodedef.groups["ele_active"] = 1
 		active_nodedef.groups["not_in_creative_inventory"] = 1
 		active_nodedef.drop = nodename
+
 		minetest.register_node(active_name, active_nodedef)
 	end
 

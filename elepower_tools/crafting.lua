@@ -35,3 +35,13 @@ minetest.register_craft({
 		{"elepower_dynamics:motor", "elepower_dynamics:capacitor", ""},
 	}
 })
+
+-- Soldering Iron
+minetest.register_craft({
+	output = "elepower_tools:soldering_iron",
+	recipe = {
+		{"", "elepower_dynamics:battery", "default:steel_ingot"},
+		{"", "elepower_dynamics:wound_silver_coil", ""},
+		{"elepower_dynamics:wound_silver_coil", "", ""},
+	}
+})

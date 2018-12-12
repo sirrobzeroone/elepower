@@ -156,6 +156,12 @@ minetest.register_node("elepower_machines:crank", {
 			{-0.03125, -0.5000, -0.03125, 0.03125, -0.1250, 0.03125}
 		}
 	},
+	selection_box = {
+		type = "fixed",
+		fixed = {
+			{-0.2500, -0.5000, -0.2500, 0.2500, 0.000, 0.2500}
+		}
+	},
 	on_rightclick = function (pos, node, clicker, itemstack, pointed_thing)
 		local gpos  = vector.add(pos, {x = 0, y = -1, z = 0})
 		local gnode = minetest.get_node_or_nil(gpos)

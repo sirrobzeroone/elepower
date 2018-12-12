@@ -213,9 +213,9 @@ minetest.register_craftitem("elepower_dynamics:soc", {
 })
 
 minetest.register_craftitem("elepower_dynamics:capacitor", {
-	description = "Capacitor",
+	description = "Capacitor\nTier 1 Capacitor",
 	inventory_image = "elepower_capacitor.png",
-	groups = {capacitor = 2, component = 1}
+	groups = {capacitor = 1, component = 1}
 })
 
 -- Assembled Components

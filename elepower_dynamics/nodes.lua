@@ -51,6 +51,18 @@ minetest.register_node("elepower_dynamics:particle_board", {
 	sounds = default.node_sound_wood_defaults(),
 })
 
+minetest.register_node("elepower_dynamics:hardened_glass", {
+	description = "Hardened Obsidian Glass\nDoes not let light through",
+	drawtype = "glasslike_framed_optional",
+	tiles = {"default_obsidian_glass.png", "elepower_hard_glass_detail.png"},
+	paramtype2 = "glasslikeliquidlevel",
+	is_ground_content = false,
+	sunlight_propagates = false,
+	use_texture_alpha = true,
+	sounds = default.node_sound_glass_defaults(),
+	groups = {cracky = 3},
+})
+
 -- Blocks
 
 minetest.register_node("elepower_dynamics:viridisium_block", {

@@ -1,6 +1,6 @@
 
 ele.register_tool("elepower_tools:hand_drill", {
-	description = "Hand Drill",
+	description = "Electric Hand Drill",
 	inventory_image = "eletools_hand_drill.png",
 	wield_image = "eletools_hand_drill.png^[transformFX",
 	tool_capabilities = {
@@ -15,7 +15,7 @@ ele.register_tool("elepower_tools:hand_drill", {
 })
 
 ele.register_tool("elepower_tools:chainsaw", {
-	description = "Chainsaw",
+	description = "Electric Chainsaw",
 	inventory_image = "eletools_chainsaw.png",
 	wield_image = "eletools_chainsaw.png^[transformFX",
 	ele_capacity = 8000,

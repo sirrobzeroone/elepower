@@ -59,6 +59,134 @@ function ele.formspec.get_crafter_formspec(craft_type, power, percent, pos, stat
 		default.get_hotbar_bg(0, 4.25)
 end
 
+-- Don't duplicate function for every single crafter node
+function crafter_timer (pos, elapsed)
+	local refresh = false
+	local meta    = minetest.get_meta(pos)
+	local inv     = meta:get_inventory()
+
+	-- Specialized for universal crafter node
+	local machine_node = minetest.get_node(pos).name
+	local machine_def     = minetest.registered_nodes[machine_node]
+
+	-- If this is an active node, get the inactive version
+	if machine_def.groups['ele_active'] == 1 then
+		machine_node = machine_def.drop -- Reliable
+		machine_def = minetest.registered_nodes[machine_node]
+	end
+
+	local capacity = ele.helpers.get_node_property(meta, pos, "capacity")
+	local usage    = ele.helpers.get_node_property(meta, pos, "usage")
+	local storage  = ele.helpers.get_node_property(meta, pos, "storage")
+	local speed    = ele.helpers.get_node_property(meta, pos, "craft_speed") or 1
+	local time     = meta:get_int("src_time")
+	local state    = meta:get_int("state")
+	local status   = "Idle"
+
+	local is_enabled = ele.helpers.state_enabled(meta, pos, state)
+	local res_time = 0
+
+	local get_formspec = machine_def.get_formspec or ele.formspec.get_crafter_formspec
+
+	local pow_buffer = {capacity = capacity, storage = storage, usage = 0}
+
+	while true do
+		if not is_enabled then
+			time = 0
+			status = "Off"
+			break
+		end
+
+		local result  = elepm.get_recipe(machine_def.craft_type, inv:get_list("src"))
+		local power_operation = false
+
+		-- Determine if there is enough power for this action
+		res_time = result.time
+		if result.time ~= 0 and pow_buffer.storage >= usage then
+			power_operation = true
+			pow_buffer.usage = usage
+		end
+
+		if result.time == 0 or not power_operation then
+			ele.helpers.swap_node(pos, machine_node)
+			
+			if result.time == 0 then
+				time = 0
+				status = "Idle"
+			else
+				status = "Out of Power!"
+			end
+
+			break
+		end
+
+		refresh = true
+		status = "Active"
+
+		-- One step
+		pow_buffer.storage = pow_buffer.storage - usage
+		time = time + ele.helpers.round(speed * 10)
+
+		if machine_def.ele_active_node then
+			local active_node = machine_node.."_active"
+			if machine_def.ele_active_node ~= true then
+				active_node = machine_def.ele_active_node
+			end
+
+			ele.helpers.swap_node(pos, active_node)
+		end
+
+		if time <= ele.helpers.round(result.time * 10) then
+			break
+		end
+
+		local output = result.output
+		if type(output) ~= "table" then output = { output } end
+		local output_stacks = {}
+		for _, o in ipairs(output) do
+			table.insert(output_stacks, ItemStack(o))
+		end
+
+		local room_for_output = true
+		inv:set_size("dst_tmp", inv:get_size("dst"))
+		inv:set_list("dst_tmp", inv:get_list("dst"))
+
+		for _, o in ipairs(output_stacks) do
+			if not inv:room_for_item("dst_tmp", o) then
+				room_for_output = false
+				break
+			end
+			inv:add_item("dst_tmp", o)
+		end
+
+		if not room_for_output then
+			ele.helpers.swap_node(pos, machine_node)
+			time = ele.helpers.round(res_time*10)
+			status = "Output Full!"
+			break
+		end
+
+		time = 0
+		inv:set_list("src", result.new_input)
+		inv:set_list("dst", inv:get_list("dst_tmp"))
+		break
+	end
+
+	local pct = 0
+	if res_time > 0 and time > 0 then
+		pct = math.floor((time / ele.helpers.round(res_time * 10)) * 100)
+	end
+
+	meta:set_string("formspec", get_formspec(machine_def.craft_type, pow_buffer, pct, pos, state))
+	meta:set_string("infotext", ("%s %s"):format(machine_def.description, status) ..
+		"\n" .. ele.capacity_text(capacity, storage))
+
+	meta:set_int("src_time", time)
+	meta:set_int("storage", pow_buffer.storage)
+
+	return refresh
+end
+
 function elepm.register_crafter(nodename, nodedef)
 	local craft_type = nodedef.craft_type
 	if not craft_type or not elepm.craft.types[craft_type] then
@@ -74,128 +202,12 @@ function elepm.register_crafter(nodename, nodedef)
 	nodedef.groups["tubedevice"]  = 1
 	nodedef.groups["tubedevice_receiver"] = 1
 
+	nodedef.on_timer = crafter_timer
+
 	-- Allow for custom formspec
 	local get_formspec = ele.formspec.get_crafter_formspec
 	if nodedef.get_formspec then
 		get_formspec = nodedef.get_formspec
-		nodedef.get_formspec = nil
-	end
-
-	nodedef.on_timer = function (pos, elapsed)
-		local refresh = false
-		local meta    = minetest.get_meta(pos)
-		local inv     = meta:get_inventory()
-
-		local machine_node  = nodename
-		local machine_speed = nodedef.craft_speed or 1
-
-		local capacity = ele.helpers.get_node_property(meta, pos, "capacity")
-		local usage    = ele.helpers.get_node_property(meta, pos, "usage")
-		local storage  = ele.helpers.get_node_property(meta, pos, "storage")
-		local time     = meta:get_int("src_time")
-		local state    = meta:get_int("state")
-		local status   = "Idle"
-
-		local is_enabled = ele.helpers.state_enabled(meta, pos, state)
-		local res_time = 0
-
-		local pow_buffer = {capacity = capacity, storage = storage, usage = 0}
-
-		while true do
-			if not is_enabled then
-				time = 0
-				status = "Off"
-				break
-			end
-
-			local result  = elepm.get_recipe(craft_type, inv:get_list("src"))
-			local power_operation = false
-
-			-- Determine if there is enough power for this action
-			res_time = result.time
-			if result.time ~= 0 and pow_buffer.storage >= usage then
-				power_operation = true
-				pow_buffer.usage = usage
-			end
-
-			if result.time == 0 or not power_operation then
-				ele.helpers.swap_node(pos, machine_node)
-				
-				if result.time == 0 then
-					time = 0
-					status = "Idle"
-				else
-					status = "Out of Power!"
-				end
-
-				break
-			end
-
-			refresh = true
-			status = "Active"
-
-			-- One step
-			pow_buffer.storage = pow_buffer.storage - usage
-			time = time + ele.helpers.round(machine_speed * 10)
-
-			if nodedef.ele_active_node then
-				local active_node = nodename.."_active"
-				if nodedef.ele_active_node ~= true then
-					active_node = nodedef.ele_active_node
-				end
-
-				ele.helpers.swap_node(pos, active_node)
-			end
-
-			if time <= ele.helpers.round(result.time * 10) then
-				break
-			end
-
-			local output = result.output
-			if type(output) ~= "table" then output = { output } end
-			local output_stacks = {}
-			for _, o in ipairs(output) do
-				table.insert(output_stacks, ItemStack(o))
-			end
-
-			local room_for_output = true
-			inv:set_size("dst_tmp", inv:get_size("dst"))
-			inv:set_list("dst_tmp", inv:get_list("dst"))
-
-			for _, o in ipairs(output_stacks) do
-				if not inv:room_for_item("dst_tmp", o) then
-					room_for_output = false
-					break
-				end
-				inv:add_item("dst_tmp", o)
-			end
-
-			if not room_for_output then
-				ele.helpers.swap_node(pos, machine_node)
-				time = ele.helpers.round(res_time*10)
-				status = "Output Full!"
-				break
-			end
-
-			time = 0
-			inv:set_list("src", result.new_input)
-			inv:set_list("dst", inv:get_list("dst_tmp"))
-			break
-		end
-
-		local pct = 0
-		if res_time > 0 and time > 0 then
-			pct = math.floor((time / ele.helpers.round(res_time * 10)) * 100)
-		end
-
-		meta:set_string("formspec", get_formspec(craft_type, pow_buffer, pct, pos, state))
-		meta:set_string("infotext", ("%s %s"):format(nodedef.description, status) ..
-			"\n" .. ele.capacity_text(capacity, storage))
-
-		meta:set_int("src_time", time)
-		meta:set_int("storage", pow_buffer.storage)
-
-		return refresh
 	end
 
 	local sizes = elepm.craft.types[craft_type]
@@ -210,6 +222,12 @@ function elepm.register_crafter(nodename, nodedef)
 		local pow_buffer = {capacity = capacity, storage = storage, usage = 0}
 		meta:set_string("formspec", get_formspec(craft_type, pow_buffer, nil, pos))
 	end
+
+	-- Upgradable
+	nodedef.ele_upgrades = {
+		machine_chip = {"craft_speed", "usage", "inrush"},
+		capacitor    = {"capacity"},
+	}
 
 	ele.register_machine(nodename, nodedef)
 end
