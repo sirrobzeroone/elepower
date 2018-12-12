@@ -13,7 +13,7 @@ minetest.register_craft({
 	recipe = {
 		{"", "elepower_dynamics:wound_copper_coil", "elepower_tools:drill_bit"},
 		{"default:steel_ingot", "elepower_dynamics:battery", "default:steel_ingot"},
-		{"elepower_dynamics:motor", "elepower_dynamics:capacitor", ""},
+		{"basic_materials:motor", "elepower_dynamics:capacitor", ""},
 	}
 })
 
@@ -32,7 +32,7 @@ minetest.register_craft({
 	recipe = {
 		{"", "elepower_dynamics:wound_copper_coil", "elepower_tools:chain"},
 		{"default:steel_ingot", "elepower_dynamics:battery", "default:steel_ingot"},
-		{"elepower_dynamics:motor", "elepower_dynamics:capacitor", ""},
+		{"basic_materials:motor", "elepower_dynamics:capacitor", ""},
 	}
 })
 

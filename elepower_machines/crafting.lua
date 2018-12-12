@@ -26,7 +26,7 @@ local alloy_recipes = {
 		output = "elepower_dynamics:electrum_ingot 3",
 	},
 	{
-		recipe = { "elepower_dynamics:silicon", "elepower_dynamics:coal_dust 2" },
+		recipe = { "basic_materials:silicon", "elepower_dynamics:coal_dust 2" },
 		output = "elepower_dynamics:silicon_wafer",
 	},
 	{
@@ -104,11 +104,11 @@ local grinding_recipes = {
 	},
 	{
 		recipe = { "default:desert_sand 4" },
-		output = "elepower_dynamics:silicon",
+		output = "basic_materials:silicon",
 	},
 	{
 		recipe = { "default:sand 4" },
-		output = "elepower_dynamics:silicon",
+		output = "basic_materials:silicon",
 	},
 	{
 		recipe = { "default:cobble" },
@@ -288,12 +288,12 @@ local soldering_recipes = {
 		time   = 20,
 	},
 	{
-		recipe = { "elepower_dynamics:wound_copper_coil 4", "elepower_dynamics:wound_silver_coil 2", "elepower_dynamics:copper_wire" },
+		recipe = { "elepower_dynamics:wound_copper_coil 4", "elepower_dynamics:wound_silver_coil 2", "basic_materials:copper_wire" },
 		output = "elepower_dynamics:induction_coil",
 		time   = 16,
 	},
 	{
-		recipe = { "elepower_dynamics:induction_coil 4", "elepower_dynamics:copper_wire", "elepower_dynamics:zinc_dust 2" },
+		recipe = { "elepower_dynamics:induction_coil 4", "basic_materials:copper_wire", "elepower_dynamics:zinc_dust 2" },
 		output = "elepower_dynamics:induction_coil_advanced",
 		time   = 18,
 	}
@@ -352,7 +352,7 @@ minetest.register_craft({
 	recipe = {
 		{"elepower_dynamics:electrum_ingot", "default:steel_ingot", "elepower_dynamics:electrum_ingot"},
 		{"default:steel_ingot", "default:mese_crystal", "default:steel_ingot"},
-		{"elepower_dynamics:electrum_ingot", "elepower_dynamics:motor", "elepower_dynamics:electrum_ingot"},
+		{"elepower_dynamics:electrum_ingot", "basic_materials:motor", "elepower_dynamics:electrum_ingot"},
 	}
 })
 

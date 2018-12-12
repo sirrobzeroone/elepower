@@ -99,12 +99,6 @@ minetest.register_craftitem("elepower_dynamics:carbon_sheet", {
 	groups = {carbon_fiber_sheet = 1, sheet = 1}
 })
 
-minetest.register_craftitem("elepower_dynamics:silicon", {
-	description = "Silicon",
-	inventory_image = "elepower_silicon.png",
-	groups = {silicon = 1, lump = 1}
-})
-
 minetest.register_craftitem("elepower_dynamics:silicon_wafer", {
 	description = "Silicon Wafer",
 	inventory_image = "elepower_silicon_wafer.png",
@@ -176,12 +170,6 @@ minetest.register_craftitem("elepower_dynamics:wound_silver_coil", {
 	groups = {silver = 1, coil = 1, component = 1}
 })
 
-minetest.register_craftitem("elepower_dynamics:copper_wire", {
-	description = "Copper Wire",
-	inventory_image = "elepower_copper_wire.png",
-	groups = {copper = 1, wire = 1, component = 1}
-})
-
 minetest.register_craftitem("elepower_dynamics:induction_coil", {
 	description = "Induction Coil\nTier 3 Coil",
 	inventory_image = "elepower_induction_coil.png",
@@ -219,12 +207,6 @@ minetest.register_craftitem("elepower_dynamics:capacitor", {
 })
 
 -- Assembled Components
-
-minetest.register_craftitem("elepower_dynamics:motor", {
-	description = "Motor",
-	inventory_image = "elepower_motor.png",
-	groups = {motor = 1, component = 1}
-})
 
 minetest.register_craftitem("elepower_dynamics:battery", {
 	description = "Battery",

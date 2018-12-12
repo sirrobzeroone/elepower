@@ -40,7 +40,7 @@ minetest.register_craft({
 	output = "elepower_wireless:wireless_porter",
 	recipe = {
 		{"elepower_dynamics:wound_silver_coil", "elepower_dynamics:xycrone_lump", "elepower_dynamics:wound_silver_coil"},
-		{"elepower_dynamics:xycrone_lump", "elepower_dynamics:copper_wire", "elepower_dynamics:xycrone_lump"},
+		{"elepower_dynamics:xycrone_lump", "basic_materials:copper_wire", "elepower_dynamics:xycrone_lump"},
 		{"elepower_dynamics:wound_silver_coil", "elepower_dynamics:battery", "elepower_dynamics:wound_silver_coil"},
 	}
 })

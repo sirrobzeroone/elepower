@@ -120,7 +120,7 @@ minetest.register_craft({
 	output = "elepower_dynamics:conduit 8",
 	recipe = {
 		{"elepower_dynamics:lead_ingot",  "elepower_dynamics:lead_ingot",  "elepower_dynamics:lead_ingot"},
-		{"elepower_dynamics:copper_wire", "elepower_dynamics:copper_wire", "elepower_dynamics:copper_wire"},
+		{"basic_materials:copper_wire", "basic_materials:copper_wire", "basic_materials:copper_wire"},
 		{"elepower_dynamics:lead_ingot",  "elepower_dynamics:lead_ingot",  "elepower_dynamics:lead_ingot"},
 	}
 })
@@ -164,15 +164,6 @@ minetest.register_craft({
 		{"", "moreores:silver_ingot", ""},
 		{"moreores:silver_ingot", "elepower_dynamics:zinc_ingot", "moreores:silver_ingot"},
 		{"", "moreores:silver_ingot", ""}
-	}
-})
-
-minetest.register_craft({
-	output = "elepower_dynamics:copper_wire 8",
-	recipe = {
-		{"default:copper_ingot", "default:copper_ingot", "default:copper_ingot"},
-		{"default:copper_ingot", "",                     "default:copper_ingot"},
-		{"default:copper_ingot", "default:copper_ingot", "default:copper_ingot"}
 	}
 })
 
@@ -274,15 +265,6 @@ minetest.register_craft({
 		{"elepower_dynamics:chip", "elepower_dynamics:chip", "elepower_dynamics:chip"},
 		{"elepower_dynamics:capacitor", "elepower_dynamics:pcb", "elepower_dynamics:capacitor"},
 		{"default:copper_ingot", "default:mese_crystal", "default:gold_ingot"},
-	}
-})
-
-minetest.register_craft({
-	output = "elepower_dynamics:motor 3",
-	recipe = {
-		{"default:steel_ingot", "elepower_dynamics:wound_copper_coil", "default:steel_ingot"},
-		{"elepower_dynamics:copper_wire", "elepower_dynamics:wound_copper_coil", "elepower_dynamics:copper_wire"},
-		{"default:steel_ingot", "elepower_dynamics:capacitor", "default:steel_ingot"},
 	}
 })
 

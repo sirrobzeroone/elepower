@@ -1,3 +1,3 @@
 -- Elepower Compatibility registrations
 
-dofile(elepd.modpath.."/compat/plastic.lua")
+dofile(elepd.modpath.."/compat/basic_materials.lua")

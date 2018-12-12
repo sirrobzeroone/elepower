@@ -19,7 +19,7 @@ minetest.register_craft({
 	recipe = {
 		{"elepower_dynamics:nickel_ingot", "elepower_dynamics:control_circuit", "elepower_dynamics:nickel_ingot"},
 		{"farming:hoe_steel", "elepower_farming:device_frame", "farming:hoe_steel"},
-		{"elepower_dynamics:wound_copper_coil", "elepower_dynamics:motor", "elepower_dynamics:wound_copper_coil"},
+		{"elepower_dynamics:wound_copper_coil", "basic_materials:motor", "elepower_dynamics:wound_copper_coil"},
 	}
 })
 
@@ -29,7 +29,7 @@ minetest.register_craft({
 	recipe = {
 		{"elepower_dynamics:nickel_ingot", "elepower_dynamics:control_circuit", "elepower_dynamics:nickel_ingot"},
 		{"default:axe_steel", "elepower_farming:device_frame", "farming:hoe_steel"},
-		{"elepower_dynamics:motor", "elepower_dynamics:diamond_gear", "elepower_dynamics:motor"},
+		{"basic_materials:motor", "elepower_dynamics:diamond_gear", "basic_materials:motor"},
 	}
 })
 
@@ -37,7 +37,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_farming:tree_extractor",
 	recipe = {
-		{"elepower_dynamics:motor", "bucket:bucket_empty", "elepower_dynamics:motor"},
+		{"basic_materials:motor", "bucket:bucket_empty", "basic_materials:motor"},
 		{"elepower_dynamics:tree_tap", "elepower_farming:device_frame", "elepower_dynamics:tree_tap"},
 		{"elepower_dynamics:copper_gear", "elepower_dynamics:servo_valve", "elepower_dynamics:copper_gear"},
 	}
@@ -47,7 +47,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_farming:composter",
 	recipe = {
-		{"elepower_dynamics:motor", "bucket:bucket_empty", "elepower_dynamics:motor"},
+		{"basic_materials:motor", "bucket:bucket_empty", "basic_materials:motor"},
 		{"elepower_dynamics:electrum_gear", "elepower_farming:device_frame", "elepower_dynamics:electrum_gear"},
 		{"elepower_dynamics:copper_gear", "elepower_dynamics:servo_valve", "elepower_dynamics:copper_gear"},
 	}
