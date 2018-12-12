@@ -244,9 +244,11 @@ minetest.after(0.2, function ()
 	local assoc = {}
 	for _,wood in ipairs(wood_nodes) do
 		local recipes = minetest.get_all_craft_recipes(wood)
-		for _, recipe in ipairs(recipes) do
-			if recipe.items and #recipe.items == 1 then
-				assoc[recipe.items[1]] = wood
+		if recipes then
+			for _, recipe in ipairs(recipes) do
+				if recipe.items and #recipe.items == 1 then
+					assoc[recipe.items[1]] = wood
+				end
 			end
 		end
 	end
