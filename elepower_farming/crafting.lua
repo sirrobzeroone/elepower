@@ -7,9 +7,9 @@
 minetest.register_craft({
 	output = "elepower_farming:device_frame",
 	recipe = {
-		{"homedecor:plastic_sheeting", "default:glass", "homedecor:plastic_sheeting"},
+		{"basic_materials:plastic_sheet", "default:glass", "basic_materials:plastic_sheet"},
 		{"default:glass", "default:mese_crystal", "default:glass"},
-		{"homedecor:plastic_sheeting", "default:glass", "homedecor:plastic_sheeting"},
+		{"basic_materials:plastic_sheet", "default:glass", "basic_materials:plastic_sheet"},
 	}
 })
 
