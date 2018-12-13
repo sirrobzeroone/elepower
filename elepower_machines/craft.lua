@@ -1,3 +1,4 @@
+local have_ui = minetest.get_modpath("unified_inventory")
 
 elepm.craft = {}
 elepm.craft.types = {}
@@ -9,6 +10,14 @@ function elepm.register_craft_type(name, def)
 		time        = def.time or 0,
 		gui_name    = def.gui_name,
 	}
+
+	if have_ui and unified_inventory.register_craft_type then
+		unified_inventory.register_craft_type(name, {
+			description = def.description or name,
+			width = def.inputs or 2,
+			height = 1,
+		})
+	end
 
 	elepm.craft[name] = {}
 end
@@ -53,6 +62,34 @@ function elepm.register_craft(craftdef)
 		output = craftresult,
 		time   = time
 	}
+
+	if have_ui then
+		local spec = {}
+
+		for item, count in pairs(recipe.recipe) do
+			spec[#spec+1] = ItemStack(item .. " " .. count)
+		end
+
+		if type(recipe.output) == "table" then
+			for _,itm in pairs(recipe.output) do
+				local itmst = ItemStack(itm)
+				unified_inventory.register_craft({
+					type = craftdef.type,
+					output = itmst,
+					items = spec,
+					width = 0,
+				})
+			end
+			return
+		end
+
+		unified_inventory.register_craft({
+			type = craftdef.type,
+			output = recipe.output,
+			items = spec,
+			width = 0,
+		})
+	end
 
 	table.insert(elepm.craft[ctype], recipe)
 end
