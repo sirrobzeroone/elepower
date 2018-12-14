@@ -191,7 +191,7 @@ minetest.register_craft({
 	}
 })
 
-	minetest.register_craft({
+minetest.register_craft({
 	output = "elepower_dynamics:pcb_blank",
 	recipe = {
 		{"default:copper_ingot", "default:copper_ingot", "default:copper_ingot"},

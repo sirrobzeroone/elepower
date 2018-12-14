@@ -298,6 +298,26 @@ local soldering_recipes = {
 		recipe = { "elepower_dynamics:induction_coil 4", "basic_materials:copper_wire", "elepower_dynamics:zinc_dust 2" },
 		output = "elepower_dynamics:induction_coil_advanced",
 		time   = 18,
+	},
+	{
+		recipe = { "elepower_machines:power_cell_0", "elepower_machines:hardened_capacitor 2", "elepower_dynamics:invar_plate 8" },
+		output = "elepower_machines:hardened_power_cell_0",
+		time   = 18,
+	},
+	{
+		recipe = { "elepower_machines:hardened_power_cell_0", "elepower_machines:reinforced_capacitor 2", "elepower_dynamics:electrum_plate 8" },
+		output = "elepower_machines:reinforced_power_cell_0",
+		time   = 20,
+	},
+	{
+		recipe = { "elepower_machines:reinforced_power_cell_0", "elepower_machines:resonant_capacitor 2", "elepower_dynamics:viridisium_plate 8" },
+		output = "elepower_machines:resonant_power_cell_0",
+		time   = 22,
+	},
+	{
+		recipe = { "elepower_machines:resonant_power_cell_0", "elepower_machines:super_capacitor 2", "elepower_dynamics:xycrone_lump" },
+		output = "elepower_machines:super_power_cell_0",
+		time   = 24,
 	}
 }
 
@@ -318,6 +338,45 @@ end
 --******************--
 -- CRAFTING RECIPES --
 --******************--
+
+-- Capacitors
+minetest.register_craft({
+	output = "elepower_machines:hardened_capacitor",
+	recipe = {
+		{"basic_materials:plastic_sheet", "basic_materials:plastic_sheet", "basic_materials:plastic_sheet"},
+		{"elepower_dynamics:invar_plate", "default:mese_crystal", "elepower_dynamics:invar_plate"},
+		{"elepower_dynamics:invar_plate", "elepower_dynamics:capacitor", "elepower_dynamics:invar_plate"},
+	}
+})
+
+minetest.register_craft({
+	output = "elepower_machines:reinforced_capacitor",
+	recipe = {
+		{"elepower_dynamics:invar_plate", "elepower_dynamics:invar_plate", "elepower_dynamics:invar_plate"},
+		{"elepower_dynamics:electrum_plate", "default:mese_crystal", "elepower_dynamics:electrum_plate"},
+		{"elepower_dynamics:electrum_plate", "elepower_machines:hardened_capacitor", "elepower_dynamics:electrum_plate"},
+	}
+})
+
+minetest.register_craft({
+	output = "elepower_machines:resonant_capacitor",
+	recipe = {
+		{"elepower_dynamics:electrum_plate", "elepower_dynamics:electrum_plate", "elepower_dynamics:electrum_plate"},
+		{"elepower_dynamics:viridisium_plate", "default:mese_crystal", "elepower_dynamics:viridisium_plate"},
+		{"elepower_dynamics:viridisium_plate", "elepower_machines:reinforced_capacitor", "elepower_dynamics:viridisium_plate"},
+	}
+})
+
+minetest.register_craft({
+	output = "elepower_machines:super_capacitor",
+	recipe = {
+		{"elepower_dynamics:viridisium_plate", "elepower_dynamics:viridisium_plate", "elepower_dynamics:viridisium_plate"},
+		{"elepower_dynamics:viridisium_plate", "elepower_dynamics:xycrone_lump", "elepower_dynamics:viridisium_plate"},
+		{"elepower_dynamics:xycrone_lump", "elepower_machines:resonant_capacitor", "elepower_dynamics:xycrone_lump"},
+	}
+})
+
+-- Nodes
 
 -- Coal-fired Alloy Furnace
 minetest.register_craft({
