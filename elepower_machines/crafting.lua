@@ -376,6 +376,15 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_craft({
+	output = "elepower_machines:heavy_filter",
+	recipe = {
+		{"elepower_dynamics:steel_plate", "fluid_transfer:fluid_duct", "elepower_dynamics:steel_plate"},
+		{"basic_materials:silicon", "elepower_dynamics:servo_valve", "basic_materials:silicon"},
+		{"elepower_dynamics:graphite_ingot", "fluid_transfer:fluid_duct", "elepower_dynamics:graphite_ingot"}
+	}
+})
+
 -- Nodes
 
 -- Coal-fired Alloy Furnace
@@ -509,7 +518,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_machines:accumulator",
 	recipe = {
-		{"", "elepower_dynamics:fluid_duct", ""},
+		{"", "fluid_transfer:fluid_duct", ""},
 		{"default:glass", "elepower_machines:machine_block", "default:glass"},
 		{"elepower_dynamics:steel_gear", "elepower_dynamics:servo_valve", "elepower_dynamics:steel_gear"},
 	}
@@ -520,7 +529,7 @@ minetest.register_craft({
 	output = "elepower_machines:lava_cooler",
 	recipe = {
 		{"bucket:bucket_water", "elepower_dynamics:control_circuit", "bucket:bucket_lava"},
-		{"elepower_dynamics:fluid_duct", "elepower_machines:machine_block", "elepower_dynamics:fluid_duct"},
+		{"fluid_transfer:fluid_duct", "elepower_machines:machine_block", "fluid_transfer:fluid_duct"},
 		{"elepower_dynamics:servo_valve", "elepower_dynamics:tin_gear", "elepower_dynamics:servo_valve"},
 	},
 	replacements = {
@@ -615,5 +624,15 @@ minetest.register_craft({
 		{"elepower_dynamics:copper_plate", "elepower_dynamics:integrated_circuit", "elepower_dynamics:zinc_plate"},
 		{"bucket:bucket_empty", "elepower_machines:machine_block", "elepower_dynamics:gas_container"},
 		{"elepower_dynamics:servo_valve", "elepower_dynamics:wound_copper_coil", "elepower_dynamics:servo_valve"},
+	}
+})
+
+-- Advanced Machine Block
+minetest.register_craft({
+	output = "elepower_machines:advanced_machine_block 8",
+	recipe = {
+		{"elepower_dynamics:electrum_plate", "elepower_dynamics:lead_ingot", "elepower_dynamics:electrum_plate"},
+		{"elepower_dynamics:lead_ingot", "elepower_machines:machine_block", "elepower_dynamics:lead_ingot"},
+		{"elepower_dynamics:electrum_plate", "elepower_dynamics:lead_ingot", "elepower_dynamics:electrum_plate"},
 	}
 })

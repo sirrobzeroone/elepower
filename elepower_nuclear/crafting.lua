@@ -101,6 +101,56 @@ minetest.register_craft({
 	}
 })
 
+-- Fusion Reactor Coil
+minetest.register_craft({
+	output = "elepower_nuclear:fusion_coil",
+	recipe = {
+		{"basic_materials:copper_wire", "elepower_dynamics:graphite_ingot", "basic_materials:copper_wire"},
+		{"basic_materials:copper_wire", "elepower_dynamics:copper_plate", "basic_materials:copper_wire"},
+		{"basic_materials:copper_wire", "elepower_dynamics:graphite_ingot", "basic_materials:copper_wire"},
+	}
+})
+
+-- Fusion Reactor Controller
+minetest.register_craft({
+	output = "elepower_nuclear:reactor_controller",
+	recipe = {
+		{"elepower_dynamics:electrum_plate", "elepower_dynamics:soc", "elepower_dynamics:electrum_plate"},
+		{"elepower_machines:resonant_capacitor", "elepower_machines:advanced_machine_block", "elepower_machines:resonant_capacitor"},
+		{"elepower_dynamics:viridisium_plate", "elepower_dynamics:lcd_panel", "elepower_dynamics:viridisium_plate"},
+	}
+})
+
+-- Fusion Reactor Power Port
+minetest.register_craft({
+	output = "elepower_nuclear:reactor_power",
+	recipe = {
+		{"elepower_dynamics:electrum_plate", "elepower_dynamics:soc", "elepower_dynamics:electrum_plate"},
+		{"elepower_dynamics:induction_coil_advanced", "elepower_machines:advanced_machine_block", "elepower_dynamics:induction_coil_advanced"},
+		{"elepower_dynamics:viridisium_plate", "elepower_machines:resonant_capacitor", "elepower_dynamics:viridisium_plate"},
+	}
+})
+
+-- Fusion Reactor Fluid Port
+minetest.register_craft({
+	output = "elepower_nuclear:reactor_fluid",
+	recipe = {
+		{"elepower_dynamics:electrum_plate", "elepower_dynamics:soc", "elepower_dynamics:electrum_plate"},
+		{"fluid_transfer:fluid_duct", "elepower_machines:advanced_machine_block", "elepower_dynamics:servo_valve"},
+		{"elepower_dynamics:viridisium_plate", "elepower_dynamics:xycrone_lump", "elepower_dynamics:viridisium_plate"},
+	}
+})
+
+-- Fusion Reactor Fluid Port (Output)
+minetest.register_craft({
+	output = "elepower_nuclear:reactor_output",
+	recipe = {
+		{"elepower_dynamics:electrum_plate", "elepower_dynamics:soc", "elepower_dynamics:electrum_plate"},
+		{"elepower_dynamics:servo_valve", "elepower_machines:advanced_machine_block", "fluid_transfer:fluid_duct"},
+		{"elepower_dynamics:viridisium_plate", "elepower_dynamics:xycrone_lump", "elepower_dynamics:viridisium_plate"},
+	}
+})
+
 ------------------------
 -- Enrichment recipes --
 ------------------------
