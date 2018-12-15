@@ -111,4 +111,16 @@ if minetest.get_modpath("basic_materials") == nil then
 		inventory_image = "elepower_silicon.png",
 		groups = {silicon = 1, lump = 1}
 	})
+
+	-----------
+	-- BRASS --
+	-----------
+
+	minetest.register_craftitem(":basic_materials:brass_ingot", {
+		description = "Brass Ingot",
+		inventory_image = "elepower_brass_ingot.png",
+		groups = {brass = 1, ingot = 1}
+	})
+else
+	minetest.clear_craft({output = "basic_materials:brass_ingot"})
 end

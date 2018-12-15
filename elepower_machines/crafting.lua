@@ -42,6 +42,11 @@ local alloy_recipes = {
 		output = "elepower_dynamics:hardened_glass 4",
 		time   = 8,
 	},
+	{
+		recipe = { "default:copper_ingot 2", "moreores:silver_ingot" },
+		output = "basic_materials:brass_ingot",
+		time   = 8,
+	},
 }
 
 -- Register alloy furnace recipes
@@ -427,9 +432,9 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_machines:machine_block",
 	recipe = {
-		{"elepower_dynamics:electrum_ingot", "default:steel_ingot", "elepower_dynamics:electrum_ingot"},
-		{"default:steel_ingot", "default:mese_crystal", "default:steel_ingot"},
-		{"elepower_dynamics:electrum_ingot", "basic_materials:motor", "elepower_dynamics:electrum_ingot"},
+		{"default:steel_ingot", "default:glass", "default:steel_ingot"},
+		{"default:glass", "elepower_dynamics:brass_gear", "default:glass"},
+		{"default:steel_ingot", "basic_materials:motor", "default:steel_ingot"},
 	}
 })
 
@@ -638,8 +643,8 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_machines:advanced_machine_block 8",
 	recipe = {
-		{"elepower_dynamics:electrum_plate", "elepower_dynamics:lead_ingot", "elepower_dynamics:electrum_plate"},
-		{"elepower_dynamics:lead_ingot", "elepower_machines:machine_block", "elepower_dynamics:lead_ingot"},
-		{"elepower_dynamics:electrum_plate", "elepower_dynamics:lead_ingot", "elepower_dynamics:electrum_plate"},
+		{"elepower_dynamics:electrum_plate", "elepower_dynamics:brass_plate", "elepower_dynamics:electrum_plate"},
+		{"elepower_dynamics:brass_plate", "elepower_machines:machine_block", "elepower_dynamics:brass_plate"},
+		{"elepower_dynamics:electrum_plate", "elepower_dynamics:brass_plate", "elepower_dynamics:electrum_plate"},
 	}
 })
