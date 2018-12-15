@@ -177,7 +177,7 @@ minetest.register_craft({
 	output = "elepower_dynamics:chip 6",
 	recipe = {
 		{"basic_materials:plastic_sheet", "basic_materials:plastic_sheet", "basic_materials:plastic_sheet"},
-		{"default:mese_crystal", "group:color_black", "default:mese_crystal"},
+		{"default:mese_crystal_fragment", "group:color_black", "default:mese_crystal_fragment"},
 		{"default:copper_ingot", "moreores:silver_ingot", "default:copper_ingot"},
 	}
 })
@@ -192,7 +192,7 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "elepower_dynamics:pcb_blank",
+	output = "elepower_dynamics:pcb_blank 3",
 	recipe = {
 		{"default:copper_ingot", "default:copper_ingot", "default:copper_ingot"},
 		{"default:copper_ingot", "default:mese_crystal", "default:copper_ingot"},
@@ -255,7 +255,7 @@ minetest.register_craft({
 	recipe = {
 		{"elepower_dynamics:chip", "elepower_dynamics:chip", "elepower_dynamics:chip"},
 		{"elepower_dynamics:capacitor", "elepower_dynamics:pcb", "elepower_dynamics:capacitor"},
-		{"default:copper_ingot", "default:mese_crystal", "default:gold_ingot"},
+		{"default:copper_ingot", "default:mese_crystal", "default:copper_ingot"},
 	}
 })
 
@@ -284,6 +284,12 @@ minetest.register_craft({
 	type   = "cooking",
 	output = "elepower_dynamics:iron_ingot",
 	recipe = "default:iron_lump"
+})
+
+minetest.register_craft({
+	type   = "cooking",
+	output = "default:steel_ingot",
+	recipe = "elepower_dynamics:iron_ingot"
 })
 
 minetest.register_craft({

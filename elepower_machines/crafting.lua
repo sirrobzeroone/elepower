@@ -11,7 +11,6 @@ local alloy_recipes = {
 	{
 		recipe = { "elepower_dynamics:iron_ingot", "elepower_dynamics:coal_dust 4" },
 		output = "default:steel_ingot",
-		time   = 6,
 	},
 	{
 		recipe = { "default:copper_ingot 2", "default:tin_ingot" },
@@ -213,6 +212,14 @@ local compressor_recipes = {
 	{
 		recipe = { "default:mese_crystal 9" },
 		output = "default:mese",
+	},
+	{
+		recipe = { "elepower_dynamics:coal_dust 4" },
+		output = "elepower_dynamics:carbon_fiber",
+	},
+	{
+		recipe = { "elepower_dynamics:carbon_fiber 4" },
+		output = "elepower_dynamics:carbon_sheet",
 	}
 }
 
@@ -381,7 +388,7 @@ minetest.register_craft({
 	recipe = {
 		{"elepower_dynamics:steel_plate", "fluid_transfer:fluid_duct", "elepower_dynamics:steel_plate"},
 		{"basic_materials:silicon", "elepower_dynamics:servo_valve", "basic_materials:silicon"},
-		{"elepower_dynamics:graphite_ingot", "fluid_transfer:fluid_duct", "elepower_dynamics:graphite_ingot"}
+		{"elepower_dynamics:carbon_sheet", "fluid_transfer:fluid_duct", "elepower_dynamics:carbon_sheet"}
 	}
 })
 

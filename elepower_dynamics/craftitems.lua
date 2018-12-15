@@ -253,3 +253,7 @@ minetest.register_craftitem("elepower_dynamics:pv_cell", {
 ---------------
 -- Overrides --
 ---------------
+
+minetest.override_item("default:steel_ingot", {
+	description = "Steel Ingot\nLow carbon steel"
+})
