@@ -1,6 +1,7 @@
 
 elepm.register_craft_type("grind", {
 	description = "Grinding",
+	icon        = "elepower_grinder.png",
 	inputs      = 1,
 })
 

@@ -3,6 +3,7 @@ elepm.register_craft_type("saw", {
 	description = "Sawmilling",
 	inputs      = 1,
 	gui_name    = "elepower_saw",
+	icon        = "elepower_sawmill.png",
 })
 
 elepm.register_crafter("elepower_machines:sawmill", {

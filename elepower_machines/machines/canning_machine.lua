@@ -1,6 +1,7 @@
 
 elepm.register_craft_type("can", {
 	description = "Canning",
+	icon        = "elepower_canning_machine.png",
 	inputs      = 2,
 })
 

@@ -2,6 +2,7 @@
 elepm.register_craft_type("solder", {
 	description = "Soldering",
 	inputs      = 3,
+	icon        = "elepower_solderer.png",
 })
 
 elepm.register_crafter("elepower_machines:solderer", {

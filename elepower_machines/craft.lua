@@ -1,4 +1,5 @@
 local have_ui = minetest.get_modpath("unified_inventory")
+local have_cg = minetest.get_modpath("craftguide") and craftguide and craftguide.register_craft
 
 elepm.craft = {}
 elepm.craft.types = {}
@@ -11,6 +12,11 @@ function elepm.register_craft_type(name, def)
 		gui_name    = def.gui_name,
 	}
 
+	elepm.craft[name] = {}
+
+	-- Don't register cooking or fuel types externally.
+	if name == "cooking" or name == "fuel" then return end
+
 	if have_ui and unified_inventory.register_craft_type then
 		unified_inventory.register_craft_type(name, {
 			description = def.description or name,
@@ -19,7 +25,13 @@ function elepm.register_craft_type(name, def)
 		})
 	end
 
-	elepm.craft[name] = {}
+	if have_cg then
+		craftguide.register_craft_type(name, {
+			description = def.description,
+			icon  = def.icon or "elepower_alloy_furnace.png",
+			width = def.inputs or 2,
+		})
+	end
 end
 
 function elepm.register_craft(craftdef)
@@ -63,32 +75,65 @@ function elepm.register_craft(craftdef)
 		time   = time
 	}
 
-	if have_ui then
+	if have_ui or have_cg then
 		local spec = {}
 
 		for item, count in pairs(recipe.recipe) do
 			spec[#spec+1] = ItemStack(item .. " " .. count)
 		end
 
+		local items = {}
+		for itm,q in pairs(recipe.recipe) do
+			local itmn = itm
+			if q > 1 then itmn = itmn .. " " .. q end
+			items[#items+1] = itmn
+		end
+
 		if type(recipe.output) == "table" then
 			for _,itm in pairs(recipe.output) do
 				local itmst = ItemStack(itm)
-				unified_inventory.register_craft({
-					type = craftdef.type,
-					output = itmst,
-					items = spec,
-					width = 0,
-				})
+				if have_ui then
+					unified_inventory.register_craft({
+						type = craftdef.type,
+						output = itmst,
+						items = spec,
+						width = 0,
+					})
+				end
+
+				if have_cg then
+					local iname = itm
+					if type(iname) == "userdata" then iname = iname:get_name() end
+					
+					craftguide.register_craft({
+						type = craftdef.type,
+						output = iname,
+						items = items,
+					})
+				end
 			end
 			return
 		end
 
-		unified_inventory.register_craft({
-			type = craftdef.type,
-			output = recipe.output,
-			items = spec,
-			width = 0,
-		})
+		if have_ui then
+			unified_inventory.register_craft({
+				type = craftdef.type,
+				output = recipe.output,
+				items = spec,
+				width = 0,
+			})
+		end
+
+		if have_cg then
+			local iname = recipe.output
+			if type(iname) == "userdata" then iname = iname:get_name() end
+			
+			craftguide.register_craft({
+				type   = craftdef.type,
+				output = iname,
+				items  = items,
+			})
+		end
 	end
 
 	table.insert(elepm.craft[ctype], recipe)
