@@ -4,6 +4,10 @@ local have_cg = minetest.get_modpath("craftguide") and craftguide and craftguide
 elepm.craft = {}
 elepm.craft.types = {}
 
+local function item_string( ... )
+	-- body
+end
+
 function elepm.register_craft_type(name, def)
 	elepm.craft.types[name] = {
 		inputs      = def.inputs or 2,
@@ -78,16 +82,13 @@ function elepm.register_craft(craftdef)
 
 	if have_ui or have_cg then
 		local spec = {}
+		local items = {}
 
 		for item, count in pairs(recipe.recipe) do
-			spec[#spec+1] = ItemStack(item .. " " .. count)
-		end
-
-		local items = {}
-		for itm,q in pairs(recipe.recipe) do
-			local itmn = itm
-			if q > 1 then itmn = itmn .. " " .. q end
-			items[#items+1] = itmn
+			local stack = ItemStack(item)
+			stack:set_count(count)
+			spec[#spec+1] = stack
+			items[#items+1] = stack:to_string()
 		end
 
 		if type(recipe.output) == "table" then
@@ -102,13 +103,10 @@ function elepm.register_craft(craftdef)
 					})
 				end
 
-				if have_cg then
-					local iname = itm
-					if type(iname) == "userdata" then iname = iname:get_name() end
-					
+				if have_cg then					
 					craftguide.register_craft({
 						type = craftdef.type,
-						output = iname,
+						output = itmst:to_string(),
 						items = items,
 					})
 				end
@@ -126,12 +124,9 @@ function elepm.register_craft(craftdef)
 		end
 
 		if have_cg then
-			local iname = recipe.output
-			if type(iname) == "userdata" then iname = iname:get_name() end
-			
 			craftguide.register_craft({
 				type   = craftdef.type,
-				output = iname,
+				output = recipe.output:to_string(),
 				items  = items,
 			})
 		end

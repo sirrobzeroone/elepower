@@ -44,7 +44,7 @@ local alloy_recipes = {
 	},
 	{
 		recipe = { "default:copper_ingot 2", "moreores:silver_ingot" },
-		output = "basic_materials:brass_ingot",
+		output = "basic_materials:brass_ingot 3",
 		time   = 8,
 	},
 }
