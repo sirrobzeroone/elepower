@@ -44,7 +44,6 @@ function ele.register_fluid_generator(nodename, nodedef)
 		on_timer = function (pos, elapsed)
 			local refresh  = false
 			local meta     = minetest.get_meta(pos)
-			local nodename = minetest.get_node(pos).name
 
 			local burn_time      = meta:get_int("burn_time")
 			local burn_totaltime = meta:get_int("burn_totaltime")

@@ -91,7 +91,7 @@ local function timer(pos, elapsed)
 
 		if fl_buffer.fluid == "" then
 			local node = minetest.get_node_or_nil(ppos)
-			if not node or node.name == "air" then
+			if not node or node.name == "air" or (bucket.liquids[node.name] and bucket.liquids[node.name].flowing == node.name) then
 				plevel = plevel - 1
 				status = "Seeking"
 				refresh = true
@@ -102,7 +102,7 @@ local function timer(pos, elapsed)
 			end
 
 			-- Valid liquid, proceed pumping
-			if bucket.liquids[node.name] then
+			if bucket.liquids[node.name] and bucket.liquids[node.name].source == node.name then
 				fl_buffer.fluid = node.name
 				refresh = true
 			else
