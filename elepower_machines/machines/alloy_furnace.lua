@@ -2,6 +2,7 @@
 elepm.register_craft_type("alloy", {
 	description = "Alloying",
 	inputs      = 2,
+	icon        = "elepower_alloy_furnace.png",
 })
 
 elepm.register_crafter("elepower_machines:alloy_furnace", {
