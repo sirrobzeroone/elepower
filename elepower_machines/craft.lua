@@ -20,6 +20,7 @@ function elepm.register_craft_type(name, def)
 	if have_ui and unified_inventory.register_craft_type then
 		unified_inventory.register_craft_type(name, {
 			description = def.description or name,
+			icon  = def.icon or "elepower_machine_side.png",
 			width = def.inputs or 2,
 			height = 1,
 		})
@@ -28,7 +29,7 @@ function elepm.register_craft_type(name, def)
 	if have_cg then
 		craftguide.register_craft_type(name, {
 			description = def.description,
-			icon  = def.icon or "elepower_alloy_furnace.png",
+			icon  = def.icon or "elepower_machine_side.png",
 			width = def.inputs or 2,
 		})
 	end

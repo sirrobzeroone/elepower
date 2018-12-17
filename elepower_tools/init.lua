@@ -15,3 +15,8 @@ dofile(modpath .. "/soldering.lua")
 -- Crafting
 dofile(modpath .. "/craftitems.lua")
 dofile(modpath .. "/crafting.lua")
+
+-- Armor
+if minetest.get_modpath("3d_armor") then
+	dofile(modpath .. "/armor.lua")
+end
