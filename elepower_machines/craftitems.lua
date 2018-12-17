@@ -62,3 +62,9 @@ minetest.register_craftitem("elepower_machines:heavy_filter", {
 		return itemstack
 	end
 })
+
+-- Pump Tube Roll
+minetest.register_craftitem("elepower_machines:opaque_duct_roll", {
+	description = "Retractable Opaque Fluid Duct\nA Pump uses this to reach fluids.",
+	inventory_image = "elepower_opaque_duct.png",
+})

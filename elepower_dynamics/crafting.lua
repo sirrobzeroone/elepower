@@ -125,6 +125,16 @@ minetest.register_craft({
 	}
 })
 
+-- Opaque Fluid Duct
+minetest.register_craft({
+	output = "elepower_dynamics:opaque_duct 3",
+	recipe = {
+		{"elepower_dynamics:lead_ingot",  "elepower_dynamics:lead_ingot",  "elepower_dynamics:lead_ingot"},
+		{"fluid_transfer:fluid_duct", "fluid_transfer:fluid_duct", "fluid_transfer:fluid_duct"},
+		{"elepower_dynamics:lead_ingot",  "elepower_dynamics:lead_ingot",  "elepower_dynamics:lead_ingot"},
+	}
+})
+
 -- Portable Tank
 minetest.register_craft({
 	output = "elepower_dynamics:portable_tank",

@@ -397,6 +397,15 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_craft({
+	output = "elepower_machines:opaque_duct_roll",
+	recipe = {
+		{"elepower_dynamics:opaque_duct", "elepower_dynamics:opaque_duct", "elepower_dynamics:opaque_duct"},
+		{"elepower_dynamics:opaque_duct", "basic_materials:motor", "elepower_dynamics:opaque_duct"},
+		{"elepower_dynamics:opaque_duct", "elepower_dynamics:opaque_duct", "elepower_dynamics:opaque_duct"},
+	}
+})
+
 -- Nodes
 
 -- Coal-fired Alloy Furnace
@@ -646,5 +655,15 @@ minetest.register_craft({
 		{"elepower_dynamics:electrum_plate", "elepower_dynamics:brass_plate", "elepower_dynamics:electrum_plate"},
 		{"elepower_dynamics:brass_plate", "elepower_machines:machine_block", "elepower_dynamics:brass_plate"},
 		{"elepower_dynamics:electrum_plate", "elepower_dynamics:brass_plate", "elepower_dynamics:electrum_plate"},
+	}
+})
+
+-- Pump
+minetest.register_craft({
+	output = "elepower_machines:pump",
+	recipe = {
+		{"elepower_dynamics:lead_gear", "elepower_dynamics:integrated_circuit", "elepower_dynamics:lead_gear"},
+		{"bucket:bucket_empty", "elepower_machines:machine_block", "bucket:bucket_empty"},
+		{"elepower_dynamics:electrum_plate", "elepower_machines:opaque_duct_roll", "elepower_dynamics:electrum_plate"},
 	}
 })
