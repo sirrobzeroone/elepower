@@ -3,6 +3,7 @@
 local dict = {
 	machine_chip = "Machine Chip",
 	capacitor    = "Capacitor",
+	pump_filter  = "Pump Filter",
 }
 
 local function upgrade_formspec (upgrades, desc)

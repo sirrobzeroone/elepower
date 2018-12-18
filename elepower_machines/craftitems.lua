@@ -42,7 +42,7 @@ minetest.register_craftitem("elepower_machines:super_capacitor", {
 
 minetest.register_craftitem("elepower_machines:heavy_filter", {
 	description = "Liquid Weight Filter\nMakes water pumps pump only Heavy Water\nRight-Click to apply to Water Accumulator",
-	groups = {accumulator_filter = 1},
+	groups = {accumulator_filter = 1, pump_filter = 2, ele_upgrade_component = 1},
 	inventory_image = "elepower_accumulator_filter.png",
 	on_place = function (itemstack, placer, pointed_thing)
 		if not placer or not placer:is_player() then return itemstack end

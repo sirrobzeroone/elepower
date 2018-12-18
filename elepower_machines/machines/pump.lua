@@ -59,6 +59,7 @@ local function timer(pos, elapsed)
 	local usage    = ele.helpers.get_node_property(meta, pos, "usage")
 	local storage  = ele.helpers.get_node_property(meta, pos, "storage")
 	local state    = meta:get_int("state")
+	local comps    = meta:get_string("components")
 	local status   = "Idle"
 
 	local is_enabled = ele.helpers.state_enabled(meta, pos, state)
@@ -73,6 +74,8 @@ local function timer(pos, elapsed)
 
 	local ppos = vector.add(pos, {x=0,y=plevel,z=0})
 
+	local heavy = comps:match("elepower_machines:heavy_filter") ~= nil
+
 	while true do
 		if not is_enabled then
 			status = "Off"
@@ -84,7 +87,14 @@ local function timer(pos, elapsed)
 			break
 		end
 
-		if fl_buffer.amount + 1000 > fl_buffer.capacity then
+		local dig_node = fl_buffer.fluid
+		local amount = 1000
+		if fl_buffer.fluid == "elepower_nuclear:heavy_water_source" and heavy then
+			dig_node = "default:water_source"
+			amount = 200
+		end
+
+		if fl_buffer.amount + amount > fl_buffer.capacity then
 			status = "Tank Full!"
 			break
 		end
@@ -103,6 +113,10 @@ local function timer(pos, elapsed)
 
 			-- Valid liquid, proceed pumping
 			if bucket.liquids[node.name] and bucket.liquids[node.name].source == node.name then
+				if node.name == "default:water_source" and heavy then
+					node.name = "elepower_nuclear:heavy_water_source"
+				end
+
 				fl_buffer.fluid = node.name
 				refresh = true
 			else
@@ -112,12 +126,24 @@ local function timer(pos, elapsed)
 		end
 
 		if fl_buffer.fluid ~= "" then
+			-- Filter was installed
+			if fl_buffer.fluid == "default:water_source" and heavy and fl_buffer.amount > 0 then
+				fl_buffer.fluid = "elepower_nuclear:heavy_water_source"
+				fl_buffer.amount = 0
+				refresh = true
+				break
+			end
+
 			-- We are looking for `fl_buffer.fluid` on Y level `plevel`
 			-- If we find a fluid node, we dig it, and add it to the buffer's storage
 			-- If we don't find a fluid node, we go a level down
-			local dug = dig_node_leveled_radius(ppos, 16, fl_buffer.fluid)
+			local dug = dig_node_leveled_radius(ppos, 16, dig_node)
 			if not dug then
 				local node = minetest.get_node_or_nil(ppos)
+				if node.name == "default:water_source" and heavy then
+					node.name = "elepower_nuclear:heavy_water_source"
+				end
+
 				if not node or (node.name ~= fl_buffer.fluid and node.name ~= "air") then
 					status  = "No More Fluid!"
 					refresh = false
@@ -131,7 +157,7 @@ local function timer(pos, elapsed)
 				end
 				break
 			else
-				fl_buffer.amount = fl_buffer.amount + 1000
+				fl_buffer.amount = fl_buffer.amount + amount
 				pow_buffer.usage = usage
 				pow_buffer.storage = pow_buffer.storage - usage
 				status = "Pumping"
@@ -200,7 +226,12 @@ ele.register_machine("elepower_machines:pump", {
 	on_construct = function (pos)
 		local meta = minetest.get_meta(pos)
 		meta:set_string("formspec", nil, nil, 0, -1)
-	end
+	end,
+	-- Upgradable
+	ele_upgrades = {
+		pump_filter = {},
+		capacitor   = {"capacity"},
+	},
 })
 
 minetest.register_entity("elepower_machines:pump_tube", {
