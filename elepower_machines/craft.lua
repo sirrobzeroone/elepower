@@ -34,7 +34,6 @@ function elepm.register_craft_type(name, def)
 		craftguide.register_craft_type(name, {
 			description = def.description,
 			icon  = def.icon or "elepower_machine_side.png",
-			width = def.inputs or 2,
 		})
 	end
 end
@@ -49,10 +48,11 @@ function elepm.register_craft(craftdef)
 		return
 	end
 
-	local inputs  = craftdef.recipe
-	local outputs = craftdef.output
-	local ctype   = craftdef.type
-	local time    = (craftdef.time or craftdef.cooktime or 5) + (elepm.craft.types[ctype].time or 0)
+	local inputs   = craftdef.recipe
+	local outputs  = craftdef.output
+	local ctype    = craftdef.type
+	local ctypedef = elepm.craft.types[ctype]
+	local time     = (craftdef.time or craftdef.cooktime or 5) + (ctypedef.time or 0)
 
 	local craftrecipe = {}
 	for _,input in ipairs(inputs) do
@@ -99,7 +99,7 @@ function elepm.register_craft(craftdef)
 						type = craftdef.type,
 						output = itmst,
 						items = spec,
-						width = 0,
+						width = ctypedef.inputs,
 					})
 				end
 
@@ -108,6 +108,7 @@ function elepm.register_craft(craftdef)
 						type = craftdef.type,
 						output = itmst:to_string(),
 						items = items,
+						width = ctypedef.inputs,
 					})
 				end
 			end
@@ -119,7 +120,7 @@ function elepm.register_craft(craftdef)
 				type = craftdef.type,
 				output = recipe.output,
 				items = spec,
-				width = 0,
+				width = ctypedef.inputs,
 			})
 		end
 
@@ -128,6 +129,7 @@ function elepm.register_craft(craftdef)
 				type   = craftdef.type,
 				output = recipe.output:to_string(),
 				items  = items,
+				width  = ctypedef.inputs,
 			})
 		end
 	end
