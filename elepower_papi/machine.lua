@@ -409,7 +409,6 @@ function ele.register_base_device(nodename, nodedef)
 
 		if nodedef.states then
 			if fields["cyclestate"] then
-				print("hmm")
 				switch_state(pos, nodedef.states)
 			end
 		end
