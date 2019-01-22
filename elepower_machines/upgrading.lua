@@ -18,7 +18,7 @@ function elepm.handle_machine_upgrades (pos)
 	end
 
 	if nodedef.ele_upgrades then
-		for comp, vars in pairs(nodedef.ele_upgrades) do
+		for comp,vars in pairs(nodedef.ele_upgrades) do
 			for _,c in pairs(vars) do
 				if not comps[comp] then
 					-- If we're resetting capacity, set storage to max initial capacity
@@ -35,18 +35,36 @@ function elepm.handle_machine_upgrades (pos)
 					if meta:get_int(c) ~= 0 then
 						meta:set_int(c, 0)
 					end
-				elseif nodedef["ele_" .. c] ~= nil then
-					-- Set updated value in metadata
-					local default    = nodedef["ele_" .. c]
-					local ulevel     = minetest.get_item_group(comps[comp], comp) - 1
-					local multiplier = 1
+				else
+					local compdef = minetest.registered_items[comps[comp]]
+					local default = nodedef["ele_" .. c] or 1
+					local ulevel  = minetest.get_item_group(comps[comp], comp) - 1
 
-					-- Capacitor value is multiplied
-					if comp == "capacitor" then
-						multiplier = math.pow(10, ulevel)
+					-- Only upgrade if present
+					if compdef and compdef.ele_upgrade and compdef.ele_upgrade[c] then
+						local task  = compdef.ele_upgrade[c]
+						local final = default
+						
+						if task.multiplier then
+							final = final + (default * task.multiplier * ulevel)
+						end
+						
+						if task.add then
+							final = final + (task.add * ulevel)
+						end
+
+						if task.subtract then
+							final = final - (task.subtract * ulevel)
+						end
+
+						if task.divider then
+							final = final - (default * task.divider * ulevel)
+						end
+
+						if final <= 0 then final = 1 end
+
+						meta:set_int(c, math.abs(math.floor(final)))
 					end
-
-					meta:set_int(c, math.abs(default + (default * ulevel * multiplier)))
 				end
 			end
 		end

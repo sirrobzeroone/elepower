@@ -330,6 +330,21 @@ local soldering_recipes = {
 		recipe = { "elepower_machines:resonant_power_cell_0", "elepower_machines:super_capacitor 2", "elepower_dynamics:xycrone_lump" },
 		output = "elepower_machines:super_power_cell_0",
 		time   = 24,
+	},
+	{
+		recipe = { "elepower_dynamics:integrated_circuit", "elepower_dynamics:induction_coil 2", "elepower_dynamics:soc" },
+		output = "elepower_machines:upgrade_speed",
+		time   = 16,
+	},
+	{
+		recipe = { "elepower_dynamics:integrated_circuit", "elepower_machines:hardened_capacitor 2", "elepower_dynamics:soc" },
+		output = "elepower_machines:upgrade_efficiency",
+		time   = 16,
+	},
+	{
+		recipe = { "elepower_machines:upgrade_efficiency", "elepower_machines:resonant_capacitor 2", "elepower_dynamics:soc" },
+		output = "elepower_machines:upgrade_efficiency_2",
+		time   = 16,
 	}
 }
 

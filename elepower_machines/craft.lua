@@ -79,6 +79,8 @@ function elepm.register_craft(craftdef)
 		output = craftresult,
 		time   = time
 	}
+	
+	table.insert(elepm.craft[ctype], recipe)
 
 	if have_ui or have_cg then
 		local spec = {}
@@ -133,8 +135,6 @@ function elepm.register_craft(craftdef)
 			})
 		end
 	end
-
-	table.insert(elepm.craft[ctype], recipe)
 end
 
 local no_recipe = {
