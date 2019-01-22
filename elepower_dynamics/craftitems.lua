@@ -137,7 +137,7 @@ minetest.register_craftitem("elepower_dynamics:pcb", {
 })
 
 minetest.register_craftitem("elepower_dynamics:acidic_compound", {
-	description = "Acidic Compound\nUsed to make Etching Acid",
+	description = "Acidic Compound\nRight-Click on Water to turn it into Etching Acid",
 	inventory_image = "elepower_acidic_compound.png",
 	liquids_pointable = true,
 	groups = {acid = 1, static_component = 1},

@@ -395,7 +395,7 @@ function ele.register_base_device(nodename, nodedef)
 	-- Mesecons support
 	if mc then
 		nodedef["mesecons"] = mesecons_def
-		if nodedef.groups["state_machine"] ~= 0 then
+		if nodedef.states and nodedef.states["mesecons"] ~= false then
 			nodedef.states["mesecons"] = true
 		end
 	end

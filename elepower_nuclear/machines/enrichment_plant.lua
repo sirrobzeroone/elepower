@@ -25,6 +25,7 @@ end
 elepm.register_craft_type("enrichment", {
 	description = "Enrichment",
 	inputs      = 1,
+	icon        = "elenuclear_enrichment_plant.png",
 })
 
 elepm.register_crafter("elepower_nuclear:enrichment_plant", {

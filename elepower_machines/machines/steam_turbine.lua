@@ -15,6 +15,7 @@ end
 ele.register_fluid_generator("elepower_machines:steam_turbine", {
 	description = "Steam Turbine",
 	ele_usage = 128,
+	ele_output = 128,
 	tiles = {
 		"elepower_machine_top.png^elepower_power_port.png", "elepower_machine_base.png", "elepower_machine_side.png",
 		"elepower_machine_side.png", "elepower_turbine_side.png", "elepower_turbine_side.png",

@@ -18,7 +18,7 @@ end
 local heat_recipes = {
 	["elepower_nuclear:hot_coolant_source"] = {
 		out = "elepower_nuclear:coolant_source",
-		factor = 1,
+		factor = 4,
 	},
 	["elepower_nuclear:helium_plasma"] = {
 		out = "elepower_nuclear:helium",

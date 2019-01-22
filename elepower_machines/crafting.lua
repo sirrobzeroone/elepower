@@ -652,9 +652,9 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_machines:advanced_machine_block 8",
 	recipe = {
-		{"elepower_dynamics:electrum_plate", "elepower_dynamics:brass_plate", "elepower_dynamics:electrum_plate"},
+		{"elepower_dynamics:electrum_plate", "elepower_dynamics:induction_coil_advanced", "elepower_dynamics:electrum_plate"},
 		{"elepower_dynamics:brass_plate", "elepower_machines:machine_block", "elepower_dynamics:brass_plate"},
-		{"elepower_dynamics:electrum_plate", "elepower_dynamics:brass_plate", "elepower_dynamics:electrum_plate"},
+		{"elepower_dynamics:electrum_plate", "elepower_dynamics:induction_coil_advanced", "elepower_dynamics:electrum_plate"},
 	}
 })
 

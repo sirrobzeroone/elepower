@@ -70,7 +70,7 @@ local function calculate_fitness(pos)
 	return 100 - math.floor(100 * hu / nodes), hu
 end
 
-local function fuel_after_depletion(inv)
+local function fuel_after_depletion(inv, power)
 	local fuel_count = 0
 	local change = false
 
@@ -269,8 +269,9 @@ local function reactor_core_timer(pos)
 		end
 	end
 
+	-- Deplete fuel
 	if power_setting > 0 then
-		fuel_reactor = fuel_after_depletion(inv)
+		fuel_reactor = fuel_after_depletion(inv, power_setting)
 		if fuel_reactor == 0 then
 			-- Enforce zero power setting when no fuel present
 			power_setting = 0
@@ -284,25 +285,35 @@ local function reactor_core_timer(pos)
 	local heat = meta:get_int("heat")
 
 	-- Calculate heat
-	if hp < 75 and power_setting > 0 then
-		heat = heat + (math.floor(((100-(hp/100))*power_setting)) + 1)
-	elseif power_setting > 5 then
+	-- I dont really know what I'm doing here, just playing around with the numbers
+	-- to get something workable
+	if power_setting > 5 then
 		local ceiling = math.floor(power_setting / 2)
-		if heat ~= ceiling then
-			if heat > ceiling then
-				heat = heat - 1
-			else
-				heat = heat + fuel_reactor
+		if heat > ceiling and hp > 75 then
+			-- Remove heat when the heat goes above power setting and there's sufficient coolant
+			heat = heat + math.floor(((74 - hp)/2)/ceiling)
+		else
+			-- Heat up the reactor by the amount of fuel
+			-- If the reactor coolant is insufficient, add that factor to play
+			heat = heat + fuel_reactor + math.floor(80 * (1-(hp/100)))
+
+			-- Catch up to the power setting
+			if heat < ceiling then
+				heat = heat + math.floor((ceiling - heat) / 2)
 			end
 		end
 	elseif heat > 0 then
-		heat = heat - 1
+		heat = heat + math.floor((-hp)/4)
 	end
 
 	if heat >= 100 then
 		-- TODO: Melt
 		minetest.set_node(pos, {name = "air"})
 		return false
+	end
+
+	if heat < 0 then
+		heat = 0
 	end
 
 	-- Nothing left to do in this timer, exit
@@ -319,10 +330,13 @@ local function reactor_core_timer(pos)
 	if fluid_port_node ~= nil and fluid_port_node.name == "elepower_nuclear:reactor_fluid_port" then
 		local fpmeta = minetest.get_meta(fluid_port_pos)
 
+		-- Calculate how much heat is given to the fluid port
+		local burst_strength = math.max(math.floor((heat / 100) * 64), 1)
+
 		if fpmeta:get_int("burst") == 0 and heat > 0 then
-			fpmeta:set_int("burst", 1)
+			fpmeta:set_int("burst", burst_strength)
 			minetest.get_node_timer(fluid_port_pos):start(1.0)
-			heat = heat - 1
+			heat = heat - burst_strength
 		end
 	end
 
@@ -425,7 +439,16 @@ local function reactor_port_timer(pos)
 	if heat_burst > 0 then
 		-- Convert a bucket of cold coolant into hot coolant
 
-		local coolant = math.min(cool.amount, 1000)
+		local heat_take = math.floor(cool.capacity * (heat_burst/100))
+		local coolant = heat_take
+		if coolant > cool.amount then
+			coolant = cool.amount
+		end
+
+		if hot.amount + coolant > hot.capacity and hot.amount < hot.capacity then
+			coolant = hot.capacity - hot.amount
+		end
+
 		if coolant > 0 and hot.amount + coolant < hot.capacity then
 			meta:set_int("burst", 0)
 

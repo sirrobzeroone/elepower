@@ -69,6 +69,16 @@ minetest.register_craft({
 	}
 })
 
+-- Solar Neutron Activator
+minetest.register_craft({
+	output = "elepower_nuclear:solar_neutron_activator",
+	recipe = {
+		{"elepower_dynamics:hardened_glass", "elepower_dynamics:hardened_glass", "elepower_dynamics:hardened_glass"},
+		{"elepower_dynamics:servo_valve", "elepower_nuclear:machine_block", "elepower_dynamics:portable_tank"},
+		{"elepower_dynamics:brass_plate", "elepower_dynamics:copper_plate", "elepower_dynamics:brass_plate"},
+	}
+})
+
 -- Empty Fuel Rod
 minetest.register_craft({
 	output = "elepower_nuclear:fuel_rod_empty",
