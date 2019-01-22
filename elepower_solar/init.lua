@@ -9,3 +9,7 @@ elesolar.modpath = modpath
 dofile(modpath.."/generator.lua")
 dofile(modpath.."/register.lua")
 dofile(modpath.."/crafting.lua")
+
+if minetest.get_modpath("3d_armor") ~= nil then
+	dofile(modpath.."/helmet.lua")
+end

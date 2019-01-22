@@ -32,7 +32,8 @@ minetest.register_node("elepower_nuclear:helium_plasma", {
 
 ele.register_gas(nil, "Tritium", "elepower_nuclear:tritium")
 ele.register_gas(nil, "Deuterium", "elepower_nuclear:deuterium")
-ele.register_gas(nil, "Helium", "elepower_nuclear:helium")
+ele.register_gas("elepower_nuclear:helium_container", "Helium",
+	"elepower_nuclear:helium", "elepower_gas_helium.png")
 ele.register_gas(nil, "Helium Plasma", "elepower_nuclear:helium_plasma")
 
 -------------
@@ -129,7 +130,6 @@ minetest.register_node("elepower_nuclear:heavy_water_flowing", {
 		not_in_creative_inventory = 1, cools_lava = 1},
 	sounds = default.node_sound_water_defaults(),
 })
-
 
 -- Cold coolant
 
@@ -229,6 +229,56 @@ minetest.register_node("elepower_nuclear:hot_coolant_flowing", {
 	sounds = default.node_sound_water_defaults(),
 })
 
+-- Brine
+
+minetest.register_node("elepower_nuclear:brine_source", {
+	description = "Brine Source",
+	drawtype = "liquid",
+	tiles = {"elenuclear_brine.png"},
+	special_tiles = {"elenuclear_brine.png"},
+	alpha = 240,
+	paramtype = "light",
+	walkable = false,
+	pointable = false,
+	diggable = false,
+	buildable_to = true,
+	is_ground_content = false,
+	drop = "",
+	drowning = 1,
+	liquidtype = "source",
+	liquid_alternative_flowing = "elepower_nuclear:brine_flowing",
+	liquid_alternative_source = "elepower_nuclear:brine_source",
+	liquid_viscosity = 7,
+	post_effect_color = {a = 200, r = 215, g = 221, b = 187},
+	groups = {brine = 3, saline = 1, liquid = 3, puts_out_fire = 1, cools_lava = 1},
+	sounds = default.node_sound_water_defaults(),
+})
+
+minetest.register_node("elepower_nuclear:brine_flowing", {
+	description = "Flowing Brine",
+	drawtype = "flowingliquid",
+	tiles = {"elenuclear_brine.png"},
+	special_tiles = {"elenuclear_brine.png", "elenuclear_brine.png"},
+	alpha = 240,
+	paramtype = "light",
+	paramtype2 = "flowingliquid",
+	walkable = false,
+	pointable = false,
+	diggable = false,
+	buildable_to = true,
+	is_ground_content = false,
+	drop = "",
+	drowning = 1,
+	liquidtype = "flowing",
+	liquid_alternative_flowing = "elepower_nuclear:brine_flowing",
+	liquid_alternative_source = "elepower_nuclear:brine_source",
+	liquid_viscosity = 7,
+	post_effect_color = {a = 200, r = 215, g = 221, b = 187},
+	groups = {brine = 3, saline = 1, liquid = 3, puts_out_fire = 1,
+		not_in_creative_inventory = 1, cools_lava = 1},
+	sounds = default.node_sound_water_defaults(),
+})
+
 if minetest.get_modpath("bucket") ~= nil then
 	bucket.register_liquid("elepower_nuclear:coolant_source", "elepower_nuclear:hot_coolant_flowing",
 		"elepower_nuclear:bucket_coolant", "#2497ff", "Coolant (Cold)")
@@ -238,4 +288,16 @@ if minetest.get_modpath("bucket") ~= nil then
 
 	bucket.register_liquid("elepower_nuclear:heavy_water_source", "elepower_nuclear:heavy_water_flowing",
 		"elepower_nuclear:bucket_heavy_water", "#0d4579", "Heavy Water Bucket")
+
+	bucket.register_liquid("elepower_nuclear:brine_source", "elepower_nuclear:brine_flowing",
+		"elepower_nuclear:bucket_heavy_water", "#d7ddbb", "Brine Bucket")
+
+	fluid_tanks.register_tank(":elepower_dynamics:portable_tank", {
+		description = "Portable Tank",
+		capacity    = 8000,
+		accepts     = true,
+		tiles       = {
+			"elepower_tank_base.png", "elepower_tank_side.png", "elepower_tank_base.png^elepower_power_port.png",
+		}
+	})
 end

@@ -45,7 +45,7 @@ local function heat_exchanger_timer(pos)
 			local damnt = heat_recipes[heat.fluid]
 			local water_convert = math.min(water.amount, 1000 * damnt.factor)
 
-			if cold.fluid ~= damnt.fluid and cold.fluid ~= "" then
+			if cold.fluid ~= damnt.out and cold.fluid ~= "" then
 				break
 			end
 
@@ -110,7 +110,6 @@ ele.register_machine("elepower_nuclear:heat_exchanger", {
 		},
 		steam = {
 			capacity  = 16000,
-			accepts   = {"elepower_dynamics:steam"},
 			drainable = true,
 		},
 	},

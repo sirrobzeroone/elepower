@@ -90,6 +90,10 @@ local function determine_structure(pos, player)
 
 	if success and player then
 		minetest.chat_send_player(player, "Multi-node structure complete!")
+		local t = minetest.get_node_timer(pos)
+		if not t:is_started() then
+			t:start(1.0)
+		end
 	end
 
 	return success, inputs, outputs, power
@@ -301,7 +305,7 @@ local function power_timer(pos)
 	local ctrl, ctrl_meta = get_port_controller(pos)
 
 	if not ctrl then
-		meta:set_string("No controller found.")
+		meta:set_string("infotext", "No controller found.")
 		return false
 	end
 

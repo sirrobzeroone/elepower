@@ -87,8 +87,61 @@ minetest.register_node("elepower_dynamics:etching_acid_flowing", {
 	sounds = default.node_sound_water_defaults(),
 })
 
+-- Liquid Lithium
+
+minetest.register_node("elepower_dynamics:lithium_source", {
+	description  = "Liquid Lithium Source",
+	drawtype     = "liquid",
+	tiles        = {"elepower_lithium.png"},
+	alpha        = 200,
+	paramtype    = "light",
+	walkable     = false,
+	pointable    = false,
+	diggable     = false,
+	buildable_to = true,
+	is_ground_content = false,
+	drop = "",
+	drowning = 1,
+	liquidtype = "source",
+	liquid_alternative_source = "elepower_dynamics:lithium_source",
+	liquid_alternative_flowing = "elepower_dynamics:lithium_flowing",
+	liquid_viscosity = 4,
+	damage_per_second = 4,
+	post_effect_color = {a = 103, r = 229, g = 227, b = 196},
+	groups = {lithium = 1, liquid = 3},
+	sounds = default.node_sound_water_defaults(),
+})
+
+minetest.register_node("elepower_dynamics:lithium_flowing", {
+	description = "Flowing Liquid Lithium",
+	drawtype = "flowingliquid",
+	tiles = {"elepower_lithium.png"},
+	special_tiles = {"elepower_lithium.png", "elepower_lithium.png"},
+	alpha = 200,
+	paramtype = "light",
+	paramtype2 = "flowingliquid",
+	walkable = false,
+	pointable = false,
+	diggable = false,
+	buildable_to = true,
+	is_ground_content = false,
+	drop = "",
+	drowning = 1,
+	liquidtype = "flowing",
+	liquid_alternative_flowing = "elepower_dynamics:lithium_flowing",
+	liquid_alternative_source = "elepower_dynamics:lithium_source",
+	liquid_viscosity = 4,
+	damage_per_second = 4,
+	post_effect_color = {a = 103, r = 229, g = 227, b = 196},
+	groups = {lithium = 1, liquid = 3, not_in_creative_inventory = 1},
+	sounds = default.node_sound_water_defaults(),
+})
+
 bucket.register_liquid("elepower_dynamics:etching_acid_source", "elepower_dynamics:etching_acid_flowing",
 		"elepower_dynamics:bucket_etching_acid",   "#410800", "Etching Acid Bucket")
+
+bucket.register_liquid("elepower_dynamics:lithium_source", "elepower_dynamics:lithium_flowing",
+		"elepower_dynamics:bucket_lithium",   "#e5e3c4", "Liquid Lithium Bucket")
 
 -----------
 -- Gases --
@@ -116,4 +169,16 @@ minetest.register_node("elepower_dynamics:nitrogen", {
 	description = "Nitrogen",
 	groups      = {not_in_creative_inventory = 1, gas = 1},
 	tiles       = {"elepower_steam.png"},
+})
+
+minetest.register_node("elepower_dynamics:lithium_gas", {
+	description = "Lithium Gas",
+	groups      = {not_in_creative_inventory = 1, gas = 1, lithium = 1},
+	tiles       = {"elepower_lithium.png"},
+})
+
+minetest.register_node("elepower_dynamics:chlorine_gas", {
+	description = "Chlorine Gas",
+	groups      = {not_in_creative_inventory = 1, gas = 1, chlorine = 1},
+	tiles       = {"elepower_chlorine.png"},
 })

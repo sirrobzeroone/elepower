@@ -301,7 +301,6 @@ local function reactor_core_timer(pos)
 
 	if heat >= 100 then
 		-- TODO: Melt
-		print("It ded.")
 		minetest.set_node(pos, {name = "air"})
 		return false
 	end

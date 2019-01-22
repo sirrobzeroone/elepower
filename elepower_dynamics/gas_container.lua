@@ -43,3 +43,8 @@ ele.register_gas("elepower_dynamics:oxygen_container", "Oxygen",
 ele.register_gas("elepower_dynamics:nitrogen_container", "Nitrogen",
 	"elepower_dynamics:nitrogen", "elepower_gas_nitrogen.png")
 
+ele.register_gas("elepower_dynamics:lithium_container", "Lithium",
+	"elepower_dynamics:lithium_gas", "elepower_gas_lithium.png")
+
+ele.register_gas("elepower_dynamics:chlorine_container", "Chlorine",
+	"elepower_dynamics:chlorine_gas", "elepower_gas_chlorine.png")

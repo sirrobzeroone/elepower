@@ -111,7 +111,7 @@ local function on_timer(pos, elapsed)
 
 	meta:set_int("input_fluid_storage", buffer.amount)
 	meta:set_string("input_fluid", buffer.fluid)
-	meta:set_string("formspec", get_formspec(mode, buffer))
+	meta:set_string("formspec", get_formspec(mode, buffer, state))
 
 	return refresh
 end
