@@ -1,17 +1,15 @@
 
--- Convenience for i18n later on
-local dict = {
-	machine_chip = "Machine Chip",
-	capacitor    = "Capacitor",
-	pump_filter  = "Pump Filter",
-}
-
 local function upgrade_formspec (upgrades, desc)
 	local posY  = 0.5
 	local fspec = ""
 
 	for k in pairs(upgrades) do
-		fspec = fspec .. "label[1,"..(posY + 0.25)..";"..dict[k].."]"
+		local scrib = elepm.upgrading.dict[k]
+		if not scrib then
+			scrib = k
+		end
+
+		fspec = fspec .. "label[1,"..(posY + 0.25)..";"..scrib.."]"
 		fspec = fspec .. "list[detached:soldering;"..k..";7,"..posY..";1,1;]"
 		posY  = posY + 1
 	end

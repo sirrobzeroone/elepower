@@ -1,7 +1,11 @@
-
-local metasets = {
-	"capacity", "usage", "craft_speed", "inrush", "output"
-} 
+-- Convenience for i18n later on
+elepm.upgrading = {
+	dict = {
+		machine_chip = "Machine Chip",
+		capacitor    = "Capacitor",
+		pump_filter  = "Pump Filter",
+	}
+}
 
 function elepm.handle_machine_upgrades (pos)
 	local meta  = minetest.get_meta(pos)

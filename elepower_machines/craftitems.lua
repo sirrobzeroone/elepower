@@ -38,7 +38,7 @@ minetest.register_craftitem("elepower_machines:reinforced_capacitor", {
 	inventory_image = "elepower_upgrade_reinforced_capacitor.png",
 	ele_upgrade = {
 		capacity = {
-			multiplier = 10,
+			multiplier = 1,
 		},
 	},
 })
@@ -49,7 +49,7 @@ minetest.register_craftitem("elepower_machines:resonant_capacitor", {
 	inventory_image = "elepower_upgrade_resonant_capacitor.png",
 	ele_upgrade = {
 		capacity = {
-			multiplier = 100,
+			multiplier = 10,
 		},
 	},
 })
@@ -60,7 +60,7 @@ minetest.register_craftitem("elepower_machines:super_capacitor", {
 	inventory_image = "elepower_upgrade_supercapacitor.png",
 	ele_upgrade = {
 		capacity = {
-			multiplier = 1000,
+			multiplier = 100,
 		},
 	},
 })
