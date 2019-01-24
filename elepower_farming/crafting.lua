@@ -52,3 +52,13 @@ minetest.register_craft({
 		{"elepower_dynamics:copper_gear", "elepower_dynamics:servo_valve", "elepower_dynamics:copper_gear"},
 	}
 })
+
+-- Tree Processor
+minetest.register_craft({
+	output = "elepower_farming:tree_processor",
+	recipe = {
+		{"basic_materials:motor", "bucket:bucket_empty", "basic_materials:motor"},
+		{"elepower_dynamics:copper_plate", "elepower_farming:device_frame", "elepower_dynamics:zinc_plate"},
+		{"elepower_dynamics:copper_gear", "elepower_dynamics:servo_valve", "elepower_dynamics:copper_gear"},
+	}
+})
