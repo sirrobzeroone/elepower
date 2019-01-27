@@ -129,6 +129,10 @@ local grinding_recipes = {
 	{
 		recipe = { "default:mese_crystal" },
 		output = "default:mese_crystal_fragment 9",
+	},
+	{
+		recipe = { "elepower_dynamics:graphite_ingot" },
+		output = "elepower_dynamics:graphite_rod 3",
 	}
 }
 

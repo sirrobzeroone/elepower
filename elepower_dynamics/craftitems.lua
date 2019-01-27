@@ -87,6 +87,12 @@ minetest.register_craftitem("elepower_dynamics:xycrone_lump", {
 
 -- Special
 
+minetest.register_craftitem("elepower_dynamics:graphite_rod", {
+	description = "Graphite Rod",
+	inventory_image = "elepower_graphite_rod.png",
+	groups = {graphite = 1, rod = 1}
+})
+
 minetest.register_craftitem("elepower_dynamics:carbon_fiber", {
 	description = "Carbon Fibers",
 	inventory_image = "elepower_carbon_fiber.png",

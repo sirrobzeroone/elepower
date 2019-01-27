@@ -49,6 +49,34 @@ minetest.register_craftitem("elepower_nuclear:fuel_rod_depleted", {
 	max_stack = 1,
 })
 
+-- Control rods
+
+minetest.register_craftitem("elepower_nuclear:control_rod", {
+	description = "Control Rod",
+	inventory_image = "elenuclear_control_rod.png",
+	max_stack = 4,
+})
+
+minetest.register_craftitem("elepower_nuclear:control_rod_assembly", {
+	description = "Control Rod Assembly",
+	inventory_image = "elenuclear_control_rod_assembly.png",
+	max_stack = 1,
+})
+
+minetest.register_craftitem("elepower_nuclear:control_plate", {
+	description = "Perforated Control Plate",
+	inventory_image = "elenuclear_control_plate.png",
+	max_stack = 1,
+})
+
+-- Pressure vessel
+
+minetest.register_craftitem("elepower_nuclear:pressure_vessel", {
+	description = "Reactor Pressure Vessel",
+	inventory_image = "elenuclear_pressure_vessel.png",
+	max_stack = 1,
+})
+
 --------------------------
 -- Fusion-related items --
 --------------------------
@@ -58,15 +86,3 @@ minetest.register_craftitem("elepower_nuclear:fuel_rod_depleted", {
 -------------------------
 -- Crafting components --
 -------------------------
-
--- Graphite
-
-minetest.register_craftitem("elepower_nuclear:graphite_rod", {
-	description = "Graphite Rod",
-	inventory_image = "elenuclear_graphite_rod.png"
-})
-
-minetest.register_craftitem("elepower_nuclear:graphite_moderator", {
-	description = "Graphite Moderator",
-	inventory_image = "elenuclear_graphite_moderator.png"
-})

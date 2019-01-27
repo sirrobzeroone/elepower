@@ -14,18 +14,8 @@ minetest.register_craft({
 	output = "elepower_nuclear:enrichment_plant",
 	recipe = {
 		{"elepower_dynamics:induction_coil_advanced", "elepower_dynamics:soc", "elepower_dynamics:induction_coil_advanced"},
-		{"elepower_nuclear:graphite_rod", "elepower_nuclear:machine_block", "elepower_nuclear:graphite_rod"},
+		{"elepower_dynamics:graphite_rod", "elepower_nuclear:machine_block", "elepower_dynamics:graphite_rod"},
 		{"elepower_dynamics:wound_silver_coil", "elepower_dynamics:electrum_gear", "elepower_dynamics:wound_silver_coil"},
-	}
-})
-
--- Graphite Moderator
-minetest.register_craft({
-	output = "elepower_nuclear:graphite_moderator",
-	recipe = {
-		{"", "elepower_nuclear:graphite_rod", ""},
-		{"elepower_nuclear:graphite_rod", "elepower_dynamics:graphite_ingot", "elepower_nuclear:graphite_rod"},
-		{"", "elepower_nuclear:graphite_rod", ""},
 	}
 })
 
@@ -33,9 +23,9 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_nuclear:fission_controller",
 	recipe = {
-		{"elepower_dynamics:wound_copper_coil", "elepower_nuclear:graphite_moderator", "elepower_dynamics:wound_copper_coil"},
-		{"elepower_nuclear:graphite_moderator", "elepower_nuclear:machine_block", "elepower_nuclear:graphite_moderator"},
-		{"elepower_dynamics:electrum_gear", "elepower_nuclear:graphite_moderator", "elepower_dynamics:electrum_gear"},
+		{"elepower_dynamics:wound_copper_coil", "elepower_nuclear:control_rod_assembly", "elepower_dynamics:wound_copper_coil"},
+		{"basic_materials:motor", "elepower_nuclear:machine_block", "basic_materials:motor"},
+		{"elepower_dynamics:electrum_gear", "elepower_nuclear:control_plate", "elepower_dynamics:electrum_gear"},
 	}
 })
 
@@ -43,9 +33,9 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_nuclear:fission_core",
 	recipe = {
-		{"elepower_dynamics:induction_coil_advanced", "elepower_dynamics:graphite_ingot", "elepower_dynamics:induction_coil_advanced"},
-		{"elepower_nuclear:graphite_moderator", "elepower_nuclear:machine_block", "elepower_nuclear:graphite_moderator"},
-		{"elepower_dynamics:electrum_gear", "elepower_dynamics:copper_plate", "elepower_dynamics:electrum_gear"},
+		{"elepower_dynamics:induction_coil_advanced", "elepower_nuclear:control_plate", "elepower_dynamics:induction_coil_advanced"},
+		{"elepower_dynamics:steel_plate", "elepower_nuclear:pressure_vessel", "elepower_dynamics:steel_plate"},
+		{"elepower_dynamics:electrum_gear", "elepower_nuclear:machine_block", "elepower_dynamics:electrum_gear"},
 	}
 })
 
@@ -54,7 +44,7 @@ minetest.register_craft({
 	output = "elepower_nuclear:reactor_fluid_port",
 	recipe = {
 		{"elepower_dynamics:portable_tank", "elepower_dynamics:copper_plate", "elepower_dynamics:portable_tank"},
-		{"elepower_nuclear:graphite_moderator", "elepower_nuclear:machine_block", "elepower_nuclear:graphite_moderator"},
+		{"elepower_dynamics:servo_valve", "elepower_nuclear:heat_exchanger", "elepower_dynamics:servo_valve"},
 		{"elepower_dynamics:electrum_gear", "elepower_dynamics:copper_plate", "elepower_dynamics:electrum_gear"},
 	}
 })
@@ -87,14 +77,6 @@ minetest.register_craft({
 		{"elepower_dynamics:graphite_ingot", "", "elepower_dynamics:graphite_ingot"},
 		{"elepower_dynamics:graphite_ingot", "elepower_dynamics:graphite_ingot", "elepower_dynamics:graphite_ingot"},
 	}
-})
-
--- Graphite Rod
-elepm.register_craft({
-	type   = "grind",
-	recipe = { "elepower_dynamics:graphite_ingot" },
-	output = "elepower_nuclear:graphite_rod 3",
-	time   = 6,
 })
 
 -- Cold Coolant
@@ -206,4 +188,44 @@ elepm.register_craft({
 		"elepower_nuclear:fuel_rod_empty"
 	},
 	time = 16
+})
+
+-- Control Rod
+minetest.register_craft({
+	output = "elepower_nuclear:control_rod",
+	recipe = {
+		{"", "elepower_dynamics:silver_plate", "moreores:silver_ingot"},
+		{"elepower_dynamics:silver_plate", "moreores:silver_ingot", "elepower_dynamics:silver_plate"},
+		{"moreores:silver_ingot", "elepower_dynamics:silver_plate", ""},
+	}
+})
+
+-- Control Rod Assembly
+minetest.register_craft({
+	output = "elepower_nuclear:control_rod_assembly",
+	recipe = {
+		{"elepower_nuclear:control_rod", "elepower_dynamics:steel_plate", "elepower_nuclear:control_rod"},
+		{"elepower_dynamics:graphite_ingot", "elepower_dynamics:graphite_ingot", "elepower_dynamics:graphite_ingot"},
+		{"elepower_nuclear:control_rod", "elepower_dynamics:steel_plate", "elepower_nuclear:control_rod"},
+	}
+})
+
+-- Pressure Vessel
+minetest.register_craft({
+	output = "elepower_nuclear:pressure_vessel",
+	recipe = {
+		{"elepower_dynamics:steel_plate", "elepower_dynamics:steel_plate", "elepower_dynamics:steel_plate"},
+		{"default:steelblock", "elepower_dynamics:portable_tank", "default:steelblock"},
+		{"elepower_dynamics:steel_plate", "default:steelblock", "elepower_dynamics:steel_plate"},
+	}
+})
+
+-- Control Plate
+minetest.register_craft({
+	output = "elepower_nuclear:control_plate",
+	recipe = {
+		{"elepower_dynamics:steel_plate", "elepower_dynamics:graphite_rod", "elepower_dynamics:steel_plate"},
+		{"elepower_dynamics:silver_plate", "", "elepower_dynamics:silver_plate"},
+		{"elepower_dynamics:bronze_plate", "", "elepower_dynamics:bronze_plate"},
+	}
 })
