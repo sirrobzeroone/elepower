@@ -307,8 +307,7 @@ local function reactor_core_timer(pos)
 	end
 
 	if heat >= 100 then
-		-- TODO: Melt
-		minetest.set_node(pos, {name = "air"})
+		minetest.set_node(pos, {name = "elepower_nuclear:corium_source"})
 		return false
 	end
 

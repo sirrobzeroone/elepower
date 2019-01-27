@@ -1,140 +1,29 @@
 
-local etching = {
-	["elepower_dynamics:pcb_blank"] = {
-		time   = 5,
-		result = "elepower_dynamics:pcb"
-	}
-}
-
 -- Etching Acid
 
-minetest.register_node("elepower_dynamics:etching_acid_source", {
-	description  = "Etching Acid Source",
-	drawtype     = "liquid",
-	tiles        = {"elepower_etching_acid.png"},
-	alpha        = 200,
-	paramtype    = "light",
-	walkable     = false,
-	pointable    = false,
-	diggable     = false,
-	buildable_to = true,
-	is_ground_content = false,
-	drop = "",
-	drowning = 1,
-	liquidtype = "source",
-	liquid_alternative_source = "elepower_dynamics:etching_acid_source",
-	liquid_alternative_flowing = "elepower_dynamics:etching_acid_flowing",
-	liquid_viscosity = 4,
+ele.helpers.register_liquid("etching_acid", {
+	description       = "Etching Acid",
+	tiles             = {"elepower_etching_acid.png"},
+	special_tiles     = {"elepower_etching_acid.png", "elepower_etching_acid.png"},
+	alpha             = 200,
+	liquid_viscosity  = 4,
 	damage_per_second = 4,
 	post_effect_color = {a = 103, r = 65, g = 8, b = 0},
-	groups = {acid = 1, etching_acid = 1, liquid = 3, tree_fluid = 1},
-	sounds = default.node_sound_water_defaults(),
-	on_rightclick = function (pos, node, clicker, itemstack, pointed_thing)
-		local istack = itemstack:get_name()
-		if not clicker or clicker:get_player_name() == "" then
-			return itemstack
-		end
-
-		if not etching[istack] then
-			return itemstack
-		end
-
-		local recipe = etching[istack]
-		local out    = ItemStack(recipe.result)
-		local inv    = clicker:get_inventory()
-		local meta   = minetest.get_meta(pos)
-		local uses   = meta:get_int("uses")
-
-		if inv:room_for_item("main", out) then
-			inv:add_item("main", out)
-			itemstack:take_item(1)
-			uses = uses + 1
-		end
-
-		-- Limited etchings
-		if uses == 10 then
-			minetest.set_node(pos, {name = "default:water_source"})
-		else
-			meta:set_int("uses", uses)
-		end
-
-		return itemstack
-	end
-})
-
-minetest.register_node("elepower_dynamics:etching_acid_flowing", {
-	description = "Flowing Etching Acid",
-	drawtype = "flowingliquid",
-	tiles = {"elepower_etching_acid.png"},
-	special_tiles = {"elepower_etching_acid.png", "elepower_etching_acid.png"},
-	alpha = 200,
-	paramtype = "light",
-	paramtype2 = "flowingliquid",
-	walkable = false,
-	pointable = false,
-	diggable = false,
-	buildable_to = true,
-	is_ground_content = false,
-	drop = "",
-	drowning = 1,
-	liquidtype = "flowing",
-	liquid_alternative_flowing = "elepower_dynamics:etching_acid_flowing",
-	liquid_alternative_source = "elepower_dynamics:etching_acid_source",
-	liquid_viscosity = 4,
-	damage_per_second = 4,
-	post_effect_color = {a = 103, r = 65, g = 8, b = 0},
-	groups = {acid = 1, etching_acid = 1, liquid = 3, not_in_creative_inventory = 1},
-	sounds = default.node_sound_water_defaults(),
+	groups            = {acid = 1, etching_acid = 1, liquid = 3, tree_fluid = 1},
 })
 
 -- Liquid Lithium
 
-minetest.register_node("elepower_dynamics:lithium_source", {
-	description  = "Liquid Lithium Source",
-	drawtype     = "liquid",
-	tiles        = {"elepower_lithium.png"},
-	alpha        = 200,
-	paramtype    = "light",
-	walkable     = false,
-	pointable    = false,
-	diggable     = false,
-	buildable_to = true,
-	is_ground_content = false,
-	drop = "",
-	drowning = 1,
-	liquidtype = "source",
-	liquid_alternative_source = "elepower_dynamics:lithium_source",
-	liquid_alternative_flowing = "elepower_dynamics:lithium_flowing",
-	liquid_viscosity = 4,
-	damage_per_second = 4,
+ele.helpers.register_liquid("lithium", {
+	description       = "Liquid Lithium",
+	drawtype          = "liquid",
+	tiles             = {"elepower_lithium.png"},
+	special_tiles     = {"elepower_lithium.png", "elepower_lithium.png"},
+	liquid_viscosity  = 4,
+	damage_per_second = 1,
+	alpha             = 200,
 	post_effect_color = {a = 103, r = 229, g = 227, b = 196},
-	groups = {lithium = 1, liquid = 3},
-	sounds = default.node_sound_water_defaults(),
-})
-
-minetest.register_node("elepower_dynamics:lithium_flowing", {
-	description = "Flowing Liquid Lithium",
-	drawtype = "flowingliquid",
-	tiles = {"elepower_lithium.png"},
-	special_tiles = {"elepower_lithium.png", "elepower_lithium.png"},
-	alpha = 200,
-	paramtype = "light",
-	paramtype2 = "flowingliquid",
-	walkable = false,
-	pointable = false,
-	diggable = false,
-	buildable_to = true,
-	is_ground_content = false,
-	drop = "",
-	drowning = 1,
-	liquidtype = "flowing",
-	liquid_alternative_flowing = "elepower_dynamics:lithium_flowing",
-	liquid_alternative_source = "elepower_dynamics:lithium_source",
-	liquid_viscosity = 4,
-	damage_per_second = 4,
-	post_effect_color = {a = 103, r = 229, g = 227, b = 196},
-	groups = {lithium = 1, liquid = 3, not_in_creative_inventory = 1},
-	sounds = default.node_sound_water_defaults(),
+	groups            = {lithium = 1, liquid = 3},
 })
 
 bucket.register_liquid("elepower_dynamics:etching_acid_source", "elepower_dynamics:etching_acid_flowing",

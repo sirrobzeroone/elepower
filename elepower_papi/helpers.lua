@@ -111,3 +111,57 @@ function ele.helpers.state_enabled(meta, pos, state)
 
 	return false
 end
+
+function ele.helpers.register_liquid(liquid, def)
+	local mod = minetest.get_current_modname()
+	for _,state in pairs({"source", "flowing"}) do
+		local def_base = {
+			drawtype     = "liquid",
+			paramtype    = "light",
+			walkable     = false,
+			pointable    = false,
+			diggable     = false,
+			buildable_to = true,
+			is_ground_content = false,
+			drop = "",
+			drowning = 1,
+			liquidtype = state,
+			liquid_alternative_source = mod..":"..liquid.."_source",
+			liquid_alternative_flowing = mod..":"..liquid.."_flowing",
+			sounds = default.node_sound_water_defaults(),
+		}
+
+		for key,val in pairs(def) do
+			if type(val) == "table" then
+				def_base[key] = table.copy(val)
+			else
+				def_base[key] = val
+			end
+		end
+
+		if not def_base.groups then
+			def_base.groups = {liquid = 3}
+		end
+
+		if state == "flowing" then
+			def_base.description = "Flowing " .. def_base.description
+			def_base.paramtype2 = "flowingliquid"
+			def_base.drawtype = "flowingliquid"
+			def_base.groups.not_in_creative_inventory = 1
+		else
+			def_base.description = def_base.description .. " Source"
+		end
+
+		if def["tiles_"..state] then
+			def_base.tiles = table.copy(def["tiles_"..state])
+			def_base["tiles_"..state] = nil
+		end
+
+		if def["special_tiles_"..state] then
+			def_base.special_tiles = table.copy(def["special_tiles_"..state])
+			def_base["special_tiles_"..state] = nil
+		end
+
+		minetest.register_node(mod..":"..liquid.."_"..state, def_base)
+	end
+end

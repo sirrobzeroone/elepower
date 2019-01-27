@@ -127,7 +127,44 @@ minetest.register_craftitem("elepower_dynamics:pcb_blank", {
 	description = "Printed Circuit Board (PCB) Blank\nUse Etching Acid to etch",
 	inventory_image = "elepower_blank_pcb.png",
 	liquids_pointable = true,
-	groups = {blank_board = 1, static_component = 1}
+	groups = {blank_board = 1, static_component = 1},
+	on_place = function (itemstack, placer, pointed_thing)
+		local pos = pointed_thing.under
+		if not pos or pointed_thing.type ~= "node" then return itemstack end
+
+		local node = minetest.get_node_or_nil(pos)
+		if not node or node.name ~= "elepower_dynamics:etching_acid_source" then
+			return itemstack
+		end
+
+		local istack = itemstack:get_name()
+		if not placer or placer:get_player_name() == "" then
+			return itemstack
+		end
+
+		local out  = ItemStack("elepower_dynamics:pcb")
+		local inv  = placer:get_inventory()
+		local meta = minetest.get_meta(pos)
+		local uses = meta:get_int("uses")
+
+		uses = uses + 1
+		itemstack:take_item(1)
+
+		if inv:room_for_item("main", out) then
+			inv:add_item("main", out)
+		else
+			minetest.item_drop(out, placer, pos)
+		end
+
+		-- Limited etchings
+		if uses == 10 then
+			minetest.set_node(pos, {name = "default:water_source"})
+		else
+			meta:set_int("uses", uses)
+		end
+
+		return itemstack
+	end
 })
 
 minetest.register_craftitem("elepower_dynamics:pcb", {
