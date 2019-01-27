@@ -69,7 +69,8 @@ local function timer(pos, elapsed)
 	local fl_buffer  = fluid_lib.get_buffer_data(pos, "pump")
 
 	-- Pump level
-	local plevel = meta:get_int("level")
+	local plevel  = meta:get_int("level")
+	local pliquid = meta:get_string("liquid")
 	if plevel == 0 then plevel = -1 end
 
 	local ppos = vector.add(pos, {x=0,y=plevel,z=0})
@@ -87,9 +88,9 @@ local function timer(pos, elapsed)
 			break
 		end
 
-		local dig_node = fl_buffer.fluid
+		local dig_node = pliquid
 		local amount = 1000
-		if fl_buffer.fluid == "elepower_nuclear:heavy_water_source" and heavy then
+		if pliquid == "elepower_nuclear:heavy_water_source" and heavy then
 			dig_node = "default:water_source"
 			amount = 200
 		end
@@ -99,7 +100,7 @@ local function timer(pos, elapsed)
 			break
 		end
 
-		if fl_buffer.fluid == "" then
+		if pliquid == "" then
 			local node = minetest.get_node_or_nil(ppos)
 			if not node or node.name == "air" or (bucket.liquids[node.name] and bucket.liquids[node.name].flowing == node.name) then
 				plevel = plevel - 1
@@ -117,7 +118,7 @@ local function timer(pos, elapsed)
 					node.name = "elepower_nuclear:heavy_water_source"
 				end
 
-				fl_buffer.fluid = node.name
+				pliquid = node.name
 				refresh = true
 			else
 				-- Run into a non-liquid node, stop the timer
@@ -125,10 +126,10 @@ local function timer(pos, elapsed)
 			end
 		end
 
-		if fl_buffer.fluid ~= "" then
+		if pliquid ~= "" then
 			-- Filter was installed
-			if fl_buffer.fluid == "default:water_source" and heavy and fl_buffer.amount > 0 then
-				fl_buffer.fluid = "elepower_nuclear:heavy_water_source"
+			if pliquid == "default:water_source" and heavy and fl_buffer.amount > 0 then
+				pliquid = "elepower_nuclear:heavy_water_source"
 				fl_buffer.amount = 0
 				refresh = true
 				break
@@ -144,7 +145,7 @@ local function timer(pos, elapsed)
 					node.name = "elepower_nuclear:heavy_water_source"
 				end
 
-				if not node or (node.name ~= fl_buffer.fluid and node.name ~= "air") then
+				if not node or (node.name ~= pliquid and node.name ~= "air") then
 					status  = "No More Fluid!"
 					refresh = false
 					break
@@ -167,6 +168,8 @@ local function timer(pos, elapsed)
 
 		break
 	end
+
+	fl_buffer.fluid = pliquid
 
 	-- Spawn tube entities
 	if status == "Pumping" or status == "Seeking" then
@@ -196,6 +199,7 @@ local function timer(pos, elapsed)
 
 	meta:set_int("storage", pow_buffer.storage)
 	meta:set_int("level", plevel)
+	meta:set_string("liquid", pliquid)
 
 	meta:set_int("pump_fluid_storage", fl_buffer.amount)
 	meta:set_string("pump_fluid", fl_buffer.fluid)
