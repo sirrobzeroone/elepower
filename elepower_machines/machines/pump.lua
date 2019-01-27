@@ -124,6 +124,7 @@ local function timer(pos, elapsed)
 				-- Run into a non-liquid node, stop the timer
 				refresh = false
 			end
+			break
 		end
 
 		if pliquid ~= "" then
