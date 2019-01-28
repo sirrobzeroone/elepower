@@ -34,6 +34,12 @@ function elepm.register_fuel_generator(nodename, nodedef)
 		nodedef.get_formspec = nil
 	end
 
+	if not nodedef.ele_upgrades then
+		nodedef.ele_upgrades = {
+			capacitor = {"capacity"},
+		}
+	end
+
 	nodedef.on_timer = function (pos, elapsed)
 		local refresh = false
 		local meta     = minetest.get_meta(pos)

@@ -486,7 +486,6 @@ function ele.register_machine(nodename, nodedef)
 		ele_usage    = 64,
 		ele_output   = 64,
 		ele_sides    = nil,
-		paramtype2   = "facedir"
 	}
 
 	-- Ensure everything that's required is present
@@ -494,6 +493,10 @@ function ele.register_machine(nodename, nodedef)
 		if not nodedef[k] then
 			nodedef[k] = v
 		end
+	end
+
+	if nodedef.paramtype2 ~= 0 or not nodedef.paramtype2 then
+		nodedef.paramtype2 = "facedir"
 	end
 
 	-- Ensure machine group is used properly

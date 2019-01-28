@@ -236,7 +236,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_dynamics:battery 2",
 	recipe = {
-		{"elepower_dynamics:zinc_dust", "elepower_dynamics:wound_copper_coil", "elepower_dynamics:lead_dust"},
+		{"elepower_dynamics:zinc_dust", "elepower_dynamics:graphite_rod", "elepower_dynamics:lead_dust"},
 		{"elepower_dynamics:tin_plate", "default:mese_crystal_fragment", "elepower_dynamics:tin_plate"},
 		{"elepower_dynamics:tin_plate", "default:mese_crystal_fragment", "elepower_dynamics:tin_plate"},
 	}

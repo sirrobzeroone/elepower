@@ -40,6 +40,9 @@ function ele.register_fluid_generator(nodename, nodedef)
 			ele_provider = 1,
 			oddly_breakable_by_hand = 1,
 		},
+		ele_upgrades = {
+			capacitor = {"capacity"},
+		},
 		tube = false,
 		on_timer = function (pos, elapsed)
 			local refresh  = false

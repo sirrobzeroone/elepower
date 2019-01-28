@@ -130,3 +130,10 @@ minetest.register_craftitem("elepower_machines:heavy_filter", {
 		return itemstack
 	end
 })
+
+-- Wind turbine
+
+minetest.register_craftitem("elepower_machines:wind_turbine_blade", {
+	description = "Wind Turbine Blade (Wooden)",
+	inventory_image = "elepower_wind_turbine_blade.png",
+})

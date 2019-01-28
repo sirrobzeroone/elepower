@@ -425,6 +425,24 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_craft({
+	output = "elepower_machines:wind_turbine_blade",
+	recipe = {
+		{"", "default:wood", "default:wood"},
+		{"default:stick", "default:wood", "default:wood"},
+		{"default:stick", "default:stick", ""},
+	}
+})
+
+minetest.register_craft({
+	output = "elepower_machines:wind_turbine_blades",
+	recipe = {
+		{"elepower_machines:wind_turbine_blade", "elepower_machines:wind_turbine_blade", "elepower_machines:wind_turbine_blade"},
+		{"elepower_machines:wind_turbine_blade", "default:wood", "elepower_machines:wind_turbine_blade"},
+		{"elepower_machines:wind_turbine_blade", "elepower_machines:wind_turbine_blade", "elepower_machines:wind_turbine_blade"},
+	}
+})
+
 -- Nodes
 
 -- Coal-fired Alloy Furnace
@@ -684,5 +702,15 @@ minetest.register_craft({
 		{"elepower_dynamics:lead_gear", "elepower_dynamics:integrated_circuit", "elepower_dynamics:lead_gear"},
 		{"bucket:bucket_empty", "elepower_machines:machine_block", "bucket:bucket_empty"},
 		{"elepower_dynamics:electrum_plate", "elepower_machines:opaque_duct_roll", "elepower_dynamics:electrum_plate"},
+	}
+})
+
+-- Wind Turbine
+minetest.register_craft({
+	output = "elepower_machines:wind_turbine",
+	recipe = {
+		{"elepower_dynamics:wound_copper_coil", "elepower_machines:turbine_blades", "elepower_dynamics:wound_copper_coil"},
+		{"elepower_dynamics:steel_plate", "elepower_machines:machine_block", "elepower_dynamics:steel_plate"},
+		{"elepower_dynamics:invar_gear", "elepower_dynamics:steel_plate", "elepower_dynamics:invar_gear"},
 	}
 })

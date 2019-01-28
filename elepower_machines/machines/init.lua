@@ -9,6 +9,7 @@ dofile(mp .. "generator.lua")
 dofile(mp .. "lava_generator.lua")
 dofile(mp .. "steam_turbine.lua")
 dofile(mp .. "fuel_burner.lua")
+dofile(mp .. "wind_turbine.lua")
 
 -- Storage
 dofile(mp .. "storage.lua")
