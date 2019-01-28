@@ -77,10 +77,14 @@ function ele.register_wind_generator(nodename, nodedef)
 					break
 				end
 
+				pow_buffer.usage = wind
+				if pow_buffer.storage + pow_buffer.usage > pow_buffer.capacity then
+					break
+				end
+
 				status = "Active"
 				refresh = true
 
-				pow_buffer.usage = wind
 				pow_buffer.storage = pow_buffer.storage + pow_buffer.usage
 				break
 			end
