@@ -47,6 +47,10 @@ local alloy_recipes = {
 		output = "basic_materials:brass_ingot 3",
 		time   = 8,
 	},
+	{
+		recipe = { "default:bronze_ingot", "default:steel_ingot 4" },
+		output = "elepower_machines:heat_casing 4",
+	},
 }
 
 -- Register alloy furnace recipes
@@ -687,10 +691,10 @@ minetest.register_craft({
 
 -- Advanced Machine Block
 minetest.register_craft({
-	output = "elepower_machines:advanced_machine_block 8",
+	output = "elepower_machines:advanced_machine_block 4",
 	recipe = {
 		{"elepower_dynamics:electrum_plate", "elepower_dynamics:induction_coil_advanced", "elepower_dynamics:electrum_plate"},
-		{"elepower_dynamics:brass_plate", "elepower_machines:machine_block", "elepower_dynamics:brass_plate"},
+		{"elepower_dynamics:brass_plate", "elepower_machines:heat_casing", "elepower_dynamics:brass_plate"},
 		{"elepower_dynamics:electrum_plate", "elepower_dynamics:induction_coil_advanced", "elepower_dynamics:electrum_plate"},
 	}
 })

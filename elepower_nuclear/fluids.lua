@@ -107,19 +107,6 @@ ele.helpers.register_liquid("hot_coolant", {
 	groups            = {liquid = 3, coolant = 1, hot = 1},
 })
 
--- Brine
-
-ele.helpers.register_liquid("brine", {
-	description       = "Brine",
-	drawtype          = "liquid",
-	tiles             = {"elenuclear_brine.png"},
-	special_tiles     = {"elenuclear_brine.png", "elenuclear_brine.png"},
-	alpha             = 240,
-	liquid_viscosity  = 7,
-	post_effect_color = {a = 200, r = 215, g = 221, b = 187},
-	groups            = {brine = 3, saline = 1, liquid = 3, puts_out_fire = 1, cools_lava = 1},
-})
-
 -- Corium
 
 ele.helpers.register_liquid("corium", {
@@ -174,9 +161,6 @@ if minetest.get_modpath("bucket") ~= nil then
 
 	bucket.register_liquid("elepower_nuclear:heavy_water_source", "elepower_nuclear:heavy_water_flowing",
 		"elepower_nuclear:bucket_heavy_water", "#0d4579", "Heavy Water Bucket")
-
-	bucket.register_liquid("elepower_nuclear:brine_source", "elepower_nuclear:brine_flowing",
-		"elepower_nuclear:bucket_heavy_water", "#d7ddbb", "Brine Bucket")
 
 	fluid_tanks.register_tank(":elepower_dynamics:portable_tank", {
 		description = "Portable Tank",

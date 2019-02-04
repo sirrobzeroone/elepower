@@ -454,7 +454,7 @@ minetest.register_node("elepower_nuclear:reactor_fluid", {
 	node_io_accepts_millibuckets = function(pos, node, side) return true end,
 	node_io_put_liquid = function(pos, node, side, putter, liquid, millibuckets)
 		local ctrl, ctrl_meta = get_port_controller(pos)
-		if not ctrl then return nil end
+		if not ctrl then return millibuckets end
 
 		local buffers = fluid_lib.get_node_buffers(ctrl)
 		local leftovers = 0
@@ -468,7 +468,7 @@ minetest.register_node("elepower_nuclear:reactor_fluid", {
 	end,
 	node_io_room_for_liquid = function(pos, node, side, liquid, millibuckets)
 		local ctrl, ctrl_meta = get_port_controller(pos)
-		if not ctrl then return nil end
+		if not ctrl then return 0 end
 
 		local buffers = fluid_lib.get_node_buffers(ctrl)
 		local insertable = 0
