@@ -200,7 +200,12 @@ local function controller_timer (pos, elapsed)
 		local outp_perc = math.floor(heat_perc * recipe.output:get_count())
 
 		if in_buffer.amount < take_perc then
-			break
+			if in_buffer.amount <= 0 then
+				break
+			end
+
+			take_perc = in_buffer.amount
+			outp_perc = math.floor(take_perc / recipe.output:get_count())
 		end
 
 		if out_buffer.amount + outp_perc > out_buffer.capacity then
