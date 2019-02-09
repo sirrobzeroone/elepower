@@ -22,6 +22,7 @@ ele.helpers.register_liquid("lithium", {
 	liquid_viscosity  = 4,
 	damage_per_second = 1,
 	alpha             = 200,
+	gas_form          = "elepower_dynamics:lithium_gas",
 	post_effect_color = {a = 103, r = 229, g = 227, b = 196},
 	groups            = {lithium = 1, liquid = 3},
 })
@@ -39,6 +40,7 @@ bucket.register_liquid("elepower_dynamics:lithium_source", "elepower_dynamics:li
 minetest.register_node("elepower_dynamics:steam", {
 	description = "Steam",
 	groups      = {not_in_creative_inventory = 1, gas = 1},
+	liquid_form = "default:water_source",
 	tiles       = {"elepower_steam.png"},
 })
 
@@ -63,6 +65,7 @@ minetest.register_node("elepower_dynamics:nitrogen", {
 minetest.register_node("elepower_dynamics:lithium_gas", {
 	description = "Lithium Gas",
 	groups      = {not_in_creative_inventory = 1, gas = 1, lithium = 1},
+	liquid_form = "elepower_dynamics:lithium_source",
 	tiles       = {"elepower_lithium.png"},
 })
 

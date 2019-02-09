@@ -36,14 +36,20 @@ local function heat_exchanger_timer(pos)
 	local steam = fluid_lib.get_buffer_data(pos, "steam")
 
 	while true do
-		if heat.amount < 1000 or heat.fluid == "" or not heat_recipes[heat.fluid] then
+		if heat.fluid == "" or not heat_recipes[heat.fluid] then
 			break
 		end
 
+		-- Convert a maximum of 1000 buckets of hot fluid per second
+		local heatper = 1000
+		if heat.amount < 1000 then
+			heatper = heat.amount
+		end
+
 		-- See if we have enough hot coolant
-		if heat.amount >= 1000 and heat.fluid ~= "" then
+		if heatper > 0 and heat.fluid ~= "" then
 			local damnt = heat_recipes[heat.fluid]
-			local water_convert = math.min(water.amount, 1000 * damnt.factor)
+			local water_convert = math.min(water.amount, heatper * damnt.factor)
 
 			if cold.fluid ~= damnt.out and cold.fluid ~= "" then
 				break
@@ -53,10 +59,10 @@ local function heat_exchanger_timer(pos)
 				water_convert = steam.capacity - steam.amount
 			end
 
-			if water_convert > 0 and cold.amount + 1000 < cold.capacity then
+			if water_convert > 0 and cold.amount + heatper <= cold.capacity then
 				-- Conversion
-				heat.amount = heat.amount - 1000
-				cold.amount = cold.amount + 1000
+				heat.amount = heat.amount - heatper
+				cold.amount = cold.amount + heatper
 
 				water.amount = water.amount - water_convert
 				steam.amount = steam.amount + water_convert
