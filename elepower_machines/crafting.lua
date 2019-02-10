@@ -718,3 +718,13 @@ minetest.register_craft({
 		{"elepower_dynamics:invar_gear", "elepower_dynamics:steel_plate", "elepower_dynamics:invar_gear"},
 	}
 })
+
+-- Evaporizer
+minetest.register_craft({
+	output = "elepower_machines:evaporator",
+	recipe = {
+		{"elepower_dynamics:steel_plate", "default:steelblock", "elepower_dynamics:steel_plate"},
+		{"elepower_dynamics:steel_plate", "elepower_machines:machine_block", "elepower_dynamics:steel_plate"},
+		{"elepower_dynamics:induction_coil", "elepower_dynamics:zinc_plate", "elepower_dynamics:induction_coil"},
+	}
+})
