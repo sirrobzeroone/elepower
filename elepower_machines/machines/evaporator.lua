@@ -142,5 +142,4 @@ ele.register_machine("elepower_machines:evaporator", {
 		},
 	},
 	ele_usage = 128,
-	on_receive_fields = get_fields,
 })
