@@ -149,6 +149,8 @@ minetest.register_node("elepower_machines:crank", {
 	groups = {choppy = 1, oddly_breakable_by_hand = 1},
 	tiles = {"default_wood.png"},
 	drawtype = "nodebox",
+	paramtype = "light",
+	sunlight_propagates = true,
 	node_box = {
 		type = "fixed",
 		fixed = {
