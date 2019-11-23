@@ -1,5 +1,6 @@
 
 local structures = {}
+local ores = {}
 local TIMER = 10
 
 local function determine_structure(controller, player)
@@ -62,11 +63,6 @@ local function get_mining_results(drills)
 	local amount = math.random(0, 1 * drills)
 
 	for i = 0, amount do
-		local ores = {}
-		for _,def in pairs(minetest.registered_ores) do
-			table.insert(ores, def.ore)
-		end
-
 		local picked = math.random(1, #ores)
 		local count = math.random(1, 3)
 		local drops = minetest.get_node_drops(ores[picked], "elepower_tools:hand_drill")
@@ -107,7 +103,7 @@ local function on_timer(pos, elapsed)
 	local meta    = minetest.get_meta(pos)
 	local inv     = meta:get_inventory()
 
-	local buffer = fluid_lib.get_buffer_data(pos, "input")
+	local buffer = fluid_lib.get_buffer_data(pos, "water")
 	local state  = meta:get_int("state")
 	local work   = meta:get_int("work")
 
@@ -137,9 +133,16 @@ local function on_timer(pos, elapsed)
 		active = string.format("Mining with %d miners", miners)
 		pow_buffer.usage = usage
 
+		local coolant = 500 * miners
+		if buffer.amount < coolant then
+			active = "Out of Water!"
+			break
+		end
+
 		if work < TIMER then
 			work = work + 1
 			pow_buffer.storage = pow_buffer.storage - usage
+			buffer.amount = buffer.amount - coolant
 			break
 		end
 
@@ -160,6 +163,7 @@ local function on_timer(pos, elapsed)
 		end
 
 		pow_buffer.storage = pow_buffer.storage - usage
+		buffer.amount = buffer.amount - coolant
 		work = 0
 		refresh = true
 		break
@@ -171,6 +175,8 @@ local function on_timer(pos, elapsed)
 		ele.capacity_text(capacity, storage)))
 	meta:set_string("formspec", get_formspec(wp, pow_buffer, buffer, state))
 	meta:set_int("storage", pow_buffer.storage)
+	meta:set_int("water_fluid_storage", buffer.amount)
+	meta:set_string("water_fluid", "default:water_source")
 	meta:set_int("work", work)
 
 	return refresh
@@ -200,8 +206,8 @@ ele.register_machine("elepower_mining:miner_controller", {
 		"elepower_machine_side.png^elenuclear_fusion_controller.png",
 	},
 	fluid_buffers = {
-		input = {
-			capacity  = 8000,
+		water = {
+			capacity  = 16000,
 			accepts   = {"default:water_source"},
 			drainable = false,
 		},
@@ -257,3 +263,9 @@ minetest.register_lbm({
 		determine_structure(pos)
 	end,
 })
+
+minetest.after(1, function ()
+	for _,def in pairs(minetest.registered_ores) do
+		table.insert(ores, def.ore)
+	end
+end)
