@@ -47,6 +47,16 @@ function ele.helpers.flatten(map)
 	return list
 end
 
+function ele.helpers.node_compare(pos, name)
+	local node = minetest.get_node_or_nil(pos)
+	if not node then return false end
+	if name:match("^group:") then
+		return ele.helpers.get_item_group(node.name, name:sub(7)) 
+	end
+	if node.name ~= name then return false end
+	return true
+end
+
 function ele.helpers.get_node_property(meta, pos, prop)
 	local value = meta:get_int(prop)
 
