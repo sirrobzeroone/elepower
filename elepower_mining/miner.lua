@@ -58,19 +58,37 @@ local function determine_structure(controller, player)
 	return true, miners, nodes
 end
 
+local function random_ore()
+	for ore, probability in pairs(ores) do
+		if math.random(probability) == 1 then
+			return ore
+		end
+	end
+end
+
 local function get_mining_results(drills)
 	local results = {}
-	local amount = math.random(0, 1 * drills)
+	local amount = math.random(0, drills)
 
+	-- Run mining operations
 	for i = 0, amount do
-		local picked = math.random(1, #ores)
-		local count = math.random(1, 3)
-		local drops = minetest.get_node_drops(ores[picked], "elepower_tools:hand_drill")
-		for _,stack in pairs(drops) do
-			stack = ItemStack(stack)
+		local picked
+
+		-- Run three tries trying to find a random ore
+		for j = 0, 3 do
+			picked = random_ore()
+			if picked then
+				break
+			end
+		end
+
+		-- If a random ore was found, add it to results
+		if picked then
+			local count = math.random(1, 3)
+			local stack = ItemStack(picked)
 			stack:set_count(count)
 			table.insert(results, stack)
-		end		
+		end
 	end
 
 	return results
@@ -264,8 +282,56 @@ minetest.register_lbm({
 	end,
 })
 
-minetest.after(1, function ()
-	for _,def in pairs(minetest.registered_ores) do
-		table.insert(ores, def.ore)
+-- The following code is borrowed from the gravelsieve mod by Joachim Stolberg, licensed under LGPLv2.1+
+-- https://github.com/joe7575/techpack/blob/master/gravelsieve/
+
+local PROBABILITY_FACTOR = 3
+local ore_rarity = 1.16
+local ore_max_elevation = 0
+local ore_min_elevation = -30912
+local y_spread = math.max(1 + ore_max_elevation - ore_min_elevation, 1)
+
+local function harmonic_sum(a, b)
+	return 1 / ((1 / a) + (1 / b))
+end
+
+local function calculate_probability(item)
+	local ymax = math.min(item.y_max, ore_max_elevation)
+	local ymin = math.max(item.y_min, ore_min_elevation)
+	return (ore_rarity / PROBABILITY_FACTOR) *
+			item.clust_scarcity / (item.clust_num_ores * ((ymax - ymin) / y_spread))
+end
+
+local function add_ores()
+	for _,item in  pairs(minetest.registered_ores) do
+		if minetest.registered_nodes[item.ore] then
+			local drop = minetest.registered_nodes[item.ore].drop
+			if type(drop) == "string"
+			and drop ~= item.ore
+			and drop ~= ""
+			and item.ore_type == "scatter"
+			and item.wherein == "default:stone"
+			and item.clust_scarcity ~= nil and item.clust_scarcity > 0
+			and item.clust_num_ores ~= nil and item.clust_num_ores > 0
+			and item.y_max ~= nil and item.y_min ~= nil then
+				local probability = calculate_probability(item)
+				if probability > 0 then
+					local cur_probability = ores[drop]
+					if cur_probability then
+						ores[drop] = harmonic_sum(cur_probability, probability)
+					else
+						ores[drop] = probability
+					end
+				end
+			end
+		end
 	end
-end)
+	local overall_probability = 0.0
+	for name,probability in pairs(ores) do
+		minetest.log("info", ("[elepower_mining] %-32s %.02f"):format(name, probability))
+		overall_probability = overall_probability + 1.0/probability
+	end
+	minetest.log("info", ("[elepower_mining] Overall probability %f"):format(overall_probability))
+end
+
+minetest.after(1, add_ores)
