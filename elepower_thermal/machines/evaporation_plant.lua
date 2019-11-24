@@ -130,7 +130,7 @@ local function get_recipe(i1, heat)
 	for _, d in pairs(results) do
 		local i1a = ItemStack(d.input)
 
-		if i1a:get_name() == i1.fluid then
+		if i1a:get_name() == i1.fluid and heat > d.heat then
 			result = d
 			result.output = ItemStack(result.output)
 			result.input = i1a
@@ -166,13 +166,12 @@ end
 
 local function controller_timer (pos, elapsed)
 	local meta = minetest.get_meta(pos)
-	local refresh = false
+	local refresh = true
 
 	if not elethermal.cache[minetest.pos_to_string(pos)] and not validate_structure(pos) then
-		refresh = false
 		meta:set_string("infotext", "Thermal Evaporation Plant Incomplete")
 		meta:set_string("formspec", "")
-		return
+		return false
 	end
 
 	local contpos = minetest.pos_to_string(pos)
@@ -185,17 +184,25 @@ local function controller_timer (pos, elapsed)
 
 	while true do
 		local baseline = math.floor(minetest.get_heat(pos) + 273.15)
-		 -- TODO: check sunlight for solar panels
-		heat = math.floor(th.thermal + (th.height * 10)) + baseline
-		if heat < 0 then
-			heat = 0
+		local reach_heat = math.floor(th.thermal + (th.height * 10)) + baseline
+
+		if heat < reach_heat then
+			heat = heat + reach_heat / 10
+		end
+
+		if heat > reach_heat then
+			heat = reach_heat
+		end
+
+		if heat < baseline then
+			heat = baseline
 		end
 
 		if heat > 1000 then
 			heat = 1000
 		end
 
-		local recipe = get_recipe(in_buffer, heat - baseline)
+		local recipe = get_recipe(in_buffer, heat)
 
 		if not recipe then
 			break
@@ -210,27 +217,24 @@ local function controller_timer (pos, elapsed)
 		local outp_perc = math.floor(heat_perc * recipe.output:get_count())
 
 		if in_buffer.amount < take_perc then
-			if in_buffer.amount <= 0 then
-				break
-			end
-
-			take_perc = in_buffer.amount
-			outp_perc = math.floor(take_perc / recipe.output:get_count())
+			refresh = false
+			break
 		end
 
 		if out_buffer.amount + outp_perc > out_buffer.capacity then
+			refresh = false
 			break
 		end
 
 		if out_buffer.fluid ~= "" and out_buffer.fluid ~= recipe.output:get_name() then
+			refresh = false
 			break
 		end
 
 		out_buffer.fluid = recipe.output:get_name()
 		out_buffer.amount = out_buffer.amount + outp_perc
 		in_buffer.amount = in_buffer.amount - take_perc
-		refresh = true
-
+		heat = heat - (recipe.heat - baseline)
 		break
 	end
 
@@ -242,7 +246,6 @@ local function controller_timer (pos, elapsed)
 	meta:set_string("output_fluid", out_buffer.fluid)
 	meta:set_int("output_fluid_storage", out_buffer.amount)
 
-	meta:set_string("infotext", "")
 	meta:set_string("formspec", controller_formspec(in_buffer, out_buffer, heat))
 	return refresh
 end
@@ -266,7 +269,7 @@ minetest.register_node("elepower_thermal:evaporator_controller", {
 		},
 		output = {
 			capacity  = 8000,
-			accepts   = nil,
+			accepts   = false,
 			drainable = true,
 		},
 	},
@@ -379,32 +382,16 @@ minetest.register_node("elepower_thermal:evaporator_input", {
 	node_io_put_liquid = function(pos, node, side, putter, liquid, millibuckets)
 		local ctrl, ctrl_meta = get_port_controller(pos)
 		if not ctrl then return millibuckets end
+		if millibuckets == 0 then return 0 end
+		local didnt_fit = fluid_lib.insert_into_buffer(ctrl, "input", liquid, millibuckets)
 
-		local buffers = fluid_lib.get_node_buffers(ctrl)
-		local leftovers = 0
-		for buffer,data in pairs(buffers) do
-			if millibuckets == 0 then break end
-			local didnt_fit = fluid_lib.insert_into_buffer(ctrl, buffer, liquid, millibuckets)
-			millibuckets = millibuckets - (millibuckets - didnt_fit)
-			leftovers = leftovers + didnt_fit
-		end
 		start_timer(ctrl)
-		return leftovers
+		return didnt_fit
 	end,
 	node_io_room_for_liquid = function(pos, node, side, liquid, millibuckets)
 		local ctrl, ctrl_meta = get_port_controller(pos)
 		if not ctrl then return 0 end
-
-		local buffers = fluid_lib.get_node_buffers(ctrl)
-		local insertable = 0
-		for buffer,data in pairs(buffers) do
-			local insert = fluid_lib.can_insert_into_buffer(ctrl, buffer, liquid, millibuckets)
-			if insert > 0 then
-				insertable = insert
-				break
-			end
-		end
-		return insertable
+		return fluid_lib.can_insert_into_buffer(ctrl, "input", liquid, millibuckets)
 	end,
 	on_destruct = break_structure,
 })
