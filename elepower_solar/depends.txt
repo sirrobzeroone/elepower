@@ -1,3 +1,0 @@
-elepower_papi
-elepower_dynamics
-3d_armor?

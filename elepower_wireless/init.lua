@@ -8,7 +8,6 @@ elewi.modpath = modpath
 
 -- Items
 dofile(modpath .. "/craftitems.lua")
-dofile(modpath .. "/nodes.lua")
 
 -- Machines
 dofile(modpath .. "/machines/init.lua")
