@@ -5,12 +5,12 @@ local results = {
 	{
 		input = "default:water_source 1000",
 		output = "elepower_thermal:brine_source 100",
-		heat = 200
+		heat = 400
 	},
 	{
 		input = "elepower_thermal:brine_source 1000",
 		output = "elepower_dynamics:lithium_source 100",
-		heat = 200
+		heat = 400
 	}
 }
 
@@ -142,9 +142,9 @@ local function get_recipe(i1, heat)
 end
 
 local function controller_formspec (input, output, heat)
-	local bar = "image[1.5,3;6,1;elethermal_gradient_bg.png^[transformR270]"
+	local bar = "image[1.5,3.5;6,1;elethermal_gradient_bg.png^[transformR270]"
 	if heat then
-		bar = "image[1.5,3;6,1;elethermal_gradient_bg.png^[lowpart:"..
+		bar = "image[1.5,3.5;6,1;elethermal_gradient_bg.png^[lowpart:"..
 			  (100 * heat / 1000)..":elethermal_gradient.png^[transformR270]"
 	end
 	return "size[8,4.5]"..
@@ -152,7 +152,7 @@ local function controller_formspec (input, output, heat)
 		default.gui_bg_img..
 		default.gui_slots..
 		bar..
-		"tooltip[1.5,3;6,1;Heat: "..heat.."K]"..
+		"tooltip[1.5,3.5;6,1;Heat: "..heat.."K]"..
 		ele.formspec.fluid_bar(0, 0, input)..
 		ele.formspec.fluid_bar(7, 0, output)
 end
@@ -184,18 +184,28 @@ local function controller_timer (pos, elapsed)
 	local heat = meta:get_int("heat")
 
 	while true do
-		local recipe = get_recipe(in_buffer, heat)
+		local baseline = math.floor(minetest.get_heat(pos) + 273.15)
 		 -- TODO: check sunlight for solar panels
-		heat = math.floor(th.thermal + (th.height * 10) + (100 * (minetest.get_heat(pos) + 1)))
+		heat = math.floor(th.thermal + (th.height * 10)) + baseline
 		if heat < 0 then
 			heat = 0
 		end
+
+		if heat > 1000 then
+			heat = 1000
+		end
+
+		local recipe = get_recipe(in_buffer, heat - baseline)
 
 		if not recipe then
 			break
 		end
 
-		local heat_perc = heat / recipe.heat
+		local heat_perc = heat / (recipe.heat + baseline)
+		if recipe.heat + baseline < heat then
+			heat_perc = 100
+		end
+
 		local take_perc = math.floor(heat_perc * recipe.input:get_count())
 		local outp_perc = math.floor(heat_perc * recipe.output:get_count())
 
@@ -287,6 +297,8 @@ minetest.register_node("elepower_thermal:evaporator_output", {
 		return false
 	end,
 	node_io_can_take_liquid = function (pos, node, side)
+		local ctrl = get_port_controller(pos)
+		if not ctrl then return false end
 		return true
 	end,
 	node_io_accepts_millibuckets = function(pos, node, side) return true end,
