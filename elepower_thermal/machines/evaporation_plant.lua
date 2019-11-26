@@ -100,13 +100,6 @@ local function validate_structure(pos, player)
 	return height, inputs, outputs, thermal, all
 end
 
-local function start_timer(pos)
-	local t = minetest.get_node_timer(pos)
-	if not t:is_started() then
-		t:start(1.0)
-	end
-end
-
 local function get_port_controller(pos)
 	for ctrl,t in pairs(elethermal.cache) do
 		local ctrlpos = minetest.string_to_pos(ctrl)
@@ -161,7 +154,7 @@ local function break_structure(pos)
 	local ctrl = get_port_controller(pos)
 	if not ctrl then return end
 	elethermal.cache[minetest.pos_to_string(ctrl)] = nil
-	start_timer(ctrl)
+	ele.helpers.start_timer(ctrl)
 end
 
 local function controller_timer (pos, elapsed)
@@ -276,7 +269,7 @@ minetest.register_node("elepower_thermal:evaporator_controller", {
 	on_timer = controller_timer,
 	on_punch = function (pos, node, puncher, pointed_thing)
 		if validate_structure(pos, puncher:get_player_name()) then
-			start_timer(pos)
+			ele.helpers.start_timer(pos)
 		end
 		minetest.node_punch(pos, node, puncher, pointed_thing)
 	end,
@@ -321,7 +314,7 @@ minetest.register_node("elepower_thermal:evaporator_output", {
 			name, took = fluid_lib.take_from_buffer(ctrl, buffer, want_millibuckets)
 		end
 
-		start_timer(ctrl)
+		ele.helpers.start_timer(ctrl)
 
 		return {name = name, millibuckets = took}
 	end,
@@ -385,7 +378,7 @@ minetest.register_node("elepower_thermal:evaporator_input", {
 		if millibuckets == 0 then return 0 end
 		local didnt_fit = fluid_lib.insert_into_buffer(ctrl, "input", liquid, millibuckets)
 
-		start_timer(ctrl)
+		ele.helpers.start_timer(ctrl)
 		return didnt_fit
 	end,
 	node_io_room_for_liquid = function(pos, node, side, liquid, millibuckets)
@@ -405,5 +398,5 @@ minetest.register_lbm({
 	name = "elepower_thermal:evaporator_controllers",
 	nodenames = {"elepower_thermal:evaporator_controller"},
 	run_at_every_load = true,
-	action = start_timer,
+	action = ele.helpers.start_timer,
 })

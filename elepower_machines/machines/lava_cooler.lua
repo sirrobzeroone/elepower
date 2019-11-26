@@ -165,7 +165,7 @@ ele.register_machine("elepower_machines:lava_cooler", {
 
 		if frecipe then
 			meta:set_string("recipe", frecipe)
-			minetest.get_node_timer(pos):start(1.0)
+			ele.helpers.start_timer(pos)
 		end
 	end,
 })

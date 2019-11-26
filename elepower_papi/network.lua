@@ -238,10 +238,7 @@ minetest.register_abm({
 				user_meta:set_int("storage", user_storage + user_gets)
 
 				-- Set timer on this node
-				local t = minetest.get_node_timer(ndv)
-				if not t:is_started() then
-					t:start(1.0)
-				end
+				ele.helpers.start_timer(ndv)
 			end
 		end
 
@@ -260,10 +257,7 @@ minetest.register_abm({
 					smeta:set_int("storage", 0)
 				end
 
-				local t = minetest.get_node_timer(spos)
-				if not t:is_started() then
-					t:start(1.0)
-				end
+				ele.helpers.start_timer(spos)
 			end
 		end
 	end,

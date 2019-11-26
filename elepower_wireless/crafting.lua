@@ -44,3 +44,25 @@ minetest.register_craft({
 		{"elepower_dynamics:wound_silver_coil", "elepower_dynamics:battery", "elepower_dynamics:wound_silver_coil"},
 	}
 })
+
+--[[
+-- Tesseract Frame
+minetest.register_craft({
+	output = "elepower_wireless:tesseract_frame",
+	recipe = {
+		{"elepower_dynamics:lead_block", "elepower_dynamics:conduit", "elepower_dynamics:lead_block"},
+		{"fluid_transfer:fluid_duct", "", "fluid_transfer:fluid_duct"},
+		{"elepower_dynamics:lead_block", "elepower_dynamics:conduit", "elepower_dynamics:lead_block"},
+	}
+})
+
+-- Tesseract
+minetest.register_craft({
+	output = "elepower_wireless:tesseract",
+	recipe = {
+		{"elepower_dynamics:induction_coil_advanced", "elepower_dynamics:soc", "elepower_dynamics:induction_coil_advanced"},
+		{"elepower_dynamics:xycrone_lump", "elepower_wireless:tesseract_frame", "elepower_dynamics:xycrone_lump"},
+		{"elepower_dynamics:viridisium_block", "elepower_dynamics:servo_valve", "elepower_dynamics:viridisium_block"},
+	}
+})
+]]

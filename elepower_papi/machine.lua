@@ -77,13 +77,7 @@ function ele.default.allow_metadata_inventory_take(pos, listname, index, stack, 
 	return stack:get_count()
 end
 
-function ele.default.metadata_inventory_changed(pos)
-	local t = minetest.get_node_timer(pos)
-
-	if not t:is_started() then
-		t:start(1.0)
-	end
-end
+ele.default.metadata_inventory_changed = ele.helpers.start_timer
 
 -- State machine descriptions
 ele.default.states = {
@@ -141,10 +135,7 @@ local function retrieve_metadata(pos, placer, itemstack, pointed_thing)
 				elepm.handle_machine_upgrades(pos)
 			end
 		else
-			local t = minetest.get_node_timer(pos)
-			if not t:is_started() then
-				t:start(1.0)
-			end
+			ele.helpers.start_timer(pos)
 		end
 	end
 
@@ -161,7 +152,7 @@ local tube = {
 	insert_object = function(pos, node, stack, direction)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
-		minetest.get_node_timer(pos):start(1.0)
+		ele.helpers.start_timer(pos)
 		return inv:add_item("src", stack)
 	end,
 	can_insert = function(pos, node, stack, direction)
@@ -180,17 +171,17 @@ local tube = {
 local tubelib_tube = {
 	on_pull_item = function(pos, side, player_name)
 		local meta = minetest.get_meta(pos)
-		minetest.get_node_timer(pos):start(1.0)
+		ele.helpers.start_timer(pos)
 		return tubelib.get_item(meta, "dst")
 	end,
 	on_push_item = function(pos, side, item, player_name)
 		local meta = minetest.get_meta(pos)
-		minetest.get_node_timer(pos):start(1.0)
+		ele.helpers.start_timer(pos)
 		return tubelib.put_item(meta, "src", item)
 	end,
 	on_unpull_item = function(pos, side, item, player_name)
 		local meta = minetest.get_meta(pos)
-		minetest.get_node_timer(pos):start(1.0)
+		ele.helpers.start_timer(pos)
 		return tubelib.put_item(meta, "dst", item)
 	end,
 }
@@ -205,12 +196,7 @@ local mesecons_def = {
 			local meta = minetest.get_meta(pos)
 			meta:set_int("signal_interrupt", 0)
 		end,
-		action_change = function (pos, node)
-			local t = minetest.get_node_timer(pos)
-			if not t:is_started() then
-				t:start(1.0)
-			end
-		end,
+		action_change = ele.helpers.start_timer,
 	}
 }
 
@@ -235,10 +221,7 @@ local function switch_state(pos, state_def)
 	state = states[state + 1]
 	meta:set_int("state", state)
 
-	local t = minetest.get_node_timer(pos)
-	if not t:is_started() then
-		t:start(1.0)
-	end
+	ele.helpers.start_timer(pos)
 end
 
 -- Patch a table
@@ -357,10 +340,7 @@ function ele.register_base_device(nodename, nodedef)
 		nodedef.node_io_put_item = function(pos, node, side, putter, itemstack)
 			local meta = minetest.get_meta(pos)
 			local inv = meta:get_inventory()
-			local t = minetest.get_node_timer(pos)
-			if not t:is_started() then
-				t:start(1.0)
-			end
+			ele.helpers.start_timer(pos)
 			return inv:add_item("src", itemstack)
 		end
 		nodedef.node_io_can_take_item = function(pos, node, side) return true end
@@ -384,10 +364,7 @@ function ele.register_base_device(nodename, nodedef)
 			local inv = meta:get_inventory()
 			local stack = ItemStack(want_item)
 			stack:set_count(want_count)
-			local t = minetest.get_node_timer(pos)
-			if not t:is_started() then
-				t:start(1.0)
-			end
+			ele.helpers.start_timer(pos)
 			return inv:take_item("dst", stack)
 		end
 	end

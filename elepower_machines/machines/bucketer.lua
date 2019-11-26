@@ -134,7 +134,7 @@ local function get_fields(pos, formname, fields, sender)
 		meta:set_int("mode", fint)
 	end
 
-	minetest.get_node_timer(pos):start(1.0)
+	ele.helpers.start_timer(pos)
 end
 
 ele.register_base_device("elepower_machines:bucketer", {

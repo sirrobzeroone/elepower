@@ -39,6 +39,14 @@ function ele.helpers.get_item_group(name, grp)
 	return minetest.get_item_group(name, grp) > 0
 end
 
+function ele.helpers.start_timer(pos)
+	local t = minetest.get_node_timer(pos)
+
+	if not t:is_started() then
+		t:start(1.0)
+	end
+end
+
 function ele.helpers.flatten(map)
 	local list = {}
 	for key, value in pairs(map) do

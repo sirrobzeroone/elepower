@@ -23,7 +23,7 @@ local reactions = {
 		output = "elepower_nuclear:helium_plasma 2000", -- output fluid
 		power_ignite = 16000, -- ignition cost
 		power_upkeep = 1000,  -- reaction sustain cost
-		time = 360,           -- reaction time
+		time = 120,           -- reaction time
 	}
 }
 
@@ -104,10 +104,7 @@ local function notify_controller_presence(posi, posj)
 		local meta = minetest.get_meta(pos)
 		meta:set_string("ctrl", posj)
 
-		local t = minetest.get_node_timer(pos)
-		if not t:is_started() then
-			t:start(1.0)
-		end
+		ele.helpers.start_timer(pos)
 	end
 end
 
@@ -119,7 +116,7 @@ local function controller_formspec(in1, in2, out, power, time, state)
 			  (time)..":gui_furnace_arrow_fg.png^[transformR270]"
 	end
 
-	return "size[8,8.5]"..
+	return "size[8,3.25]"..
 		default.gui_bg..
 		default.gui_bg_img..
 		default.gui_slots..
@@ -184,6 +181,7 @@ local function controller_timer(pos)
 
 	local time     = meta:get_int("src_time")
 	local time_res = meta:get_int("src_time_max")
+	local state    = meta:get_int("state")
 
 	-- Deuterium + Tritium -> Helium Plasma
 	while true do
@@ -228,8 +226,8 @@ local function controller_timer(pos)
 		out_buffer.fluid = recipe.out:get_name()
 		out_buffer.amount = out_buffer.amount + recipe.out:get_count()
 
-		in1_buffer.amount = in1_buffer.amount - result.i1:get_count()
-		in2_buffer.amount = in2_buffer.amount - result.i2:get_count()
+		in1_buffer.amount = in1_buffer.amount - recipe.i1:get_count()
+		in2_buffer.amount = in2_buffer.amount - recipe.i2:get_count()
 
 		if in1_buffer.amount == 0 then
 			in1_buffer.fluid = ""
@@ -263,7 +261,7 @@ local function controller_timer(pos)
 		pcrt = math.floor(100 * time / time_res)
 	end
 
-	meta:set_string("formspec", controller_formspec(in1_buffer, in2_buffer, out_buffer, pow_buffer, 0, pcrt))
+	meta:set_string("formspec", controller_formspec(in1_buffer, in2_buffer, out_buffer, pow_buffer, pcrt, state))
 
 	return refresh
 end
@@ -546,12 +544,7 @@ minetest.register_lbm({
 	name = "elepower_nuclear:fusion_reactors",
 	nodenames = {"elepower_nuclear:reactor_controller"},
 	run_at_every_load = true,
-	action = function (pos)
-		local t = minetest.get_node_timer(pos)
-		if not t:is_started() then
-			t:start(1.0)
-		end
-	end,
+	action = ele.helpers.start_timer,
 })
 
 -- Define reactor structure with Content IDs

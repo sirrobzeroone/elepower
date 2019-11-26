@@ -156,7 +156,7 @@ ele.register_base_device("elepower_nuclear:solar_neutron_activator", {
 	},
 	on_timer = on_timer,
 	on_punch = function (pos, node, puncher, pointed_thing)
-		minetest.get_node_timer(pos):start(1.0)
+		ele.helpers.start_timer(pos)
 		minetest.node_punch(pos, node, puncher, pointed_thing)
 	end,
 	on_construct = function (pos)

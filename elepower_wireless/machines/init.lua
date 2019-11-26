@@ -11,3 +11,4 @@ elewi.slab_nodebox = {
 dofile(mp .. "matter_receiver.lua")
 dofile(mp .. "matter_transmitter.lua")
 dofile(mp .. "dialler.lua")
+dofile(mp .. "tesseract.lua")

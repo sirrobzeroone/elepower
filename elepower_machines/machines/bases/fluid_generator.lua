@@ -117,6 +117,7 @@ function ele.register_fluid_generator(nodename, nodedef)
 					end
 				end
 				if burn_totaltime == 0 then burn_totaltime = 1 end
+				if flbuffer.fluid ~= "" and flbuffer.amount == 0 then flbuffer.fluid = "" end
 				break
 			end
 
@@ -125,6 +126,7 @@ function ele.register_fluid_generator(nodename, nodedef)
 			meta:set_string("infotext", ("%s %s\n%s\n%s"):format(nodedef.description, status,
 				ele.capacity_text(capacity, pow_buffer.storage), fluid_lib.buffer_to_string(flbuffer)))
 
+			meta:set_string(buffer_name .. "_fluid", flbuffer.fluid)
 			meta:set_int(buffer_name .. "_fluid_storage", flbuffer.amount)
 			meta:set_int("storage", pow_buffer.storage)
 

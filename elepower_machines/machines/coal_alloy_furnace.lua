@@ -190,14 +190,6 @@ local function alloy_furnace_timer(pos, elapsed)
 	return result
 end
 
-local function metadata_inventory_changed(pos)
-	local t = minetest.get_node_timer(pos)
-
-	if not t:is_started() then
-		t:start(1.0)
-	end
-end
-
 ele.register_base_device("elepower_machines:coal_alloy_furnace", {
 	description = "Coal-fired Alloy Furnace",
 	paramtype2 = "facedir",
@@ -233,9 +225,9 @@ ele.register_base_device("elepower_machines:coal_alloy_furnace", {
 	allow_metadata_inventory_put = allow_metadata_inventory_put,
 	allow_metadata_inventory_take = allow_metadata_inventory_take,
 	allow_metadata_inventory_move = allow_metadata_inventory_move,
-	on_metadata_inventory_move = metadata_inventory_changed,
-	on_metadata_inventory_take = metadata_inventory_changed,
-	on_metadata_inventory_put  = metadata_inventory_changed,
+	on_metadata_inventory_move = ele.helpers.start_timer,
+	on_metadata_inventory_take = ele.helpers.start_timer,
+	on_metadata_inventory_put  = ele.helpers.start_timer,
 	can_dig = can_dig,
 	on_timer = alloy_furnace_timer,
 	groups = {

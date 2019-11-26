@@ -130,6 +130,7 @@ function elesolar.register_solar_generator(nodename, nodedef)
 			local storage  = ele.helpers.get_node_property(meta, pos, "storage")
 
 			meta:set_string("formspec", get_formspec({capacity = capacity, storage = storage, usage = 0}, 0))
+			ele.helpers.start_timer(pos)
 		end
 	}
 
@@ -147,10 +148,5 @@ minetest.register_lbm({
     name = "elepower_solar:solar_generators",
     nodenames = {"group:ele_solar_generator"},
     run_at_every_load = true,
-    action = function (pos)
-    	local t = minetest.get_node_timer(pos)
-    	if not t:is_started() then
-    		t:start(1.0)
-    	end
-    end,
+    action = ele.helpers.start_timer,
 })

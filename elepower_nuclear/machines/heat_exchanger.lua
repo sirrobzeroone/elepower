@@ -18,11 +18,11 @@ end
 local heat_recipes = {
 	["elepower_nuclear:hot_coolant_source"] = {
 		out = "elepower_nuclear:coolant_source",
-		factor = 4,
+		factor = 8,
 	},
 	["elepower_nuclear:helium_plasma"] = {
 		out = "elepower_nuclear:helium",
-		factor = 8,
+		factor = 32,
 	},
 }
 
@@ -72,10 +72,21 @@ local function heat_exchanger_timer(pos)
 			end
 		end
 
+		if heat.fluid ~= "" and heat.amount == 0 then
+			heat.fluid = ""
+			change = true
+		end
+
+		if cold.fluid ~= "" and cold.amount == 0 then
+			cold.fluid = ""
+			change = true
+		end
+
 		break
 	end
 
 	if change then
+		meta:set_string("heat_fluid", heat.fluid)
 		meta:set_string("cold_fluid", cold.fluid)
 		meta:set_string("steam_fluid", "elepower_dynamics:steam")
 
@@ -100,22 +111,22 @@ ele.register_machine("elepower_nuclear:heat_exchanger", {
 	groups = {cracky = 3, fluid_container = 1},
 	fluid_buffers = {
 		heat = {
-			capacity  = 8000,
+			capacity  = 16000,
 			accepts   = {"elepower_nuclear:hot_coolant_source", "elepower_nuclear:helium_plasma"},
 			drainable = false,
 		},
 		cold = {
-			capacity  = 8000,
+			capacity  = 16000,
 			accepts   = {"elepower_nuclear:coolant_source", "elepower_nuclear:helium"},
 			drainable = true,
 		},
 		water = {
-			capacity  = 16000,
+			capacity  = 64000,
 			accepts   = {"default:water_source"},
 			drainable = false,
 		},
 		steam = {
-			capacity  = 16000,
+			capacity  = 64000,
 			drainable = true,
 		},
 	},

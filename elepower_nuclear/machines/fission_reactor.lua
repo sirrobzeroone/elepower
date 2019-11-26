@@ -573,7 +573,5 @@ minetest.register_lbm({
     name = "elepower_nuclear:fission_core",
     nodenames = {"elepower_nuclear:fission_core"},
     run_at_every_load = true,
-    action = function (pos)
-		minetest.get_node_timer(pos):start(1.0)
-    end,
+    action = ele.helpers.start_timer,
 })
