@@ -13,7 +13,7 @@ local function get_formspec_default(power, state)
 end
 
 -- Primitive wind checking function
-elepm.wind_height_constant = 100
+elepm.wind_height_constant = 10
 function elepm.wind_check(pos)
 	if pos.y < elepm.wind_height_constant then
 		return 0
