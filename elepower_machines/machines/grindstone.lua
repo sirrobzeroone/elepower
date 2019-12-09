@@ -1,5 +1,5 @@
 
-local SPEED = 3
+local SPEED = 8
 
 local function get_formspec(item_percent)
 	return "size[8,8.5]"..
@@ -111,11 +111,17 @@ local function grindstone_timer(pos, elapsed)
 	meta:set_int("src_time_max", target_time)
 	meta:set_string("infotext", "Grindstone: ".. percentile .. "%")
 
+	local crank = vector.add(pos, {x=0,y=1,z=0})
+	if minetest.get_node(crank).name == "elepower_machines:crank" then
+		local crank_meta = minetest.get_meta(crank)
+		crank_meta:set_string("infotext", "Grindstone: ".. percentile .. "%")
+	end
+
 	return refresh
 end
 
 ele.register_base_device("elepower_machines:grindstone", {
-	description = "Grindstone\nA medieval pulverizer",
+	description = "Grindstone\nA medieval pulverizer\nRequires Hand Crank to operate",
 	tiles = {
 		"elepower_grinder_top.png", "elepower_cfalloy_bottom.png", "elepower_grinder_side.png",
 		"elepower_grinder_side.png", "elepower_grinder_side.png", "elepower_grinder_side.png"
@@ -145,7 +151,7 @@ ele.register_base_device("elepower_machines:grindstone", {
 })
 
 minetest.register_node("elepower_machines:crank", {
-	description = "Hand Crank",
+	description = "Hand Crank\nPlace on Grindstone and hold Right-Click",
 	groups = {choppy = 1, oddly_breakable_by_hand = 1},
 	tiles = {"default_wood.png"},
 	drawtype = "nodebox",
