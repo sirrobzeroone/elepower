@@ -15,6 +15,10 @@ if minetest.get_modpath("basic_materials") == nil then
 	})
 
 	minetest.register_alias("basic_materials:plastic_base", "basic_materials:paraffin")
+	minetest.register_alias("homedecor:plastic_base", "basic_materials:paraffin")
+	minetest.register_alias("homedecor:paraffin", "basic_materials:paraffin")
+	minetest.register_alias("homedecor:plastic_sheeting", "basic_materials:plastic_sheet")
+	minetest.register_alias("homedecor:oil_extract", "basic_materials:oil_extract")
 
 	minetest.register_craftitem(":basic_materials:plastic_sheet", {
 		    description = "Plastic Sheet",
