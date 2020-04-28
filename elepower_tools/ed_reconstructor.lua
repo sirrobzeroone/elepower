@@ -116,7 +116,7 @@ ele.register_machine("elepower_tools:ed_reconstructor", {
 	description = "Energy Density Reconstructor\nRepairs tools using energy",
 	tiles = {
 		"elepower_machine_top.png", "elepower_machine_base.png", "elepower_machine_side.png",
-		"elepower_machine_side.png", "elepower_machine_side.png", "elepower_machine_ed_reconstructor.png",
+		"elepower_machine_side.png", "elepower_machine_side.png", "elepower_machine_side.png^elepower_machine_ed_reconstructor.png",
 	},
 	groups = {cracky = 1, ele_user = 1},
 	on_timer = ed_timer,

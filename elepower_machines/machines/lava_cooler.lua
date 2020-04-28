@@ -140,7 +140,7 @@ ele.register_machine("elepower_machines:lava_cooler", {
 	},
 	tiles = {
 		"elepower_machine_top.png", "elepower_machine_base.png", "elepower_machine_side.png",
-		"elepower_machine_side.png", "elepower_machine_side.png", "elepower_lava_cooler.png",
+		"elepower_machine_side.png", "elepower_machine_side.png", "elepower_machine_side.png^elepower_lava_cooler.png",
 	},
 	on_construct = function (pos)
 		local meta = minetest.get_meta(pos)

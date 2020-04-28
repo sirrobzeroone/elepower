@@ -121,7 +121,7 @@ ele.register_wind_generator("elepower_machines:wind_turbine", {
 	description = "Wind Turbine\nRequires Wind Turbine Blades",
 	tiles = {
 		"elepower_machine_top.png", "elepower_machine_base.png", "elepower_machine_side.png",
-		"elepower_machine_side.png", "elepower_machine_side.png", "elepower_wind_turbine_face.png",
+		"elepower_machine_side.png", "elepower_machine_side.png", "elepower_machine_side.png^elepower_wind_turbine_face.png",
 	},
 	ele_upgrades = {
 		capacitor = {"capacity"},

@@ -18,13 +18,13 @@ ele.register_fluid_generator("elepower_machines:steam_turbine", {
 	ele_output = 128,
 	tiles = {
 		"elepower_machine_top.png^elepower_power_port.png", "elepower_machine_base.png", "elepower_machine_side.png",
-		"elepower_machine_side.png", "elepower_turbine_side.png", "elepower_turbine_side.png",
+		"elepower_machine_side.png", "elepower_machine_side.png^elepower_turbine_side.png", "elepower_machine_side.png^elepower_turbine_side.png",
 	},
 	ele_active_node = true,
 	ele_active_nodedef = {
 		tiles = {
 			"elepower_machine_top.png^elepower_power_port.png", "elepower_machine_base.png", "elepower_machine_side.png",
-			"elepower_machine_side.png", "elepower_turbine_side.png", "elepower_turbine_side.png",
+			"elepower_machine_side.png", "elepower_machine_side.png^elepower_turbine_side.png", "elepower_machine_side.png^elepower_turbine_side.png",
 		},
 	},
 	fluid_buffers = {

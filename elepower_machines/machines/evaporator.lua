@@ -101,7 +101,7 @@ local function on_timer(pos, elapsed)
 end
 
 local animated = {
-	name = "elepower_machine_vaporidenser_animated.png",
+	name = "elepower_machine_base.png^elepower_machine_vaporidenser_animated.png",
 	animation = {
 		type = "vertical_frames",
 		aspect_w = 16,
@@ -132,7 +132,7 @@ ele.register_machine("elepower_machines:evaporator", {
 	end,
 	tiles = {
 		"elepower_machine_top.png^elepower_power_port.png", "elepower_machine_base.png^elepower_power_port.png",
-		"elepower_machine_vaporidenser.png",
+		"elepower_machine_side.png^elepower_machine_vaporidenser.png",
 	},
 	ele_active_node = true,
 	ele_no_automatic_ports = true,

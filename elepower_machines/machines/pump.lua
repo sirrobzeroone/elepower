@@ -211,8 +211,10 @@ end
 ele.register_machine("elepower_machines:pump", {
 	description = "Pump",
 	tiles = {
-		"elepower_machine_top.png^elepower_power_port.png", "elepower_pump_base.png", "elepower_pump_side.png",
-		"elepower_pump_side.png", "elepower_pump_side.png", "elepower_pump_side.png",
+		"elepower_machine_top.png^elepower_power_port.png", "elepower_machine_base.png^elepower_pump_base.png",
+		"elepower_machine_side.png^elepower_pump_side.png",
+		"elepower_machine_side.png^elepower_pump_side.png", "elepower_machine_side.png^elepower_pump_side.png",
+		"elepower_machine_side.png^elepower_pump_side.png",
 	},
 	groups = {
 		ele_machine     = 1,

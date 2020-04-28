@@ -161,7 +161,7 @@ ele.register_machine("elepower_machines:electrolyzer", {
 	description = "Electrolyzer",
 	tiles = {
 		"elepower_machine_top.png", "elepower_machine_base.png", "elepower_machine_side.png",
-		"elepower_machine_side.png", "elepower_machine_side.png", "elepower_electrolyzer.png",
+		"elepower_machine_side.png", "elepower_machine_side.png", "elepower_machine_side.png^elepower_electrolyzer.png",
 	},
 	groups = {fluid_container = 1, cracky = 1, ele_user = 1},
 	on_timer = electrolyzer_timer,

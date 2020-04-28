@@ -10,7 +10,7 @@ elepm.register_storage("elepower_machines:power_cell", {
 	ele_output = 128,
 	tiles = {
 		"elepower_machine_top.png", "elepower_machine_base.png", "elepower_machine_side.png",
-		"elepower_machine_side.png", "elepower_machine_side.png", "elepower_power_cell.png",
+		"elepower_machine_side.png", "elepower_machine_side.png", "elepower_machine_side.png^elepower_power_cell.png",
 	},
 	groups = {oddly_breakable_by_hand = 1}
 })
@@ -26,7 +26,7 @@ elepm.register_storage("elepower_machines:hardened_power_cell", {
 		"elepower_machine_side.png^elepower_overlay_hardened.png",
 		"elepower_machine_side.png^elepower_overlay_hardened.png",
 		"elepower_machine_side.png^elepower_overlay_hardened.png",
-		"elepower_power_cell.png^elepower_overlay_hardened.png",
+		"elepower_machine_side.png^elepower_power_cell.png^elepower_overlay_hardened.png",
 	},
 	groups = {oddly_breakable_by_hand = 1}
 })
@@ -42,7 +42,7 @@ elepm.register_storage("elepower_machines:reinforced_power_cell", {
 		"elepower_machine_side.png^elepower_overlay_reinforced.png",
 		"elepower_machine_side.png^elepower_overlay_reinforced.png",
 		"elepower_machine_side.png^elepower_overlay_reinforced.png",
-		"elepower_power_cell.png^elepower_overlay_reinforced.png",
+		"elepower_machine_side.png^elepower_power_cell.png^elepower_overlay_reinforced.png",
 	},
 	groups = {oddly_breakable_by_hand = 1}
 })
@@ -58,7 +58,7 @@ elepm.register_storage("elepower_machines:resonant_power_cell", {
 		"elepower_machine_side.png^elepower_overlay_resonant.png",
 		"elepower_machine_side.png^elepower_overlay_resonant.png",
 		"elepower_machine_side.png^elepower_overlay_resonant.png",
-		"elepower_power_cell.png^elepower_overlay_resonant.png",
+		"elepower_machine_side.png^elepower_power_cell.png^elepower_overlay_resonant.png",
 	},
 	groups = {oddly_breakable_by_hand = 1}
 })
@@ -74,7 +74,7 @@ elepm.register_storage("elepower_machines:super_power_cell", {
 		"elepower_machine_side.png^elepower_overlay_super.png",
 		"elepower_machine_side.png^elepower_overlay_super.png",
 		"elepower_machine_side.png^elepower_overlay_super.png",
-		"elepower_power_cell.png^elepower_overlay_super.png",
+		"elepower_machine_side.png^elepower_power_cell.png^elepower_overlay_super.png",
 	},
 	groups = {oddly_breakable_by_hand = 1}
 })

@@ -159,7 +159,7 @@ ele.register_base_device("elepower_machines:bucketer", {
 	end,
 	tiles = {
 		"elepower_machine_top.png", "elepower_machine_base.png", "elepower_machine_side.png",
-		"elepower_machine_side.png", "elepower_machine_side.png", "elepower_bucketer.png",
+		"elepower_machine_side.png", "elepower_machine_side.png", "elepower_machine_side.png^elepower_bucketer.png",
 	},
 	on_receive_fields = get_fields,
 

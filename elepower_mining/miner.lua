@@ -265,8 +265,10 @@ minetest.register_node("elepower_mining:miner_core", {
 minetest.register_node("elepower_mining:miner_drill", {
 	description = "Miner Drill\nMachine Component",
 	tiles = {
-		"elepower_machine_top.png^elepower_power_port.png", "elepower_mining_apparatus_base.png", "elepower_mining_apparatus_side.png",
-		"elepower_mining_apparatus_side.png", "elepower_mining_apparatus_side.png", "elepower_mining_apparatus_side.png",
+		"elepower_machine_top.png^elepower_power_port.png", "elepower_mining_apparatus_base.png",
+		"elepower_machine_side.png^elepower_mining_apparatus_side.png",
+		"elepower_machine_side.png^elepower_mining_apparatus_side.png",
+		"elepower_machine_side.png^elepower_mining_apparatus_side.png", "elepower_machine_side.png^elepower_mining_apparatus_side.png",
 	},
 	groups = {fluid_container = 1, oddly_breakable_by_hand = 1, cracky = 1},
 	after_dig_node = recalc_on_break,
