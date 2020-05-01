@@ -211,6 +211,15 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	output = "elepower_dynamics:pcb_blank",
+	recipe = {
+		{"", "elepower_dynamics:copper_plate", ""},
+		{"default:mese_crystal_fragment", "default:mese_crystal_fragment", "default:mese_crystal_fragment"},
+		{"", "elepower_dynamics:gold_plate", ""},
+	}
+})
+
+minetest.register_craft({
 	type = "shapeless",
 	output = "elepower_dynamics:acidic_compound",
 	recipe = {
@@ -219,6 +228,15 @@ minetest.register_craft({
 		"elepower_dynamics:copper_dust",
 		"elepower_dynamics:copper_dust",
 		"farming:seed_wheat",
+	}
+})
+
+minetest.register_craft({
+	output = "elepower_dynamics:uv_bulb",
+	recipe = {
+		{"group:color_blue", "group:color_violet", "group:color_blue"},
+		{"", "default:meselamp", ""},
+		{"", "default:glass", ""},
 	}
 })
 

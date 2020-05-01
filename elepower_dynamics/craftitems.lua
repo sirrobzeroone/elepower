@@ -249,6 +249,12 @@ minetest.register_craftitem("elepower_dynamics:capacitor", {
 	groups = {capacitor = 1, component = 1}
 })
 
+minetest.register_craftitem("elepower_dynamics:uv_bulb", {
+	description = "Ultraviolet Light Bulb",
+	inventory_image = "elepower_uv_bulb.png",
+	groups = {component = 1, bulb = 1}
+})
+
 -- Assembled Components
 
 minetest.register_craftitem("elepower_dynamics:battery", {

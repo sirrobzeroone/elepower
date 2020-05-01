@@ -30,6 +30,7 @@ dofile(mp .. "electrolyzer.lua")
 dofile(mp .. "evaporator.lua")
 
 -- Other
+dofile(mp .. "pcb_plant.lua")
 dofile(mp .. "accumulator.lua")
 dofile(mp .. "lava_cooler.lua")
 dofile(mp .. "bucketer.lua")

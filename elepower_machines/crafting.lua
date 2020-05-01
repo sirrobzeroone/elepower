@@ -728,3 +728,13 @@ minetest.register_craft({
 		{"elepower_dynamics:induction_coil", "elepower_dynamics:zinc_plate", "elepower_dynamics:induction_coil"},
 	}
 })
+
+-- PCB Plant
+minetest.register_craft({
+	output = "elepower_machines:pcb_plant",
+	recipe = {
+		{"", "elepower_dynamics:integrated_circuit", ""},
+		{"elepower_dynamics:chip", "elepower_machines:machine_block", "elepower_dynamics:chip"},
+		{"elepower_dynamics:servo_valve", "elepower_dynamics:uv_bulb", "elepower_dynamics:bronze_gear"},
+	}
+})
