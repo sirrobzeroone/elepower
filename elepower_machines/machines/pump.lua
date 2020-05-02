@@ -2,6 +2,7 @@
 local c_air = minetest.get_content_id("air")
 
 local function get_formspec(power, fluid, state, level)
+	if not level then level = 0 end
 	return "size[8,8.5]"..
 		default.gui_bg..
 		default.gui_bg_img..
@@ -232,7 +233,7 @@ ele.register_machine("elepower_machines:pump", {
 	on_timer = timer,
 	on_construct = function (pos)
 		local meta = minetest.get_meta(pos)
-		meta:set_string("formspec", nil, nil, 0, -1)
+		meta:set_string("formspec", get_formspec(nil, nil, 0, -1))
 	end,
 	-- Upgradable
 	ele_upgrades = {

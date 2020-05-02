@@ -6,6 +6,10 @@ local function get_formspec(power, input, state, active, percent)
 		t = "image[3.5,1.75;1,1;elepower_uv_bulb_lit.png]"
 	end
 
+	if not percent then
+		percent = 0
+	end
+
 	return "size[8,8.5]"..
 		default.gui_bg..
 		default.gui_bg_img..
