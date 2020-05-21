@@ -152,8 +152,8 @@ local function get_core_formspec(heat, power)
 		"list[current_player;main;0,5.5;8,3;8]"..
 		ele.formspec.create_bar(0, 0, power, "#ff0000", true)..
 		ele.formspec.create_bar(0.5, 0, heat, "#ffdd11", true)..
-		"label[0,3;Power: \t"..power.."%]"..
-		"label[0,3.25;Heat: \t"..heat.."%]"..
+		"tooltip[0,0;0.25,2.5;Power: "..power.."%]"..
+		"tooltip[0.5,0;0.25,2.5;Heat: "..heat.."%]"..
 		"label[0,3.75;".. status .."]"..
 		"listring[current_player;main]"..
 		"listring[context;fuel]"..

@@ -1,9 +1,10 @@
 -- Convenience for i18n later on
 elepm.upgrading = {
 	dict = {
-		machine_chip = "Machine Chip",
-		capacitor    = "Capacitor",
-		pump_filter  = "Pump Filter",
+		machine_chip  = "Machine Chip",
+		wireless_chip = "Wireless Chip",
+		capacitor     = "Capacitor",
+		pump_filter   = "Pump Filter",
 	}
 }
 

@@ -88,6 +88,8 @@ local function validate_structure(pos, player)
 	end
 
 	if player then minetest.chat_send_player(player, "Structure complete.") end
+	local meta = minetest.get_meta(pos)
+	meta:set_string("Thermal Evaporation Plant")
 
 	elethermal.cache[minetest.pos_to_string(pos)] = {
 		height = height,
@@ -266,6 +268,10 @@ minetest.register_node("elepower_thermal:evaporator_controller", {
 			drainable = true,
 		},
 	},
+	on_construct = function (pos)
+		local meta = minetest.get_meta(pos)
+		meta:set_string("Thermal Evaporation Plant\nPunch to form structure")
+	end,
 	on_timer = controller_timer,
 	on_punch = function (pos, node, puncher, pointed_thing)
 		if validate_structure(pos, puncher:get_player_name()) then

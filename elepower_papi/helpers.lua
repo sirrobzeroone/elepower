@@ -79,6 +79,10 @@ function ele.helpers.get_node_property(meta, pos, prop)
 	return value
 end
 
+function ele.helpers.get_first_line(str)
+	return str:split('\n', false, 1, true)[1]
+end
+
 -- Look for item name regardless of mod
 function ele.helpers.scan_item_list(item_name)
 	local found = nil

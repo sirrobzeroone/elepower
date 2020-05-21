@@ -104,7 +104,7 @@ local function get_formspec(timer, power, buffer, state)
 		default.gui_bg_img..
 		default.gui_slots..
 		ele.formspec.power_meter(power)..
-		ele.formspec.state_switcher(0, 0, state)..
+		ele.formspec.state_switcher(0, 2.5, state)..
 		ele.formspec.fluid_bar(7, 0, buffer)..
 		ele.formspec.create_bar(1, 0, 100 - timer, "#00ff11", true)..
 		"list[context;dst;1.5,0;5,3;]"..
@@ -174,7 +174,8 @@ local function on_timer(pos, elapsed)
 			end
 		end
 
-		if added == 0 then
+		-- If the inventory is full and the miner mined something, stop the clock
+		if added == 0 and #itms > 0 then
 			active = "Inventory full!"
 			refresh = false
 			break

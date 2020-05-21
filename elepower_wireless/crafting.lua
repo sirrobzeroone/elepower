@@ -45,6 +45,26 @@ minetest.register_craft({
 	}
 })
 
+-- Control Station
+minetest.register_craft({
+	output = "elepower_wireless:station",
+	recipe = {
+		{"elepower_dynamics:wound_copper_coil", "elepower_dynamics:soc", "elepower_dynamics:wound_copper_coil"},
+		{"elepower_dynamics:viridisium_plate", "elepower_machines:machine_block", "elepower_dynamics:viridisium_plate"},
+		{"elepower_dynamics:wound_copper_coil", "elepower_dynamics:lcd_panel", "elepower_dynamics:wound_copper_coil"},
+	}
+})
+
+-- Control Station Chip
+minetest.register_craft({
+	output = "elepower_wireless:card",
+	recipe = {
+		{"elepower_dynamics:wound_copper_coil", "elepower_dynamics:chip", "elepower_dynamics:wound_copper_coil"},
+		{"elepower_dynamics:wound_copper_coil", "basic_materials:plastic_sheet", "elepower_dynamics:wound_copper_coil"},
+		{"basic_materials:plastic_sheet", "group:color_red", "basic_materials:plastic_sheet"},
+	}
+})
+
 --[[
 -- Tesseract Frame
 minetest.register_craft({
