@@ -1,11 +1,3 @@
---[[
-	Wireless Station:
-
-		Wireless Card -> Bind to node -> Add to station
-		Name the station to keep track
-
-]]
-
 elewi.node_handlers = {}
 local desc_cache = {}
 
