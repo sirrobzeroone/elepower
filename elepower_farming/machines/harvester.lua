@@ -178,6 +178,7 @@ ele.register_machine("elepower_farming:harvester", {
 		ele_user = 1,
 		cracky = 1,
 		tubedevice = 1,
+		tubedevice_receiver = 0,
 		fluid_container = 1,
 	},
 	fluid_buffers = {

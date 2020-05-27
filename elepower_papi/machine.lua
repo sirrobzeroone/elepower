@@ -314,8 +314,8 @@ function ele.register_base_device(nodename, nodedef)
 	if pw and nodedef.groups and (nodedef.groups["tubedevice"] or nodedef.groups["tube"]) then
 		if nodedef['tube'] == false then
 			nodedef['tube'] = nil
-			nodedef.groups["tubedevice"] = 0
-			nodedef.groups["tube"] = 0
+			nodedef.groups["tubedevice"] = nil
+			nodedef.groups["tube"] = nil
 		elseif nodedef['tube'] then
 			for key,val in pairs(tube) do
 				if not nodedef['tube'][key] then
@@ -328,6 +328,11 @@ function ele.register_base_device(nodename, nodedef)
 
 		if nodedef.groups['tubedevice_receiver'] ~= 0 and nodedef['tube'] then
 			nodedef.groups.tubedevice_receiver = 1
+		end
+
+		if nodedef.groups.tube and not nodedef.groups.tubedevice then
+			nodedef.groups.tube = nil
+			nodedef.groups.tubedevice = 1
 		end
 	end
 
