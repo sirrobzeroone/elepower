@@ -6,15 +6,15 @@ local function get_formspec_default(power)
 		default.gui_slots..
 		ele.formspec.power_meter(power)..
 		"image[2,0.5;1,1;gui_furnace_arrow_bg.png^[transformR180]"..
-		"list[context;out;2,1.5;1,1;]"..
+		"list[context;src;2,1.5;1,1;]"..
 		"image[5,0.5;1,1;gui_furnace_arrow_bg.png]"..
-		"list[context;in;5,1.5;1,1;]"..
+		"list[context;dst;5,1.5;1,1;]"..
 		"list[current_player;main;0,4.25;8,1;]"..
 		"list[current_player;main;0,5.5;8,3;8]"..
 		"listring[current_player;main]"..
-		"listring[context;out]"..
+		"listring[context;src]"..
 		"listring[current_player;main]"..
-		"listring[context;in]"..
+		"listring[context;dst]"..
 		"listring[current_player;main]"..
 		default.get_hotbar_bg(0, 4.25)
 end
@@ -22,7 +22,7 @@ end
 local function can_dig(pos, player)
 	local meta = minetest.get_meta(pos);
 	local inv = meta:get_inventory()
-	return inv:is_empty("in") and inv:is_empty("out")
+	return inv:is_empty("dst") and inv:is_empty("src")
 end
 
 local function item_in_group(stack, grp)
@@ -39,6 +39,7 @@ function elepm.register_storage(nodename, nodedef)
 	nodedef.groups["ele_machine"]  = 1
 	nodedef.groups["ele_storage"]  = 1
 	nodedef.groups["ele_provider"] = 1
+	nodedef.groups["tube"] = 1
 
 	nodedef.can_dig = can_dig
 
@@ -67,7 +68,7 @@ function elepm.register_storage(nodename, nodedef)
 		local inv = meta:get_inventory()
 
 		-- Powercell to item
-		local itemcharge = inv:get_stack("out", 1)
+		local itemcharge = inv:get_stack("src", 1)
 		local output     = ele.helpers.get_node_property(meta, pos, "output")
 		if itemcharge and not itemcharge:is_empty() and item_in_group(itemcharge, "ele_tool") then
 			local crg   = ele.tools.get_tool_property(itemcharge, "storage")
@@ -92,11 +93,11 @@ function elepm.register_storage(nodename, nodedef)
 
 			tmeta:set_int("storage", crg)
 			itemcharge = ele.tools.update_tool_wear(itemcharge)
-			inv:set_stack("out", 1, itemcharge)
+			inv:set_stack("src", 1, itemcharge)
 		end
 
 		-- Item to powercell
-		local itemdischarge = inv:get_stack("in", 1)
+		local itemdischarge = inv:get_stack("dst", 1)
 		local inrush        = ele.helpers.get_node_property(meta, pos, "inrush")
 		if itemdischarge and not itemdischarge:is_empty() and 
 				(item_in_group(itemdischarge, "ele_tool") or item_in_group(itemdischarge, "ele_machine")) then
@@ -123,7 +124,7 @@ function elepm.register_storage(nodename, nodedef)
 
 			tmeta:set_int("storage", crg)
 			itemdischarge = ele.tools.update_tool_wear(itemdischarge)
-			inv:set_stack("in", 1, itemdischarge)
+			inv:set_stack("dst", 1, itemdischarge)
 		end
 
 		if refresh then
@@ -136,8 +137,8 @@ function elepm.register_storage(nodename, nodedef)
 	nodedef.on_construct = function (pos)
 		local meta = minetest.get_meta(pos)
 		local inv  = meta:get_inventory()
-		inv:set_size("out", 1)
-		inv:set_size("in", 1)
+		inv:set_size("src", 1)
+		inv:set_size("dst", 1)
 
 		local capacity = ele.helpers.get_node_property(meta, pos, "capacity")
 		meta:set_string("formspec", get_formspec({ capacity = capacity, storage = 0, usage = 0 }))

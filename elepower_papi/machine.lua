@@ -325,6 +325,10 @@ function ele.register_base_device(nodename, nodedef)
 		else
 			nodedef['tube'] = tube
 		end
+
+		if nodedef.groups['tubedevice_receiver'] ~= 0 and nodedef['tube'] then
+			nodedef.groups.tubedevice_receiver = 1
+		end
 	end
 
 	-- Node IO Support
