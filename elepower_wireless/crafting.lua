@@ -42,6 +42,9 @@ minetest.register_craft({
 		{"elepower_dynamics:wound_silver_coil", "elepower_dynamics:xycrone_lump", "elepower_dynamics:wound_silver_coil"},
 		{"elepower_dynamics:xycrone_lump", "basic_materials:copper_wire", "elepower_dynamics:xycrone_lump"},
 		{"elepower_dynamics:wound_silver_coil", "elepower_dynamics:battery", "elepower_dynamics:wound_silver_coil"},
+	},
+	replacements = {
+		{"basic_materials:copper_wire", "basic_materials:empty_spool"},
 	}
 })
 

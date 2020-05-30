@@ -143,7 +143,14 @@ end
 
 ele.register_machine("elepower_machines:pcb_plant", {
 	description = "Printed Circuit Board Plant",
-	groups = {oddly_breakable_by_hand = 1, cracky = 1, fluid_container = 1, ele_user = 1},
+	groups = {
+		fluid_container = 1,
+		cracky = 1,
+		ele_user = 1,
+		tubedevice = 1,
+		tubedevice_receiver = 1,
+		oddly_breakable_by_hand = 1,
+	},
 	fluid_buffers = {
 		acid = {
 			capacity = 8000,

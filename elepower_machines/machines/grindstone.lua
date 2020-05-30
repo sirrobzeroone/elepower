@@ -146,6 +146,7 @@ ele.register_base_device("elepower_machines:grindstone", {
 	on_timer = grindstone_timer,
 	groups = {
 		tubedevice = 1,
+		tubedevice_receiver = 1,
 		cracky = 2,
 	},
 })

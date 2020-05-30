@@ -163,6 +163,7 @@ minetest.register_entity("elepower_machines:wind_turbine_blades", {
 	timer = 0,
 	controller = {x = 0, y = 0, z = 0},
 	wind = false,
+
 	on_step = function (self, dt)
 		if self.wind then
 			local rot = self.object:get_rotation()

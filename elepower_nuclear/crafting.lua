@@ -89,6 +89,8 @@ minetest.register_craft({
 	},
 	replacements = {
 		{'elepower_dynamics:nitrogen_container', "elepower_dynamics:gas_container"},
+		{'elepower_dynamics:nitrogen_container', "elepower_dynamics:gas_container"},
+		{'elepower_dynamics:nitrogen_container', "elepower_dynamics:gas_container"},
 		{'bucket:bucket_water', "bucket:bucket_empty"}
 	}
 })
@@ -100,6 +102,14 @@ minetest.register_craft({
 		{"basic_materials:copper_wire", "elepower_dynamics:graphite_ingot", "basic_materials:copper_wire"},
 		{"basic_materials:copper_wire", "elepower_dynamics:copper_plate", "basic_materials:copper_wire"},
 		{"basic_materials:copper_wire", "elepower_dynamics:graphite_ingot", "basic_materials:copper_wire"},
+	},
+	replacements = {
+		{"basic_materials:copper_wire", "basic_materials:empty_spool"},
+		{"basic_materials:copper_wire", "basic_materials:empty_spool"},
+		{"basic_materials:copper_wire", "basic_materials:empty_spool"},
+		{"basic_materials:copper_wire", "basic_materials:empty_spool"},
+		{"basic_materials:copper_wire", "basic_materials:empty_spool"},
+		{"basic_materials:copper_wire", "basic_materials:empty_spool"},
 	}
 })
 

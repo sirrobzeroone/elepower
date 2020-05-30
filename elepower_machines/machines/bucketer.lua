@@ -139,7 +139,13 @@ end
 
 ele.register_base_device("elepower_machines:bucketer", {
 	description = "Bucketer",
-	groups = {oddly_breakable_by_hand = 1, cracky = 1, fluid_container = 1, tube = 1},
+	groups = {
+		oddly_breakable_by_hand = 1,
+		cracky = 1,
+		fluid_container = 1,
+		tubedevice = 1,
+		tubedevice_receiver = 1,
+	},
 	fluid_buffers = {
 		input = {
 			capacity  = 8000,

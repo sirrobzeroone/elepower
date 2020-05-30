@@ -235,7 +235,14 @@ ele.register_machine("elepower_mining:miner_controller", {
 	ele_inrush   = 1200,
 	ele_usage    = 128,
 	paramtype2 = "facedir",
-	groups = {fluid_container = 1, oddly_breakable_by_hand = 1, cracky = 1, tube = 1, ele_user = 1},
+	groups = {
+		fluid_container = 1,
+		oddly_breakable_by_hand = 1,
+		cracky = 1,
+		tubedevice = 1,
+		tubedevice_receiver = 0,
+		ele_user = 1
+	},
 	on_construct = function (pos)
 		local meta = minetest.get_meta(pos)
 		local inv  = meta:get_inventory()

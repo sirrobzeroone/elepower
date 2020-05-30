@@ -422,7 +422,6 @@ minetest.register_node("elepower_nuclear:reactor_fluid", {
 	groups = {
 		cracky = 2,
 		fluid_container = 1,
-		tube = 1,
 	},
 	fluid_buffers = {},
 	on_timer = port_timer,
@@ -492,7 +491,6 @@ minetest.register_node("elepower_nuclear:reactor_output", {
 	groups = {
 		cracky = 2,
 		fluid_container = 1,
-		tube = 1,
 	},
 	fluid_buffers = {},
 	on_timer = port_timer,

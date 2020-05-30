@@ -232,6 +232,7 @@ ele.register_base_device("elepower_machines:coal_alloy_furnace", {
 	on_timer = alloy_furnace_timer,
 	groups = {
 		tubedevice = 1,
+		tubedevice_receiver = 1,
 		cracky = 2,
 	}
 })

@@ -122,6 +122,11 @@ minetest.register_craft({
 		{"elepower_dynamics:lead_ingot",  "elepower_dynamics:lead_ingot",  "elepower_dynamics:lead_ingot"},
 		{"basic_materials:copper_wire", "basic_materials:copper_wire", "basic_materials:copper_wire"},
 		{"elepower_dynamics:lead_ingot",  "elepower_dynamics:lead_ingot",  "elepower_dynamics:lead_ingot"},
+	},
+	replacements = {
+		{"basic_materials:copper_wire", "basic_materials:empty_spool"},
+		{"basic_materials:copper_wire", "basic_materials:empty_spool"},
+		{"basic_materials:copper_wire", "basic_materials:empty_spool"},
 	}
 })
 
@@ -159,11 +164,41 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	output = "elepower_dynamics:wound_copper_coil",
+	recipe = {
+		{"", "basic_materials:copper_wire", ""},
+		{"basic_materials:copper_wire", "elepower_dynamics:iron_ingot", "basic_materials:copper_wire"},
+		{"", "basic_materials:copper_wire", ""}
+	},
+	replacements = {
+		{"basic_materials:copper_wire", "basic_materials:empty_spool"},
+		{"basic_materials:copper_wire", "basic_materials:empty_spool"},
+		{"basic_materials:copper_wire", "basic_materials:empty_spool"},
+		{"basic_materials:copper_wire", "basic_materials:empty_spool"},
+	}
+})
+
+minetest.register_craft({
 	output = "elepower_dynamics:wound_silver_coil",
 	recipe = {
 		{"", "moreores:silver_ingot", ""},
 		{"moreores:silver_ingot", "elepower_dynamics:zinc_ingot", "moreores:silver_ingot"},
 		{"", "moreores:silver_ingot", ""}
+	}
+})
+
+minetest.register_craft({
+	output = "elepower_dynamics:wound_silver_coil",
+	recipe = {
+		{"", "basic_materials:silver_wire", ""},
+		{"basic_materials:silver_wire", "elepower_dynamics:zinc_ingot", "basic_materials:silver_wire"},
+		{"", "basic_materials:silver_wire", ""}
+	},
+	replacements = {
+		{"basic_materials:silver_wire", "basic_materials:empty_spool"},
+		{"basic_materials:silver_wire", "basic_materials:empty_spool"},
+		{"basic_materials:silver_wire", "basic_materials:empty_spool"},
+		{"basic_materials:silver_wire", "basic_materials:empty_spool"},
 	}
 })
 
