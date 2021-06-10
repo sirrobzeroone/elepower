@@ -4,6 +4,7 @@ minetest.register_node("elepower_wireless:tesseract_frame", {
 	tiles = {
 		"elewireless_tesseract.png",
 	},
+	use_texture_alpha = "clip",
 	groups = {cracky = 3,},
 	drawtype = "nodebox",
 	paramtype = "light",

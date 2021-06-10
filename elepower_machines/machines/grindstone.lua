@@ -155,6 +155,7 @@ minetest.register_node("elepower_machines:crank", {
 	description = "Hand Crank\nPlace on Grindstone and hold Right-Click",
 	groups = {choppy = 1, oddly_breakable_by_hand = 1},
 	tiles = {"default_wood.png"},
+	use_texture_alpha = "clip",
 	drawtype = "nodebox",
 	paramtype = "light",
 	sunlight_propagates = true,

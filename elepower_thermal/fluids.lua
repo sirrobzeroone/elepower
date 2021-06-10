@@ -6,7 +6,7 @@ ele.helpers.register_liquid("brine", {
 	drawtype          = "liquid",
 	tiles             = {"elenuclear_brine.png"},
 	special_tiles     = {"elenuclear_brine.png", "elenuclear_brine.png"},
-	alpha             = 240,
+	use_texture_alpha = "blend",
 	liquid_viscosity  = 7,
 	post_effect_color = {a = 200, r = 215, g = 221, b = 187},
 	groups            = {brine = 3, saline = 1, liquid = 3, puts_out_fire = 1, cools_lava = 1},
@@ -23,5 +23,6 @@ if minetest.get_modpath("bucket") ~= nil then
 		tiles       = {
 			"elepower_tank_base.png", "elepower_tank_side.png", "elepower_tank_base.png^elepower_power_port.png",
 		}
+		
 	})
 end

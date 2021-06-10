@@ -77,7 +77,7 @@ ele.helpers.register_liquid("heavy_water", {
 			},
 		},
 	},
-	alpha = 160,
+	use_texture_alpha = "blend",
 	liquid_viscosity = 4,
 	post_effect_color = {a = 103, r = 13, g = 69, b = 121},
 	groups = {heavy_water = 3, liquid = 3, puts_out_fire = 1, cools_lava = 1},
@@ -89,7 +89,7 @@ ele.helpers.register_liquid("coolant", {
 	description       = "Cold Coolant",
 	tiles             = {"elenuclear_cold_coolant.png"},
 	special_tiles     = {"elenuclear_cold_coolant.png", "elenuclear_cold_coolant.png"},
-	alpha             = 200,
+	use_texture_alpha = "blend",
 	liquid_viscosity  = 2,
 	post_effect_color = {a = 128, r = 36, g = 150, b = 255},
 	groups            = {liquid = 3, coolant = 1},
@@ -101,7 +101,7 @@ ele.helpers.register_liquid("hot_coolant", {
 	description       = "Hot Coolant",
 	tiles             = {"elenuclear_hot_coolant.png"},
 	special_tiles     = {"elenuclear_hot_coolant.png", "elenuclear_hot_coolant.png"},
-	alpha             = 200,
+	use_texture_alpha = "blend",
 	liquid_viscosity  = 2,
 	post_effect_color = {a = 128, r = 136, g = 100, b = 158},
 	groups            = {liquid = 3, coolant = 1, hot = 1},
@@ -169,6 +169,7 @@ if minetest.get_modpath("bucket") ~= nil then
 		tiles       = {
 			"elepower_tank_base.png", "elepower_tank_side.png", "elepower_tank_base.png^elepower_power_port.png",
 		}
+		
 	})
 end
 

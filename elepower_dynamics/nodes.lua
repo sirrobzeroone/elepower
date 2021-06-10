@@ -61,7 +61,7 @@ minetest.register_node("elepower_dynamics:hardened_glass", {
 	paramtype2 = "glasslikeliquidlevel",
 	is_ground_content = false,
 	sunlight_propagates = false,
-	use_texture_alpha = true,
+	use_texture_alpha = "clip",
 	sounds = default.node_sound_glass_defaults(),
 	groups = {cracky = 3},
 })

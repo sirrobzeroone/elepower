@@ -150,6 +150,7 @@ ele.register_machine("elepower_wireless:dialler", {
 			"elewireless_device_side.png", "elewireless_device_side.png", "elewireless_dialler.png"
 		},
 	},
+	use_texture_alpha = "clip",
 	groups = {cracky = 1, ele_user = 1, dialler = 1},
 	ele_capacity = 8000,
 	ele_usage    = 120,

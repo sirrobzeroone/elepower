@@ -249,6 +249,7 @@ minetest.register_entity("elepower_machines:pump_tube", {
 		mesh     = "elepower_pump_tube.obj",
 		physical = false,
 		textures = {"elepower_pump_tube.png"}
+
 	},
 	timer = 0,
 	pump = {x=0,y=0,z=0},
