@@ -139,7 +139,6 @@ local function give_node_power(pos, available)
 	local capacity  = ele.helpers.get_node_property(user_meta, pos, "capacity")
 	local inrush    = ele.helpers.get_node_property(user_meta, pos, "inrush")
 	local storage   = user_meta:get_int("storage")
-	local want      = capacity - storage
 	
 	local total_add = 0
 
@@ -158,7 +157,7 @@ local function give_node_power(pos, available)
 		storage   = capacity
 	end
 
-	return total_add, storage, want
+	return total_add, storage
 end
 
 
@@ -232,7 +231,7 @@ minetest.register_abm({
 		for _,ndv in ipairs(users) do       --ndv = pos table
 			
 			-- Check how much power a node wants and can get ie is it close to full charge
-			local user_gets, user_storage, user_want = give_node_power(ndv, (pw_supply - pw_demand))
+			local user_gets, user_storage = give_node_power(ndv, (pw_supply - pw_demand))
                 
 				-- Add the node_users wanting power to table for later power division				
 				if user_gets > 0 then 
