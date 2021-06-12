@@ -257,8 +257,8 @@ function ele.register_base_device(nodename, nodedef)
 	-- Override destruct callback
 	local original_after_destruct = nodedef.after_destruct
 	nodedef.after_destruct = function (pos)
-		ele.clear_networks(pos)
 
+		ele.clear_networks(pos)
 		if original_after_destruct then
 			original_after_destruct(pos)
 		end

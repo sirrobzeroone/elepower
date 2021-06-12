@@ -139,7 +139,8 @@ local function give_node_power(pos, available)
 	local capacity  = ele.helpers.get_node_property(user_meta, pos, "capacity")
 	local inrush    = ele.helpers.get_node_property(user_meta, pos, "inrush")
 	local storage   = user_meta:get_int("storage")
-
+	local want      = capacity - storage
+	
 	local total_add = 0
 
 	if available >= inrush then
@@ -157,8 +158,9 @@ local function give_node_power(pos, available)
 		storage   = capacity
 	end
 
-	return total_add, storage
+	return total_add, storage, want
 end
+
 
 minetest.register_abm({
 	nodenames = {"group:ele_provider"},
@@ -218,32 +220,73 @@ minetest.register_abm({
 
 			if p_output and pw_storage >= p_output then
 				pw_supply = pw_supply + p_output
+				
 			elseif p_output and pw_storage < p_output then
 				pw_supply = pw_supply + pw_storage
 			end
 		end
-
+				
 		-- Give power to users
-		for _,ndv in ipairs(users) do
-			if pw_demand > pw_supply then
-				break
-			end
-
-			-- Sharing: Determine how much each user gets
-			local user_gets, user_storage = give_node_power(ndv, (pw_supply - pw_demand))
-			pw_demand = pw_demand + user_gets
-
-			if user_gets > 0 then
-				local user_meta = minetest.get_meta(ndv)
-				user_meta:set_int("storage", user_storage + user_gets)
-
-				-- Set timer on this node
-				ele.helpers.start_timer(ndv)
-			end
+		local divide_power = {}
+			
+		for _,ndv in ipairs(users) do       --ndv = pos table
+			
+			-- Check how much power a node wants and can get ie is it close to full charge
+			local user_gets, user_storage, user_want = give_node_power(ndv, (pw_supply - pw_demand))
+                
+				-- Add the node_users wanting power to table for later power division				
+				if user_gets > 0 then 
+					table.insert(divide_power,{pos = ndv,user_gets = user_gets, user_storage = user_storage})
+				end
 		end
 
+		-- The below shares avaliable power from a network between node_users
+		-- Only whole numbers are accepted so any remainders are added to
+		-- the first few node_users. If divided power is less than 1 the
+		-- network is overloaded and delivers no power to any nodes.
+		-- A node_user can recieve power from two different networks
+		-- if pw_supply ~= 0 then minetest.debug(node.name.." - Power Supplied: "..pw_supply) end      --debug line
+		
+		local num_users = #divide_power
+		local div_pwr = pw_supply/num_users
+		local whole_pwr_num = math.floor(div_pwr)
+		local remainder_pwr_num = (math.fmod(div_pwr,1))*num_users
+		
+		if div_pwr < 1 then
+			num_users = 0 -- network overload
+		end
+		
+		local i = 1
+		
+		while(num_users >= i)do									
+			local final_pwr_num
+			
+			if remainder_pwr_num > 0.5 then
+				final_pwr_num = whole_pwr_num + 1
+				remainder_pwr_num = remainder_pwr_num - 1
+				
+			else
+				final_pwr_num = whole_pwr_num 
+			end
+			
+			if final_pwr_num > divide_power[i].user_gets then 
+				final_pwr_num = divide_power[i].user_gets
+			end
+			
+			--minetest.debug("node_user "..minetest.pos_to_string(divide_power[i].pos).." Power Supplied:"..final_pwr_num) -- debug line
+						
+			local user_meta = minetest.get_meta(divide_power[i].pos)
+		    user_meta:set_int("storage", divide_power[i].user_storage + final_pwr_num)
+			pw_demand = pw_demand + final_pwr_num
+			
+			ele.helpers.start_timer(divide_power[i].pos)
+			 
+			i = i+1			
+		end
+					
 		-- Take the power from provider nodes
 		if pw_demand > 0 then
+
 			for _, spos in ipairs(providers) do
 				if pw_demand == 0 then break end
 				local smeta = minetest.get_meta(spos)
@@ -260,9 +303,13 @@ minetest.register_abm({
 				ele.helpers.start_timer(spos)
 			end
 		end
+		--if pw_supply ~= 0 then minetest.debug("end_run") end -- debug line
 	end,
 })
 
+------------------------
+-- Network Add/Remove --
+------------------------
 local function check_connections(pos)
 	local connections = {}
 	local positions = {
@@ -290,14 +337,17 @@ function ele.clear_networks(pos)
 	local placed = name ~= "air"
 	local positions = check_connections(pos)
 	if #positions < 1 then return end
+	
 	local hash_pos = minetest.hash_node_position(pos)
 	local dead_end = #positions == 1
+	
 	for _,connected_pos in ipairs(positions) do
+	
 		local networks = ele.graphcache.devices[minetest.hash_node_position(connected_pos)] or
 			{minetest.pos_to_string(connected_pos)}
-
+			
 		for _,net in ipairs(networks) do
-			if net and ele.graphcache[net] then
+			if net and ele.graphcache[net] then			
 				-- This is so we can break the pipeline instead of the network search loop
 				while true do
 					if dead_end and placed then
@@ -344,6 +394,7 @@ function ele.clear_networks(pos)
 						local network_ids = ele.graphcache.devices[minetest.hash_node_position(positions[1])] or
 							{minetest.pos_to_string(positions[1])}
 
+
 						if not #network_ids then
 							-- We're evidently not on a network, nothing to remove ourselves from
 							break
@@ -360,14 +411,17 @@ function ele.clear_networks(pos)
 										ele.graphcache.devices[pos1] = nil
 									end
 									ele.graphcache[int_net] = nil
+									
 								else
 									-- Search for and remove device
+									-- This checks and removes from network.users,
+									-- network.conductors and network.providers
 									ele.graphcache.devices[hash_pos] = nil
-									for tblname, table in pairs(network) do
-										if type(table) == "table" then
-											for devicenum, device in pairs(table) do
+									for tblname, tables in pairs(network) do
+										if type(tables) == "table" then
+											for devicenum, device in pairs(tables) do
 												if vector.equals(device, pos) then
-													table[devicenum] = nil
+													table.remove(tables,devicenum)
 												end
 											end
 										end
@@ -382,11 +436,11 @@ function ele.clear_networks(pos)
 							local pos1 = minetest.hash_node_position(v)
 							ele.graphcache.devices[pos1] = nil
 						end
-						ele.graphcache[net] = nil
+						ele.graphcache[net] = nil							
 						break
 					end
 					break
-				end
+				end				
 			end
 		end
 	end

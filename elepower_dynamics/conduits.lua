@@ -4,6 +4,7 @@ ele.register_conduit("elepower_dynamics:conduit", {
 	description = "Power Conduit",
 	tiles = {"elepower_conduit.png"},
 	use_texture_alpha = "clip",
+	ele_conductor_density = 1/8,
 	groups = {oddly_breakable_by_hand = 1, cracky = 1}
 })
 
