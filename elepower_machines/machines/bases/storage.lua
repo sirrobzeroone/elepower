@@ -38,7 +38,6 @@ function elepm.register_storage(nodename, nodedef)
 
 	nodedef.groups["ele_machine"]  = 1
 	nodedef.groups["ele_storage"]  = 1
-	nodedef.groups["ele_provider"] = 1
 	nodedef.groups["tubedevice"] = 1
 	nodedef.groups["tubedevice_receiver"] = 1
 
