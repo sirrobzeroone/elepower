@@ -13,17 +13,17 @@ minetest.register_craftitem("elepower_nuclear:uranium_lump", {
 -- Dusts
 
 minetest.register_craftitem("elepower_nuclear:uranium_dust", {
-	description = "Enriched Uranium Dust\nReady to be used as fuel",
+	description = "Enriched Uranium Dust\n(Ready to be used as fuel)",
 	inventory_image = "elenuclear_uranium_dust.png"
 })
 
 minetest.register_craftitem("elepower_nuclear:depleted_uranium_dust", {
-	description = "Depleted Uranium Dust\nRequires enrichment",
+	description = "Depleted Uranium Dust\n(Requires enrichment)",
 	inventory_image = "elenuclear_depleted_uranium_dust.png"
 })
 
 minetest.register_craftitem("elepower_nuclear:nuclear_waste", {
-	description = "Nuclear Waste\nMostly unusable for nuclear fission",
+	description = "Nuclear Waste\n(Mostly unusable for nuclear fission)",
 	inventory_image = "elenuclear_uranium_waste.png"
 })
 

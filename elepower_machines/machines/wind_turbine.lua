@@ -118,7 +118,7 @@ function ele.register_wind_generator(nodename, nodedef)
 end
 
 ele.register_wind_generator("elepower_machines:wind_turbine", {
-	description = "Wind Turbine\nRequires Wind Turbine Blades",
+	description = "Wind Turbine\n(Requires Wind Turbine Blades)",
 	tiles = {
 		"elepower_machine_top.png", "elepower_machine_base.png", "elepower_machine_side.png",
 		"elepower_machine_side.png", "elepower_machine_side.png", "elepower_machine_side.png^elepower_wind_turbine_face.png",

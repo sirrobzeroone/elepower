@@ -2,10 +2,91 @@
 -- It accepts a recipe type registered beforehand.
 
 -- Specialized formspec for crafters
-function ele.formspec.get_crafter_formspec(craft_type, power, percent, pos, state)
-	local craftstats  = elepm.craft.types[craft_type]
+function ele.formspec.get_crafter_formspec(craft_type, power, percent, pos, machine_name, state)
+	local craftstats = elepm.craft.types[craft_type]
+	local craft_reg_path = elepm.craft[craft_type]
 	local input_size  = craftstats.inputs
+	local material_inputs = {}
+	local mat_inputs = "|"
+	local formspec_inout_icon_tooltip
+	local icon_def_slot_1 = minetest.registered_nodes[machine_name].ele_icon_material_1 or "elepower_gui_icon_crafter_genmat_1.png"
+	local icon_def_slot_2 = minetest.registered_nodes[machine_name].ele_icon_material_2 or "elepower_gui_icon_crafter_genmat_2.png"
+	local icon_def_slot_3 = minetest.registered_nodes[machine_name].ele_icon_material_3 or "elepower_gui_icon_crafter_genmat_3.png"
 
+	-- Start add icons and tooltips for input slots
+	-- setting material name values to keys helps remove duplicates
+	-- for cooking we have to retrieve from MT engine	
+	if craft_type == "cooking" then	
+		local sort_output = {}
+		for name,def in pairs(minetest.registered_items) do
+			local recipe = minetest.get_all_craft_recipes(name)
+			
+			if recipe ~= nil then				
+				for k,v in pairs(recipe) do
+					if v.method == "cooking" and v.output ~= "" then
+						local reg_name = v.items[1]
+						
+						if string.find(reg_name, "group") ~= nil then
+							description = string.gsub(reg_name, "group:","All ")							
+						else							
+							description = minetest.registered_items[reg_name].description
+						end	
+						material_inputs[description] = 1						 
+					end
+				end				
+			end			
+		end		
+	else
+		for k,v in pairs(craft_reg_path) do		
+			for k2,v2 in pairs(v.recipe)do			
+				-- have to check all registered items
+				if minetest.registered_items[k2] then
+					local description = minetest.registered_items[k2].description
+					
+					-- remove any text on 2nd/3rd line
+					if string.find(description,"\n") then
+						description = string.split(description,"\n")
+						description = description[1]
+					end						
+					material_inputs[description] = 1
+				end
+			end
+		end
+	end	
+	
+	-- reverse table so we can sort
+	local material_in_sort = {}
+	for k,v in pairs(material_inputs)do
+		table.insert(material_in_sort,k)
+	end
+		table.sort(material_in_sort)
+
+	for k,mat_desc in pairs(material_in_sort) do		
+			mat_inputs = mat_inputs.."\n"..mat_desc
+	end	
+	mat_inputs = string.gsub(mat_inputs, "|\n","")
+
+	--adjust tooltip and layout depending on if we have 1/2/3 input slots
+	if input_size == 1 then					
+		formspec_inout_icon_tooltip = "image[1.7,2.45;0.5,0.5;"..icon_def_slot_1.."]"..
+		                              "tooltip[1.5,2.0;1,1;"..mat_inputs..";#30434c;#0399c6]"--"tooltip[1.5,2.0;1,1;"..minetest.colorize("#0399c6",mat_inputs).."]"
+
+	elseif input_size == 2 then
+		formspec_inout_icon_tooltip = "image[1.2,2.45;0.5,0.5;"..icon_def_slot_1.."]"..
+		                              "tooltip[1.0,2.0;1,1;"..mat_inputs..";#30434c;#0399c6]"..
+		                              "image[2.2,2.45;0.5,0.5;"..icon_def_slot_2.."]"..
+									  "tooltip[2.0,2.0;1,1;"..mat_inputs..";#30434c;#0399c6]"
+
+	else 
+		formspec_inout_icon_tooltip = "image[1.2,2.45;0.5,0.5;"..icon_def_slot_1.."]"..
+		                              "tooltip[1.0,2.0;1,1;"..mat_inputs..";#30434c;#0399c6]"..
+		                              "image[2.2,2.45;0.5,0.5;"..icon_def_slot_2.."]"..
+									  "tooltip[2.0,2.0;1,1;"..mat_inputs..";#30434c;#0399c6]"..
+									  "image[3.2,2.45;0.5,0.5;"..icon_def_slot_3.."]"..
+									  "tooltip[3.0,2.0;1,1;"..mat_inputs..";#30434c;#0399c6]"	
+	end
+	-- End add icons tooltips for in slots
+		
 	local gui_name = "gui_furnace_arrow"
 	if craftstats.gui_name then
 		gui_name = craftstats.gui_name
@@ -30,6 +111,7 @@ function ele.formspec.get_crafter_formspec(craft_type, power, percent, pos, stat
 
 	local y = 1.5
 	local x = 1.5
+	
 	if in_height == 2 then
 		y = 1
 	elseif in_height >= 3 then
@@ -48,6 +130,7 @@ function ele.formspec.get_crafter_formspec(craft_type, power, percent, pos, stat
 		ele.formspec.state_switcher(7, 0, state)..
 		"list[context;src;"..x..","..y..";"..in_width..","..in_height..";]"..
 		bar..
+		formspec_inout_icon_tooltip..	
 		"list[context;dst;5,1;2,2;]"..
 		"list[current_player;main;0,4.25;8,1;]"..
 		"list[current_player;main;0,5.5;8,3;8]"..
@@ -58,6 +141,7 @@ function ele.formspec.get_crafter_formspec(craft_type, power, percent, pos, stat
 		"listring[current_player;main]"..
 		default.get_hotbar_bg(0, 4.25)
 end
+
 
 -- Don't duplicate function for every single crafter node
 function crafter_timer (pos, elapsed)
@@ -180,7 +264,7 @@ function crafter_timer (pos, elapsed)
 		pct = math.floor((time / ele.helpers.round(res_time * 10)) * 100)
 	end
 
-	meta:set_string("formspec", get_formspec(machine_def.craft_type, pow_buffer, pct, pos, state))
+	meta:set_string("formspec", get_formspec(machine_def.craft_type, pow_buffer, pct, pos ,minetest.get_node(pos).name,state))
 	meta:set_string("infotext", ("%s %s"):format(machine_def.description, status) ..
 		"\n" .. ele.capacity_text(capacity, storage))
 
@@ -223,7 +307,7 @@ function elepm.register_crafter(nodename, nodedef)
 		local storage  = ele.helpers.get_node_property(meta, pos, "storage")
 		local capacity = ele.helpers.get_node_property(meta, pos, "capacity")
 		local pow_buffer = {capacity = capacity, storage = storage, usage = 0}
-		meta:set_string("formspec", get_formspec(craft_type, pow_buffer, nil, pos))
+		meta:set_string("formspec", get_formspec(craft_type, pow_buffer, nil, pos,nodename))
 	end
 
 	-- Upgradable

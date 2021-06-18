@@ -192,6 +192,7 @@ end
 
 ele.register_base_device("elepower_machines:coal_alloy_furnace", {
 	description = "Coal-fired Alloy Furnace",
+	craft_type = "alloy",
 	paramtype2 = "facedir",
 	ele_active_node = true,
 	ele_active_nodedef = {

@@ -389,7 +389,7 @@ minetest.register_abm({
 			end
 		end
 		-- if pw_supply ~= 0 then minetest.debug("end_run") end -- debug line
-		-- minetest.debug(dump(ele.graphcache)) -- network dump 
+		-- minetest.debug(dump(ele.graphcache)) -- network dump
 	end,
 })
 

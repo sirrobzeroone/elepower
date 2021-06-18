@@ -7,8 +7,8 @@ local function get_formspec_default(power, percent, state)
 		ele.formspec.power_meter(power)..
 		ele.formspec.state_switcher(7, 0, state)..
 		"list[context;src;3,1.5;1,1;]"..
-		"image[4,1.5;1,1;default_furnace_fire_bg.png^[lowpart:"..
-		percent..":default_furnace_fire_fg.png]"..
+		"image[4,1.5;1,1;elepower_gui_icon_elepower_bg.png^[lowpart:"..
+		percent..":elepower_gui_icon_elepower.png]"..
 		"list[current_player;main;0,4.25;8,1;]"..
 		"list[current_player;main;0,5.5;8,3;8]"..
 		"listring[current_player;main]"..

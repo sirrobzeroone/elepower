@@ -1,6 +1,10 @@
 
 elepm.register_craft_type("grind", {
 	description = "Grinding",
+	overview    = "Grinding of solid materials occurs through mechanical"..
+                  "forces that break up the structure of the material.".. 
+				  "After grinding the state of the material is changed;"..
+				  "the grain size and the grain shape will be smaller and finer.",
 	icon        = "elepower_machine_side.png^elepower_grinder.png",
 	inputs      = 1,
 })

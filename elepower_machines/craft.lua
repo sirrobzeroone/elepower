@@ -12,6 +12,7 @@ function elepm.register_craft_type(name, def)
 	elepm.craft.types[name] = {
 		inputs      = def.inputs or 2,
 		description = def.description or name,
+		overview    = def.overview or name,
 		time        = def.time or 0,
 		gui_name    = def.gui_name,
 	}
@@ -215,5 +216,8 @@ end
 -- Cooking craft type built-in.
 elepm.register_craft_type("cooking", {
 	description = "Cooking",
-	inputs = 1,
+	overview    = "Cooking is more than just the prepartion of food "..
+               	  "it provides access to the prepartion of ores to metals "..
+				  "and the creation of glass and glass objects.",
+	inputs      = 1,
 })

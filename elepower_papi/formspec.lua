@@ -52,8 +52,9 @@ function ele.formspec.power_meter(capacitor)
 		usage = 0
 	end
 
-	return ele.formspec.create_bar(0, 0, pw_percent, "#00a1ff") ..
-		"tooltip[0,0;1,2.5;"..
+	return ele.formspec.create_bar(0, 0, pw_percent, "#00a1ff") .. 
+		"image[0.2,2.45;0.5,0.5;elepower_gui_icon_power_stored.png]"..
+		"tooltip[0,0;1,2.9;"..
 		minetest.colorize("#c60303", "Energy Storage\n")..
 		minetest.colorize("#0399c6", ele.capacity_text(capacitor.capacity, capacitor.storage))..
 		minetest.colorize("#565656", "\nPower Used / Generated: " .. usage .. " " .. ele.unit) .. "]"
@@ -64,7 +65,7 @@ function ele.formspec.fluid_bar(x, y, fluid_buffer)
 	local texture = "default_water.png"
 	local metric  = 0
 	local tooltip = ("tooltip[%f,%f;1,2.5;%s]"):format(x, y, "Empty Buffer")
-
+	
 	if fluid_buffer and fluid_buffer.fluid and fluid_buffer.fluid ~= "" and
 		minetest.registered_nodes[fluid_buffer.fluid] ~= nil then
 		texture = minetest.registered_nodes[fluid_buffer.fluid].tiles[1]
@@ -81,5 +82,6 @@ function ele.formspec.fluid_bar(x, y, fluid_buffer)
 	return "image["..x..","..y..";1,2.8;elepower_gui_barbg.png"..
 		   "\\^[lowpart\\:"..metric.."\\:"..texture.."\\\\^[resize\\\\:64x128]"..
 		   "image["..x..","..y..";1,2.8;elepower_gui_gauge.png]"..
+		   "image[0.2,2.45;0.5,0.5;elepower_gui_icon_power_stored.png]"..
 		   tooltip
 end

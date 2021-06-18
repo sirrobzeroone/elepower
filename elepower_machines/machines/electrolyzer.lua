@@ -40,10 +40,16 @@ local function get_formspec(time, power, input, out1, out2, state)
 		default.gui_slots..
 		ele.formspec.power_meter(power)..
 		ele.formspec.fluid_bar(1, 0, input)..
+		"image[1.2,2.45;0.5,0.5;elepower_gui_icon_fluid_electrolyzer_in.png]"..
+		"tooltip[1.0,2.0;1,1;"..minetest.colorize("#0399c6","     Water\nHeavy Water\n    BioFuel").."]"..
 		ele.formspec.state_switcher(3.5, 0, state)..
 		bar..
 		ele.formspec.fluid_bar(6, 0, out1)..
+		"image[6.2,2.45;0.5,0.5;elepower_gui_icon_fluid_electrolyzer_out1.png]"..
+		"tooltip[6.0,2.0;1,1;"..minetest.colorize("#0399c6"," Hydrogen\nDeuterium\n Nitrogen").."]"..		
 		ele.formspec.fluid_bar(7, 0, out2)..
+		"image[7.2,2.45;0.5,0.5;elepower_gui_icon_fluid_electrolyzer_out2.png]"..
+		"tooltip[7.0,2.0;1,1;"..minetest.colorize("#0399c6"," Oxygen").."]"..
 		"list[current_player;main;0,4.25;8,1;]"..
 		"list[current_player;main;0,5.5;8,3;8]"..
 		"listring[current_player;main]"..
@@ -153,7 +159,7 @@ local function electrolyzer_timer(pos)
 
 	meta:set_string("infotext", ("Electrolyzer %s\n%s"):format(status, ele.capacity_text(pow_buffer.capacity, pow_buffer.storage)))
 	meta:set_string("formspec", get_formspec(time_percent, pow_buffer, input, out1, out2, state))
-
+	minetest.debug(dump(pow_buffer))
 	return refresh
 end
 
@@ -188,5 +194,6 @@ ele.register_machine("elepower_machines:electrolyzer", {
 	on_construct = function (pos)
 		local meta = minetest.get_meta(pos)
 		meta:set_string("formspec", get_formspec())
+		
 	end
 })
