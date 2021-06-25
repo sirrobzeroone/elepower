@@ -82,6 +82,6 @@ function ele.formspec.fluid_bar(x, y, fluid_buffer)
 	return "image["..x..","..y..";1,2.8;elepower_gui_barbg.png"..
 		   "\\^[lowpart\\:"..metric.."\\:"..texture.."\\\\^[resize\\\\:64x128]"..
 		   "image["..x..","..y..";1,2.8;elepower_gui_gauge.png]"..
-		   "image[0.2,2.45;0.5,0.5;elepower_gui_icon_power_stored.png]"..
+		   --"image[.."..(x+0.2)..","..(y+2.45)..";0.5,0.5;elepower_gui_icon_fluid_water.png]"..
 		   tooltip
 end

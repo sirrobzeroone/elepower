@@ -159,7 +159,6 @@ local function electrolyzer_timer(pos)
 
 	meta:set_string("infotext", ("Electrolyzer %s\n%s"):format(status, ele.capacity_text(pow_buffer.capacity, pow_buffer.storage)))
 	meta:set_string("formspec", get_formspec(time_percent, pow_buffer, input, out1, out2, state))
-	minetest.debug(dump(pow_buffer))
 	return refresh
 end
 
