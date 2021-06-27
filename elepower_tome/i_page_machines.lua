@@ -151,7 +151,7 @@ function eletome.machines(machine,page_num)
 			lb_btm_tt  = add_info.nodes[name_reg].lb_btm_tt or " EpUs per second"
 			mb_title_txt = add_info.nodes[name_reg].mb_title_txt or nil
 			mb_recipe_items = add_info.nodes[name_reg].mb_recipe_items or nil
-			how_use	= add_info.nodes[name_reg].how_use or nil 
+			how_use	= add_info.nodes[name_reg].how_use_1 or nil 
 		end
 		
 		-- catch empty recipe.items and check new crafts

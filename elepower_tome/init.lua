@@ -130,7 +130,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		local node_name
 		for k,v in pairs(eletome.ai.nodes) do
 			 if fields[k] then
-				if eletome.ai.nodes[k].how_use then
+				if eletome.ai.nodes[k].how_use_1 then
 					how_use = true
 					node_name = k
 				end
