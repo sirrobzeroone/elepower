@@ -217,8 +217,163 @@ eletome.ai.fusion_reactor.over     = ""
                     -- Structure - {[4] = "reg_node_name_1",
 					--              [5] = "image_name_1.png", 
 					--              [6] = "reg_node_name_1"}
+ --below only used on help pages
+  -- how_use_1 = left page text 
+  -- hu_img_1  = <optional> image below text, can be a png file name string or a table with a single
+		       --entry containing a container and formspec ("container[2.25,6.6]"..<formspec>.."container_end[]")
+			   -- note x can be adjusted but y cant be changed without causing possible overlap with txt
+  -- how_use_t2 and hu_img_2 = as above but right page			   
   
 eletome.ai.nodes = {}
+
+-- Help Pages
+eletome.ai.nodes["getting_started"]    = {how_use_1 = "This is a getting started guide for Elepower. "..
+													"The first step is to create your first power generator. "..
+													"The coal-fired generator is a good starting generator "..
+													"as it will produce power from anything that is burnable."..
+													"You will need 3 Steel Ingots, 2 Wound copper coils, "..
+													"1 Furnace and 1 Machine block to create a coal-fired generator. "..
+													"To craft all those you will need a Total of: "..
+													"174 leaves, 17 Copper Ingots, 8 Stone blocks, 9 Steel Ingots, "..
+													"3 sand, 2 Iron ingots, 2 Silver Ingots and 2 Mese Crystal Fragments\n",
+										 hu_img_1 = {"container[1.0,6.6]"..
+													-- line 1
+													"style_type[item_image_button;bgimg=elepower_tome_bgimg_2.png]"..
+													"item_image_button[0.375,0.25;1,1;default:blueberry_bush_leaves;leaves;]"..
+													"tooltip[leaves;Any Leaves;#30434c;#f9f9f9]"..
+													"style[num;font_size=-2;font=bold;textcolor=#FFF]"..
+													"hypertext[0.375,0.9;1,1;num;<style size=12><right><b>174</b></right></style>]"..
+													"image[1.5,0.375;0.75,0.75;elepower_tome_icon_crafting.png]"..
+													"tooltip[1.5,0.375;0.75,0.75;Crafting;#30434c;#f9f9f9]"..
+													"item_image_button[2.375,0.25;1,1;basic_materials:oil_extract;basic_materials:oil_extract;]"..
+													"hypertext[2.375,0.9;1,1;num;<style size=12><right><b>58</b></right></style>]"..
+													"image[3.5,0.375;0.75,0.75;elepower_tome_icon_cooking.png]"..
+													"tooltip[3.5,0.375;0.75,0.75;Cooking;#30434c;#f9f9f9]"..
+													"item_image_button[4.375,0.25;1,1;basic_materials:paraffin;basic_materials:paraffin;]"..
+													"hypertext[4.375,0.9;1,1;num;<style size=12><right><b>58</b></right></style>]"..
+													"image[5.5,0.375;0.75,0.75;elepower_tome_icon_cooking.png]"..
+													"tooltip[5.5,0.375;0.75,0.75;Cooking;#30434c;#f9f9f9]"..
+													"item_image_button[6.375,0.25;1,1;basic_materials:plastic_sheet;basic_materials:plastic_sheet;]"..
+													"hypertext[6.375,0.9;1,1;num;<style size=12><right><b>58</b></right></style>]"..
+													-- line 2
+													"item_image_button[0.75,1.5;1,1;basic_materials:plastic_sheet;basic_materials:plastic_sheet;]"..
+													"hypertext[0.75,2.15;1,1;num;<style size=12><right><b>56</b></right></style>]"..
+													"image[1.875,1.625;0.75,0.75;elepower_tome_icon_crafting.png]"..
+													"tooltip[1.875,1.625;0.75,0.75;Crafting;#30434c;#f9f9f9]"..
+													"item_image_button[2.75,1.5;1,1;basic_materials:empty_spool;basic_materials:empty_spool;]"..
+													"hypertext[2.75,2.15;1,1;num;<style size=12><right><b>24</b></right></style>]"..
+													"item_image_button[3.875,1.5;1,1;default:copper_ingot;default:copper_ingot;]"..
+													"hypertext[3.875,2.15;1,1;num;<style size=12><right><b>12</b></right></style>]"..
+													"image[5,1.625;0.75,0.75;elepower_tome_icon_crafting.png]"..
+													"tooltip[5,1.625;0.75,0.75;Crafting;#30434c;#f9f9f9]"..
+													"item_image_button[5.875,1.5;1,1;basic_materials:copper_wire;basic_materials:copper_wire;]"..
+													"hypertext[5.875,2.15;1,1;num;<style size=12><right><b>12</b></right></style>]"..
+													-- line 3 -- bug single digits vanish randomly
+													"item_image_button[0.25,2.75;1,1;basic_materials:copper_wire;basic_materials:copper_wire;]"..
+													"hypertext[0.25,3.4;1,1;num;<style size=12><right><b>02</b></right></style>]"..
+													"item_image_button[1.375,2.75;1,1;default:mese_crystal_fragment;default:mese_crystal_fragment;]"..
+													"hypertext[1.375,3.4;1,1;num;<style size=12><right><b>02</b></right></style>]"..
+													"item_image_button[2.5,2.75;1,1;basic_materials:plastic_sheet;basic_materials:plastic_sheet;]"..
+													"hypertext[2.5,3.4;1,1;num2;<style size=12><right><b>02</b></right></style>]"..
+													"item_image_button[3.625,2.75;1,1;default:steel_ingot;default:steel_ingot;]"..
+													"hypertext[3.625,3.4;1,1;num;<style size=12><right><b>02</b></right></style>]"..
+													"item_image_button[4.75,2.75;1,1;default:copper_ingot;default:copper_ingot;]"..
+													"hypertext[4.75,3.4;1,1;num;<style size=12><right><b>01</b></right></style>]"..
+													"image[5.875,2.875;0.75,0.75;elepower_tome_icon_crafting.png]"..
+													"tooltip[5.875,2.875;0.75,0.75;Crafting;#30434c;#f9f9f9]"..
+													"item_image_button[6.75,2.75;1,1;basic_materials:motor;basic_materials:motor;]"..
+													"hypertext[6.75,3.4;1,1;num;<style size=12><right><b>02</b></right></style>]"..
+													"container_end[]"},
+										 hu_img_2 = {"container[0,0]"..
+											        "style_type[item_image_button;bgimg=elepower_tome_bgimg_2.png]"..
+													--line 1
+													"container[2.5,0]"..
+													"item_image_button[0.375,0.25;1,1;default:stone;default:stone;]"..
+													"hypertext[0.375,0.9;1,1;num;<style size=12><right><b>08</b></right></style>]"..
+													"image[1.5,0.375;0.75,0.75;elepower_tome_icon_crafting.png]"..
+													"tooltip[1.5,0.25;0.75,0.75;Crafting;#30434c;#f9f9f9]"..
+													"item_image_button[2.375,0.25;1,1;default:furnace;default:furnace;]"..
+													"hypertext[2.375,0.9;1,1;num;<style size=12><right><b>01</b></right></style>]"..
+													"container_end[]"..
+													-- line 2
+													"container[2.5,1.25]"..													
+													"item_image_button[0.375,0.25;1,1;default:sand;default:sand;]"..
+													"hypertext[0.375,0.9;1,1;num;<style size=12><right><b>03</b></right></style>]"..
+													"image[1.5,0.375;0.75,0.75;elepower_tome_icon_cooking.png]"..
+													"tooltip[1.5,0.25;0.75,0.75;Cooking;#30434c;#f9f9f9]"..
+													"item_image_button[2.375,0.25;1,1;default:glass;default:glass;]"..
+													"hypertext[2.375,0.9;1,1;num;<style size=12><right><b>03</b></right></style>]"..													
+													"container_end[]"..
+													-- line 3
+													"container[1.875,2.5]"..
+													"item_image_button[0.375,0.25;1,1;basic_materials:copper_wire;basic_materials:copper_wire;]"..
+													"hypertext[0.375,0.9;1,1;num;<style size=12><right><b>08</b></right></style>]"..
+													"item_image_button[1.5,0.25;1,1;elepower_dynamics:iron_ingot;elepower_dynamics:iron_ingot;]"..
+													"hypertext[1.5,0.9;1,1;num;<style size=12><right><b>02</b></right></style>]"..
+													"image[2.625,0.375;0.75,0.75;elepower_tome_icon_crafting.png]"..
+													"tooltip[2.625,0.375;0.75,0.75;Crafting;#30434c;#f9f9f9]"..
+													"item_image_button[3.5,0.25;1,1;elepower_dynamics:wound_copper_coil;elepower_dynamics:wound_copper_coil;]"..
+													"hypertext[3.5,0.9;1,1;num;<style size=12><right><b>06</b></right></style>]"..
+													"container_end[]"..
+													-- line 4
+													"container[0.875,3.75]"..													
+													"item_image_button[0.375,0.25;1,1;default:copper_ingot;default:copper_ingot;]"..
+													"hypertext[0.375,0.9;1,1;num;<style size=12><right><b>04</b></right></style>]"..
+													"item_image_button[1.5,0.25;1,1;moreores:silver_ingot;moreores:silver_ingot;]"..
+													"hypertext[1.5,0.9;1,1;num;<style size=12><right><b>02</b></right></style>]"..
+													"image[2.625,0.375;0.75,0.75;elepower_tome_icon_alloying.png]"..
+													"tooltip[2.625,0.375;0.75,0.75;Alloying;#30434c;#f9f9f9]"..
+													"item_image_button[3.5,0.25;1,1;basic_materials:brass_ingot;basic_materials:brass_ingot;]"..
+													"hypertext[3.5,0.9;1,1;num;<style size=12><right><b>04</b></right></style>]"..
+													"image[4.625,0.375;0.75,0.75;elepower_tome_icon_crafting.png]"..
+													"tooltip[4.625,0.25;0.75,0.75;Crafting;#30434c;#f9f9f9]"..
+													"item_image_button[5.5,0.25;1,1;elepower_dynamics:brass_gear;elepower_dynamics:brass_gear;]"..
+													"hypertext[5.5,0.9;1,1;num;<style size=12><right><b>01</b></right></style>]"..
+													"container_end[]"..
+													-- line 5
+													"container[0.75,5]"..
+													"item_image_button[0.375,0.25;1,1;default:steel_ingot;default:steel_ingot;]"..
+													"hypertext[0.375,0.9;1,1;num;<style size=12><right><b>04</b></right></style>]"..
+													"item_image_button[1.5,0.25;1,1;default:glass;default:glass;]"..
+													"hypertext[1.5,0.9;1,1;num;<style size=12><right><b>03</b></right></style>]"..
+													"item_image_button[2.625,0.25;1,1;elepower_dynamics:brass_gear;elepower_dynamics:brass_gear;]"..
+													"hypertext[2.625,0.9;1,1;num;<style size=12><right><b>01</b></right></style>]"..													
+													"item_image_button[3.75,0.25;1,1;basic_materials:motor;basic_materials:motor;]"..
+													"hypertext[3.75,0.9;1,1;num;<style size=12><right><b>01</b></right></style>]"..																										
+													"image[4.875,0.375;0.75,0.75;elepower_tome_icon_crafting.png]"..
+													"tooltip[4.875,0.25;0.75,0.75;Crafting;#30434c;#f9f9f9]"..
+													"item_image_button[5.75,0.25;1,1;elepower_machines:machine_block;elepower_machines:machine_block;]"..
+													"hypertext[5.875,0.9;1,1;num;<style size=12><right><b>01</b></right></style>]"..													
+													"container_end[]"..
+													-- line 6
+													"container[0.75,6.25]"..
+													"item_image_button[0.375,0.25;1,1;default:steel_ingot;default:steel_ingot;]"..
+													"hypertext[0.375,0.9;1,1;num;<style size=12><right><b>03</b></right></style>]"..
+													"item_image_button[1.5,0.25;1,1;elepower_dynamics:wound_copper_coil;elepower_dynamics:wound_copper_coil;]"..
+													"hypertext[1.5,0.9;1,1;num;<style size=12><right><b>02</b></right></style>]"..
+													"item_image_button[2.625,0.25;1,1;default:furnace;default:furnace;]"..
+													"hypertext[2.625,0.9;1,1;num;<style size=12><right><b>01</b></right></style>]"..													
+													"item_image_button[3.75,0.25;1,1;elepower_machines:machine_block;elepower_machines:machine_block;]"..
+													"hypertext[3.75,0.9;1,1;num;<style size=12><right><b>01</b></right></style>]"..																										
+													"image[4.875,0.375;0.75,0.75;elepower_tome_icon_crafting.png]"..
+													"tooltip[4.875,0.25;0.75,0.75;Crafting;#30434c;#f9f9f9]"..
+													"item_image_button[5.75,0.25;1,1;elepower_machines:generator;elepower_machines:generator;]"..
+													"hypertext[5.875,0.9;1,1;num;<style size=12><right><b>01</b></right></style>]"..													
+													"container_end[]"..	
+													-- line 7
+													"container[0.5,7.75]"..
+													"hypertext[0,0;7.5,3;end;<style color=#1f1f1f size=13><left>"..
+													"Now you have your generator built, place it down and then place the machines you wish to power "..
+													"next to it.\n Later on you'll need to join machines to power generators using power conduit."..
+													"</left></style>]"..
+													"container_end[]"..														
+													"container_end[]"
+													}
+										  }
+
+eletome.ai.nodes["creating_your_first_pcb"] = {}
+
+eletome.ai.nodes["upgrading_machines"] = {}
 
 -- Generators Page
 eletome.ai.nodes["elepower_machines:generator"]      = {lb_top_img = "default:coal_lump", 
@@ -269,7 +424,19 @@ eletome.ai.nodes["elepower_machines:super_power_cell_0"]      = {lb_top_img = "e
 -- (Simple) Machines Page
 eletome.ai.nodes["elepower_machines:alloy_furnace"]      = {lb_top_img = "default_tin_ingot.png",
 															lb_top_tt ="2 Materials\nto be Alloyed", 
-															lb_btm_tt = " used per second"}	
+															lb_btm_tt = " used per second",
+															how_use = "" 
+															}	
+
+eletome.ai.nodes["elepower_machines:electrolyzer"]      = {how_use = "The Electrolyzer is used to create gases out of certain fluids. The electrolyzer can accept three "..
+																	 "fluids/liquids, although not at the same time - water, heavy water and biofuel. The electrolyzer will "..
+																	 "at the cost of 128 EpUs a second break each down into different gases, see table below\n ",
+														   how_use_p2 = "To extract gas from the electrolyzer you will need a fluid pump, bucketeer and an empty gas canister. "..
+																	 "The electrolyzer can only output to a single bucketeer so you will need to empty one gas completely before "..
+																	 "you will be able to bottle the second gas (always oxygen).",
+														   hu_img_1   = "elepower_tome_electrolyzer_outputs.png",
+														   hu_img_2   = "elepower_tome_electrolyzer_assemble.png"
+														  }
 
 -- Fluid Pump Page
 eletome.ai.nodes["elepower_machines:pump"]              = {lb_top_img = "elepower_gui_icon_fluid_electrolyzer_in.png", lb_top_tt = "Fluid"}

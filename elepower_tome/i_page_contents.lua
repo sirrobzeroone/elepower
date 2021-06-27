@@ -35,11 +35,15 @@ function eletome.contents_page()
 						   "are called EpU (Elepower Unit).\n"..
 						   "New crafts are added to the game as well as new machines "..
 						   "to enable these new crafts and make use of EpU/s.\n\n"..
-						   "A big thank you to IcyDiamond the orginal creator of this mod."
+						   "A big thank you to IcyDiamond the orginal creator of this mod.\n\n"
 
 	local heading_lp = "hypertext[0.50,0.70;8.5,1.2;content_lp_h_tome;"..sty_h0s.."Elepower Tome"..sty_h0e.."]"
-	local content_lp = "hypertext[0.75,1.8;8.0,8.0;content_lp_c_text;"..sty_h3s..content_lp_txt..sty_h3s.."]"
-
+	local content_lp = "hypertext[0.75,1.8;8.0,5.5;content_lp_c_text;"..sty_h3s..content_lp_txt..sty_h3s.."]"
+	local links_lp   = "hypertext[0.75,6.8;8.0,4.0;help;"..sty_h3s..
+							 "<action name=getting_started>Getting Started</action>\n"..
+							 "<action name=creating_your_first_pcb>Creating your 1st PCB</action>\n"..
+							 "<action name=upgrading_machines>Upgrading Machines</action>"..							 						
+							 sty_h3e.."]"
 
 	-- Contents page right page Content
 	local heading_rp        = "hypertext[9.0,0.7;8.5,1.0;content_rp_h_cont;"..sty_h1s.."Contents"..sty_h1e.."]"			
@@ -91,7 +95,7 @@ function eletome.contents_page()
 							 sty_h3e.."]"
 	
 	-- Assemble contents page
-	local eletome_cont = heading_lp..content_lp..
+	local eletome_cont = heading_lp..content_lp..links_lp..
 						 heading_rp..heading_rp_craft..craft_rp_txt..
 						 heading_rp_mach..subhead_mach_gen 
 

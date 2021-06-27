@@ -16,7 +16,6 @@
 --  Determine if a text string  --
 --   is for an image or not     --
 ----------------------------------
-
 function eletome.is_image(text)
    local value = false
    if type(text) == "string" then 

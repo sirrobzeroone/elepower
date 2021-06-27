@@ -133,6 +133,7 @@ function eletome.machines(machine,page_num)
 		local lb_btm_tt  = " EpUs per second"
 		local mb_title_txt
 		local mb_recipe_items
+		local how_use
 
 		-- Check for custom values in additional info and set
 		if add_info.nodes[name_reg] then
@@ -150,7 +151,7 @@ function eletome.machines(machine,page_num)
 			lb_btm_tt  = add_info.nodes[name_reg].lb_btm_tt or " EpUs per second"
 			mb_title_txt = add_info.nodes[name_reg].mb_title_txt or nil
 			mb_recipe_items = add_info.nodes[name_reg].mb_recipe_items or nil
-					
+			how_use	= add_info.nodes[name_reg].how_use or nil 
 		end
 		
 		-- catch empty recipe.items and check new crafts
@@ -192,6 +193,12 @@ function eletome.machines(machine,page_num)
 		
 		--3rd square item
 		m_recipe = m_recipe.."item_image_button["..(14.85)..","..(1+y_off+0.1)..";2.2,2.2;"..mach_key[name_des]..";"..mach_key[name_des]..";]"
+		
+		if how_use then
+			m_recipe = m_recipe.."image["..(14.80)..","..(1+y_off+0.05)..";0.4,0.4;elepower_gui_icon_info.png]"
+			m_recipe = m_recipe.."tooltip["..(14.80)..","..(1+y_off+0.05)..";0.4,0.4; Click for\nHow to use;"..eletome.tooltip_color.."]"
+			
+		end
 		
 		-- 1st square items
 		
@@ -261,7 +268,7 @@ function eletome.machines(machine,page_num)
 				
 			else
 				minetest.log("info", "elepower_tome: "..lb_btm_img.." entered value must be 1-4 digits or a string ending in .png")
-				minetest.debug()
+
 			end
 		
 		end	

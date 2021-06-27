@@ -41,7 +41,7 @@ local function get_formspec(time, power, input, out1, out2, state)
 		ele.formspec.power_meter(power)..
 		ele.formspec.fluid_bar(1, 0, input)..
 		"image[1.2,2.45;0.5,0.5;elepower_gui_icon_fluid_electrolyzer_in.png]"..
-		"tooltip[1.0,2.0;1,1;"..minetest.colorize("#0399c6","     Water\nHeavy Water\n    BioFuel").."]"..
+		"tooltip[1.0,2.0;1,1;"..minetest.colorize("#0399c6","     Water\nHeavy Water\n    BioMass").."]"..
 		ele.formspec.state_switcher(3.5, 0, state)..
 		bar..
 		ele.formspec.fluid_bar(6, 0, out1)..
