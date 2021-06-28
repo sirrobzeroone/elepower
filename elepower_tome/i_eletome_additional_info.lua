@@ -362,7 +362,7 @@ eletome.ai.nodes["getting_started"]    = {how_use_1 = "This is a getting started
 													"container_end[]"..	
 													-- line 7
 													"container[0.5,7.75]"..
-													"hypertext[0,0;7.5,3;end;<style color=#1f1f1f size=13><left>"..
+													"hypertext[0,0;7.5,2;end;<style color=#1f1f1f size=13><left>"..
 													"Now you have your generator built, place it down and then place the machines you wish to power "..
 													"next to it.\n Later on you'll need to join machines to power generators using power conduit."..
 													"</left></style>]"..
@@ -371,7 +371,75 @@ eletome.ai.nodes["getting_started"]    = {how_use_1 = "This is a getting started
 													}
 										  }
 
-eletome.ai.nodes["creating_your_first_pcb"] = {}
+eletome.ai.nodes["creating_your_first_pcb"] = {how_use_1 = "More advanced machines require a Printed Circuit Board(PCB) to craft them. "..
+														   "Early on you will need to manually craft your PCB's until you have access to a "..
+														   "Printed Circuit Board Plant.\n"..
+														   "You need two main components to create a PCB, etching acid and "..
+														   "Printed Circuit Board (PCB) Blank. To create these two items you will need; "..
+														   "9 copper ingots, 3 gold ingots 1 mese crystal, 1 wheat seed and "..
+														   "single water source block placed.\nOnce you have turned the water "..
+														   "into etching acid you can use it to turn 10 PCB blanks into 10 PCBs, you can also "..
+														   "pickup the etching acid with a bucket and store it.",
+											  hu_img_2 =   {"container[0,0]"..
+															"style_type[item_image_button;bgimg=elepower_tome_bgimg_2.png]"..
+															--line 1
+															"container[0.5,0]"..
+															"item_image_button[0.375,0.25;1,1;default:copper_ingot;default:copper_ingot;]"..
+															"hypertext[0.375,0.9;1,1;num;<style size=12><right><b>04</b></right></style>]"..
+															"image[1.5,0.375;0.75,0.75;elepower_tome_icon_grinding.png]"..
+															"tooltip[1.5,0.25;0.75,0.75;Grinding;#30434c;#f9f9f9]"..
+															"item_image_button[2.375,0.25;1,1;elepower_dynamics:copper_dust;elepower_dynamics:copper_dust;]"..
+															"hypertext[2.375,0.9;1,1;num;<style size=12><right><b>04</b></right></style>]"..
+															"item_image_button[3.5,0.25;1,1;farming:seed_wheat;farming:seed_wheat;]"..
+															"hypertext[3.5,0.9;1,1;num;<style size=12><right><b>01</b></right></style>]"..
+															"image[4.625,0.375;0.75,0.75;elepower_tome_icon_crafting.png]"..
+															"tooltip[4.625,0.375;0.75,0.75;Crafting;#30434c;#f9f9f9]"..
+															"item_image_button[5.5,0.25;1,1;elepower_dynamics:acidic_compound;elepower_dynamics:acidic_compound;]"..
+															"hypertext[5.5,0.9;1,1;num;<style size=12><right><b>01</b></right></style>]"..           
+															"container_end[]"..
+															-- line 2
+															"container[1.25,1.25]"..                                                                                                                                                                                   
+															"item_image_button[0.375,0.25;1,1;elepower_dynamics:acidic_compound;elepower_dynamics:acidic_compound;]"..
+															"hypertext[0.375,0.9;1,1;num;<style size=12><right><b>01</b></right></style>]"..
+															"image[1.5,0.375;0.75,0.75;elepower_tome_mouse_rght_click.png]"..
+															"tooltip[1.5,0.25;0.75,0.75;Right Click;#30434c;#f9f9f9]"..
+															"item_image_button[2.375,0.25;1,1;default:water_source;default:water_source;]"..
+															"hypertext[2.375,0.9;1,1;num;<style size=12><right><b>01</b></right></style>]"..
+															"image[3.5,0.375;0.75,0.75;elepower_tome_icon_output.png]"..
+															"tooltip[3.5,0.25;0.75,0.75;Turns Into;#30434c;#f9f9f9]"..
+															"item_image_button[4.325,0.25;1,1;elepower_dynamics:etching_acid_source;elepower_dynamics:etching_acid_source;]"..
+															"hypertext[4.325,0.9;1,1;num;<style size=12><right><b>01</b></right></style>]"..           
+															"container_end[]"..
+															-- line 3
+															"container[1.125,2.5]"..
+															"item_image_button[0.375,0.25;1,1;default:copper_ingot;default:copper_ingot;]"..
+															"hypertext[0.375,0.9;1,1;num;<style size=12><right><b>05</b></right></style>]"..
+															"item_image_button[1.5,0.25;1,1;default:gold_ingot;default:gold_ingot;]"..
+															"hypertext[1.5,0.9;1,1;num;<style size=12><right><b>03</b></right></style>]"..
+															"item_image_button[2.625,0.25;1,1;default:mese_crystal;default:mese_crystal;]"..
+															"hypertext[2.625,0.9;1,1;num;<style size=12><right><b>01</b></right></style>]"..																																						
+															"image[3.75,0.375;0.75,0.75;elepower_tome_icon_crafting.png]"..
+															"tooltip[3.75,0.25;0.75,0.75;Crafting;#30434c;#f9f9f9]"..
+															"item_image_button[4.625,0.25;1,1;elepower_dynamics:pcb_blank;elepower_dynamics:pcb_blank;]"..
+															"hypertext[4.625,0.9;1,1;num;<style size=12><right><b>03</b></right></style>]"..																											
+															"container_end[]"..
+															-- line 4
+															"container[1.25,3.75]"..
+															"item_image_button[0.375,0.25;1,1;elepower_dynamics:pcb_blank;elepower_dynamics:pcb_blank;]"..
+															"hypertext[0.375,0.9;1,1;num;<style size=12><right><b>01</b></right></style>]"..
+															"image[1.5,0.375;0.75,0.75;elepower_tome_mouse_rght_click.png]"..
+															"tooltip[1.5,0.25;0.75,0.75;Right Click;#30434c;#f9f9f9]"..
+															"item_image_button[2.375,0.25;1,1;elepower_dynamics:etching_acid_source;elepower_dynamics:etching_acid_source;]"..
+															"hypertext[2.375,0.9;1,1;num;<style size=12><right><b>01</b></right></style>]"..
+															"image[3.5,0.375;0.75,0.75;elepower_tome_icon_output.png]"..
+															"tooltip[3.5,0.25;0.75,0.75;Turns Into;#30434c;#f9f9f9]"..
+															"item_image_button[4.325,0.25;1,1;elepower_dynamics:pcb;elepower_dynamics:pcb;]"..
+															"hypertext[4.325,0.9;1,1;num;<style size=12><right><b>01</b></right></style>]"..															
+															"container_end[]"..															
+															"container_end[]"
+
+											               }
+											  }
 
 eletome.ai.nodes["upgrading_machines"] = {}
 

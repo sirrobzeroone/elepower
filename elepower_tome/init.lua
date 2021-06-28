@@ -369,8 +369,8 @@ function eletome.how_use_page(name_value)
 		left_image = "image[2.25,6.6;5,3.75;"..left_image.."]"
 	end
 	
-	local lp_heading  = "hypertext[0.5,0.7;8.5,1.1;lp_heading;"..sty_h0s..pg_heading..sty_h0e.."]"
-	local lp_sub_head = "hypertext[0.5,1.4;8.5,1.0;lp_sub_heading;"..sty_h1s..pg_subhead..sty_h1e.."]"
+	local lp_heading  = "hypertext[0.5,0.7;8.5,0.95;lp_heading;"..sty_h0s..pg_heading..sty_h0e.."]"
+	local lp_sub_head = "hypertext[0.5,1.4;8.5,0.9;lp_sub_heading;"..sty_h1s..pg_subhead..sty_h1e.."]"
 	local lp_image    = left_image
 	local lp_text     = "hypertext[0.75,2.1;8.0,"..(4.5+lp_offset)..";use_txt;"..sty_h4s..(add_info[name_value].how_use_1 or "")..sty_h4e.."]"
 	----------------
