@@ -93,8 +93,6 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		pmeta:set_string("elepower_tome_back", minetest.serialize(back))		
 	end
 	
-	minetest.debug(dump(back))
-	
 	if #back > 0 then
 		show_back = eletome.back_button
 	end
