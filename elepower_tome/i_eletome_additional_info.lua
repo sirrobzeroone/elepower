@@ -634,7 +634,7 @@ eletome.ai.nodes["elepower_machines:alloy_furnace"]      = {lb_top_img = "defaul
 															}	
 
 eletome.ai.nodes["elepower_machines:electrolyzer"]      = {how_use_1 = "The Electrolyzer is used to create gases out of certain fluids. The electrolyzer can accept three "..
-																	 "fluids/liquids, although not at the same time - water, heavy water and biofuel. The electrolyzer will "..
+																	 "fluids/liquids, although not at the same time - water, heavy water and biomass. The electrolyzer will "..
 																	 "at the cost of 128 EpUs a second break each down into different gases, see table below\n ",
 														   how_use_2 = "To extract gas from the electrolyzer you will need a fluid pump, bucketeer and an empty gas canister. "..
 																	 "The electrolyzer can only output to a single bucketeer so you will need to empty one gas completely before "..
