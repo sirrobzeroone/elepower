@@ -41,7 +41,7 @@ function eletome.contents_page()
 	local content_lp = "hypertext[0.75,1.8;8.0,5.5;content_lp_c_text;"..sty_h3s..content_lp_txt..sty_h3s.."]"
 	local links_lp   = "hypertext[0.75,6.8;8.0,4.0;help;"..sty_h3s..
 							 "<action name=getting_started>Getting Started</action>\n"..
-							 "<action name=creating_your_first_pcb>Creating your 1st PCB</action>\n"..
+							 "<action name=first_pcb_creation>First PCB Creation</action>\n"..
 							 "<action name=upgrading_machines>Upgrading Machines</action>"..							 						
 							 sty_h3e.."]"
 
