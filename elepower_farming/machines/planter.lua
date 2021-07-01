@@ -52,21 +52,30 @@ local ranges = {
 }
 
 local function get_formspec(timer, power, state)
+	local layout_tt = "Item placed here\n  will be planted\nout in a 3x3 area"
+	local layout_bi = "elepower_planter_layout.png"
 	return "size[8,10]"..
-		default.gui_bg..
-		default.gui_bg_img..
-		default.gui_slots..
 		ele.formspec.power_meter(power)..
 		ele.formspec.state_switcher(7, 0, state)..
 		ele.formspec.create_bar(1, 0, 100 - timer, "#00ff11", true)..
 		"list[context;layout;2.5,0;3,3;]"..
+		"image[2.5,0;1,1;"..layout_bi.."]"..
+		"image[3.5,0;1,1;"..layout_bi.."]"..
+		"image[4.5,0;1,1;"..layout_bi.."]"..
+		"image[2.5,1;1,1;"..layout_bi.."]"..
+		"image[3.5,1;1,1;"..layout_bi.."]"..
+		"image[4.5,1;1,1;"..layout_bi.."]"..
+		"image[2.5,2;1,1;"..layout_bi.."]"..
+		"image[3.5,2;1,1;"..layout_bi.."]"..
+		"image[4.5,2;1,1;"..layout_bi.."]"..
+		"tooltip[2.5,0;4.5,2;"..layout_tt..";"..eletome.tooltip_color.."]"..
 		"list[context;src;0,3.5;8,2;]"..
+		"tooltip[0,3.5;8,2;    Place stacks of items\n     here to keep planter\nsupplied with items to plant;"..eletome.tooltip_color.."]"..
 		"list[current_player;main;0,5.75;8,1;]"..
 		"list[current_player;main;0,7;8,3;8]"..
 		"listring[current_player;main]"..
 		"listring[context;src]"..
-		"listring[current_player;main]"..
-		default.get_hotbar_bg(0, 5.75)
+		"listring[current_player;main]"
 end
 
 local function can_dig(pos, player)
@@ -118,6 +127,7 @@ local function allow_metadata_inventory_take(pos, listname, index, stack, player
 end
 
 local function plant(pos, range, stack, inv)
+
 	local planted   = 0
 	local range_st  = vector.add(ranges[range][1], pos)
 	local range_end = vector.add(ranges[range][2], pos)
@@ -132,6 +142,7 @@ local function plant(pos, range, stack, inv)
 	end
 
 	local to_plant = stack:get_name()
+	
 	local to_place = nil
 	local amount   = 0
 	local till     = true
@@ -140,7 +151,7 @@ local function plant(pos, range, stack, inv)
 			amount = amount + stack:get_count()
 		end
 	end
-
+	
 	-- Saplings
 	if ele.helpers.get_item_group(to_plant, "sapling") then
 		to_place = to_plant
@@ -156,6 +167,7 @@ local function plant(pos, range, stack, inv)
 			for z = range_st.z, range_end.z do
 				if amount == 0 then break end
 				local place_pos = {x = x,           y = range_st.y  + y_top, z = z}
+
 				local base_pos  = {x = place_pos.x, y = place_pos.y - 1,     z = place_pos.z}
 				local base_node = minetest.get_node_or_nil(base_pos)
 
@@ -241,6 +253,7 @@ local function on_timer(pos, elapsed)
 		if work == PLANTER_TICK then
 			local planted = 0
 			for index, slot in ipairs(inv:get_list("layout")) do
+				
 				if planted >= 9 then break end
 				if not slot:is_empty() then
 					planted = planted + plant(pos, index, slot, inv)

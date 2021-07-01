@@ -630,7 +630,6 @@ eletome.ai.nodes["elepower_machines:super_power_cell_0"]      = {lb_top_img = "e
 eletome.ai.nodes["elepower_machines:alloy_furnace"]      = {lb_top_img = "default_tin_ingot.png",
 															lb_top_tt ="2 Materials\nto be Alloyed", 
 															lb_btm_tt = " used per second",
-															how_use = "" 
 															}	
 
 eletome.ai.nodes["elepower_machines:electrolyzer"]      = {how_use_1 = "The Electrolyzer is used to create gases out of certain fluids. The electrolyzer can accept three "..
@@ -642,6 +641,20 @@ eletome.ai.nodes["elepower_machines:electrolyzer"]      = {how_use_1 = "The Elec
 														   hu_img_1   = "elepower_tome_electrolyzer_outputs.png",
 														   hu_img_2   = "elepower_tome_electrolyzer_assemble.png"
 														  }
+
+eletome.ai.nodes["elepower_farming:planter"]      = {lb_top_img = "farming_wheat_seed.png",
+													 lb_top_tt  = "Seeds or Seedlings",
+													 how_use_1  = "The automatic planter is used to keep a maximum 9x9 field planted with crops. The planter needs to be placed 1 node "..
+															      "below the ground surface, however it is waterproof and functions perfectly with a node of water above it.\n "..
+																  "The planter, plants from the most north westerly 3x3 block of nodes (top left corner) to the most south easterly "..
+																  "3x3 block of nodes (bottom right corner).",
+													 how_use_2  = "The planter has a special interface to allow it to plant. The upper 3x3 grid represents a maximum area of 9x9 around the "..
+																  "planter ie each grid segment represents a 3x3 area of nodes. The bottom 2 rows of 8 is the planters avaliable inventory of ".. 
+																  "items. There must be items of the type specified in the planting grid avaliable in the inventory area for the planter to be "..
+																  "able to plant, so keep the planters inventory well stocked with seeds or seedlings.",
+													 hu_img_1   = "elepower_tome_complex_auto_planter.png",
+													 hu_img_2   = "elepower_tome_complex_auto_planter_2.png"
+													}
 
 -- Fluid Pump Page
 eletome.ai.nodes["elepower_machines:pump"]              = {lb_top_img = "elepower_gui_icon_fluid_electrolyzer_in.png", lb_top_tt = "Fluid"}
