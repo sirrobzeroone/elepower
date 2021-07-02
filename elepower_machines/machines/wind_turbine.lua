@@ -13,13 +13,19 @@ local function get_formspec_default(power, state)
 end
 
 -- Primitive wind checking function
-elepm.wind_height_constant = 10
+elepm.wind_height_constant = 20
 function elepm.wind_check(pos)
-	if pos.y < elepm.wind_height_constant then
+	if pos.y < 10 then
 		return 0
 	end
-
-	return math.floor(pos.y / elepm.wind_height_constant)
+	
+	local power = math.ceil(pos.y / elepm.wind_height_constant)
+	
+	if math.floor(pos.y / elepm.wind_height_constant) > 25 then
+		power = 25
+	end
+	
+	return power
 end
 
 -- A generator that creates power using altitude
@@ -40,6 +46,7 @@ function ele.register_wind_generator(nodename, nodedef)
 		tube = false,
 		paramtype2 = 0,
 		on_timer = function (pos, elapsed)
+			
 			local refresh  = false
 			local meta     = minetest.get_meta(pos)
 			
@@ -72,6 +79,7 @@ function ele.register_wind_generator(nodename, nodedef)
 				end
 
 				wind = elepm.wind_check(pos) * multiplier
+				
 				if wind == 0 then
 					status = "No wind"
 					break
@@ -105,6 +113,7 @@ function ele.register_wind_generator(nodename, nodedef)
 			local storage  = ele.helpers.get_node_property(meta, pos, "storage")
 
 			meta:set_string("formspec", get_formspec({capacity = capacity, storage = storage, usage = 0}, 0))
+			minetest.get_node_timer(pos):start(1)
 		end
 	}
 
@@ -139,12 +148,11 @@ minetest.register_craftitem("elepower_machines:wind_turbine_blades", {
 		if minetest.get_item_group(node.name, "wind_generator") == 0 then
 			return itemstack
 		end
-
 		local place_at = vector.add(pos, {x = 0, y = 0, z = -1})
 		local e = minetest.add_entity(place_at, "elepower_machines:wind_turbine_blades")
 		local ent = e:get_luaentity()
 		ent.controller = pos
-
+		
 		itemstack:take_item(1)
 		return itemstack
 	end
@@ -161,7 +169,6 @@ minetest.register_entity("elepower_machines:wind_turbine_blades", {
 		visual_size = {x = 10, y = 10},
 	},
 	timer = 0,
-	controller = {x = 0, y = 0, z = 0},
 	wind = false,
 
 	on_step = function (self, dt)
@@ -172,17 +179,27 @@ minetest.register_entity("elepower_machines:wind_turbine_blades", {
 
 		-- Wind check timer
 		self.timer = self.timer + 1
+		
 		if self.timer < 100 then
 			return self
 		end
 		self.timer = 0
-
-		local meta = minetest.get_meta(self.controller)
-		if meta and meta:get_int("wind") > 0 then
+		
+		--controller pos always +1 z (note this can be made more robust)
+		local controller = vector.add(self.object:get_pos(), {x = 0, y = 0, z = 1})
+		local c_meta = minetest.get_meta(controller)
+		
+		-- check controller timer (already using onstep here so saves an extra one)
+		if not minetest.get_node_timer(controller):is_started() then
+				minetest.get_node_timer(controller):start(1)
+		end
+		
+		if c_meta and c_meta:get_int("wind") > 0 then
 			self.wind = true
 		else
 			self.wind = false
 		end
+		
 	end,
 	on_punch = function (self, puncher, time_from_last_punch, tool_capabilities, dir)
 		local itm = ItemStack("elepower_machines:wind_turbine_blades")

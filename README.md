@@ -4,7 +4,7 @@ A new *powerful* modpack for [Minetest](http://minetest.net) 5.0.0+!
 
 **I do not recommend using this modpack with technic, as this modpack aims to become an all new technology mod. However, compatibility might be added at a later date.**
 
-**Depends on [fluid_lib](https://gitlab.icynet.eu/evert/fluid_lib)!**
+**Depends on [fluid_lib](https://github.com/sirrobzeroone/fluid_lib)!**
 
 ## Features
 

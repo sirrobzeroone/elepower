@@ -71,6 +71,13 @@ eletome.ai.powercells.over    = "Powercells will charge from the network when po
 
 -- info for (Simple/Single node) Machine page
 eletome.ai.machine         = {}
+eletome.ai.machine.over    = "These are the simpliest machines in elepower consisting of single node "..
+						     "that performs a single/simple function.\n"..
+							 "The machines can often interface with other machines using fluid ducts to "..
+							 "help automate the inputs/outputs of certain machines. Where a machine "..
+							 "maybe more complex a small 'I' will be present on the large image, indicating "..
+							 "there is a subpage with additional information for that machine. for example "..
+							 "the Automatic Planter at the bottom of the opposite page."
 
 -- info for Fluid Pump page
 eletome.ai.fluid_pump         = {}
@@ -149,9 +156,14 @@ eletome.ai.transporter.over    = "Once setup the Teleporter allows for instanaeo
 eletome.ai.wind_turbine         = {}
 eletome.ai.wind_turbine.sort_by = "no_sort"
 eletome.ai.wind_turbine.part    = {"elepower_machines:wind_turbine",
-								   "elepower_machines:wind_turbine_blade"
+								   "elepower_machines:wind_turbine_blade",
+								   "elepower_machines:wind_turbine_blades"
 								  }
-eletome.ai.wind_turbine.over    = "" 
+eletome.ai.wind_turbine.over    = "The wind turbine produces power from the wind. The minimum height a wind turbine will produce "..
+								  "power is at y 10. The wind turbine will produce a small amount of power without blades, "..
+								  "however with blades the wind turbine will produce 4x as much power.\n"..
+								  "The higher the wind turbine is placed the more power it will produce to a maximum output of 100 EpUs."
+eletome.ai.wind_turbine.img  = "elepower_tome_complex_wind_turbine.png"
 
 -- info for Fission page
 eletome.ai.fission_reactor         = {}
@@ -632,7 +644,8 @@ eletome.ai.nodes["elepower_machines:alloy_furnace"]      = {lb_top_img = "defaul
 															lb_btm_tt = " used per second",
 															}	
 
-eletome.ai.nodes["elepower_machines:electrolyzer"]      = {how_use_1 = "The Electrolyzer is used to create gases out of certain fluids. The electrolyzer can accept three "..
+eletome.ai.nodes["elepower_machines:electrolyzer"]      = {lb_top_img = "elepower_gui_icon_fluid_electrolyzer_in.png", lb_top_tt  = "Fluids",
+														   how_use_1 = "The Electrolyzer is used to create gases out of certain fluids. The electrolyzer can accept three "..
 																	 "fluids/liquids, although not at the same time - water, heavy water and biomass. The electrolyzer will "..
 																	 "at the cost of 128 EpUs a second break each down into different gases, see table below\n ",
 														   how_use_2 = "To extract gas from the electrolyzer you will need a fluid pump, bucketeer and an empty gas canister. "..
@@ -641,6 +654,9 @@ eletome.ai.nodes["elepower_machines:electrolyzer"]      = {how_use_1 = "The Elec
 														   hu_img_1   = "elepower_tome_electrolyzer_outputs.png",
 														   hu_img_2   = "elepower_tome_electrolyzer_assemble.png"
 														  }
+														  
+eletome.ai.nodes["elepower_farming:harvester"]      = {lb_top_img = "farming_wheat.png",lb_top_tt  = "Crops\n   or\nTrees"}
+
 
 eletome.ai.nodes["elepower_farming:planter"]      = {lb_top_img = "farming_wheat_seed.png",
 													 lb_top_tt  = "Seeds or Seedlings",
@@ -655,6 +671,36 @@ eletome.ai.nodes["elepower_farming:planter"]      = {lb_top_img = "farming_wheat
 													 hu_img_1   = "elepower_tome_complex_auto_planter.png",
 													 hu_img_2   = "elepower_tome_complex_auto_planter_2.png"
 													}
+
+eletome.ai.nodes["elepower_machines:canning_machine"] = {lb_top_img = "elepower_tome_icon_canning.png",lb_top_tt  = "Canning"}
+
+eletome.ai.nodes["elepower_machines:compressor"]      = {lb_top_img = "elepower_tome_icon_compressing.png",lb_top_tt  = "Compressing"}
+
+eletome.ai.nodes["elepower_machines:evaporator"]      = {lb_top_img = "elepower_gui_icon_fluid_water.png",lb_top_tt  = "Fluids"}
+
+eletome.ai.nodes["elepower_machines:lava_cooler"]     = {lb_top_img = "elepower_gui_icon_fluid_water_lava.png",lb_top_tt  = "Water\n and\nLava"}
+
+eletome.ai.nodes["elepower_machines:furnace"]         = {lb_top_img = "elepower_tome_icon_cooking.png",lb_top_tt  = "Cooking"}
+
+eletome.ai.nodes["elepower_machines:pcb_plant"]       = {lb_top_img = "elepower_pcb.png",lb_top_tt  = "Creates PCB's"}
+
+eletome.ai.nodes["elepower_machines:pulverizer"]      = {lb_top_img = "elepower_tome_icon_grinding.png",lb_top_tt  = "Grinding"}
+
+eletome.ai.nodes["elepower_machines:sawmill"]         = {lb_top_img = "elepower_sawmill.png",lb_top_tt  = "Sawing"}
+
+eletome.ai.nodes["elepower_machines:solderer"]        = {lb_top_img = "elepower_upgrade_efficiency_2.png",lb_top_tt  = "       Creates\n Machine Upgrades"}
+
+eletome.ai.nodes["elepower_farming:tree_processor"]   = {lb_top_img = "elepower_gui_icon_fluid_water.png",lb_top_tt  = "Processes\n Tree Sap"}
+
+-- Wind Turbine
+eletome.ai.nodes["elepower_machines:wind_turbine"]    = {lb_top_img = "elepower_tome_wind.png",
+														   lb_top_tt = "Wind",
+														   lb_btm_img = "100",
+														   lb_btm_tt = " Epu Max\n   Potential\n  Production"}
+
+eletome.ai.nodes["elepower_machines:wind_turbine_blade"]  = {lb_top_img = "", lb_top_tt = "", lb_btm_img = "", lb_btm_tt =""}
+eletome.ai.nodes["elepower_machines:wind_turbine_blades"] = {lb_top_img = "", lb_top_tt = "", lb_btm_img = "", lb_btm_tt =""}
+
 
 -- Fluid Pump Page
 eletome.ai.nodes["elepower_machines:pump"]              = {lb_top_img = "elepower_gui_icon_fluid_electrolyzer_in.png", lb_top_tt = "Fluid"}
