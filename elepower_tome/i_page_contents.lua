@@ -88,6 +88,7 @@ function eletome.contents_page()
 							 
 							 "hypertext[13.5,"..(2.7+ac_off)..";4.5,7.0;machine;"..sty_h3s.. -- right side column
 							 "<action name=machine-ele_storage>Powercells</action>\n"..
+							 "<action name=machine-ele_lighting>Lighting</action>\n"..
 							 "<action name=machine-Fluid_Pump>Fluid Pump</action>\n"..
 							 "<action name=machine-Evaporation_Plant>Evaporation Plant</action>\n"..
 							 "<action name=machine-Miner>Miner</action>\n"..							 

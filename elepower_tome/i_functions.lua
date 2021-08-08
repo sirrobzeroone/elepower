@@ -43,8 +43,8 @@ function eletome.get_nodes_in_group(group_name)
 			-- have to remove registered nodes with same name but 
 			-- different number versions eg powercells, also remove
 			-- "active" versions
-			
-			if not string.find(name, "active") and tonumber((string.match(name,"%d+"))or 0) == 0 then
+												  
+			if not string.find(name, "active") and (tonumber(string.sub(name, -1))or 0) == 0 then -- this line creates a slight issue were it will remove other legitimate nodes that end in a number - org code tonumber((string.match(name,"%d+"))or 0)
 				local description = def.description
 				
 				if string.find(description,"\n") then
@@ -76,12 +76,24 @@ end
 function eletome.sort_by(sort_by,mach_sort,mach_key)
 			local key = {}
 			local sort = {}
-			
+			local unique = 1
 			-- create new key table using sort_by with
 			-- field to sort_by and node.description
-			for des,name in pairs(mach_key)do
-				table.insert(sort,minetest.registered_nodes[name][sort_by])
-				key[minetest.registered_nodes[name][sort_by]] = des			
+			
+			for des,name in pairs(mach_key)do				
+				local node_value = minetest.registered_nodes[name][sort_by]
+				
+				if type(node_value) == "string" then
+					node_value = node_value..unique
+					
+				elseif type(node_value) == "number" then
+					node_value = node_value + unique	
+				end
+				
+				table.insert(sort,node_value)
+				key[node_value] = des
+				
+				unique = unique+1
 			end
 			
 			-- standard table sort
@@ -154,8 +166,7 @@ end
 function eletome.get_craft_recipe(reg_node_name)
 	local recipe_output = {}
 		  recipe_output.items = {}
-		  recipe_output.num = {}
-	local i = 1	  
+		  recipe_output.num = {}  
 	local all_crafts = table.copy(elepm.craft.types)
 
 	for craft_name,craft_def in pairs(all_crafts) do		
@@ -181,10 +192,11 @@ function eletome.get_craft_recipe(reg_node_name)
 					recipe_output.craft_name = craft_name
 					recipe_output.craft_des = craft_def.description
 					
-					for k,v in pairs(reg_craft_def.recipe) do
-						recipe_output.items[pos[i]] = k
-						recipe_output.num[pos[i]] = v
-						i=i+1						
+					for item_pos,item in pairs(reg_craft_def.recipe) do						
+						for name,num in pairs(item) do
+							recipe_output.items[pos[item_pos]] = name
+							recipe_output.num[pos[item_pos]] = num
+						end
 					end						
 				end
 			else

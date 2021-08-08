@@ -7,7 +7,9 @@ function ele.formspec.get_crafter_formspec(craft_type, power, percent, pos, mach
 	local craft_reg_path = elepm.craft[craft_type]
 	local input_size  = craftstats.inputs
 	local material_inputs = {}
-	local mat_inputs = "|"
+	local mat_inputs_1 = "|"
+	local mat_inputs_2 = "|"
+	local mat_inputs_3 = "|"
 	local formspec_inout_icon_tooltip
 	local icon_def_slot_1 = minetest.registered_nodes[machine_name].ele_icon_material_1 or "elepower_gui_icon_crafter_genmat_1.png"
 	local icon_def_slot_2 = minetest.registered_nodes[machine_name].ele_icon_material_2 or "elepower_gui_icon_crafter_genmat_2.png"
@@ -37,18 +39,21 @@ function ele.formspec.get_crafter_formspec(craft_type, power, percent, pos, mach
 			end			
 		end		
 	else
-		for k,v in pairs(craft_reg_path) do		
-			for k2,v2 in pairs(v.recipe)do			
-				-- have to check all registered items
-				if minetest.registered_items[k2] then
-					local description = minetest.registered_items[k2].description
-					
-					-- remove any text on 2nd/3rd line
-					if string.find(description,"\n") then
-						description = string.split(description,"\n")
-						description = description[1]
-					end						
-					material_inputs[description] = 1
+		for _,craft_recipes in pairs(craft_reg_path) do		
+			for item_pos,item in pairs(craft_recipes.recipe)do	
+				for item_name,item_num in pairs(item) do
+					-- have to check all registered items
+					if minetest.registered_items[item_name] then
+						local description = minetest.registered_items[item_name].description
+						
+						-- remove any text on 2nd/3rd line
+						if string.find(description,"\n") then
+							description = string.split(description,"\n")
+							description = description[1]
+						end
+
+							material_inputs[description..":"..item_pos] = item_pos   -- add a unique value to name
+					end
 				end
 			end
 		end
@@ -61,29 +66,42 @@ function ele.formspec.get_crafter_formspec(craft_type, power, percent, pos, mach
 	end
 		table.sort(material_in_sort)
 
-	for k,mat_desc in pairs(material_in_sort) do		
-			mat_inputs = mat_inputs.."\n"..mat_desc
+	for k,mat_desc in pairs(material_in_sort) do
+		
+		local mat_desc_r = string.gsub(mat_desc,":(.*)","")   -- remove :1,:2,:3
+		
+		if material_inputs[mat_desc] == 1 then
+			mat_inputs_1 = mat_inputs_1.."\n"..mat_desc_r
+			
+		elseif material_inputs[mat_desc] == 2 then
+			mat_inputs_2 = mat_inputs_2.."\n"..mat_desc_r
+			
+		elseif material_inputs[mat_desc] == 3 then
+			mat_inputs_3 = mat_inputs_3.."\n"..mat_desc_r
+		end
 	end	
-	mat_inputs = string.gsub(mat_inputs, "|\n","")
-
+	mat_inputs_1 = string.gsub(mat_inputs_1, "|\n","")
+	mat_inputs_2 = string.gsub(mat_inputs_2, "|\n","")
+	mat_inputs_3 = string.gsub(mat_inputs_3, "|\n","")
+	
 	--adjust tooltip and layout depending on if we have 1/2/3 input slots
 	if input_size == 1 then					
 		formspec_inout_icon_tooltip = "image[1.7,2.45;0.5,0.5;"..icon_def_slot_1.."]"..
-		                              "tooltip[1.5,2.0;1,1;"..mat_inputs..";#30434c;#0399c6]"--"tooltip[1.5,2.0;1,1;"..minetest.colorize("#0399c6",mat_inputs).."]"
+		                              "tooltip[1.5,2.0;1,1;"..mat_inputs_1..";#30434c;#0399c6]"--"tooltip[1.5,2.0;1,1;"..minetest.colorize("#0399c6",mat_inputs).."]"
 
 	elseif input_size == 2 then
 		formspec_inout_icon_tooltip = "image[1.2,2.45;0.5,0.5;"..icon_def_slot_1.."]"..
-		                              "tooltip[1.0,2.0;1,1;"..mat_inputs..";#30434c;#0399c6]"..
+		                              "tooltip[1.0,2.0;1,1;"..mat_inputs_1..";#30434c;#0399c6]"..
 		                              "image[2.2,2.45;0.5,0.5;"..icon_def_slot_2.."]"..
-									  "tooltip[2.0,2.0;1,1;"..mat_inputs..";#30434c;#0399c6]"
+									  "tooltip[2.0,2.0;1,1;"..mat_inputs_2..";#30434c;#0399c6]"
 
 	else 
 		formspec_inout_icon_tooltip = "image[1.2,2.45;0.5,0.5;"..icon_def_slot_1.."]"..
-		                              "tooltip[1.0,2.0;1,1;"..mat_inputs..";#30434c;#0399c6]"..
+		                              "tooltip[1.0,2.0;1,1;"..mat_inputs_1..";#30434c;#0399c6]"..
 		                              "image[2.2,2.45;0.5,0.5;"..icon_def_slot_2.."]"..
-									  "tooltip[2.0,2.0;1,1;"..mat_inputs..";#30434c;#0399c6]"..
+									  "tooltip[2.0,2.0;1,1;"..mat_inputs_2..";#30434c;#0399c6]"..
 									  "image[3.2,2.45;0.5,0.5;"..icon_def_slot_3.."]"..
-									  "tooltip[3.0,2.0;1,1;"..mat_inputs..";#30434c;#0399c6]"	
+									  "tooltip[3.0,2.0;1,1;"..mat_inputs_3..";#30434c;#0399c6]"	
 	end
 	-- End add icons tooltips for in slots
 		
@@ -148,7 +166,10 @@ function crafter_timer (pos, elapsed)
 	local refresh = false
 	local meta    = minetest.get_meta(pos)
 	local inv     = meta:get_inventory()
-
+	
+	
+	--tt_time = minetest.get_node_timer(pos)
+	
 	-- Specialized for universal crafter node
 	local machine_node = minetest.get_node(pos).name
 	local machine_def     = minetest.registered_nodes[machine_node]

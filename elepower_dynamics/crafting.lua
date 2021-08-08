@@ -130,6 +130,53 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_craft({
+	output = "elepower_dynamics:conduit_wall 1",
+	recipe = {
+		{""                            ,"elepower_dynamics:lead_plate",""},
+		{"elepower_dynamics:lead_plate","elepower_dynamics:conduit"   ,"elepower_dynamics:lead_plate"},
+		{""                            ,"elepower_dynamics:lead_plate",""}
+	}
+})
+
+minetest.register_craft({
+	output = "elepower_dynamics:conduit_dirt_with_grass 1",
+	recipe = {
+		{"","farming:seed_wheat",""},
+		{"","elepower_dynamics:conduit"   ,""},
+		{"","default:dirt"                ,""}
+	}
+})
+
+minetest.register_craft({
+	output = "elepower_dynamics:conduit_dirt_with_dry_grass 1",
+	recipe = {
+		{"","farming:wheat",""},
+		{"","elepower_dynamics:conduit"   ,""},
+		{"","default:dirt"                ,""}
+	}
+})
+
+minetest.register_craft({
+	output = "elepower_dynamics:conduit_stone_block 1",
+	recipe = {
+		{""                       ,"stairs:slab_stone_block"  ,""},
+		{"stairs:slab_stone_block","elepower_dynamics:conduit","stairs:slab_stone_block"},
+		{""                       ,"stairs:slab_stone_block"  ,""}
+	}
+})
+
+minetest.register_craft({
+	output = "elepower_dynamics:conduit_stone_block_desert 1",
+	recipe = {
+		{""                       ,"stairs:slab_desert_stone_block"  ,""},
+		{"stairs:slab_desert_stone_block","elepower_dynamics:conduit","stairs:slab_desert_stone_block"},
+		{""                       ,"stairs:slab_desert_stone_block"  ,""}
+	}
+})
+
+
+
 -- Opaque Fluid Duct
 minetest.register_craft({
 	output = "elepower_dynamics:opaque_duct 3",

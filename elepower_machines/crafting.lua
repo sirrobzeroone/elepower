@@ -135,12 +135,16 @@ local grinding_recipes = {
 		output = "default:mese_crystal_fragment 9",
 	},
 	{
+		recipe = { "default:mese_crystal_fragment" },
+		output = "elepower_dynamics:mese_dust",
+	},
+	{
 		recipe = { "elepower_dynamics:graphite_ingot" },
 		output = "elepower_dynamics:graphite_rod 3",
 	}
 }
 
--- Register solderer recipes
+-- Register grind recipes
 for _,i in pairs(grinding_recipes) do
 	elepm.register_craft({
 		type   = "grind",
@@ -161,8 +165,8 @@ for mat, ingot in pairs(ingot_map) do
 	if plate then
 		elepm.register_craft({
 			type   = "compress",
-			recipe = { ingot .. " 2" },
-			output = plate.item,
+			recipe = {ingot,ingot},
+			output = plate.item.." 2",
 			time   = 4,
 		})
 
@@ -170,7 +174,7 @@ for mat, ingot in pairs(ingot_map) do
 			elepm.register_craft({
 				type   = "grind",
 				recipe = { plate.item },
-				output = dust.item .. " 2",
+				output = dust.item.." 2",
 				time   = 6,
 			})
 		end
@@ -185,7 +189,7 @@ for name in pairs(minetest.registered_nodes) do
 		if minetest.registered_nodes[sandstone] then
 			elepm.register_craft({
 				type   = "compress",
-				recipe = { sand .. " 4" },
+				recipe = { sand .. " 2",sand .. " 2"},
 				output = sandstone,
 				time   = 1,
 			})
@@ -203,7 +207,7 @@ for name in pairs(minetest.registered_nodes) do
 			if minetest.registered_nodes[ssblock] then
 				elepm.register_craft({
 					type   = "compress",
-					recipe = { sandstone .. " 4" },
+					recipe = { sandstone .. " 2",sandstone .. " 2" },
 					output = ssblock,
 					time   = 1,
 				})
@@ -214,27 +218,32 @@ end
 
 local compressor_recipes = {
 	{
-		recipe = { "elepower_dynamics:viridisium_block 9" },
+		recipe = { "elepower_dynamics:viridisium_block 4", "elepower_dynamics:viridisium_block 4" },
 		output = "elepower_dynamics:xycrone_lump",
 		time   = 20,
 	},
 	{
-		recipe = { "default:mese_crystal_fragment 9" },
+		recipe = { "default:mese_crystal_fragment 4", "default:mese_crystal_fragment 4" },
 		output = "default:mese_crystal",
+		time   = 2,
 	},
 	{
-		recipe = { "default:mese_crystal 9" },
+		recipe = { "default:mese_crystal 4","default:mese_crystal 4" },
 		output = "default:mese",
+		time   = 2,
 	},
 	{
-		recipe = { "elepower_dynamics:coal_dust 4" },
+		recipe = { "elepower_dynamics:coal_dust 2","elepower_dynamics:coal_dust 2"  },
 		output = "elepower_dynamics:carbon_fiber",
+		time   = 2,
 	},
 	{
-		recipe = { "elepower_dynamics:carbon_fiber 4" },
+		recipe = { "elepower_dynamics:carbon_fiber 2","elepower_dynamics:carbon_fiber 2" },
 		output = "elepower_dynamics:carbon_sheet",
+		time   = 2,
 	}
 }
+
 
 -- Register compressor recipes
 for _,i in pairs(compressor_recipes) do

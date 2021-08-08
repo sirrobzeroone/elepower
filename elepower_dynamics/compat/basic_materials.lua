@@ -6,23 +6,53 @@ if minetest.get_modpath("basic_materials") == nil then
 
 	minetest.register_craftitem(":basic_materials:oil_extract", {
 		    description = "Oil Extract",
-		    inventory_image = "elepower_oil_extract.png",
+		    inventory_image = "elepower_bm_oil_extract.png",
 	})
 
 	minetest.register_craftitem(":basic_materials:paraffin", {
 		    description = "Unprocessed Paraffin",
-		    inventory_image = "elepower_paraffin.png",
+		    inventory_image = "elepower_bm_paraffin.png",
 	})
 
 	minetest.register_alias("basic_materials:plastic_base", "basic_materials:paraffin")
 	minetest.register_alias("homedecor:plastic_base", "basic_materials:paraffin")
 	minetest.register_alias("homedecor:paraffin", "basic_materials:paraffin")
-	minetest.register_alias("homedecor:plastic_sheeting", "basic_materials:plastic_sheet")
 	minetest.register_alias("homedecor:oil_extract", "basic_materials:oil_extract")
+	minetest.register_alias("homedecor:plastic_sheeting", "basic_materials:plastic_sheet")
+	minetest.register_alias("homedecor:plastic_strips",   "basic_materials:plastic_strip")
+	minetest.register_alias("homedecor:empty_spool",      "basic_materials:empty_spool")
 
 	minetest.register_craftitem(":basic_materials:plastic_sheet", {
 		    description = "Plastic Sheet",
-		    inventory_image = "elepower_plastic_sheet.png",
+		    inventory_image = "elepower_bm_plastic_sheet.png",
+	})
+	
+	minetest.register_craftitem(":basic_materials:plastic_strip", {
+		description = "Plastic Strips",
+		groups = { strip = 1 },
+		inventory_image = "elepower_bm_strip.png^[colorize:#ffffff:200",
+	})
+	
+	minetest.register_craftitem(":basic_materials:empty_spool", {
+		description = "Empty wire spool",
+		inventory_image = "elepower_bm_empty_spool.png"
+	})
+
+
+	minetest.register_craft( {
+		output = "basic_materials:plastic_strip 9",
+		recipe = {
+			{ "basic_materials:plastic_sheet", "basic_materials:plastic_sheet", "basic_materials:plastic_sheet" }
+		},
+	})
+	
+	minetest.register_craft( {
+		output = "basic_materials:empty_spool 3",
+		recipe = {
+			{ "basic_materials:plastic_sheet", "basic_materials:plastic_sheet", "basic_materials:plastic_sheet" },
+			{ ""                             , "basic_materials:plastic_sheet",                              "" },
+			{ "basic_materials:plastic_sheet", "basic_materials:plastic_sheet", "basic_materials:plastic_sheet" }
+		},
 	})
 
 	minetest.register_craft({
@@ -74,17 +104,18 @@ if minetest.get_modpath("basic_materials") == nil then
 
 	minetest.register_craftitem(":basic_materials:copper_wire", {
 		description = "Copper Wire",
-		inventory_image = "elepower_copper_wire.png",
+		inventory_image = "elepower_bm_copper_wire.png",
 		groups = {copper = 1, wire = 1, component = 1}
 	})
 
-	minetest.register_craft({
-		output = "basic_materials:copper_wire 8",
+	minetest.register_craft( {
+		output = "basic_materials:copper_wire 2",
+		type = "shapeless",
 		recipe = {
-			{"default:copper_ingot", "default:copper_ingot", "default:copper_ingot"},
-			{"default:copper_ingot", "",                     "default:copper_ingot"},
-			{"default:copper_ingot", "default:copper_ingot", "default:copper_ingot"}
-		}
+			"default:copper_ingot",
+			"basic_materials:empty_spool",
+			"basic_materials:empty_spool",
+		},
 	})
 
 	-----------
@@ -93,7 +124,7 @@ if minetest.get_modpath("basic_materials") == nil then
 
 	minetest.register_craftitem(":basic_materials:motor", {
 		description = "Motor",
-		inventory_image = "elepower_motor.png",
+		inventory_image = "elepower_bm_motor.png",
 		groups = {motor = 1, component = 1}
 	})
 
@@ -112,7 +143,7 @@ if minetest.get_modpath("basic_materials") == nil then
 
 	minetest.register_craftitem(":basic_materials:silicon", {
 		description = "Silicon",
-		inventory_image = "elepower_silicon.png",
+		inventory_image = "elepower_bm_silicon.png",
 		groups = {silicon = 1, lump = 1}
 	})
 
@@ -125,6 +156,54 @@ if minetest.get_modpath("basic_materials") == nil then
 		inventory_image = "elepower_brass_ingot.png",
 		groups = {brass = 1, ingot = 1}
 	})
+
+	-----------
+	-- STEEL --
+	-----------
+	
+	minetest.register_craftitem(":basic_materials:steel_strip", {
+		description = "Steel Strip",
+		groups = { strip = 1 },
+		inventory_image = "elepower_bm_strip.png^[multiply:#ffffff"
+	})
+	
+	minetest.register_craftitem(":basic_materials:steel_wire", {
+		description = "Spool of steel wire",
+		groups = { wire = 1 },
+		inventory_image = "elepower_bm_steel_wire.png"
+	})
+	
+	minetest.register_craft( {
+		output = "basic_materials:steel_wire 2",
+		type = "shapeless",
+		recipe = {
+			"default:steel_ingot",
+			"basic_materials:empty_spool",
+			"basic_materials:empty_spool",
+		},
+	})
+
+	minetest.register_craft( {
+		output = "basic_materials:steel_strip 12",
+		recipe = {
+			{ "", "default:steel_ingot", "" },
+			{ "default:steel_ingot", "", "" },
+		},
+	})
+	
 else
-	minetest.clear_craft({output = "basic_materials:brass_ingot"})
+	minetest.clear_craft({output = "basic_materials:brass_ingot"})	
+	
+	local steel_strip_def = table.copy(minetest.registered_items["basic_materials:steel_strip"])	
+	steel_strip_def.inventory_image = "elepower_bm_strip.png^[multiply:#ffffff"
+	minetest.register_craftitem(":basic_materials:steel_strip", steel_strip_def)
+	
+	local copper_strip_def = table.copy(minetest.registered_items["basic_materials:copper_strip"])	
+	copper_strip_def.inventory_image = "elepower_bm_strip.png^[multiply:#fcb15f"
+	minetest.register_craftitem(":basic_materials:copper_strip", copper_strip_def)
+	
+	local plastic_strip_def = table.copy(minetest.registered_items["basic_materials:plastic_strip"])	
+	plastic_strip_def.inventory_image = "elepower_bm_strip.png^[colorize:#ffffff:200"
+	minetest.register_craftitem(":basic_materials:plastic_strip", plastic_strip_def)
+	
 end

@@ -473,10 +473,11 @@ function ele.register_machine(nodename, nodedef)
 		end
 	end
 
-	if nodedef.paramtype2 ~= 0 or not nodedef.paramtype2 then
+
+	if nodedef.paramtype2 == 0 or not nodedef.paramtype2 then
 		nodedef.paramtype2 = "facedir"
 	else
-		nodedef.paramtype2 = nil
+		--nodedef.paramtype2 = nil
 	end
 
 	-- Ensure machine group is used properly

@@ -2,7 +2,7 @@
 elepm.register_craft_type("compress", {
 	description = "Compressing",
 	icon        = "elepower_machine_side.png^elepower_compressor.png",
-	inputs      = 1,
+	inputs      = 2,
 })
 
 elepm.register_crafter("elepower_machines:compressor", {

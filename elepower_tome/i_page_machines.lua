@@ -30,6 +30,9 @@ function eletome.machines(machine,page_num)
 	elseif machine_name == "ele_user" then
 		machine_name = "Machine"
 		mach_group = "ele_user" 
+	elseif machine_name == "ele_lighting" then
+		machine_name = "Lighting"
+		mach_group = "ele_lighting"
 	end
 	
 	-- remove "_"
@@ -99,7 +102,7 @@ function eletome.machines(machine,page_num)
 	-- Sort the table
 	if sort_by ~= nil then
 		if sort_by ~= "no_sort" then		
-			-- Sort values by any field avliable in node registration
+			-- Sort values by any field avaliable in node registration
 			mach_sort, mach_key = eletome.sort_by(sort_by,mach_sort,mach_key)
 		end
 	else

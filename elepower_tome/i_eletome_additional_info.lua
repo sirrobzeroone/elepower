@@ -78,6 +78,18 @@ eletome.ai.machine.over    = "These are the simpliest machines in elepower consi
 							 "maybe more complex a small 'I' will be present on the large image, indicating "..
 							 "there is a subpage with additional information for that machine. for example "..
 							 "the Automatic Planter at the bottom of the opposite page."
+							 
+-- info for Lighting
+eletome.ai.lighting         = {}
+--eletome.ai.lighting.sort_by = "ele_capacity"
+eletome.ai.lighting.over    = "There is an array of lighting in elepower which increase in technical complexity "..
+							  "while off setting this with a lower power usage. Lighting types include:\n"..
+							  "                   Incandescent bulbs\n"..
+							  "      Compact Fluroscent bulbs and Fluroscent Tubes\n"..
+							  "                LED bulbs and Light panels\n"..
+							  "             Flood Lights for each type of bulb\n"..
+							  "  A very small number of decorative panels to place around bulbs\n"..
+							  "Black, Silver and Gold conduit to allow the creation of lamps and hanging lights"
 
 -- info for Fluid Pump page
 eletome.ai.fluid_pump         = {}
@@ -691,6 +703,30 @@ eletome.ai.nodes["elepower_machines:sawmill"]         = {lb_top_img = "elepower_
 eletome.ai.nodes["elepower_machines:solderer"]        = {lb_top_img = "elepower_upgrade_efficiency_2.png",lb_top_tt  = "       Creates\n Machine Upgrades"}
 
 eletome.ai.nodes["elepower_farming:tree_processor"]   = {lb_top_img = "elepower_gui_icon_fluid_water.png",lb_top_tt  = "Processes\n Tree Sap"}
+
+-- Lighting
+eletome.ai.nodes["elepower_lighting:bulb_incandescent"] = {lb_top_img = "elepower_lighting_gui_icon_light.png",lb_top_tt  = "Light"}
+
+eletome.ai.nodes["elepower_lighting:bulb_cf"] = {lb_top_img = "elepower_lighting_gui_icon_light.png",lb_top_tt  = "Light"}
+
+eletome.ai.nodes["elepower_lighting:bulb_led"] = {lb_top_img = "elepower_lighting_gui_icon_light.png",lb_top_tt  = "Light"}
+
+eletome.ai.nodes["elepower_lighting:fluro_light_bank"] = {lb_top_img = "elepower_lighting_gui_icon_light.png",lb_top_tt  = "Light"}
+
+eletome.ai.nodes["elepower_lighting:led_light_panel"] = {lb_top_img = "elepower_lighting_gui_icon_light.png",lb_top_tt  = "Light"}
+
+eletome.ai.nodes["elepower_lighting:led_light_panel_colored"] = {lb_top_img = "elepower_lighting_gui_icon_light.png",lb_top_tt  = "Light"}
+
+eletome.ai.nodes["elepower_lighting:led_1x3_light_panel"] = {lb_top_img = "elepower_lighting_gui_icon_light.png",lb_top_tt  = "Light"}
+
+eletome.ai.nodes["elepower_lighting:led_2x3_light_panel"] = {lb_top_img = "elepower_lighting_gui_icon_light.png",lb_top_tt  = "Light"}
+
+eletome.ai.nodes["elepower_lighting:incandescent_floodlight_xp0_yp0"] = {lb_top_img = "elepower_lighting_gui_icon_light.png",lb_top_tt  = "Light"}
+
+eletome.ai.nodes["elepower_lighting:cf_floodlight_xp0_yp0"] = {lb_top_img = "elepower_lighting_gui_icon_light.png",lb_top_tt  = "Light"}
+
+eletome.ai.nodes["elepower_lighting:led_floodlight_xp0_yp0"] = {lb_top_img = "elepower_lighting_gui_icon_light.png",lb_top_tt  = "Light"}
+
 
 -- Wind Turbine
 eletome.ai.nodes["elepower_machines:wind_turbine"]    = {lb_top_img = "elepower_tome_wind.png",

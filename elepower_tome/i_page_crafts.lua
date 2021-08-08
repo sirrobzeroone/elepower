@@ -18,6 +18,7 @@ function eletome.craft_page(craft_description,page_num)
 		
 	-- Convert craft_description back to craft
 	local raw_all_crafts = table.copy(elepm.craft.types)
+	
 	local craft_click = {}
 	local craft_type
 	for craft_name,def in pairs(raw_all_crafts) do		
@@ -95,10 +96,10 @@ function eletome.craft_page(craft_description,page_num)
 	-- Craft page right page --
 	---------------------------	
 	local head_sub_rp_rec      = "hypertext[9.5,0.7;8.5,1.0;craft_lp_h;"..sty_h1s.."Recipes"..sty_h1e.."]"
-	
 	local craft_reg_path = elepm.craft[craft_type]
 	local recipe_list = {}
 	local recipe_list_rdy = {}
+	
 
 	
 	if craft_type == "cooking" then
@@ -132,25 +133,29 @@ function eletome.craft_page(craft_description,page_num)
 		--                {input={item1,num},{item2,num},output={item1,num},{item2,num}} 
 		--               }
 		
-		for k,v in pairs(craft_reg_path) do
+		--minetest.debug(dump(elepm.craft2[craft_type]))
+		for k,craft_recipes in pairs(craft_reg_path) do
 			local input = {}
 			local output = {}
 			
-			if type(v.output) == "table" then -- very rarly table eg grinding-fuel_rod_depleted
-				for k,v in pairs(v.output)do
+			if type(craft_recipes.output) == "table" then -- very rarly table eg grinding-fuel_rod_depleted
+				for k,v in pairs(craft_recipes.output)do
 					local t_out = string.split(v," ")
 					table.insert(output,{t_out[1],tonumber(t_out[2]) or 1})
 				end
 				
 			else
-				local t_out = string.gsub(tostring(v.output),"ItemStack%(\"","")
+				local t_out = string.gsub(tostring(craft_recipes.output),"ItemStack%(\"","")
 				local t_out = string.gsub(t_out,"\"%)","")
 				local t_out = string.split(t_out," ")
 				table.insert(output,{t_out[1],tonumber(t_out[2]) or 1})
 			end
-		
-			for k2,v2 in pairs(v.recipe)do	
-				table.insert(input,{k2,v2}) 
+
+			for k2,def in pairs(craft_recipes.recipe)do		-- recipe == inputs only	
+				for name,num in pairs(def) do
+					table.insert(input,{name,num})
+					
+				end
 			end
 
 			table.insert(recipe_list,{input = input,output = output})
