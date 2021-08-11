@@ -1,4 +1,9 @@
 
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epg = ele.external.graphic
+local eps = ele.external.sounds
+
 minetest.register_node("elepower_nuclear:machine_block", {
 	description = "Radiation-shielded Lead Machine Chassis\nContains dangerous ionizing radiation",
 	tiles = {
@@ -10,10 +15,10 @@ minetest.register_node("elepower_nuclear:machine_block", {
 
 minetest.register_node("elepower_nuclear:stone_with_uranium", {
 	description = "Uranium Ore",
-	tiles = {"default_stone.png^elenuclear_mineral_uranium.png"},
+	tiles = {epg.stone.."^elenuclear_mineral_uranium.png"},
 	groups = {cracky = 2},
 	drop = 'elepower_nuclear:uranium_lump',
-	sounds = default.node_sound_stone_defaults(),
+	sounds = eps.node_sound_stone,
 })
 
 minetest.register_node("elepower_nuclear:fusion_coil", {

@@ -1,19 +1,23 @@
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epr = ele.external.ref
+local epi = ele.external.ing
 
 local c_air = minetest.get_content_id("air")
 
 local function get_formspec(power, fluid, state, level)
 	if not level then level = 0 end
 	return "size[8,8.5]"..
-		default.gui_bg..
-		default.gui_bg_img..
-		default.gui_slots..
+		epr.gui_bg..
+		epr.gui_bg_img..
+		epr.gui_slots..
 		ele.formspec.state_switcher(7, 2.5, state)..
 		ele.formspec.power_meter(power)..
 		ele.formspec.fluid_bar(7, 0, fluid)..
 		"label[1,0;Pump level: "..level.."]"..
 		"list[current_player;main;0,4.25;8,1;]"..
 		"list[current_player;main;0,5.5;8,3;8]"..
-		default.get_hotbar_bg(0, 4.25)
+		epr.get_hotbar_bg(0, 4.25)
 end
 
 -- Dig a node in a certain radius on the same Y level
@@ -92,7 +96,7 @@ local function timer(pos, elapsed)
 		local dig_node = pliquid
 		local amount = 1000
 		if pliquid == "elepower_nuclear:heavy_water_source" and heavy then
-			dig_node = "default:water_source"
+			dig_node = epr.water_source
 			amount = 200
 		end
 
@@ -115,7 +119,7 @@ local function timer(pos, elapsed)
 
 			-- Valid liquid, proceed pumping
 			if bucket.liquids[node.name] and bucket.liquids[node.name].source == node.name then
-				if node.name == "default:water_source" and heavy then
+				if node.name == epr.water_source and heavy then
 					node.name = "elepower_nuclear:heavy_water_source"
 				end
 
@@ -130,7 +134,7 @@ local function timer(pos, elapsed)
 
 		if pliquid ~= "" then
 			-- Filter was installed
-			if pliquid == "default:water_source" and heavy and fl_buffer.amount > 0 then
+			if pliquid == epr.water_source and heavy and fl_buffer.amount > 0 then
 				pliquid = "elepower_nuclear:heavy_water_source"
 				fl_buffer.amount = 0
 				refresh = true
@@ -143,7 +147,7 @@ local function timer(pos, elapsed)
 			local dug = dig_node_leveled_radius(ppos, 16, dig_node)
 			if not dug then
 				local node = minetest.get_node_or_nil(ppos)
-				if node.name == "default:water_source" and heavy then
+				if node.name == epr.water_source and heavy then
 					node.name = "elepower_nuclear:heavy_water_source"
 				end
 

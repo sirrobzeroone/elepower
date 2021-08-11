@@ -1,6 +1,10 @@
 -- This is a crafter type machine base.
 -- It accepts a recipe type registered beforehand.
 
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epr = ele.external.ref
+
 -- Specialized formspec for crafters
 function ele.formspec.get_crafter_formspec(craft_type, power, percent, pos, machine_name, state)
 	local craftstats = elepm.craft.types[craft_type]
@@ -141,9 +145,9 @@ function ele.formspec.get_crafter_formspec(craft_type, power, percent, pos, mach
 	end
 
 	return "size[8,8.5]"..
-		default.gui_bg..
-		default.gui_bg_img..
-		default.gui_slots..
+		epr.gui_bg..
+		epr.gui_bg_img..
+		epr.gui_slots..
 		ele.formspec.power_meter(power)..
 		ele.formspec.state_switcher(7, 0, state)..
 		"list[context;src;"..x..","..y..";"..in_width..","..in_height..";]"..
@@ -157,7 +161,7 @@ function ele.formspec.get_crafter_formspec(craft_type, power, percent, pos, mach
 		"listring[current_player;main]"..
 		"listring[context;dst]"..
 		"listring[current_player;main]"..
-		default.get_hotbar_bg(0, 4.25)
+		epr.get_hotbar_bg(0, 4.25)
 end
 
 

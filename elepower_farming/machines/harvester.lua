@@ -1,4 +1,8 @@
 
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epr = ele.external.ref
+
 -- How many seconds there are between runs
 local HARVESTER_TICK  = 10
 
@@ -81,9 +85,9 @@ end
 
 local function get_formspec(timer, power, sludge, state)
 	return "size[8,8.5]"..
-		default.gui_bg..
-		default.gui_bg_img..
-		default.gui_slots..
+		epr.gui_bg..
+		epr.gui_bg_img..
+		epr.gui_slots..
 		ele.formspec.state_switcher(7, 2.5, state)..
 		ele.formspec.power_meter(power)..
 		ele.formspec.fluid_bar(7, 0, sludge)..
@@ -93,7 +97,7 @@ local function get_formspec(timer, power, sludge, state)
 		"list[current_player;main;0,5.5;8,3;8]"..
 		"listring[context;dst]"..
 		"listring[current_player;main]"..
-		default.get_hotbar_bg(0, 4.25)
+		epr.get_hotbar_bg(0, 4.25)
 end
 
 local function on_timer(pos, elapsed)

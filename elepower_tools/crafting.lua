@@ -1,18 +1,21 @@
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epi = ele.external.ing
 
 -- Drill
 minetest.register_craft({
 	output = "elepower_tools:drill_bit",
 	recipe = {
-		{"", "default:steel_ingot", ""},
-		{"default:steel_ingot", "default:steel_ingot", "default:steel_ingot"},
+		{""             ,epi.steel_ingot, ""            },
+		{epi.steel_ingot,epi.steel_ingot,epi.steel_ingot}
 	}
 })
 
 minetest.register_craft({
 	output = "elepower_tools:hand_drill",
 	recipe = {
-		{"", "elepower_dynamics:wound_copper_coil", "elepower_tools:drill_bit"},
-		{"default:steel_ingot", "elepower_dynamics:battery", "default:steel_ingot"},
+		{""             , "elepower_dynamics:wound_copper_coil", "elepower_tools:drill_bit"},
+		{epi.steel_ingot, "elepower_dynamics:battery"          , epi.steel_ingot},
 		{"basic_materials:motor", "elepower_dynamics:capacitor", ""},
 	}
 })
@@ -21,9 +24,9 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_tools:chain",
 	recipe = {
-		{"", "default:steel_ingot", "default:steel_ingot"},
-		{"default:steel_ingot", "elepower_dynamics:steel_plate", "default:steel_ingot"},
-		{"default:steel_ingot", "default:steel_ingot", ""},
+		{""             , epi.steel_ingot                ,epi.steel_ingot},
+		{epi.steel_ingot, "elepower_dynamics:steel_plate",epi.steel_ingot},
+		{epi.steel_ingot, epi.steel_ingot                , ""            }
 	}
 })
 
@@ -31,7 +34,7 @@ minetest.register_craft({
 	output = "elepower_tools:chainsaw",
 	recipe = {
 		{"", "elepower_dynamics:wound_copper_coil", "elepower_tools:chain"},
-		{"default:steel_ingot", "elepower_dynamics:battery", "default:steel_ingot"},
+		{epi.steel_ingot, "elepower_dynamics:battery", epi.steel_ingot},
 		{"basic_materials:motor", "elepower_dynamics:capacitor", ""},
 	}
 })
@@ -40,7 +43,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_tools:soldering_iron",
 	recipe = {
-		{"", "elepower_dynamics:battery", "default:steel_ingot"},
+		{"", "elepower_dynamics:battery",epi.steel_ingot},
 		{"", "elepower_dynamics:wound_silver_coil", ""},
 		{"elepower_dynamics:wound_silver_coil", "", ""},
 	}
@@ -50,9 +53,9 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_tools:repair_core",
 	recipe = {
-		{"", "default:diamondblock", "elepower_dynamics:steel_plate"},
-		{"elepower_dynamics:lead_plate", "elepower_dynamics:xycrone_lump", "elepower_dynamics:lead_plate"},
-		{"elepower_dynamics:steel_plate", "default:mese", ""},
+		{""                             , epi.diamond_block, "elepower_dynamics:steel_plate"},
+		{"elepower_dynamics:lead_plate" , "elepower_dynamics:xycrone_lump", "elepower_dynamics:lead_plate"},
+		{"elepower_dynamics:steel_plate", epi.mese, ""},
 	}
 })
 

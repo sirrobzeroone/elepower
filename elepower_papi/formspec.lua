@@ -1,3 +1,8 @@
+
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epg = ele.external.graphic
+
 -- Formspec helpers
 
 ele.formspec = {}
@@ -62,7 +67,7 @@ end
 
 -- Fluid bar for formspec
 function ele.formspec.fluid_bar(x, y, fluid_buffer)
-	local texture = "default_water.png"
+	local texture = epg.water
 	local metric  = 0
 	local tooltip = ("tooltip[%f,%f;1,2.5;%s]"):format(x, y, "Empty Buffer")
 	

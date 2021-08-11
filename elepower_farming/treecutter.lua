@@ -2,6 +2,11 @@
 -- This code is taken from TreeCapitator by HybridDog (WTFPL)
 -- https://github.com/HybridDog/treecapitator
 
+
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epi = ele.external.ing
+
 local load_time_start = minetest.get_us_time()
 
 ------------------------------------- Settings ---------------------------------
@@ -10,8 +15,8 @@ local load_time_start = minetest.get_us_time()
 elefarm.tc = {
 	stem_height_min = 3,
 	default_tree = {
-		trees = {"default:tree"},
-		leaves = {"default:leaves"},
+		trees = {epi.tree},
+		leaves = {epi.leaves},
 		range = 2,
 		fruits = {},
 		type = "default",
@@ -1024,32 +1029,32 @@ local mgname = minetest.get_mapgen_setting"mg_name"
 
 if mgname == "v6" then
 	elefarm.tc.register_tree{
-		trees = {"default:tree"},
-		leaves = {"default:leaves"},
+		trees = {epi.tree},
+		leaves = {epi.leaves},
 		range = 2,
-		fruits = {"default:apple"}
+		fruits = {epi.apple}
 	}
 
 	elefarm.tc.register_tree({
-		trees = {"default:jungletree"},
-		leaves = {"default:jungleleaves"},
+		trees = {epi.jungle_tree},
+		leaves = {epi.jungle_leaves},
 		range = 3
 	})
 else
 	elefarm.tc.register_tree{
-		trees = {"default:tree"},
-		leaves = {"default:leaves"},
+		trees = {epi.tree},
+		leaves = {epi.leaves},
 		range = 2,
 		range_up = 4,
 		range_down = 0,
-		fruits = {"default:apple", "default:tree"},
+		fruits = {epi.apple, epi.tree},
 		trunk_fruit_vertical = true
 	}
 
 	elefarm.tc.register_tree({
-		trees = {"default:jungletree"},
-		leaves = {"default:jungleleaves"},
-		fruits = {"default:jungletree"},
+		trees = {epi.jungle_tree},
+		leaves = {epi.jungle_leaves},
+		fruits = {epi.jungle_tree},
 		range = 4,
 		range_up = 14,
 		range_down = 5,
@@ -1058,9 +1063,9 @@ else
 	})
 
 	elefarm.tc.register_tree({
-		trees = {"default:jungletree"},
-		leaves = {"default:jungleleaves"},
-		fruits = {"default:jungletree"},
+		trees = {epi.jungle_tree},
+		leaves = {epi.jungle_leaves},
+		fruits = {epi.jungle_tree},
 		range = 4,
 		range_up = 14,
 		range_down = 3,
@@ -1071,8 +1076,8 @@ else
 end
 
 elefarm.tc.register_tree({
-	trees = {"default:pine_tree"},
-	leaves = {"default:pine_needles"},
+	trees = {epi.pine_tree},
+	leaves = {epi.pine_needles},
 	-- the +2 height is used to also support the coned pine trees
 	range_up = 2 +2,
 	range_down = 6,
@@ -1080,29 +1085,29 @@ elefarm.tc.register_tree({
 })
 
 elefarm.tc.register_tree({
-	trees = {"default:acacia_tree"},
-	leaf = "default:acacia_leaves",
+	trees = {epi.acacia_tree},
+	leaf = epi.acacia_leaves,
 	no_param2test = true,
 	--leavesrange = 4,
 	type = "acacia"
 })
 
 elefarm.tc.register_tree({
-	trees = {"default:aspen_tree"},
-	leaves = {"default:aspen_leaves"},
+	trees = {epi.aspen_tree},
+	leaves = {epi.aspen_leaves},
 	range = 4,
 })
 
 if minetest.get_modpath("farming_plus") then
 	elefarm.tc.register_tree({
-		trees = {"default:tree"},
+		trees = {epi.tree},
 		leaves = {"farming_plus:banana_leaves"},
 		range = 2,
 		fruits = {"farming_plus:banana"}
 	})
 
 	elefarm.tc.register_tree({
-		trees = {"default:tree"},
+		trees = {epi.tree},
 		leaves = {"farming_plus:cocoa_leaves"},
 		range = 2,
 		fruits = {"farming_plus:cocoa"}
@@ -1147,7 +1152,7 @@ if minetest.get_modpath("moretrees") then
 	elefarm.tc.register_tree{
 		trees = {"moretrees:apple_tree_trunk"},
 		leaves = {"moretrees:apple_tree_leaves"},
-		fruits = {"default:apple", "moretrees:apple_tree_trunk"},
+		fruits = {epi.apple, "moretrees:apple_tree_trunk"},
 		trunk_fruit_vertical = true,
 		range = 9,
 		range_up = 3,
@@ -1266,7 +1271,7 @@ if minetest.get_modpath("moretrees") then
 
 	elefarm.tc.register_tree{ -- small and 2x2 jungletree at once
 		trees = {"moretrees:jungletree_trunk"},
-		leaves = {"default:jungleleaves", "moretrees:jungletree_leaves_red"},
+		leaves = {epi.jungle_leaves, "moretrees:jungletree_leaves_red"},
 		fruits = {"moretrees:jungletree_trunk"},
 		requisite_leaves = {"moretrees:jungletree_leaves_red"},
 		trunk_fruit_vertical = true,
@@ -1280,7 +1285,7 @@ if minetest.get_modpath("moretrees") then
 
 	elefarm.tc.register_tree{
 		trees = {"moretrees:jungletree_trunk"},
-		leaves = {"default:jungleleaves", "moretrees:jungletree_leaves_yellow",
+		leaves = {epi.jungle_leaves, "moretrees:jungletree_leaves_yellow",
 			"moretrees:jungletree_leaves_red"},
 		fruits = {"moretrees:jungletree_trunk"},
 		requisite_leaves = {"moretrees:jungletree_leaves_yellow"},
@@ -1336,8 +1341,8 @@ end
 -- code from amadin and narrnika
 if minetest.get_modpath("ethereal") then
 	elefarm.tc.register_tree({
-		trees = {"default:jungletree"},
-		leaves = {"default:jungleleaves"},
+		trees = {epi.jungle_tree},
+		leaves = {epi.jungle_leaves},
 		range = 3,
 		height = 20,
 		max_nodes = 145,
@@ -1354,9 +1359,9 @@ if minetest.get_modpath("ethereal") then
 		type = "default",
 	})
 	elefarm.tc.register_tree({
-		trees = {"default:tree"},
-		leaves = {"default:leaves", "ethereal:orange_leaves"},
-		fruits = {"default:apple", "ethereal:orange"},
+		trees = {epi.tree},
+		leaves = {epi.leaves, "ethereal:orange_leaves"},
+		fruits = {epi.apple, "ethereal:orange"},
 		range = 2,
 		type = "default",
 	})

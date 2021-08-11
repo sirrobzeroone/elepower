@@ -1,17 +1,22 @@
 
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epr = ele.external.ref
+local epg = ele.external.graphic
+
 local function get_formspec_default(power, percent, buffer, state)
 	return "size[8,8.5]"..
-		default.gui_bg..
-		default.gui_bg_img..
-		default.gui_slots..
+		epr.gui_bg..
+		epr.gui_bg_img..
+		epr.gui_slots..
 		ele.formspec.power_meter(power)..
 		ele.formspec.state_switcher(7, 2.5, state)..
 		ele.formspec.fluid_bar(7, 0, buffer)..
-		"image[3.5,1.5;1,1;default_furnace_fire_bg.png^[lowpart:"..
-		(percent)..":default_furnace_fire_fg.png]"..
+		"image[3.5,1.5;1,1;"..epg.furnace_fire_bg.."^[lowpart:"..
+		(percent)..":"..epg.furnace_fire_fg.."]"..
 		"list[current_player;main;0,4.25;8,1;]"..
 		"list[current_player;main;0,5.5;8,3;8]"..
-		default.get_hotbar_bg(0, 4.25)
+		epr.get_hotbar_bg(0, 4.25)
 end
 
 -- A generator that creates power using a fuel

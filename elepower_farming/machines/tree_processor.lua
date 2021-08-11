@@ -1,4 +1,8 @@
 
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epr = ele.external.ref
+
 local tree_fluid_recipes = {
 	["elepower_farming:tree_sap_source"] = {
 		water  = 1000,
@@ -23,9 +27,9 @@ local tree_fluid_recipes = {
 
 local function get_formspec(timer, power, fluid_buffer, water_buffer, output_buffer, state)
 	return "size[8,8.5]"..
-		default.gui_bg..
-		default.gui_bg_img..
-		default.gui_slots..
+		epr.gui_bg..
+		epr.gui_bg_img..
+		epr.gui_slots..
 		ele.formspec.power_meter(power)..
 		ele.formspec.create_bar(1, 0, 100 - timer, "#00ff11", true)..
 		ele.formspec.fluid_bar(2, 0, fluid_buffer)..
@@ -37,7 +41,7 @@ local function get_formspec(timer, power, fluid_buffer, water_buffer, output_buf
 		"list[current_player;main;0,5.5;8,3;8]"..
 		"listring[context;dst]"..
 		"listring[current_player;main]"..
-		default.get_hotbar_bg(0, 4.25)
+		epr.get_hotbar_bg(0, 4.25)
 end
 
 local function on_timer(pos, elapsed)
@@ -170,7 +174,7 @@ ele.register_machine("elepower_farming:tree_processor", {
 		},
 		water = {
 			capacity  = 8000,
-			accepts   = {"default:water_source"},
+			accepts   = {epr.water_source},
 			drainable = false,
 		},
 		output = {

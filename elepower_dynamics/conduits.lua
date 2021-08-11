@@ -1,4 +1,9 @@
 
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epg = ele.external.graphic
+local eps = ele.external.sounds
+
 -- Electric power
 ele.register_conduit("elepower_dynamics:conduit", {
 	description = "Power Conduit",
@@ -15,57 +20,62 @@ ele.register_conduit("elepower_dynamics:conduit_wall", {
 	groups = {cracky = 1}
 })
 
-ele.register_conduit("elepower_dynamics:conduit_dirt_with_grass", {
-	description = "Power Conduit Grass Outlet",
-	tiles = {"default_grass.png^elepower_conduit_node_socket.png",
-	         "default_dirt.png",
-			 "default_dirt.png^default_grass_side.png"
-			},
-	use_texture_alpha = "clip",
-	ele_conductor_density = 4/8,
-	groups = {crumbly = 3, soil = 1},
-	sounds = default.node_sound_dirt_defaults({
-			footstep = {name = "default_grass_footstep", gain = 0.25}
+
+if ele.external.conduit_dirt_with_grass == true then
+	ele.register_conduit("elepower_dynamics:conduit_dirt_with_grass", {
+		description = "Power Conduit Grass Outlet",
+		tiles = {epg.grass.."^elepower_conduit_node_socket.png",
+				 epg.dirt,
+				 epg.dirt.."^"..epg.grass_side
+				},
+		use_texture_alpha = "clip",
+		ele_conductor_density = 4/8,
+		groups = {crumbly = 3, soil = 1},
+		sounds = eps.node_sound_dirt_c
 	})
-})
+end
 
-ele.register_conduit("elepower_dynamics:conduit_dirt_with_dry_grass", {
-	description = "Power Conduit Dry Grass Outlet",
-	tiles = {"default_dry_grass.png^elepower_conduit_node_socket.png",
-	         "default_dirt.png",
-			 "default_dirt.png^default_dry_grass_side.png"
-			},
-	use_texture_alpha = "clip",
-	ele_conductor_density = 4/8,
-	groups = {crumbly = 3, soil = 1},
-	sounds = default.node_sound_dirt_defaults({
-			footstep = {name = "default_grass_footstep", gain = 0.25}
+if ele.external.conduit_dirt_with_dry_grass == true then
+	ele.register_conduit("elepower_dynamics:conduit_dirt_with_dry_grass", {
+		description = "Power Conduit Dry Grass Outlet",
+		tiles = {epg.grass_dry.."^elepower_conduit_node_socket.png",
+				 epg.dirt,
+				 epg.dirt.."^"..epg.grass_side_dry
+				},
+		use_texture_alpha = "clip",
+		ele_conductor_density = 4/8,
+		groups = {crumbly = 3, soil = 1},
+		sounds = eps.node_sound_dirt_c
 	})
-})
+end
 
-ele.register_conduit("elepower_dynamics:conduit_stone_block", {
-	description = "Power Conduit Stone Block",
-	tiles = {"default_stone_block.png^elepower_conduit_node_socket.png",
-	         "default_stone_block.png^elepower_conduit_node_socket.png",
-			 "default_stone_block.png^elepower_conduit_node_socket.png"
-			},
-	use_texture_alpha = "clip",
-	ele_conductor_density = 4/8,
-	groups = {cracky = 2, stone = 1},
-	sounds = default.node_sound_stone_defaults(),
-})
+if ele.external.conduit_stone_block == true then
+	ele.register_conduit("elepower_dynamics:conduit_stone_block", {
+		description = "Power Conduit Stone Block",
+		tiles = {epg.stone_block.."^elepower_conduit_node_socket.png",
+				 epg.stone_block.."^elepower_conduit_node_socket.png",
+				 epg.stone_block.."^elepower_conduit_node_socket.png"
+				},
+		use_texture_alpha = "clip",
+		ele_conductor_density = 4/8,
+		groups = {cracky = 2, stone = 1},
+		sounds = eps.node_sound_stone
+	})
+end
 
-ele.register_conduit("elepower_dynamics:conduit_stone_block_desert", {
-	description = "Power Conduit Desert Stone Block",
-	tiles = {"default_desert_stone_block.png^elepower_conduit_node_socket.png",
-	         "default_desert_stone_block.png^elepower_conduit_node_socket.png",
-			 "default_desert_stone_block.png^elepower_conduit_node_socket.png"
-			},
-	use_texture_alpha = "clip",
-	ele_conductor_density = 4/8,
-	groups = {cracky = 2, stone = 1},
-	sounds = default.node_sound_stone_defaults(),
-})
+if ele.external.conduit_stone_block_desert == true then
+	ele.register_conduit("elepower_dynamics:conduit_stone_block_desert", {
+		description = "Power Conduit Desert Stone Block",
+		tiles = {epg.desert_stone_block.."^elepower_conduit_node_socket.png",
+				 epg.desert_stone_block.."^elepower_conduit_node_socket.png",
+				 epg.desert_stone_block.."^elepower_conduit_node_socket.png"
+				},
+		use_texture_alpha = "clip",
+		ele_conductor_density = 4/8,
+		groups = {cracky = 2, stone = 1},
+		sounds = eps.node_sound_stone
+	})
+end
 
 -- Fluid
 fluid_lib.register_transfer_node("elepower_dynamics:opaque_duct", {

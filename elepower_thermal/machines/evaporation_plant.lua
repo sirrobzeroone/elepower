@@ -1,9 +1,15 @@
+
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epr = ele.external.ref
+local epi = ele.external.ing
+
 -- Thermal Evaporation Plant
 -- Used to extract salt from water
 elethermal.cache = {}
 local results = {
 	{
-		input = "default:water_source 1000",
+		input = epr.water_source.." 1000",
 		output = "elepower_thermal:brine_source 100",
 		heat = 400
 	},
@@ -143,9 +149,9 @@ local function controller_formspec (input, output, heat)
 			  (100 * heat / 1000)..":elethermal_gradient.png^[transformR270]"
 	end
 	return "size[8,4.5]"..
-		default.gui_bg..
-		default.gui_bg_img..
-		default.gui_slots..
+		epr.gui_bg..
+		epr.gui_bg_img..
+		epr.gui_slots..
 		bar..
 		"tooltip[1.5,3.5;6,1;Heat: "..heat.."K]"..
 		ele.formspec.fluid_bar(0, 0, input)..
@@ -259,7 +265,7 @@ minetest.register_node("elepower_thermal:evaporator_controller", {
 	fluid_buffers = {
 		input = {
 			capacity  = 8000,
-			accepts   = {"elepower_thermal:brine_source", "default:water_source"},
+			accepts   = {"elepower_thermal:brine_source", epr.water_source},
 			drainable = false,
 		},
 		output = {

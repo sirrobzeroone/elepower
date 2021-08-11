@@ -1,4 +1,9 @@
 
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local eps = ele.external.sounds
+local epi = ele.external.ing
+
 -- How many seconds there are between runs
 local PLANTER_TICK = 10
 
@@ -180,26 +185,26 @@ local function plant(pos, range, stack, inv)
 							if (regN[base_node.name].soil     == nil or
 							   regN[base_node.name].soil.wet == nil or
 							   regN[base_node.name].soil.dry == nil) and
-							   regN["farming:soil"] == nil then
+							   regN[epi.farming_soil] == nil then
 								till = false
 							end
 
 							if till then
-								minetest.sound_play("default_dig_crumbly", {
+								minetest.sound_play(eps.dig_crumbly, {
 									pos = base_pos,
 									gain = 0.5,
 								})
 
 								local soil = regN[base_node.name].soil
-								local wet_soil = "farming:soil_wet"
+								local wet_soil = epi.farming_soil_wet
 
 								-- Determine soil name
 								-- Make sure we don't replace wet soil
 								if soil then
-									wet_soil = soil.wet or "farming:soil_wet"
+									wet_soil = soil.wet or epi_farming_soil_wet
 									soil = soil.dry
 								else
-									soil = "farming:soil"
+									soil = epi.farming_soil
 								end
 
 								if base_node.name ~= soil and base_node.name ~= wet_soil then

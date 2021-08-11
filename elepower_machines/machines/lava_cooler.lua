@@ -1,16 +1,21 @@
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epr = ele.external.ref
+local epg = ele.external.graphic
+local epi = ele.external.ing
 
 local TIME = 5
 
 local cooler_recipes = {
-	["default:cobble"] = {
+	[epi.cobble] = {
 		lava  = 0,
 		water = 0,
 	},
-	["default:obsidian"] = {
+	[epi.obsidian] = {
 		lava  = 1000,
 		water = 0,
 	},
-	["default:stone"] = {
+	[epr.stone] = {
 		lava  = 0,
 		water = 1000,
 	},
@@ -30,25 +35,25 @@ local function get_formspec(item_percent, coolant_buffer, hot_buffer, power, rec
 	end
 
 	return "size[8,8.5]"..
-		default.gui_bg..
-		default.gui_bg_img..
-		default.gui_slots..
+		epr.gui_bg..
+		epr.gui_bg_img..
+		epr.gui_slots..
 		ele.formspec.power_meter(power)..
 		ele.formspec.state_switcher(3.5, 2.5, state)..
 		ele.formspec.fluid_bar(1, 0, coolant_buffer)..
 		ele.formspec.fluid_bar(7, 0, hot_buffer)..
 		"list[context;dst;3.5,1.5;1,1;]"..
-		"image[2.5,1.5;1,1;gui_furnace_arrow_bg.png^[lowpart:"..
-		(item_percent)..":gui_furnace_arrow_fg.png^[transformR270]"..
-		"image[4.5,1.5;1,1;gui_furnace_arrow_bg.png^[lowpart:"..
-		(item_percent)..":gui_furnace_arrow_fg.png^[transformFXR90]"..
+		"image[2.5,1.5;1,1;"..epg.gui_furnace_arrow_bg.."^[lowpart:"..
+		(item_percent)..":"..epg.gui_furnace_arrow_fg.."^[transformR270]"..
+		"image[4.5,1.5;1,1;"..epg.gui_furnace_arrow_bg.."^[lowpart:"..
+		(item_percent)..":"..epg.gui_furnace_arrow_fg.."^[transformFXR90]"..
 		table.concat(rclist, "")..
 		"list[current_player;main;0,4.25;8,1;]"..
 		"list[current_player;main;0,5.5;8,3;8]"..
 		"listring[current_player;main]"..
 		"listring[context;dst]"..
 		"listring[current_player;main]"..
-		default.get_hotbar_bg(0, 4.25)
+		epr.get_hotbar_bg(0, 4.25)
 end
 
 local function lava_cooler_timer(pos, elapsed)
@@ -131,11 +136,11 @@ ele.register_machine("elepower_machines:lava_cooler", {
 	fluid_buffers = {
 		coolant = {
 			capacity = 8000,
-			accepts  = {"default:water_source"},
+			accepts  = {epr.water_source},
 		},
 		hot = {
 			capacity = 8000,
-			accepts  = {"default:lava_source"},
+			accepts  = {epi.lava_source},
 		}
 	},
 	tiles = {
@@ -148,8 +153,8 @@ ele.register_machine("elepower_machines:lava_cooler", {
 
 		inv:set_size("dst", 1)
 
-		meta:set_string("recipe", "default:cobble")
-		meta:set_string("formspec", get_formspec(0,nil,nil,nil,cooler_recipes, "default:cobble"))
+		meta:set_string("recipe", epi.cobble)
+		meta:set_string("formspec", get_formspec(0,nil,nil,nil,cooler_recipes, epi.cobble))
 	end,
 	on_timer = lava_cooler_timer,
 	on_receive_fields = function (pos, formname, fields, sender)

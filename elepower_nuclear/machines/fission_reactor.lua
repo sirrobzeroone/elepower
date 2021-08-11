@@ -1,4 +1,9 @@
 
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epi = ele.external.ing
+local epr = ele.external.ref
+
 --[[
 	Reactor fitness check:
 		8x8x8 area surrounding the core must either contain..
@@ -31,8 +36,8 @@ local function calculate_fitness(pos)
 	local data = manip:get_data()
 
 	local ids = {
-		c_water = minetest.get_content_id("default:water_source"),
-		c_lava  = minetest.get_content_id("default:lava_source"),
+		c_water = minetest.get_content_id(epr.water_source),
+		c_lava  = minetest.get_content_id(epi.lava_source),
 	}
 
 	local excession = 0
@@ -144,9 +149,9 @@ local function get_core_formspec(heat, power)
 	end
 
 	return "size[8,8.5]"..
-		default.gui_bg..
-		default.gui_bg_img..
-		default.gui_slots..
+		epr.gui_bg..
+		epr.gui_bg_img..
+		epr.gui_slots..
 		"list[context;fuel;2.5,0;3,3;]"..
 		"list[current_player;main;0,4.25;8,1;]"..
 		"list[current_player;main;0,5.5;8,3;8]"..
@@ -158,7 +163,7 @@ local function get_core_formspec(heat, power)
 		"listring[current_player;main]"..
 		"listring[context;fuel]"..
 		"listring[current_player;main]"..
-		default.get_hotbar_bg(0, 4.25)
+		epr.get_hotbar_bg(0, 4.25)
 end
 
 local function get_controller_formspec(rod_pos, selected)
@@ -182,9 +187,9 @@ local function get_controller_formspec(rod_pos, selected)
 	end
 
 	return "size[8,8.5]"..
-		default.gui_bg..
-		default.gui_bg_img..
-		default.gui_slots..
+		epr.gui_bg..
+		epr.gui_bg_img..
+		epr.gui_slots..
 		table.concat( ctrls, "" )..
 		"button[0,3.5;1.5,0.5;next;Next]"..
 		"button[1.5,3.5;1.5,0.5;prev;Previous]"..
@@ -199,20 +204,20 @@ local function get_controller_formspec(rod_pos, selected)
 		"list[current_player;main;0,4.25;8,1;]"..
 		"list[current_player;main;0,5.5;8,3;8]"..
 		"listring[current_player;main]"..
-		default.get_hotbar_bg(0, 4.25)
+		epr.get_hotbar_bg(0, 4.25)
 end
 
 local function get_port_formspec(cool, hot)
 	return "size[8,8.5]"..
-		default.gui_bg..
-		default.gui_bg_img..
-		default.gui_slots..
+		epr.gui_bg..
+		epr.gui_bg_img..
+		epr.gui_slots..
 		ele.formspec.fluid_bar(0, 0, cool)..
 		ele.formspec.fluid_bar(7, 0, hot)..
 		"list[current_player;main;0,4.25;8,1;]"..
 		"list[current_player;main;0,5.5;8,3;8]"..
 		"listring[current_player;main]"..
-		default.get_hotbar_bg(0, 4.25)
+		epr.get_hotbar_bg(0, 4.25)
 end
 
 local function reactor_core_timer(pos)
@@ -556,7 +561,7 @@ ele.register_base_device("elepower_nuclear:reactor_fluid_port", {
 	fluid_buffers = {
 		cool = {
 			capacity  = 16000,
-			accepts   = {"default:water_source", "elepower_nuclear:coolant_source"},
+			accepts   = {epr.water_source, "elepower_nuclear:coolant_source"},
 			drainable = false,
 		},
 		hot = {

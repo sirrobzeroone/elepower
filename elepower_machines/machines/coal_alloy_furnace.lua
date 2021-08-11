@@ -1,15 +1,20 @@
 
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epr = ele.external.ref
+local epg = ele.external.graphic
+
 local function get_formspec(fuel_percent, item_percent)
 	return "size[8,8.5]"..
-		default.gui_bg..
-		default.gui_bg_img..
-		default.gui_slots..
+		epr.gui_bg..
+		epr.gui_bg_img..
+		epr.gui_slots..
 		"list[context;src;2,0.5;2,1;]"..
 		"list[context;fuel;2.5,2.5;1,1;]"..
-		"image[2.5,1.5;1,1;default_furnace_fire_bg.png^[lowpart:"..
-		(100-fuel_percent)..":default_furnace_fire_fg.png]"..
-		"image[4,1.5;1,1;gui_furnace_arrow_bg.png^[lowpart:"..
-		(item_percent)..":gui_furnace_arrow_fg.png^[transformR270]"..
+		"image[2.5,1.5;1,1;"..epg.furnace_fire_bg.."^[lowpart:"..
+		(100-fuel_percent)..":"..epg.furnace_fire_fg.."]"..
+		"image[4,1.5;1,1;"..epg.gui_furnace_arrow_bg.."^[lowpart:"..
+		(item_percent)..":"..epg.gui_furnace_arrow_fg.."^[transformR270]"..
 		"list[context;dst;5,0.96;2,2;]"..
 		"list[current_player;main;0,4.25;8,1;]"..
 		"list[current_player;main;0,5.5;8,3;8]"..
@@ -19,7 +24,7 @@ local function get_formspec(fuel_percent, item_percent)
 		"listring[current_player;main]"..
 		"listring[context;fuel]"..
 		"listring[current_player;main]"..
-		default.get_hotbar_bg(0, 4.25)
+		epr.get_hotbar_bg(0, 4.25)
 end
 
 local function can_dig(pos, player)

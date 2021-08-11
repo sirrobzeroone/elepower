@@ -1,3 +1,6 @@
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local eps = ele.external.sounds
 
 -----------------------
 -- Utility Functions --
@@ -150,7 +153,7 @@ function ele.helpers.register_liquid(liquid, def)
 			liquidtype = state,
 			liquid_alternative_source = mod..":"..liquid.."_source",
 			liquid_alternative_flowing = mod..":"..liquid.."_flowing",
-			sounds = default.node_sound_water_defaults(),
+			sounds = eps.node_sound_water,
 		}
 
 		for key,val in pairs(def) do

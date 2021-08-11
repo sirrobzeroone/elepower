@@ -1,9 +1,12 @@
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epr = ele.external.ref
 
 local function get_formspec(power, state)
 	return "size[8,8.5]"..
-		default.gui_bg..
-		default.gui_bg_img..
-		default.gui_slots..
+		epr.gui_bg..
+		epr.gui_bg_img..
+		epr.gui_slots..
 		ele.formspec.power_meter(power)..
 		"list[context;tool;3.5,1.5;1,1;]"..
 		ele.formspec.state_switcher(7, 0, state)..
@@ -12,7 +15,7 @@ local function get_formspec(power, state)
 		"listring[current_player;main]"..
 		"listring[context;tool]"..
 		"listring[current_player;main]"..
-		default.get_hotbar_bg(0, 4.25)
+		epr.get_hotbar_bg(0, 4.25)
 end
 
 local function is_tool (istack)

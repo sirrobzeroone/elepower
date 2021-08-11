@@ -1,97 +1,102 @@
 
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epi = ele.external.ing 
+local ept = ele.external.tools
+
 ---------------
 -- Overrides --
 ---------------
 
 -- Remove iron_lump -> steel_ingot, because dynamics adds iron ingot
---minetest.clear_craft({type = "cooking", output = "default:steel_ingot"})
+--minetest.clear_craft({type = "cooking", output = epi.steel_ingot})
 
 -----------
 -- Tools --
 -----------
-
+if ept.enable_iron_lead_tools == true then
 -- Pickaxes
 
-minetest.register_craft({
-	output = 'elepower_dynamics:pick_iron',
-	recipe = {
-		{'elepower_dynamics:iron_ingot', 'elepower_dynamics:iron_ingot', 'elepower_dynamics:iron_ingot'},
-		{'', 'group:stick', ''},
-		{'', 'group:stick', ''},
-	}
-})
+	minetest.register_craft({
+		output = 'elepower_dynamics:pick_iron',
+		recipe = {
+			{'elepower_dynamics:iron_ingot', 'elepower_dynamics:iron_ingot', 'elepower_dynamics:iron_ingot'},
+			{'',epi.group_stick, ''},
+			{'',epi.group_stick, ''},
+		}
+	})
 
-minetest.register_craft({
-	output = 'elepower_dynamics:pick_lead',
-	recipe = {
-		{'elepower_dynamics:lead_ingot', 'elepower_dynamics:lead_ingot', 'elepower_dynamics:lead_ingot'},
-		{'', 'group:stick', ''},
-		{'', 'group:stick', ''},
-	}
-})
+	minetest.register_craft({
+		output = 'elepower_dynamics:pick_lead',
+		recipe = {
+			{'elepower_dynamics:lead_ingot', 'elepower_dynamics:lead_ingot', 'elepower_dynamics:lead_ingot'},
+			{'',epi.group_stick, ''},
+			{'',epi.group_stick, ''},
+		}
+	})
 
--- Shovels
+	-- Shovels
 
-minetest.register_craft({
-	output = 'elepower_dynamics:shovel_iron',
-	recipe = {
-		{'elepower_dynamics:iron_ingot'},
-		{'group:stick'},
-		{'group:stick'},
-	}
-})
+	minetest.register_craft({
+		output = 'elepower_dynamics:shovel_iron',
+		recipe = {
+			{'elepower_dynamics:iron_ingot'},
+			{epi.group_stick},
+			{epi.group_stick},
+		}
+	})
 
-minetest.register_craft({
-	output = 'elepower_dynamics:shovel_lead',
-	recipe = {
-		{'elepower_dynamics:lead_ingot'},
-		{'group:stick'},
-		{'group:stick'},
-	}
-})
+	minetest.register_craft({
+		output = 'elepower_dynamics:shovel_lead',
+		recipe = {
+			{'elepower_dynamics:lead_ingot'},
+			{epi.group_stick},
+			{epi.group_stick},
+		}
+	})
 
--- Axes
+	-- Axes
 
-minetest.register_craft({
-	output = 'elepower_dynamics:axe_iron',
-	recipe = {
-		{'elepower_dynamics:iron_ingot', 'elepower_dynamics:iron_ingot'},
-		{'elepower_dynamics:iron_ingot', 'group:stick'},
-		{'', 'group:stick'},
-	}
-})
+	minetest.register_craft({
+		output = 'elepower_dynamics:axe_iron',
+		recipe = {
+			{'elepower_dynamics:iron_ingot', 'elepower_dynamics:iron_ingot'},
+			{'elepower_dynamics:iron_ingot',epi.group_stick},
+			{'',epi.group_stick},
+		}
+	})
 
-minetest.register_craft({
-	output = 'elepower_dynamics:axe_lead',
-	recipe = {
-		{'elepower_dynamics:lead_ingot', 'elepower_dynamics:lead_ingot'},
-		{'elepower_dynamics:lead_ingot', 'group:stick'},
-		{'', 'group:stick'},
-	}
-})
+	minetest.register_craft({
+		output = 'elepower_dynamics:axe_lead',
+		recipe = {
+			{'elepower_dynamics:lead_ingot', 'elepower_dynamics:lead_ingot'},
+			{'elepower_dynamics:lead_ingot',epi.group_stick},
+			{'',epi.group_stick},
+		}
+	})
 
--- Swords
+	-- Swords
 
-minetest.register_craft({
-	output = 'elepower_dynamics:sword_iron',
-	recipe = {
-		{'elepower_dynamics:iron_ingot'},
-		{'elepower_dynamics:iron_ingot'},
-		{'group:stick'},
-	}
-})
+	minetest.register_craft({
+		output = 'elepower_dynamics:sword_iron',
+		recipe = {
+			{'elepower_dynamics:iron_ingot'},
+			{'elepower_dynamics:iron_ingot'},
+			{epi.group_stick},
+		}
+	})
 
-minetest.register_craft({
-	output = 'elepower_dynamics:sword_lead',
-	recipe = {
-		{'elepower_dynamics:lead_ingot'},
-		{'elepower_dynamics:lead_ingot'},
-		{'group:stick'},
-	}
-})
+	minetest.register_craft({
+		output = 'elepower_dynamics:sword_lead',
+		recipe = {
+			{'elepower_dynamics:lead_ingot'},
+			{'elepower_dynamics:lead_ingot'},
+			{epi.group_stick},
+		}
+	})
+end
 
 -- Bucket
-
 minetest.register_craft({
 	output = 'bucket:bucket_empty',
 	recipe = {
@@ -139,41 +144,49 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_craft({
-	output = "elepower_dynamics:conduit_dirt_with_grass 1",
-	recipe = {
-		{"","farming:seed_wheat",""},
-		{"","elepower_dynamics:conduit"   ,""},
-		{"","default:dirt"                ,""}
-	}
-})
+if ele.external.conduit_dirt_with_grass == true then
+	minetest.register_craft({
+		output = "elepower_dynamics:conduit_dirt_with_grass 1",
+		recipe = {
+			{"",epi.seed_wheat              ,""},
+			{"","elepower_dynamics:conduit" ,""},
+			{"",epi.dirt                    ,""}
+		}
+	})
+end
 
-minetest.register_craft({
-	output = "elepower_dynamics:conduit_dirt_with_dry_grass 1",
-	recipe = {
-		{"","farming:wheat",""},
-		{"","elepower_dynamics:conduit"   ,""},
-		{"","default:dirt"                ,""}
-	}
-})
+if ele.external.conduit_dirt_with_dry_grass == true then
+	minetest.register_craft({
+		output = "elepower_dynamics:conduit_dirt_with_dry_grass 1",
+		recipe = {
+			{"",epi.wheat                  ,""},
+			{"","elepower_dynamics:conduit",""},
+			{"",epi.dirt                   ,""}
+		}
+	})
+end
 
-minetest.register_craft({
-	output = "elepower_dynamics:conduit_stone_block 1",
-	recipe = {
-		{""                       ,"stairs:slab_stone_block"  ,""},
-		{"stairs:slab_stone_block","elepower_dynamics:conduit","stairs:slab_stone_block"},
-		{""                       ,"stairs:slab_stone_block"  ,""}
-	}
-})
+if ele.external.conduit_stone_block == true then
+	minetest.register_craft({
+		output = "elepower_dynamics:conduit_stone_block 1",
+		recipe = {
+			{""                       ,epi.slab_stone_block  ,""},
+			{epi.slab_stone_block,"elepower_dynamics:conduit",epi.slab_stone_block},
+			{""                       ,epi.slab_stone_block  ,""}
+		}
+	})
+end
 
-minetest.register_craft({
-	output = "elepower_dynamics:conduit_stone_block_desert 1",
-	recipe = {
-		{""                       ,"stairs:slab_desert_stone_block"  ,""},
-		{"stairs:slab_desert_stone_block","elepower_dynamics:conduit","stairs:slab_desert_stone_block"},
-		{""                       ,"stairs:slab_desert_stone_block"  ,""}
-	}
-})
+if ele.external.conduit_stone_block_desert == true then
+	minetest.register_craft({
+		output = "elepower_dynamics:conduit_stone_block_desert 1",
+		recipe = {
+			{""                       ,epi.slab_desert_stone_block  ,""},
+			{epi.slab_desert_stone_block,"elepower_dynamics:conduit",epi.slab_desert_stone_block},
+			{""                       ,epi.slab_desert_stone_block  ,""}
+		}
+	})
+end
 
 
 
@@ -182,7 +195,7 @@ minetest.register_craft({
 	output = "elepower_dynamics:opaque_duct 3",
 	recipe = {
 		{"elepower_dynamics:lead_ingot",  "elepower_dynamics:lead_ingot",  "elepower_dynamics:lead_ingot"},
-		{"fluid_transfer:fluid_duct", "fluid_transfer:fluid_duct", "fluid_transfer:fluid_duct"},
+		{"fluid_transfer:fluid_duct"   , "fluid_transfer:fluid_duct"    , "fluid_transfer:fluid_duct"},
 		{"elepower_dynamics:lead_ingot",  "elepower_dynamics:lead_ingot",  "elepower_dynamics:lead_ingot"},
 	}
 })
@@ -191,9 +204,9 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_dynamics:portable_tank",
 	recipe = {
-		{"default:glass", "elepower_dynamics:fluid_duct", "default:glass"},
-		{"default:glass", "default:glass", "default:glass"},
-		{"default:bronze_ingot",  "default:bronze_ingot", "default:bronze_ingot"},
+		{epi.glass,"elepower_dynamics:fluid_duct",epi.glass},
+		{epi.glass,epi.glass,epi.glass},
+		{epi.bronze_ingot,epi.bronze_ingot,epi.bronze_ingot},
 	}
 })
 
@@ -204,18 +217,18 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_dynamics:wound_copper_coil",
 	recipe = {
-		{"", "default:copper_ingot", ""},
-		{"default:copper_ingot", "elepower_dynamics:iron_ingot", "default:copper_ingot"},
-		{"", "default:copper_ingot", ""}
+		{""              ,epi.copper_ingot               , ""},
+		{epi.copper_ingot, "elepower_dynamics:iron_ingot", epi.copper_ingot},
+		{""              , epi.copper_ingot              , ""}
 	}
 })
 
 minetest.register_craft({
 	output = "elepower_dynamics:wound_copper_coil",
 	recipe = {
-		{"", "basic_materials:copper_wire", ""},
-		{"basic_materials:copper_wire", "elepower_dynamics:iron_ingot", "basic_materials:copper_wire"},
-		{"", "basic_materials:copper_wire", ""}
+		{""                           ,"basic_materials:copper_wire", ""},
+		{"basic_materials:copper_wire","elepower_dynamics:iron_ingot", "basic_materials:copper_wire"},
+		{""                           ,"basic_materials:copper_wire", ""}
 	},
 	replacements = {
 		{"basic_materials:copper_wire", "basic_materials:empty_spool"},
@@ -228,9 +241,9 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_dynamics:wound_silver_coil",
 	recipe = {
-		{"", "moreores:silver_ingot", ""},
-		{"moreores:silver_ingot", "elepower_dynamics:zinc_ingot", "moreores:silver_ingot"},
-		{"", "moreores:silver_ingot", ""}
+		{""              , epi.silver_ingot, ""},
+		{epi.silver_ingot, "elepower_dynamics:zinc_ingot",epi.silver_ingot},
+		{""              , epi.silver_ingot, ""}
 	}
 })
 
@@ -260,8 +273,8 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_dynamics:tree_tap",
 	recipe = {
-		{"default:steel_ingot", "default:steel_ingot", "default:steel_ingot"},
-		{"", "", "default:steel_ingot"},
+		{epi.steel_ingot, epi.steel_ingot, epi.steel_ingot},
+		{"", "", epi.steel_ingot},
 	}
 })
 
@@ -269,8 +282,8 @@ minetest.register_craft({
 	output = "elepower_dynamics:chip 6",
 	recipe = {
 		{"basic_materials:plastic_sheet", "basic_materials:plastic_sheet", "basic_materials:plastic_sheet"},
-		{"default:mese_crystal_fragment", "group:color_black", "default:mese_crystal_fragment"},
-		{"default:copper_ingot", "moreores:silver_ingot", "default:copper_ingot"},
+		{epi.mese_crystal_fragment,epi.group_color_black, epi.mese_crystal_fragment},
+		{epi.copper_ingot, epi.silver_ingot, epi.copper_ingot},
 	}
 })
 
@@ -278,17 +291,17 @@ minetest.register_craft({
 	output = "elepower_dynamics:capacitor 6",
 	recipe = {
 		{"basic_materials:plastic_sheet", "basic_materials:plastic_sheet", "basic_materials:plastic_sheet"},
-		{"moreores:silver_ingot", "default:mese_crystal", "moreores:silver_ingot"},
-		{"default:copper_ingot", "group:color_violet", "default:copper_ingot"},
+		{epi.silver_ingot, epi.mese_crystal, epi.silver_ingot},
+		{epi.copper_ingot, epi.group_color_violet, epi.copper_ingot},
 	}
 })
 
 minetest.register_craft({
 	output = "elepower_dynamics:pcb_blank 3",
 	recipe = {
-		{"default:copper_ingot", "default:copper_ingot", "default:copper_ingot"},
-		{"default:copper_ingot", "default:mese_crystal", "default:copper_ingot"},
-		{"default:gold_ingot", "default:gold_ingot", "default:gold_ingot"},
+		{epi.copper_ingot,epi.copper_ingot, epi.copper_ingot},
+		{epi.copper_ingot,epi.mese_crystal, epi.copper_ingot},
+		{epi.gold_ingot  ,epi.gold_ingot, epi.gold_ingot},
 	}
 })
 
@@ -296,7 +309,7 @@ minetest.register_craft({
 	output = "elepower_dynamics:pcb_blank",
 	recipe = {
 		{"", "elepower_dynamics:copper_plate", ""},
-		{"default:mese_crystal_fragment", "default:mese_crystal_fragment", "default:mese_crystal_fragment"},
+		{epi.mese_crystal_fragment, epi.mese_crystal_fragment, epi.mese_crystal_fragment},
 		{"", "elepower_dynamics:gold_plate", ""},
 	}
 })
@@ -309,16 +322,16 @@ minetest.register_craft({
 		"elepower_dynamics:copper_dust",
 		"elepower_dynamics:copper_dust",
 		"elepower_dynamics:copper_dust",
-		"farming:seed_wheat",
+		epi.seed_wheat,
 	}
 })
 
 minetest.register_craft({
 	output = "elepower_dynamics:uv_bulb",
 	recipe = {
-		{"group:color_blue", "group:color_violet", "group:color_blue"},
-		{"", "default:meselamp", ""},
-		{"", "default:glass", ""},
+		{epi.group_color_blue, epi.group_color_violet, epi.group_color_blue},
+		{"", epi.mese_lamp, ""},
+		{"", epi.glass, ""},
 	}
 })
 
@@ -327,9 +340,9 @@ minetest.clear_craft({output = "fluid_transfer:fluid_transfer_pump"})
 minetest.register_craft({
 	output = "fluid_transfer:fluid_transfer_pump 3",
 	recipe = {
-		{"group:stone",  "elepower_dynamics:control_circuit",  "group:stone"},
+		{epi.group_stone,  "elepower_dynamics:control_circuit",epi.group_stone},
 		{"elepower_dynamics:electrum_gear", "elepower_dynamics:servo_valve", "elepower_dynamics:electrum_gear"},
-		{"group:stone",  "elepower_dynamics:fluid_duct",  "group:stone"},
+		{epi.group_stone,  "elepower_dynamics:fluid_duct",  epi.group_stone},
 	}
 })
 
@@ -337,26 +350,26 @@ minetest.register_craft({
 	output = "elepower_dynamics:battery 2",
 	recipe = {
 		{"elepower_dynamics:zinc_dust", "elepower_dynamics:graphite_rod", "elepower_dynamics:lead_dust"},
-		{"elepower_dynamics:tin_plate", "default:mese_crystal_fragment", "elepower_dynamics:tin_plate"},
-		{"elepower_dynamics:tin_plate", "default:mese_crystal_fragment", "elepower_dynamics:tin_plate"},
+		{"elepower_dynamics:tin_plate", epi.mese_crystal_fragment, "elepower_dynamics:tin_plate"},
+		{"elepower_dynamics:tin_plate", epi.mese_crystal_fragment, "elepower_dynamics:tin_plate"},
 	}
 })
 
 minetest.register_craft({
 	output = "elepower_dynamics:lcd_panel",
 	recipe = {
-		{"group:color_red", "group:color_green", "group:color_blue"},
-		{"moreores:silver_ingot", "elepower_dynamics:wound_copper_coil", "moreores:silver_ingot"},
-		{"", "default:meselamp", ""}
+		{epi.group_color_red, epi.group_color_green, epi.group_color_blue},
+		{epi.silver_ingot, "elepower_dynamics:wound_copper_coil", epi.silver_ingot},
+		{"", epi.mese_lamp, ""}
 	}
 })
 
 minetest.register_craft({
 	output = "elepower_dynamics:pv_cell",
 	recipe = {
-		{"default:glass", "default:glass", "default:glass"},
-		{"group:color_blue", "elepower_dynamics:silicon_wafer_doped", "group:color_blue"},
-		{"default:mese_crystal_fragment", "elepower_dynamics:wound_copper_coil", "default:mese_crystal_fragment"}
+		{epi.glass, epi.glass, epi.glass},
+		{epi.group_color_blue, "elepower_dynamics:silicon_wafer_doped", epi.group_color_blue},
+		{epi.mese_crystal_fragment, "elepower_dynamics:wound_copper_coil", epi.mese_crystal_fragment}
 	}
 })
 
@@ -365,7 +378,7 @@ minetest.register_craft({
 	recipe = {
 		{"elepower_dynamics:chip", "elepower_dynamics:chip", "elepower_dynamics:chip"},
 		{"elepower_dynamics:capacitor", "elepower_dynamics:pcb", "elepower_dynamics:capacitor"},
-		{"default:copper_ingot", "default:mese_crystal", "default:copper_ingot"},
+		{epi.copper_ingot, epi.mese_crystal, epi.copper_ingot},
 	}
 })
 
@@ -382,7 +395,7 @@ minetest.register_craft({
 	recipe = {
 		{"elepower_dynamics:steel_plate", "", "elepower_dynamics:steel_plate"},
 		{"elepower_dynamics:steel_plate", "", "elepower_dynamics:steel_plate"},
-		{"", "elepower_dynamics:steel_plate", ""}
+		{""               ,"elepower_dynamics:steel_plate", ""}
 	}
 })
 
@@ -393,12 +406,12 @@ minetest.register_craft({
 minetest.register_craft({
 	type   = "cooking",
 	output = "elepower_dynamics:iron_ingot",
-	recipe = "default:iron_lump"
+	recipe = epi.iron_lump
 })
 
 minetest.register_craft({
 	type   = "cooking",
-	output = "default:steel_ingot",
+	output = epi.steel_ingot,
 	recipe = "elepower_dynamics:iron_ingot"
 })
 
@@ -438,7 +451,7 @@ for mat, data in pairs(elepd.registered_gears) do
 		local immebreak = false
 
 		if mat == "wood" then
-			found = "group:stick"
+			found = epi.group_stick
 			immebreak = true
 		end
 

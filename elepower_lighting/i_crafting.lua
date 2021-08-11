@@ -11,18 +11,25 @@
 ------------------------------------------------------
 --                Crafting Recipes                  --
 ------------------------------------------------------
-local glass = "default:glass"
-local glass_slab = "stairs:slab_glass"
-local stick = "default:stick"
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epi = ele.external.ing
+
+local glass = epi.glass
+local glass_slab = epi.slab_glass
+local stick = epi.stick
 local steel_wire = "basic_materials:steel_wire"
 local steel_strip = "basic_materials:steel_strip"
 local plastic_strip = "basic_materials:plastic_strip"
 local plastic_sheet = "basic_materials:plastic_sheet"
+local empty_spool = "basic_materials:empty_spool"
 local mese_dust = "elepower_dynamics:mese_dust"
-local dye_red = "dye:red"
-local dye_green = "dye:green"
-local dye_blue = "dye:blue"
-local s_wood = "stairs:slab_wood"
+local dye_red = epi.dye_red
+local dye_green = epi.dye_green
+local dye_blue = epi.dye_blue
+local s_wood = epi.slab_wood
+local group_color_blue = epi.group_color_blue
+local group_color_violet = epi.group_color_violet
 
 minetest.register_craft( {
 	output = "elepower_lighting:electrum_strip 12",
@@ -40,7 +47,7 @@ minetest.register_craft({
 	output = "elepower_dynamics:uv_bulb",
 	recipe = {
 			{ ""               ,"elepower_lighting:bulb_glass"                ,  ""    },
-			{"group:color_blue","elepower_lighting:incandescent_bulb_element" ,"group:color_violet"},
+			{group_color_blue,"elepower_lighting:incandescent_bulb_element" ,group_color_violet},
 			{ ""               ,steel_strip                                   ,  ""    }
 			}
 })
@@ -177,6 +184,10 @@ minetest.register_craft({
 		{ ""  ,  "" ,  ""      },
 		{stick,  "" ,steel_wire},
 		{ ""  ,  "" ,  ""      }
+	},
+	replacements = {
+		{stick, stick},
+		{steel_wire, empty_spool}
 	}
 })
 

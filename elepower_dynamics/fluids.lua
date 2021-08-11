@@ -1,4 +1,8 @@
 
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epr = ele.external.ref 
+
 -- Etching Acid
 
 ele.helpers.register_liquid("etching_acid", {
@@ -40,7 +44,7 @@ bucket.register_liquid("elepower_dynamics:lithium_source", "elepower_dynamics:li
 minetest.register_node("elepower_dynamics:steam", {
 	description = "Steam",
 	groups      = {not_in_creative_inventory = 1, gas = 1},
-	liquid_form = "default:water_source",
+	liquid_form = epr.water_source,
 	tiles       = {"elepower_steam.png"},
 })
 

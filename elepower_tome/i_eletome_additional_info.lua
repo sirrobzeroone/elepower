@@ -11,6 +11,10 @@
 ---------------------------------------------------
 --            Additional Information             --
 --------------------------------------------------- 
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epi = ele.external.ing
+local epr = ele.external.ref
 
 -- This is a store of custom text and data metrics used 
 -- by the tome. In some cases some of these could be added
@@ -263,7 +267,7 @@ eletome.ai.nodes["getting_started"]    = {how_use_1 = "This is a getting started
 										 hu_img_1 = {"container[1.0,6.6]"..
 													-- line 1
 													"style_type[item_image_button;bgimg=elepower_tome_bgimg_2.png]"..
-													"item_image_button[0.375,0.25;1,1;default:blueberry_bush_leaves;leaves;]"..
+													"item_image_button[0.375,0.25;1,1;"..epi.blueberry_bush_leaves..";leaves;]"..
 													"tooltip[leaves;Any Leaves;#30434c;#f9f9f9]"..
 													"style[num;font_size=-2;font=bold;textcolor=#FFF]"..
 													"hypertext[0.375,0.9;1,1;num;<style size=12><right><b>174</b></right></style>]"..
@@ -286,7 +290,7 @@ eletome.ai.nodes["getting_started"]    = {how_use_1 = "This is a getting started
 													"tooltip[1.875,1.625;0.75,0.75;Crafting;#30434c;#f9f9f9]"..
 													"item_image_button[2.75,1.5;1,1;basic_materials:empty_spool;basic_materials:empty_spool;]"..
 													"hypertext[2.75,2.15;1,1;num;<style size=12><right><b>24</b></right></style>]"..
-													"item_image_button[3.875,1.5;1,1;default:copper_ingot;default:copper_ingot;]"..
+													"item_image_button[3.875,1.5;1,1;"..epi.copper_ingot..";"..epi.copper_ingot..";]"..
 													"hypertext[3.875,2.15;1,1;num;<style size=12><right><b>12</b></right></style>]"..
 													"image[5,1.625;0.75,0.75;elepower_tome_icon_crafting.png]"..
 													"tooltip[5,1.625;0.75,0.75;Crafting;#30434c;#f9f9f9]"..
@@ -295,13 +299,13 @@ eletome.ai.nodes["getting_started"]    = {how_use_1 = "This is a getting started
 													-- line 3 -- bug single digits vanish randomly
 													"item_image_button[0.25,2.75;1,1;basic_materials:copper_wire;basic_materials:copper_wire;]"..
 													"hypertext[0.25,3.4;1,1;num;<style size=12><right><b>02</b></right></style>]"..
-													"item_image_button[1.375,2.75;1,1;default:mese_crystal_fragment;default:mese_crystal_fragment;]"..
+													"item_image_button[1.375,2.75;1,1;"..epi.mese_crystal_fragment..";"..epi.mese_crystal_fragment..";]"..
 													"hypertext[1.375,3.4;1,1;num;<style size=12><right><b>02</b></right></style>]"..
 													"item_image_button[2.5,2.75;1,1;basic_materials:plastic_sheet;basic_materials:plastic_sheet;]"..
 													"hypertext[2.5,3.4;1,1;num2;<style size=12><right><b>02</b></right></style>]"..
-													"item_image_button[3.625,2.75;1,1;default:steel_ingot;default:steel_ingot;]"..
+													"item_image_button[3.625,2.75;1,1;"..epi.steel_ingot..";"..epi.steel_ingot..";]"..
 													"hypertext[3.625,3.4;1,1;num;<style size=12><right><b>02</b></right></style>]"..
-													"item_image_button[4.75,2.75;1,1;default:copper_ingot;default:copper_ingot;]"..
+													"item_image_button[4.75,2.75;1,1;"..epi.copper_ingot..";"..epi.copper_ingot..";]"..
 													"hypertext[4.75,3.4;1,1;num;<style size=12><right><b>01</b></right></style>]"..
 													"image[5.875,2.875;0.75,0.75;elepower_tome_icon_crafting.png]"..
 													"tooltip[5.875,2.875;0.75,0.75;Crafting;#30434c;#f9f9f9]"..
@@ -312,20 +316,20 @@ eletome.ai.nodes["getting_started"]    = {how_use_1 = "This is a getting started
 											        "style_type[item_image_button;bgimg=elepower_tome_bgimg_2.png]"..
 													--line 1
 													"container[2.5,0]"..
-													"item_image_button[0.375,0.25;1,1;default:stone;default:stone;]"..
+													"item_image_button[0.375,0.25;1,1;"..epr.stone..";"..epr.stone..";]"..
 													"hypertext[0.375,0.9;1,1;num;<style size=12><right><b>08</b></right></style>]"..
 													"image[1.5,0.375;0.75,0.75;elepower_tome_icon_crafting.png]"..
 													"tooltip[1.5,0.25;0.75,0.75;Crafting;#30434c;#f9f9f9]"..
-													"item_image_button[2.375,0.25;1,1;default:furnace;default:furnace;]"..
+													"item_image_button[2.375,0.25;1,1;"..epi.furnace..";"..epi.furnace..";]"..
 													"hypertext[2.375,0.9;1,1;num;<style size=12><right><b>01</b></right></style>]"..
 													"container_end[]"..
 													-- line 2
 													"container[2.5,1.25]"..													
-													"item_image_button[0.375,0.25;1,1;default:sand;default:sand;]"..
+													"item_image_button[0.375,0.25;1,1;"..epi.sand..";"..epi.sand..";]"..
 													"hypertext[0.375,0.9;1,1;num;<style size=12><right><b>03</b></right></style>]"..
 													"image[1.5,0.375;0.75,0.75;elepower_tome_icon_cooking.png]"..
 													"tooltip[1.5,0.25;0.75,0.75;Cooking;#30434c;#f9f9f9]"..
-													"item_image_button[2.375,0.25;1,1;default:glass;default:glass;]"..
+													"item_image_button[2.375,0.25;1,1;"..epi.glass..";"..epi.glass..";]"..
 													"hypertext[2.375,0.9;1,1;num;<style size=12><right><b>03</b></right></style>]"..													
 													"container_end[]"..
 													-- line 3
@@ -341,7 +345,7 @@ eletome.ai.nodes["getting_started"]    = {how_use_1 = "This is a getting started
 													"container_end[]"..
 													-- line 4
 													"container[0.875,3.75]"..													
-													"item_image_button[0.375,0.25;1,1;default:copper_ingot;default:copper_ingot;]"..
+													"item_image_button[0.375,0.25;1,1;"..epi.copper_ingot..";"..epi.copper_ingot..";]"..
 													"hypertext[0.375,0.9;1,1;num;<style size=12><right><b>04</b></right></style>]"..
 													"item_image_button[1.5,0.25;1,1;moreores:silver_ingot;moreores:silver_ingot;]"..
 													"hypertext[1.5,0.9;1,1;num;<style size=12><right><b>02</b></right></style>]"..
@@ -356,9 +360,9 @@ eletome.ai.nodes["getting_started"]    = {how_use_1 = "This is a getting started
 													"container_end[]"..
 													-- line 5
 													"container[0.75,5]"..
-													"item_image_button[0.375,0.25;1,1;default:steel_ingot;default:steel_ingot;]"..
+													"item_image_button[0.375,0.25;1,1;"..epi.steel_ingot..";"..epi.steel_ingot..";]"..
 													"hypertext[0.375,0.9;1,1;num;<style size=12><right><b>04</b></right></style>]"..
-													"item_image_button[1.5,0.25;1,1;default:glass;default:glass;]"..
+													"item_image_button[1.5,0.25;1,1;"..epi.glass..";"..epi.glass..";]"..
 													"hypertext[1.5,0.9;1,1;num;<style size=12><right><b>03</b></right></style>]"..
 													"item_image_button[2.625,0.25;1,1;elepower_dynamics:brass_gear;elepower_dynamics:brass_gear;]"..
 													"hypertext[2.625,0.9;1,1;num;<style size=12><right><b>01</b></right></style>]"..													
@@ -371,11 +375,11 @@ eletome.ai.nodes["getting_started"]    = {how_use_1 = "This is a getting started
 													"container_end[]"..
 													-- line 6
 													"container[0.75,6.25]"..
-													"item_image_button[0.375,0.25;1,1;default:steel_ingot;default:steel_ingot;]"..
+													"item_image_button[0.375,0.25;1,1;"..epi.steel_ingot..";"..epi.steel_ingot..";]"..
 													"hypertext[0.375,0.9;1,1;num;<style size=12><right><b>03</b></right></style>]"..
 													"item_image_button[1.5,0.25;1,1;elepower_dynamics:wound_copper_coil;elepower_dynamics:wound_copper_coil;]"..
 													"hypertext[1.5,0.9;1,1;num;<style size=12><right><b>02</b></right></style>]"..
-													"item_image_button[2.625,0.25;1,1;default:furnace;default:furnace;]"..
+													"item_image_button[2.625,0.25;1,1;"..epi.furnace..";"..epi.furnace..";]"..
 													"hypertext[2.625,0.9;1,1;num;<style size=12><right><b>01</b></right></style>]"..													
 													"item_image_button[3.75,0.25;1,1;elepower_machines:machine_block;elepower_machines:machine_block;]"..
 													"hypertext[3.75,0.9;1,1;num;<style size=12><right><b>01</b></right></style>]"..																										
@@ -408,7 +412,7 @@ eletome.ai.nodes["first_pcb_creation"] = {how_use_1 = "More advanced machines re
 															"style_type[item_image_button;bgimg=elepower_tome_bgimg_2.png]"..
 															--line 1
 															"container[0.5,0]"..
-															"item_image_button[0.375,0.25;1,1;default:copper_ingot;default:copper_ingot;]"..
+															"item_image_button[0.375,0.25;1,1;"..epi.copper_ingot..";"..epi.copper_ingot..";]"..
 															"hypertext[0.375,0.9;1,1;num;<style size=12><right><b>04</b></right></style>]"..
 															"image[1.5,0.375;0.75,0.75;elepower_tome_icon_grinding.png]"..
 															"tooltip[1.5,0.25;0.75,0.75;Grinding;#30434c;#f9f9f9]"..
@@ -427,7 +431,7 @@ eletome.ai.nodes["first_pcb_creation"] = {how_use_1 = "More advanced machines re
 															"hypertext[0.375,0.9;1,1;num;<style size=12><right><b>01</b></right></style>]"..
 															"image[1.5,0.375;0.75,0.75;elepower_tome_mouse_rght_click.png]"..
 															"tooltip[1.5,0.25;0.75,0.75;Right Click;#30434c;#f9f9f9]"..
-															"item_image_button[2.375,0.25;1,1;default:water_source;default:water_source;]"..
+															"item_image_button[2.375,0.25;1,1;"..epr.water_source..";"..epr.water_source..";]"..
 															"hypertext[2.375,0.9;1,1;num;<style size=12><right><b>01</b></right></style>]"..
 															"image[3.5,0.375;0.75,0.75;elepower_tome_icon_output.png]"..
 															"tooltip[3.5,0.25;0.75,0.75;Turns Into;#30434c;#f9f9f9]"..
@@ -436,11 +440,11 @@ eletome.ai.nodes["first_pcb_creation"] = {how_use_1 = "More advanced machines re
 															"container_end[]"..
 															-- line 3
 															"container[1.125,2.5]"..
-															"item_image_button[0.375,0.25;1,1;default:copper_ingot;default:copper_ingot;]"..
+															"item_image_button[0.375,0.25;1,1;"..epi.copper_ingot..";"..epi.copper_ingot..";]"..
 															"hypertext[0.375,0.9;1,1;num;<style size=12><right><b>05</b></right></style>]"..
-															"item_image_button[1.5,0.25;1,1;default:gold_ingot;default:gold_ingot;]"..
+															"item_image_button[1.5,0.25;1,1;"..epi.gold_ingot..";"..epi.gold_ingot..";]"..
 															"hypertext[1.5,0.9;1,1;num;<style size=12><right><b>03</b></right></style>]"..
-															"item_image_button[2.625,0.25;1,1;default:mese_crystal;default:mese_crystal;]"..
+															"item_image_button[2.625,0.25;1,1;"..epi.mese_crystal..";"..epi.mese_crystal..";]"..
 															"hypertext[2.625,0.9;1,1;num;<style size=12><right><b>01</b></right></style>]"..																																						
 															"image[3.75,0.375;0.75,0.75;elepower_tome_icon_crafting.png]"..
 															"tooltip[3.75,0.25;0.75,0.75;Crafting;#30434c;#f9f9f9]"..
@@ -477,7 +481,7 @@ eletome.ai.nodes["upgrading_machines"] = { how_use_1 = "Some machines can be upg
 														"style_type[item_image_button;bgimg=elepower_tome_bgimg_2.png]"..													
 														-- line 1
 														"container[0.15,-0.1]"..
-														"item_image_button[0.375,0.25;1,1;default:blueberry_bush_leaves;leaves;]"..
+														"item_image_button[0.375,0.25;1,1;"..epi.blueberry_bush_leaves..";leaves;]"..
 														"tooltip[leaves;Any Leaves;#30434c;#f9f9f9]"..
 														"style[num;font_size=-2;font=bold;textcolor=#FFF]"..
 														"hypertext[0.375,0.9;1,1;num;<style size=12><right><b>126</b></right></style>]"..
@@ -525,13 +529,13 @@ eletome.ai.nodes["upgrading_machines"] = { how_use_1 = "Some machines can be upg
 														"container_end[]"..	
 													-- line 4
 														"container[-0.4,3.65]"..
-														"item_image_button[0.375,0.25;1,1;default:coal_lump;default:coal_lump;]"..
+														"item_image_button[0.375,0.25;1,1;"..epi.coal_lump..";"..epi.coal_lump..";]"..
 														"hypertext[0.375,0.9;1,1;num;<style size=12><right><b>04</b></right></style>]"..
 														"image[1.5,0.375;0.75,0.75;elepower_tome_icon_grinding.png]"..
 														"tooltip[1.5,0.25;0.75,0.75;Grinding;#30434c;#f9f9f9]"..
 														"item_image_button[2.375,0.25;1,1;elepower_dynamics:coal_dust;elepower_dynamics:coal_dust;]"..
 														"hypertext[2.375,0.9;1,1;num;<style size=12><right><b>04</b></right></style>]"..
-														"item_image_button[3.5,0.25;1,1;default:coal_lump;default:coal_lump;]"..
+														"item_image_button[3.5,0.25;1,1;"..epi.coal_lump..";"..epi.coal_lump..";]"..
 														"hypertext[3.5,0.9;1,1;num;<style size=12><right><b>01</b></right></style>]"..
 														"image[4.625,0.375;0.75,0.75;elepower_tome_icon_alloying.png]"..
 														"tooltip[4.625,0.375;0.75,0.75;Alloying;#30434c;#f9f9f9]"..
@@ -545,7 +549,7 @@ eletome.ai.nodes["upgrading_machines"] = { how_use_1 = "Some machines can be upg
 														"container_end[]"..	
 													-- line 5
 														"container[2.25,4.9]"..
-														"item_image_button[0.375,0.25;1,1;default:tin_ingot;default:tin_ingot;]"..
+														"item_image_button[0.375,0.25;1,1;"..epi.tin_ingot..";"..epi.tin_ingot..";]"..
 														"hypertext[0.375,0.9;1,1;num;<style size=12><right><b>08</b></right></style>]"..
 														"image[1.5,0.375;0.75,0.75;elepower_tome_icon_compressing.png]"..
 														"tooltip[1.5,0.375;0.75,0.75;Compressing;#30434c;#f9f9f9]"..
@@ -573,7 +577,7 @@ eletome.ai.nodes["upgrading_machines"] = { how_use_1 = "Some machines can be upg
 														"container[0,7.4]"..
 														"item_image_button[0.25,0.25;1,1;elepower_dynamics:tin_plate;elepower_dynamics:tin_plate;]"..
 														"hypertext[0.25,0.9;1,1;num;<style size=12><right><b>04</b></right></style>]"..
-														"item_image_button[1.375,0.25;1,1;default:mese_crystal_fragment;default:mese_crystal_fragment;]"..
+														"item_image_button[1.375,0.25;1,1;"..epi.mese_crystal_fragment..";"..epi.mese_crystal_fragment..";]"..
 														"hypertext[1.375,0.9;1,1;num;<style size=12><right><b>02</b></right></style>]"..
 														"item_image_button[2.5,0.25;1,1;elepower_dynamics:graphite_rod;elepower_dynamics:graphite_rod;]"..
 														"hypertext[2.5,0.9;1,1;num;<style size=12><right><b>01</b></right></style>]"..
@@ -589,7 +593,7 @@ eletome.ai.nodes["upgrading_machines"] = { how_use_1 = "Some machines can be upg
 														"container_end[]"..	
 													-- line 8
 														"container[1,8.65]"..
-														"item_image_button[0.375,0.25;1,1;default:steel_ingot;default:steel_ingot;]"..
+														"item_image_button[0.375,0.25;1,1;"..epi.steel_ingot..";"..epi.steel_ingot..";]"..
 														"hypertext[0.375,0.9;1,1;num;<style size=12><right><b>01</b></right></style>]"..
 														"item_image_button[1.5,0.25;1,1;elepower_dynamics:wound_silver_coil;elepower_dynamics:wound_silver_coil;]"..
 														"hypertext[1.5,0.9;1,1;num;<style size=12><right><b>02</b></right></style>]"..
@@ -605,11 +609,11 @@ eletome.ai.nodes["upgrading_machines"] = { how_use_1 = "Some machines can be upg
 									     }
 
 -- Generators Page
-eletome.ai.nodes["elepower_machines:generator"]      = {lb_top_img = "default:coal_lump", 
+eletome.ai.nodes["elepower_machines:generator"]      = {lb_top_img = epi.coal_lump, 
 														lb_top_tt = "Burnable Items",
 														lb_btm_tt = " EpU generated\nper second"
 													   }
-eletome.ai.nodes["elepower_machines:lava_generator"] = {lb_top_img = "default:lava_source",
+eletome.ai.nodes["elepower_machines:lava_generator"] = {lb_top_img = epi.lava_source,
 														lb_btm_tt = " EpU generated\nper 125 lava/second"
 													   }
 eletome.ai.nodes["elepower_machines:fuel_burner"]    = {lb_top_img = "elepower_farming:biofuel_source",
@@ -651,7 +655,7 @@ eletome.ai.nodes["elepower_machines:super_power_cell_0"]      = {lb_top_img = "e
 																}	
 
 -- (Simple) Machines Page
-eletome.ai.nodes["elepower_machines:alloy_furnace"]      = {lb_top_img = "default_tin_ingot.png",
+eletome.ai.nodes["elepower_machines:alloy_furnace"]      = {lb_top_img = "elepower_iron_ingot.png^[multiply:#c1c1c1",
 															lb_top_tt ="2 Materials\nto be Alloyed", 
 															lb_btm_tt = " used per second",
 															}	

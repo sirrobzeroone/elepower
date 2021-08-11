@@ -23,7 +23,7 @@ elepm.register_crafter("elepower_machines:alloy_furnace", {
 			"elepower_machine_side.png", "elepower_machine_side.png", "elepower_machine_side.png^elepower_alloy_furnace_active.png",
 		},
 	},
-	ele_icon_material_1 ="default_copper_ingot.png",
-	ele_icon_material_2 ="default_tin_ingot.png",
+	ele_icon_material_1 ="elepower_iron_ingot.png^[multiply:#fcb15f",
+	ele_icon_material_2 ="elepower_iron_ingot.png^[multiply:#c1c1c1",
 	groups = {oddly_breakable_by_hand = 1}
 })

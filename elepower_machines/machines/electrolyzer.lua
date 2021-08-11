@@ -1,7 +1,11 @@
 
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epr = ele.external.ref
+
 elepm.electrolyzer_recipes = {
 	{
-		recipe = "default:water_source 1000",
+		recipe = epr.water_source.." 1000",
 		output = {
 			"elepower_dynamics:hydrogen 600",
 			"elepower_dynamics:oxygen 400",
@@ -35,9 +39,9 @@ local function get_formspec(time, power, input, out1, out2, state)
 	end
 
 	return "size[8,8.5]"..
-		default.gui_bg..
-		default.gui_bg_img..
-		default.gui_slots..
+		epr.gui_bg..
+		epr.gui_bg_img..
+		epr.gui_slots..
 		ele.formspec.power_meter(power)..
 		ele.formspec.fluid_bar(1, 0, input)..
 		"image[1.2,2.45;0.5,0.5;elepower_gui_icon_fluid_electrolyzer_in.png]"..
@@ -53,7 +57,7 @@ local function get_formspec(time, power, input, out1, out2, state)
 		"list[current_player;main;0,4.25;8,1;]"..
 		"list[current_player;main;0,5.5;8,3;8]"..
 		"listring[current_player;main]"..
-		default.get_hotbar_bg(0, 4.25)
+		epr.get_hotbar_bg(0, 4.25)
 end
 
 local function get_electrolysis_result(buffer)
@@ -174,7 +178,7 @@ ele.register_machine("elepower_machines:electrolyzer", {
 	ele_inrush = 128,
 	fluid_buffers = {
 		input = {
-			accepts = {"default:water_source", "elepower_nuclear:heavy_water_source",
+			accepts = {epr.water_source, "elepower_nuclear:heavy_water_source",
 				"group:biomass", "group:electrolysis_recipe"},
 			drainable = false,
 			capacity = 8000,

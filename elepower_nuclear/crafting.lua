@@ -1,4 +1,8 @@
 
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epi = ele.external.ing
+
 -- Radiation-shielded Lead Machine Chassis
 minetest.register_craft({
 	output = "elepower_nuclear:machine_block",
@@ -204,9 +208,9 @@ elepm.register_craft({
 minetest.register_craft({
 	output = "elepower_nuclear:control_rod",
 	recipe = {
-		{"", "elepower_dynamics:silver_plate", "moreores:silver_ingot"},
-		{"elepower_dynamics:silver_plate", "moreores:silver_ingot", "elepower_dynamics:silver_plate"},
-		{"moreores:silver_ingot", "elepower_dynamics:silver_plate", ""},
+		{"", "elepower_dynamics:silver_plate", epi.silver_ingot},
+		{"elepower_dynamics:silver_plate", epi.silver_ingot, "elepower_dynamics:silver_plate"},
+		{epi.silver_ingot, "elepower_dynamics:silver_plate", ""},
 	}
 })
 
@@ -225,8 +229,8 @@ minetest.register_craft({
 	output = "elepower_nuclear:pressure_vessel",
 	recipe = {
 		{"elepower_dynamics:steel_plate", "elepower_dynamics:steel_plate", "elepower_dynamics:steel_plate"},
-		{"default:steelblock", "elepower_dynamics:portable_tank", "default:steelblock"},
-		{"elepower_dynamics:steel_plate", "default:steelblock", "elepower_dynamics:steel_plate"},
+		{epi.steel_block, "elepower_dynamics:portable_tank", epi.steel_block},
+		{"elepower_dynamics:steel_plate", epi.steel_block, "elepower_dynamics:steel_plate"},
 	}
 })
 

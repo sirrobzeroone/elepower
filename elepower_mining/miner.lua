@@ -1,4 +1,8 @@
 
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epr = ele.external.ref
+
 local structures = {}
 local ores = {}
 local TIMER = 10
@@ -100,9 +104,9 @@ local function get_formspec(timer, power, buffer, state)
 	end
 
 	return "size[8,8.5]"..
-		default.gui_bg..
-		default.gui_bg_img..
-		default.gui_slots..
+		epr.gui_bg..
+		epr.gui_bg_img..
+		epr.gui_slots..
 		ele.formspec.power_meter(power)..
 		ele.formspec.state_switcher(0, 2.5, state)..
 		ele.formspec.fluid_bar(7, 0, buffer)..
@@ -113,7 +117,7 @@ local function get_formspec(timer, power, buffer, state)
 		"listring[current_player;main]"..
 		"listring[context;dst]"..
 		"listring[current_player;main]"..
-		default.get_hotbar_bg(0, 4.25)
+		epr.get_hotbar_bg(0, 4.25)
 end
 
 local function on_timer(pos, elapsed)
@@ -195,7 +199,7 @@ local function on_timer(pos, elapsed)
 	meta:set_string("formspec", get_formspec(wp, pow_buffer, buffer, state))
 	meta:set_int("storage", pow_buffer.storage)
 	meta:set_int("water_fluid_storage", buffer.amount)
-	meta:set_string("water_fluid", "default:water_source")
+	meta:set_string("water_fluid", epr.water_source)
 	meta:set_int("work", work)
 
 	return refresh
@@ -227,7 +231,7 @@ ele.register_machine("elepower_mining:miner_controller", {
 	fluid_buffers = {
 		water = {
 			capacity  = 16000,
-			accepts   = {"default:water_source"},
+			accepts   = {epr.water_source},
 			drainable = false,
 		},
 	},
@@ -320,7 +324,7 @@ local function add_ores()
 			and drop ~= item.ore
 			and drop ~= ""
 			and item.ore_type == "scatter"
-			and item.wherein == "default:stone"
+			and item.wherein == epr.stone
 			and item.clust_scarcity ~= nil and item.clust_scarcity > 0
 			and item.clust_num_ores ~= nil and item.clust_num_ores > 0
 			and item.y_max ~= nil and item.y_min ~= nil then

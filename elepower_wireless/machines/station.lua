@@ -1,3 +1,8 @@
+
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epr = ele.external.ref
+
 elewi.node_handlers = {}
 local desc_cache = {}
 
@@ -30,9 +35,9 @@ end
 
 local function get_formspec(power)
 	return "size[8,8.5]"..
-		default.gui_bg..
-		default.gui_bg_img..
-		default.gui_slots..
+		epr.gui_bg..
+		epr.gui_bg_img..
+		epr.gui_slots..
 		ele.formspec.power_meter(power)..
 		"list[context;card;3.5,1;1,1;]"..
 		"list[current_player;main;0,4.25;8,1;]"..
@@ -40,7 +45,7 @@ local function get_formspec(power)
 		"listring[current_player;main]"..
 		"listring[context;card]"..
 		"listring[current_player;main]"..
-		default.get_hotbar_bg(0, 4.25)
+		epr.get_hotbar_bg(0, 4.25)
 end
 
 local function data_from_card(card)

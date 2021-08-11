@@ -1,3 +1,7 @@
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epi = ele.external.ing
+
 if minetest.get_modpath("basic_materials") == nil then
 
 	--------------
@@ -98,9 +102,9 @@ if minetest.get_modpath("basic_materials") == nil then
 		    burntime = 30,
 	})
 
-	-----------------
-	-- COPPER WIRE --
-	-----------------
+	----------
+	-- WIRE --
+	----------
 
 	minetest.register_craftitem(":basic_materials:copper_wire", {
 		description = "Copper Wire",
@@ -112,9 +116,40 @@ if minetest.get_modpath("basic_materials") == nil then
 		output = "basic_materials:copper_wire 2",
 		type = "shapeless",
 		recipe = {
-			"default:copper_ingot",
+			epi.copper_ingot,
 			"basic_materials:empty_spool",
 			"basic_materials:empty_spool",
+		},
+	})
+	
+		minetest.register_craftitem(":basic_materials:silver_wire", {
+		description = "Silver Wire",
+		inventory_image = "elepower_bm_silver_wire.png",
+		groups = {copper = 1, wire = 1, component = 1}
+	})
+
+	minetest.register_craft( {
+		output = "basic_materials:silver_wire 2",
+		type = "shapeless",
+		recipe = {
+			epi.silver_ingot,
+			"basic_materials:empty_spool",
+			"basic_materials:empty_spool",
+		},
+	})
+	
+	---------------------
+	-- Heating Element --
+	---------------------	
+	minetest.register_craftitem(":basic_materials:heating_element", {
+	description = "Heating element",
+	inventory_image = "elepower_bm_heating_element.png",
+	})
+
+	minetest.register_craft( {
+		output = "basic_materials:heating_element 2",
+		recipe = {
+			{ epi.copper_ingot, epi.mese_crystal_fragment, epi.copper_ingot }
 		},
 	})
 
@@ -131,9 +166,9 @@ if minetest.get_modpath("basic_materials") == nil then
 	minetest.register_craft({
 		output = "basic_materials:motor 3",
 		recipe = {
-			{"default:steel_ingot", "elepower_dynamics:wound_copper_coil", "default:steel_ingot"},
+			{epi.steel_ingot, "elepower_dynamics:wound_copper_coil", epi.steel_ingot},
 			{"basic_materials:copper_wire", "elepower_dynamics:wound_copper_coil", "basic_materials:copper_wire"},
-			{"default:steel_ingot", "elepower_dynamics:capacitor", "default:steel_ingot"},
+			{epi.steel_ingot, "elepower_dynamics:capacitor", epi.steel_ingot},
 		}
 	})
 
@@ -177,7 +212,7 @@ if minetest.get_modpath("basic_materials") == nil then
 		output = "basic_materials:steel_wire 2",
 		type = "shapeless",
 		recipe = {
-			"default:steel_ingot",
+			epi.steel_ingot,
 			"basic_materials:empty_spool",
 			"basic_materials:empty_spool",
 		},
@@ -186,8 +221,8 @@ if minetest.get_modpath("basic_materials") == nil then
 	minetest.register_craft( {
 		output = "basic_materials:steel_strip 12",
 		recipe = {
-			{ "", "default:steel_ingot", "" },
-			{ "default:steel_ingot", "", "" },
+			{ "", epi.steel_ingot, "" },
+			{ epi.steel_ingot, "", "" },
 		},
 	})
 	

@@ -1,4 +1,8 @@
 
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epr = ele.external.ref
+
 local function escape_comma(str)
 	return str:gsub(",","\\,")
 end
@@ -36,9 +40,9 @@ local function get_formspec(power, player, transmitters, receivers)
 	if re_selct then re_spc = ";" .. re_selct end
 
 	return "size[8,10.5]"..
-		default.gui_bg..
-		default.gui_bg_img..
-		default.gui_slots..
+		epr.gui_bg..
+		epr.gui_bg_img..
+		epr.gui_slots..
 		ele.formspec.power_meter(power)..
 		"textlist[1,0;6.8,2.5;transmitter;" .. table.concat(list_tr, ",") .. tr_spc .. "]"..
 		"textlist[1,3;6.8,2.5;receiver;" .. table.concat(list_re, ",") .. re_spc .. "]"..
@@ -47,7 +51,7 @@ local function get_formspec(power, player, transmitters, receivers)
 		"list[current_player;main;0,6.25;8,1;]"..
 		"list[current_player;main;0,7.5;8,3;8]"..
 		"listring[current_player;main]"..
-		default.get_hotbar_bg(0, 6.25)
+		epr.get_hotbar_bg(0, 6.25)
 end
 
 local function get_is_active_node(meta, pos)

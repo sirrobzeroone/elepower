@@ -1,4 +1,8 @@
 
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epr = ele.external.ref
+
 --------------
 -- Worldgen --
 --------------
@@ -8,7 +12,7 @@
 minetest.register_ore({
 	ore_type       = "scatter",
 	ore            = "elepower_nuclear:stone_with_uranium",
-	wherein        = "default:stone",
+	wherein        = epr.stone,
 	clust_scarcity = 16 * 16 * 16,
 	clust_num_ores = 5,
 	clust_size     = 3,
@@ -19,7 +23,7 @@ minetest.register_ore({
 minetest.register_ore({
 	ore_type       = "scatter",
 	ore            = "elepower_nuclear:stone_with_uranium",
-	wherein        = "default:stone",
+	wherein        = epr.stone,
 	clust_scarcity = 16 * 16 * 16,
 	clust_num_ores = 5,
 	clust_size     = 3,
@@ -30,7 +34,7 @@ minetest.register_ore({
 minetest.register_ore({
 	ore_type       = "scatter",
 	ore            = "elepower_nuclear:stone_with_uranium",
-	wherein        = "default:stone",
+	wherein        = epr.stone,
 	clust_scarcity = 16 * 16 * 16,
 	clust_num_ores = 5,
 	clust_size     = 3,

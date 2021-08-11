@@ -1,4 +1,9 @@
 
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epr = ele.external.reg
+local epg = ele.external.graphic
+
 local recipes = {
 	{
 		input  = "elepower_dynamics:lithium_gas 100",
@@ -24,17 +29,17 @@ local function get_recipe(input)
 end
 
 local function get_formspec(inp, outp, solar, percent)
-	local bar = "image[3.5,1.5;1,1;gui_furnace_arrow_bg.png^[transformR270]"
+	local bar = "image[3.5,1.5;1,1;"..epg.gui_furnace_arrow_bg.."^[transformR270]"
 
 	if percent ~= nil then
-		bar = "image[3.5,1.5;1,1;gui_furnace_arrow_bg.png^[lowpart:"..
-			  (percent)..":gui_furnace_arrow_fg.png^[transformR270]"
+		bar = "image[3.5,1.5;1,1;"..epg.gui_furnace_arrow_bg.."^[lowpart:"..
+			  (percent)..":"..epg.gui_furnace_arrow_fg.."^[transformR270]"
 	end
 
 	return "size[8,8.5]"..
-		default.gui_bg..
-		default.gui_bg_img..
-		default.gui_slots..
+		epr.gui_bg..
+		epr.gui_bg_img..
+		epr.gui_slots..
 		ele.formspec.fluid_bar(0, 0, inp)..
 		bar..
 		"label[3.4,0.5;Light: "..solar.."%]"..
@@ -42,7 +47,7 @@ local function get_formspec(inp, outp, solar, percent)
 		"list[current_player;main;0,4.25;8,1;]"..
 		"list[current_player;main;0,5.5;8,3;8]"..
 		"listring[current_player;main]"..
-		default.get_hotbar_bg(0, 4.25)
+		epr.get_hotbar_bg(0, 4.25)
 end
 
 local function on_timer (pos, elapsed)

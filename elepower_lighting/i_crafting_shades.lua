@@ -11,12 +11,30 @@
 ------------------------------------------------------
 --                 Crafting Shades                  --
 ------------------------------------------------------
-local stick = "default:stick" 
-local paper = "default:paper"
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epi = ele.external.ing
+
+local stick = epi.stick 
+local paper = epi.paper
+local dye_red = epi.dye_red
+local dye_blue = epi.dye_blue
 local paper_red = "elepower_lighting:paper_red"
 local paper_blue = "elepower_lighting:paper_blue"
 
-local colors = {["default:paper"] = "",["elepower_lighting:paper_red"] = "_red",["elepower_lighting:paper_blue"] = "_blue"}
+local colors = {[paper] = "",["elepower_lighting:paper_red"] = "_red",["elepower_lighting:paper_blue"] = "_blue"}
+
+minetest.register_craft({
+	output = "elepower_lighting:paper_red 3",
+	type = "shapeless",
+	recipe = {paper,paper,paper,dye_red},
+})
+
+minetest.register_craft({
+	output = "elepower_lighting:paper_blue 3",
+	type = "shapeless",
+	recipe = {paper,paper,paper,dye_blue},
+})
 
 for paper,color in pairs(colors) do
 minetest.register_craft({

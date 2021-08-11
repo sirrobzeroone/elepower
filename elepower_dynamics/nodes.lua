@@ -1,4 +1,9 @@
 
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epg = ele.external.graphic 
+local eps = ele.external.sounds
+
 ---------------
 -- Overrides --
 ---------------
@@ -14,34 +19,34 @@ minetest.register_alias_force("elepower_dynamics:fluid_duct", "fluid_transfer:fl
 
 minetest.register_node("elepower_dynamics:stone_with_lead", {
 	description = "Lead Ore",
-	tiles = {"default_stone.png^elepower_mineral_lead.png"},
+	tiles = {epg.stone.."^elepower_mineral_lead.png"},
 	groups = {cracky = 2},
 	drop = 'elepower_dynamics:lead_lump',
-	sounds = default.node_sound_stone_defaults(),
+	sounds = eps.node_sound_stone,
 })
 
 minetest.register_node("elepower_dynamics:stone_with_nickel", {
 	description = "Nickel Ore",
-	tiles = {"default_stone.png^elepower_mineral_nickel.png"},
+	tiles = {epg.stone.."^elepower_mineral_nickel.png"},
 	groups = {cracky = 2},
 	drop = 'elepower_dynamics:nickel_lump',
-	sounds = default.node_sound_stone_defaults(),
+	sounds = eps.node_sound_stone,
 })
 
 minetest.register_node("elepower_dynamics:stone_with_viridisium", {
 	description = "Viridisium Ore",
-	tiles = {"default_stone.png^elepower_mineral_viridisium.png"},
+	tiles = {epg.stone.."^elepower_mineral_viridisium.png"},
 	groups = {cracky = 3},
 	drop = 'elepower_dynamics:viridisium_lump',
-	sounds = default.node_sound_stone_defaults(),
+	sounds = eps.node_sound_stone,
 })
 
 minetest.register_node("elepower_dynamics:stone_with_zinc", {
 	description = "Zinc Ore",
-	tiles = {"default_stone.png^elepower_mineral_zinc.png"},
+	tiles = {epg.stone.."^elepower_mineral_zinc.png"},
 	groups = {cracky = 3},
 	drop = 'elepower_dynamics:zinc_lump',
-	sounds = default.node_sound_stone_defaults(),
+	sounds = eps.node_sound_stone,
 })
 
 -- Other
@@ -51,18 +56,18 @@ minetest.register_node("elepower_dynamics:particle_board", {
 	tiles = {"elepower_particle_board.png"},
 	groups = {choppy = 2, wood = 1},
 	drop = 'elepower_dynamics:wood_dust 4',
-	sounds = default.node_sound_wood_defaults(),
+	sounds = eps.node_sound_wood,
 })
 
 minetest.register_node("elepower_dynamics:hardened_glass", {
 	description = "Hardened Obsidian Glass\nDoes not let light through",
 	drawtype = "glasslike_framed_optional",
-	tiles = {"default_obsidian_glass.png", "elepower_hard_glass_detail.png"},
+	tiles = {epg.obsidian_glass, "elepower_hard_glass_detail.png"},
 	paramtype2 = "glasslikeliquidlevel",
 	is_ground_content = false,
 	sunlight_propagates = false,
 	use_texture_alpha = "clip",
-	sounds = default.node_sound_glass_defaults(),
+	sounds = eps.node_sound_glass,
 	groups = {cracky = 3},
 })
 
@@ -73,7 +78,7 @@ minetest.register_node("elepower_dynamics:viridisium_block", {
 	tiles = {"elepower_viridisium_block.png"},
 	is_ground_content = false,
 	groups = {cracky = 1, level = 2},
-	sounds = default.node_sound_metal_defaults(),
+	sounds = eps.node_sound_metal,
 })
 
 minetest.register_node("elepower_dynamics:lead_block", {
@@ -81,7 +86,7 @@ minetest.register_node("elepower_dynamics:lead_block", {
 	tiles = {"elepower_lead_block.png"},
 	is_ground_content = false,
 	groups = {cracky = 1, level = 2},
-	sounds = default.node_sound_metal_defaults(),
+	sounds = eps.node_sound_metal,
 })
 
 minetest.register_node("elepower_dynamics:invar_block", {
@@ -89,7 +94,7 @@ minetest.register_node("elepower_dynamics:invar_block", {
 	tiles = {"elepower_invar_block.png"},
 	is_ground_content = false,
 	groups = {cracky = 1, level = 3},
-	sounds = default.node_sound_metal_defaults(),
+	sounds = eps.node_sound_metal,
 })
 
 minetest.register_node("elepower_dynamics:nickel_block", {
@@ -97,7 +102,7 @@ minetest.register_node("elepower_dynamics:nickel_block", {
 	tiles = {"elepower_nickel_block.png"},
 	is_ground_content = false,
 	groups = {cracky = 1, level = 3},
-	sounds = default.node_sound_metal_defaults(),
+	sounds = eps.node_sound_metal,
 })
 
 minetest.register_node("elepower_dynamics:zinc_block", {
@@ -105,5 +110,5 @@ minetest.register_node("elepower_dynamics:zinc_block", {
 	tiles = {"elepower_zinc_block.png"},
 	is_ground_content = false,
 	groups = {cracky = 1, level = 3},
-	sounds = default.node_sound_metal_defaults(),
+	sounds = eps.node_sound_metal,
 })

@@ -1,9 +1,13 @@
 
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epr = ele.external.ref
+
 local function get_formspec(timer, biomass_buffer, output_buffer)
 	return "size[8,8.5]"..
-		default.gui_bg..
-		default.gui_bg_img..
-		default.gui_slots..
+		epr.gui_bg..
+		epr.gui_bg_img..
+		epr.gui_slots..
 		ele.formspec.fluid_bar(0, 0.75, biomass_buffer)..
 		ele.formspec.fluid_bar(7, 0.75, output_buffer)..
 		"list[context;src;1,0.5;3,3;]"..
@@ -14,7 +18,7 @@ local function get_formspec(timer, biomass_buffer, output_buffer)
 		"listring[current_player;main]"..
 		"listring[context;src]"..
 		"listring[current_player;main]"..
-		default.get_hotbar_bg(0, 4.25)
+		epr.get_hotbar_bg(0, 4.25)
 end
 
 local function is_plant(itemname)

@@ -1,11 +1,15 @@
 
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epr = ele.external.ref
+
 elewi.loaded_receivers = {}
 
 local function get_formspec(power, name, player)
 	return "size[8,8.5]"..
-		default.gui_bg..
-		default.gui_bg_img..
-		default.gui_slots..
+		epr.gui_bg..
+		depr.gui_bg_img..
+		epr.gui_slots..
 		ele.formspec.power_meter(power)..
 		"field[1.5,0.5;5,1;name;Receiver Name;".. name .."]"..
 		"field_close_on_enter[name;false]"..
@@ -13,7 +17,7 @@ local function get_formspec(power, name, player)
 		"list[current_player;main;0,4.25;8,1;]"..
 		"list[current_player;main;0,5.5;8,3;8]"..
 		"listring[current_player;main]"..
-		default.get_hotbar_bg(0, 4.25)
+		epr.get_hotbar_bg(0, 4.25)
 end
 
 local function matter_receiver_timer(pos)

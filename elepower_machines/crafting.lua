@@ -1,4 +1,8 @@
 
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epi = ele.external.ing
+
 --*****************--
 -- MACHINE RECIPES --
 --*****************--
@@ -10,18 +14,18 @@
 local alloy_recipes = {
 	{
 		recipe = { "elepower_dynamics:iron_ingot", "elepower_dynamics:coal_dust 4" },
-		output = "default:steel_ingot",
+		output = epi.steel_ingot,
 	},
 	{
-		recipe = { "default:copper_ingot 2", "default:tin_ingot" },
-		output = "default:bronze_ingot 3",
+		recipe = { epi.copper_ingot.." 2", epi.tin_ingot },
+		output = epi.bronze_ingot.." 3",
 	},
 	{
 		recipe = { "elepower_dynamics:iron_ingot 3", "elepower_dynamics:nickel_ingot" },
 		output = "elepower_dynamics:invar_ingot 4",
 	},
 	{
-		recipe = { "default:gold_ingot 2", "elepower_dynamics:invar_ingot" },
+		recipe = { epi.gold_ingot.." 2", "elepower_dynamics:invar_ingot" },
 		output = "elepower_dynamics:electrum_ingot 3",
 	},
 	{
@@ -29,7 +33,7 @@ local alloy_recipes = {
 		output = "elepower_dynamics:silicon_wafer",
 	},
 	{
-		recipe = { "default:coal_lump", "elepower_dynamics:coal_dust 4" },
+		recipe = { epi.coal_lump, "elepower_dynamics:coal_dust 4" },
 		output = "elepower_dynamics:graphite_ingot",
 	},
 	{
@@ -38,17 +42,17 @@ local alloy_recipes = {
 		time   = 8,
 	},
 	{
-		recipe = { "default:obsidian_glass", "elepower_dynamics:lead_ingot 4" },
+		recipe = { epi.obsidian_glass, "elepower_dynamics:lead_ingot 4" },
 		output = "elepower_dynamics:hardened_glass 4",
 		time   = 8,
 	},
 	{
-		recipe = { "default:copper_ingot 2", "moreores:silver_ingot" },
+		recipe = { epi.copper_ingot.." 2", epi.silver_ingot },
 		output = "basic_materials:brass_ingot 3",
 		time   = 8,
 	},
 	{
-		recipe = { "default:bronze_ingot", "default:steel_ingot 4" },
+		recipe = { epi.bronze_ingot, epi.steel_ingot.." 4" },
 		output = "elepower_machines:heat_casing 4",
 	},
 }
@@ -106,36 +110,36 @@ end
 
 local grinding_recipes = {
 	{
-		recipe = { "farming:wheat" },
-		output = "farming:flour 2",
+		recipe = { epi.wheat },
+		output = epi.flour.." 2",
 		time   = 4,
 	},
 	{
-		recipe = { "default:desert_sand 4" },
+		recipe = { epi.desert_sand.." 4" },
 		output = "basic_materials:silicon",
 	},
 	{
-		recipe = { "default:sand 4" },
+		recipe = { epi.sand.." 4" },
 		output = "basic_materials:silicon",
 	},
 	{
-		recipe = { "default:cobble" },
-		output = "default:gravel 4",
+		recipe = { epi.cobble },
+		output = epi.gravel.." 4",
 	},
 	{
-		recipe = { "default:gravel" },
-		output = "default:sand 4",
+		recipe = { epi.gravel },
+		output = epi.sand.." 4",
 	},
 	{
-		recipe = { "default:mese" },
-		output = "default:mese_crystal 9",
+		recipe = { epi.mese },
+		output = epi.mese_crystal.." 9",
 	},
 	{
-		recipe = { "default:mese_crystal" },
-		output = "default:mese_crystal_fragment 9",
+		recipe = { epi.mese_crystal },
+		output = epi.mese_crystal_fragment.." 9",
 	},
 	{
-		recipe = { "default:mese_crystal_fragment" },
+		recipe = { epi.mese_crystal_fragment },
 		output = "elepower_dynamics:mese_dust",
 	},
 	{
@@ -223,13 +227,13 @@ local compressor_recipes = {
 		time   = 20,
 	},
 	{
-		recipe = { "default:mese_crystal_fragment 4", "default:mese_crystal_fragment 4" },
-		output = "default:mese_crystal",
+		recipe = { epi.mese_crystal_fragment.." 4", epi.mese_crystal_fragment.." 4" },
+		output = epi.mese_crystal,
 		time   = 2,
 	},
 	{
-		recipe = { "default:mese_crystal 4","default:mese_crystal 4" },
-		output = "default:mese",
+		recipe = { epi.mese_crystal.." 4",epi.mese_crystal.." 4" },
+		output = epi.mese,
 		time   = 2,
 	},
 	{
@@ -304,7 +308,7 @@ local soldering_recipes = {
 		time   = 8,
 	},
 	{
-		recipe = { "default:copper_ingot 4", "elepower_dynamics:microcontroller 4", "elepower_dynamics:electrum_ingot 2" },
+		recipe = { epi.copper_ingot.." 4", "elepower_dynamics:microcontroller 4", "elepower_dynamics:electrum_ingot 2" },
 		output = "elepower_dynamics:soc",
 		time   = 28,
 	},
@@ -388,8 +392,8 @@ minetest.register_craft({
 	output = "elepower_machines:hardened_capacitor",
 	recipe = {
 		{"basic_materials:plastic_sheet", "basic_materials:plastic_sheet", "basic_materials:plastic_sheet"},
-		{"elepower_dynamics:invar_plate", "default:mese_crystal", "elepower_dynamics:invar_plate"},
-		{"elepower_dynamics:invar_plate", "elepower_dynamics:capacitor", "elepower_dynamics:invar_plate"},
+		{"elepower_dynamics:invar_plate", epi.mese_crystal               , "elepower_dynamics:invar_plate"},
+		{"elepower_dynamics:invar_plate", "elepower_dynamics:capacitor"  , "elepower_dynamics:invar_plate"},
 	}
 })
 
@@ -397,7 +401,7 @@ minetest.register_craft({
 	output = "elepower_machines:reinforced_capacitor",
 	recipe = {
 		{"elepower_dynamics:invar_plate", "elepower_dynamics:invar_plate", "elepower_dynamics:invar_plate"},
-		{"elepower_dynamics:electrum_plate", "default:mese_crystal", "elepower_dynamics:electrum_plate"},
+		{"elepower_dynamics:electrum_plate", epi.mese_crystal            , "elepower_dynamics:electrum_plate"},
 		{"elepower_dynamics:electrum_plate", "elepower_machines:hardened_capacitor", "elepower_dynamics:electrum_plate"},
 	}
 })
@@ -406,7 +410,7 @@ minetest.register_craft({
 	output = "elepower_machines:resonant_capacitor",
 	recipe = {
 		{"elepower_dynamics:electrum_plate", "elepower_dynamics:electrum_plate", "elepower_dynamics:electrum_plate"},
-		{"elepower_dynamics:viridisium_plate", "default:mese_crystal", "elepower_dynamics:viridisium_plate"},
+		{"elepower_dynamics:viridisium_plate", epi.mese_crystal                , "elepower_dynamics:viridisium_plate"},
 		{"elepower_dynamics:viridisium_plate", "elepower_machines:reinforced_capacitor", "elepower_dynamics:viridisium_plate"},
 	}
 })
@@ -441,9 +445,9 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_machines:wind_turbine_blade",
 	recipe = {
-		{"", "default:wood", "default:wood"},
-		{"default:stick", "default:wood", "default:wood"},
-		{"default:stick", "default:stick", ""},
+		{""             , epi.group_wood , epi.group_wood},
+		{epi.group_stick, epi.group_wood , epi.group_wood},
+		{epi.group_stick, epi.group_stick, ""},
 	}
 })
 
@@ -451,7 +455,7 @@ minetest.register_craft({
 	output = "elepower_machines:wind_turbine_blades",
 	recipe = {
 		{"elepower_machines:wind_turbine_blade", "elepower_machines:wind_turbine_blade", "elepower_machines:wind_turbine_blade"},
-		{"elepower_machines:wind_turbine_blade", "default:wood", "elepower_machines:wind_turbine_blade"},
+		{"elepower_machines:wind_turbine_blade",             epi.group_wood            , "elepower_machines:wind_turbine_blade"},
 		{"elepower_machines:wind_turbine_blade", "elepower_machines:wind_turbine_blade", "elepower_machines:wind_turbine_blade"},
 	}
 })
@@ -462,9 +466,9 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_machines:coal_alloy_furnace",
 	recipe = {
-		{"default:brick", "default:brick", "default:brick"},
-		{"default:furnace", "", "default:furnace"},
-		{"default:brick", "default:brick", "default:brick"},
+		{epi.brick, epi.brick    , epi.brick},
+		{epi.brick, epi.coal_lump, epi.brick},
+		{epi.brick, epi.brick    , epi.brick},
 	}
 })
 
@@ -472,18 +476,18 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_machines:grindstone",
 	recipe = {
-		{"group:stone", "group:stone", "group:stone"},
-		{"default:flint", "default:flint", "default:flint"},
-		{"default:cobble", "default:cobble", "default:cobble"},
+		{epi.group_stone, epi.group_stone, epi.group_stone},
+		{epi.flint      , epi.flint      , epi.flint      },
+		{epi.cobble     , epi.cobble     , epi.cobble     }
 	}
 })
 
 minetest.register_craft({
 	output = "elepower_machines:crank",
 	recipe = {
-		{"group:stick", "group:stick", "group:stick"},
-		{"", "", "group:stick"},
-		{"", "", "group:stick"},
+		{epi.group_stick, epi.group_stick, epi.group_stick},
+		{""             , ""             , epi.group_stick},
+		{""             , ""             , epi.group_stick}
 	}
 })
 
@@ -491,9 +495,9 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_machines:machine_block",
 	recipe = {
-		{"default:steel_ingot", "default:glass", "default:steel_ingot"},
-		{"default:glass", "elepower_dynamics:brass_gear", "default:glass"},
-		{"default:steel_ingot", "basic_materials:motor", "default:steel_ingot"},
+		{epi.steel_ingot, epi.glass                     , epi.steel_ingot},
+		{epi.glass      , "elepower_dynamics:brass_gear", epi.glass      },
+		{epi.steel_ingot, "basic_materials:motor"       , epi.steel_ingot}
 	}
 })
 
@@ -501,9 +505,9 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_machines:generator",
 	recipe = {
-		{"", "default:steel_ingot", ""},
-		{"default:steel_ingot", "elepower_machines:machine_block", "default:steel_ingot"},
-		{"elepower_dynamics:wound_copper_coil", "default:furnace", "elepower_dynamics:wound_copper_coil"}
+		{""                                   , epi.steel_ingot                  ,              ""                      },
+		{epi.steel_ingot                      , "elepower_machines:machine_block", epi.steel_ingot                      },
+		{"elepower_dynamics:wound_copper_coil", epi.coal_lump                    , "elepower_dynamics:wound_copper_coil"}
 	}
 })
 
@@ -512,8 +516,8 @@ minetest.register_craft({
 	output = "elepower_machines:fuel_burner",
 	recipe = {
 		{"elepower_dynamics:wound_copper_coil", "elepower_dynamics:integrated_circuit", "elepower_dynamics:wound_copper_coil"},
-		{"default:brick", "elepower_dynamics:portable_tank", "default:brick"},
-		{"elepower_dynamics:servo_valve", "elepower_machines:generator", "elepower_dynamics:servo_valve"},
+		{epi.brick                            , "elepower_dynamics:portable_tank"     , epi.brick},
+		{"elepower_dynamics:servo_valve"      , "elepower_machines:generator"         , "elepower_dynamics:servo_valve"},
 	}
 })
 
@@ -521,13 +525,9 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_machines:alloy_furnace",
 	recipe = {
-		{"", "elepower_dynamics:integrated_circuit", ""},
-		{"default:brick", "elepower_machines:machine_block", "default:brick"},
-		{
-			"elepower_dynamics:wound_copper_coil",
-			"elepower_machines:coal_alloy_furnace",
-			"elepower_dynamics:wound_copper_coil"
-		},
+		{ ""                                  , "elepower_dynamics:integrated_circuit", ""                             },
+		{"elepower_dynamics:wound_copper_coil","basic_materials:heating_element", "elepower_dynamics:wound_copper_coil"},
+		{epi.brick                            , "elepower_machines:machine_block"     , epi.brick                      },
 	}
 })
 
@@ -535,13 +535,9 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_machines:solderer",
 	recipe = {
-		{"", "elepower_dynamics:integrated_circuit", ""},
-		{"elepower_dynamics:chip", "elepower_machines:machine_block", "elepower_dynamics:chip"},
-		{
-			"elepower_dynamics:invar_gear",
-			"elepower_dynamics:wound_copper_coil",
-			"elepower_dynamics:invar_gear"
-		},
+		{""                            , "elepower_dynamics:integrated_circuit",   ""                       },
+		{"elepower_dynamics:chip"      , "elepower_machines:machine_block"   , "elepower_dynamics:chip"     },
+		{"elepower_dynamics:invar_gear","elepower_dynamics:wound_copper_coil","elepower_dynamics:invar_gear"}
 	}
 })
 
@@ -550,8 +546,8 @@ minetest.register_craft({
 	output = "elepower_machines:furnace",
 	recipe = {
 		{"", "elepower_dynamics:integrated_circuit", ""},
-		{"default:clay_brick", "elepower_machines:machine_block", "default:clay_brick"},
-		{"elepower_dynamics:wound_copper_coil", "default:furnace", "elepower_dynamics:wound_copper_coil"},
+		{"elepower_dynamics:wound_copper_coil","basic_materials:heating_element", "elepower_dynamics:wound_copper_coil"},
+		{epi.clay_brick, "elepower_machines:machine_block", epi.clay_brick},
 	}
 })
 
@@ -560,7 +556,7 @@ minetest.register_craft({
 	output = "elepower_machines:pulverizer",
 	recipe = {
 		{"", "elepower_dynamics:integrated_circuit", ""},
-		{"default:flint", "elepower_machines:machine_block", "default:flint"},
+		{epi.flint, "elepower_machines:machine_block", epi.flint},
 		{"elepower_dynamics:wound_copper_coil", "elepower_dynamics:lead_gear", "elepower_dynamics:wound_copper_coil"},
 	}
 })
@@ -590,7 +586,7 @@ minetest.register_craft({
 	output = "elepower_machines:accumulator",
 	recipe = {
 		{"", "fluid_transfer:fluid_duct", ""},
-		{"default:glass", "elepower_machines:machine_block", "default:glass"},
+		{epi.glass, "elepower_machines:machine_block", epi.glass},
 		{"elepower_dynamics:steel_gear", "elepower_dynamics:servo_valve", "elepower_dynamics:steel_gear"},
 	}
 })
@@ -614,7 +610,7 @@ minetest.register_craft({
 	output = "elepower_machines:lava_generator",
 	recipe = {
 		{"elepower_dynamics:wound_silver_coil", "elepower_dynamics:control_circuit", "elepower_dynamics:wound_silver_coil"},
-		{"default:brick", "elepower_machines:machine_block", "default:brick"},
+		{epi.brick, "elepower_machines:machine_block", epi.brick},
 		{"elepower_dynamics:invar_gear", "elepower_dynamics:servo_valve", "elepower_dynamics:invar_gear"},
 	},
 })
@@ -623,17 +619,17 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_machines:compressor_piston",
 	recipe = {
-		{"", "default:steel_ingot", ""},
-		{"", "default:steel_ingot", ""},
-		{"default:bronze_ingot", "default:bronze_ingot", "default:bronze_ingot"},
+		{"", epi.steel_ingot, ""},
+		{"", epi.steel_ingot, ""},
+		{epi.bronze_ingot, epi.bronze_ingot, epi.bronze_ingot},
 	}
 })
 
 minetest.register_craft({
 	output = "elepower_machines:compressor_piston",
 	recipe = {
-		{"", "default:steel_ingot", ""},
-		{"", "default:steel_ingot", ""},
+		{"", epi.steel_ingot, ""},
+		{"", epi.steel_ingot, ""},
 		{"", "elepower_dynamics:bronze_plate", ""},
 	}
 })
@@ -644,7 +640,7 @@ minetest.register_craft({
 	recipe = {
 		{"elepower_dynamics:integrated_circuit", "elepower_machines:compressor_piston", "elepower_dynamics:wound_copper_coil"},
 		{"elepower_dynamics:steel_gear", "elepower_machines:machine_block", "elepower_dynamics:steel_gear"},
-		{"default:steel_ingot", "elepower_machines:compressor_piston", "default:steel_ingot"},
+		{epi.steel_ingot               , "elepower_machines:compressor_piston", epi.steel_ingot           }
 	}
 })
 
@@ -653,8 +649,8 @@ minetest.register_craft({
 	output = "elepower_machines:turbine_blades",
 	recipe = {
 		{"elepower_dynamics:steel_plate", "elepower_dynamics:steel_plate", "elepower_dynamics:steel_plate"},
-		{"elepower_dynamics:steel_plate", "default:steel_ingot",           "elepower_dynamics:steel_plate"},
-		{"elepower_dynamics:steel_plate", "elepower_dynamics:steel_plate", "elepower_dynamics:steel_plate"},
+		{"elepower_dynamics:steel_plate", epi.steel_ingot                , "elepower_dynamics:steel_plate"},
+		{"elepower_dynamics:steel_plate", "elepower_dynamics:steel_plate", "elepower_dynamics:steel_plate"}
 	}
 })
 
@@ -732,7 +728,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_machines:evaporator",
 	recipe = {
-		{"elepower_dynamics:steel_plate", "default:steelblock", "elepower_dynamics:steel_plate"},
+		{"elepower_dynamics:steel_plate", epi.steel_block, "elepower_dynamics:steel_plate"},
 		{"elepower_dynamics:steel_plate", "elepower_machines:machine_block", "elepower_dynamics:steel_plate"},
 		{"elepower_dynamics:induction_coil", "elepower_dynamics:zinc_plate", "elepower_dynamics:induction_coil"},
 	}

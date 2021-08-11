@@ -1,4 +1,8 @@
 
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epi = ele.external.ing
+
 minetest.register_craft({
 	output = "elepower_mining:miner_controller",
 	recipe = {
@@ -11,16 +15,16 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "elepower_mining:miner_core",
 	recipe = {
-		{"default:steelblock", "elepower_dynamics:invar_gear", "default:steelblock"},
+		{epi.steel_block, "elepower_dynamics:invar_gear", epi.steel_block},
 		{"elepower_dynamics:invar_gear", "elepower_dynamics:servo_valve", "elepower_dynamics:invar_gear"},
-		{"default:steelblock", "elepower_dynamics:invar_gear", "default:steelblock"},
+		{epi.steel_block, "elepower_dynamics:invar_gear", epi.steel_block},
 	}
 })
 
 minetest.register_craft({
 	output = "elepower_mining:miner_drill",
 	recipe = {
-		{"default:steelblock", "elepower_dynamics:induction_coil_advanced", "default:steelblock"},
+		{epi.steel_block, "elepower_dynamics:induction_coil_advanced", epi.steel_block},
 		{"basic_materials:motor", "elepower_machines:machine_block", "basic_materials:motor"},
 		{"elepower_tools:hand_drill", "elepower_tools:hand_drill", "elepower_tools:hand_drill"},
 	}

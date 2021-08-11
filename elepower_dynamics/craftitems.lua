@@ -1,4 +1,9 @@
 
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epr = ele.external.ref 
+local epi = ele.external.ing
+
 ----------------
 -- Craftitems --
 ----------------
@@ -164,7 +169,7 @@ minetest.register_craftitem("elepower_dynamics:pcb_blank", {
 
 		-- Limited etchings
 		if uses == 10 then
-			minetest.set_node(pos, {name = "default:water_source"})
+			minetest.set_node(pos, {name = epr.water_source})
 		else
 			meta:set_int("uses", uses)
 		end
@@ -188,7 +193,7 @@ minetest.register_craftitem("elepower_dynamics:acidic_compound", {
 		local pos  = pointed_thing.under
 		local node = minetest.get_node(pos)
 		
-		if node.name ~= "default:water_source" then
+		if node.name ~= epi.water_source then
 			return itemstack
 		end
 
@@ -303,6 +308,6 @@ minetest.register_craftitem("elepower_dynamics:pv_cell", {
 -- Overrides --
 ---------------
 
-minetest.override_item("default:steel_ingot", {
-	description = "Steel Ingot\nLow carbon steel"
+minetest.override_item(epi.steel_ingot, {
+	description = "Low Carbon Steel Ingot"
 })

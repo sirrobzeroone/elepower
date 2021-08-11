@@ -11,6 +11,7 @@ ele.unit = "EpU"
 ele.unit_description = "Elepower Unit"
 
 -- APIs
+dofile(modpath..'/external_nodes_items.lua')
 dofile(modpath..'/helpers.lua')
 dofile(modpath..'/network.lua')
 dofile(modpath..'/formspec.lua')

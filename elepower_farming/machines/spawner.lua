@@ -1,4 +1,8 @@
 
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epr = ele.external.ref
+
 -- How many seconds there are between runs
 local SPAWNER_TICK = 10
 
@@ -91,9 +95,9 @@ end
 
 local function get_formspec(timer, power, state)
 	return "size[8,8.5]"..
-		default.gui_bg..
-		default.gui_bg_img..
-		default.gui_slots..
+		epr.gui_bg..
+		epr.gui_bg_img..
+		epr.gui_slots..
 		ele.formspec.power_meter(power)..
 		ele.formspec.state_switcher(7, 0, state)..
 		ele.formspec.create_bar(1, 0, 100 - timer, "#00ff11", true)..
@@ -104,7 +108,7 @@ local function get_formspec(timer, power, state)
 		"listring[current_player;main]"..
 		"listring[context;src]"..
 		"listring[current_player;main]"..
-		default.get_hotbar_bg(0, 4.25)
+		epr.get_hotbar_bg(0, 4.25)
 end
 
 local function on_timer(pos, elapsed)

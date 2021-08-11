@@ -1,14 +1,19 @@
 
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epr = ele.external.ref
+local epg = ele.external.graphic
+
 local SPEED = 8
 
 local function get_formspec(item_percent)
 	return "size[8,8.5]"..
-		default.gui_bg..
-		default.gui_bg_img..
-		default.gui_slots..
+		epr.gui_bg..
+		epr.gui_bg_img..
+		epr.gui_slots..
 		"list[context;src;1.6,1;1,1;]"..
-		"image[3.5,1;1,1;gui_furnace_arrow_bg.png^[lowpart:"..
-		(item_percent)..":gui_furnace_arrow_fg.png^[transformR270]"..
+		"image[3.5,1;1,1;"..epg.gui_furnace_arrow_bg.."^[lowpart:"..
+		(item_percent)..":"..epg.gui_furnace_arrow_fg.."^[transformR270]"..
 		"list[context;dst;4.5,1;2,1;]"..
 		"list[current_player;main;0,4.25;8,1;]"..
 		"list[current_player;main;0,5.5;8,3;8]"..
@@ -16,7 +21,7 @@ local function get_formspec(item_percent)
 		"listring[current_player;main]"..
 		"listring[context;src]"..
 		"listring[current_player;main]"..
-		default.get_hotbar_bg(0, 4.25)
+		epr.get_hotbar_bg(0, 4.25)
 end
 
 local function can_dig(pos, player)
@@ -154,7 +159,7 @@ ele.register_base_device("elepower_machines:grindstone", {
 minetest.register_node("elepower_machines:crank", {
 	description = "Hand Crank\nPlace on Grindstone and hold Right-Click",
 	groups = {choppy = 1, oddly_breakable_by_hand = 1},
-	tiles = {"default_wood.png"},
+	tiles = {epg.wood},
 	use_texture_alpha = "clip",
 	drawtype = "nodebox",
 	paramtype = "light",

@@ -1,4 +1,8 @@
 
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epi = ele.external.ref
+
 ele.register_fluid_generator("elepower_machines:lava_generator", {
 	description = "Lava Generator",
 	ele_usage = 64,
@@ -16,7 +20,7 @@ ele.register_fluid_generator("elepower_machines:lava_generator", {
 	fluid_buffers = {
 		lava = {
 			capacity  = 8000,
-			accepts   = {"default:lava_source"},
+			accepts   = {epi.lava_source},
 			drainable = false
 		}
 	},

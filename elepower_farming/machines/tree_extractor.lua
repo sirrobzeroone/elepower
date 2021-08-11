@@ -1,12 +1,16 @@
 
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epi = ele.external.ing
+
 local CAPACITY = 8000
 
 local fluid_table = {
-	["default:tree"]        = { fpc = 100, fluid = "elepower_farming:tree_sap_source" },
-	["default:jungletree"]  = { fpc = 50,  fluid = "elepower_farming:resin_source" },
-	["default:pine_tree"]   = { fpc = 100, fluid = "elepower_farming:resin_source" },
-	["default:acacia_tree"] = { fpc = 50,  fluid = "elepower_farming:resin_source" },
-	["default:aspen_tree"]  = { fpc = 50,  fluid = "elepower_farming:resin_source" },
+	[epi.tree]        = { fpc = 100, fluid = "elepower_farming:tree_sap_source" },
+	[epi.jungle_tree]  = { fpc = 50,  fluid = "elepower_farming:resin_source" },
+	[epi.pine_tree]   = { fpc = 100, fluid = "elepower_farming:resin_source" },
+	[epi.acacia_tree] = { fpc = 50,  fluid = "elepower_farming:resin_source" },
+	[epi.aspen_tree]  = { fpc = 50,  fluid = "elepower_farming:resin_source" },
 }
 
 minetest.register_node("elepower_farming:tree_extractor", {

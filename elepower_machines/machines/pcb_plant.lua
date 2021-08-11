@@ -1,4 +1,9 @@
 
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epr = ele.external.ref
+local epg = ele.external.graphic
+
 local function get_formspec(power, input, state, active, percent)
 	local t = "image[3.5,1.75;1,1;elepower_uv_bulb.png]"
 
@@ -11,14 +16,14 @@ local function get_formspec(power, input, state, active, percent)
 	end
 
 	return "size[8,8.5]"..
-		default.gui_bg..
-		default.gui_bg_img..
-		default.gui_slots..
+		epr.gui_bg..
+		epr.gui_bg_img..
+		epr.gui_slots..
 		ele.formspec.power_meter(power)..
 		ele.formspec.state_switcher(7, 0, state)..
 		ele.formspec.fluid_bar(1, 0, input)..
-		"image[3.5,1;1,1;gui_furnace_arrow_bg.png^[lowpart:"..
-			  (percent)..":gui_furnace_arrow_fg.png^[transformR270]"..
+		"image[3.5,1;1,1;"..epg.gui_furnace_arrow_bg.."^[lowpart:"..
+			  (percent)..":"..epg.gui_furnace_arrow_fg.."^[transformR270]"..
 		t..
 		"list[context;src;2.5,1;1,1;]"..
 		"list[context;dst;4.5,1;1,1;]"..
@@ -29,7 +34,7 @@ local function get_formspec(power, input, state, active, percent)
 		"listring[current_player;main]"..
 		"listring[context;dst]"..
 		"listring[current_player;main]"..
-		default.get_hotbar_bg(0, 4.25)
+		epr.get_hotbar_bg(0, 4.25)
 end
 
 local function on_timer(pos, elapsed)

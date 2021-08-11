@@ -1,4 +1,8 @@
 
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epr = ele.external.ref
+
 local struct_cache = {}
 
 local iC = 1 -- Casing
@@ -117,9 +121,9 @@ local function controller_formspec(in1, in2, out, power, time, state)
 	end
 
 	return "size[8,3.25]"..
-		default.gui_bg..
-		default.gui_bg_img..
-		default.gui_slots..
+		epr.gui_bg..
+		epr.gui_bg_img..
+		epr.gui_slots..
 		ele.formspec.power_meter(power)..
 		ele.formspec.fluid_bar(1, 0, in1)..
 		ele.formspec.fluid_bar(2, 0, in2)..

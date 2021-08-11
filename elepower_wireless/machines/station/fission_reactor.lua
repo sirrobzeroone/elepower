@@ -1,4 +1,8 @@
 
+-- see elepower_papi >> external_nodes_items.lua for explanation
+-- shorten table ref
+local epr = ele.external.ref
+
 local myname = "elepower_nuclear:fission_controller"
 
 local function check(pos)
@@ -115,9 +119,9 @@ local function get_formspec(pos, power, station, station_meta)
 
 	local centered = (width - 8) / 2
 	return "size["..width..",8.5]"..
-		default.gui_bg..
-		default.gui_bg_img..
-		default.gui_slots..
+		epr.gui_bg..
+		epr.gui_bg_img..
+		epr.gui_slots..
 		ele.formspec.power_meter(power)..
 		"list[current_player;main;"..centered..",4.25;8,1;]"..
 		"list[current_player;main;"..centered..",5.5;8,3;8]"..
@@ -125,7 +129,7 @@ local function get_formspec(pos, power, station, station_meta)
 		"listring[current_player;main]"..
 		"listring[context;card]"..
 		"listring[current_player;main]"..
-		default.get_hotbar_bg(centered, 4.25)
+		epr.get_hotbar_bg(centered, 4.25)
 end
 
 local function on_receive_fields(pos, fields, sender, station, station_meta)
