@@ -423,7 +423,8 @@ function elepower_lighting.light_timer(pos)
 		local pos_s = minetest.deserialize(meta:get_string("flood_light_pos_s"))
 		local pos_e = minetest.deserialize(meta:get_string("flood_light_pos_e"))
 		local e_pos
-
+		local bulb_type = string.match(reg_name, ':(.-)_')
+		
 			if light_shape == "flood" then
 				
 				-- change floodlight node for angled/tilted version
@@ -458,11 +459,11 @@ function elepower_lighting.light_timer(pos)
 				else
 					tilt = 0				
 				end
-								
+			
 				if not string.find(reg_name, "active") then
-					new_name = "elepower_lighting:incandescent_floodlight_x"..rpn..rotate.."_y"..tpn..tilt				
+					new_name = "elepower_lighting:"..bulb_type.."_floodlight_x"..rpn..rotate.."_y"..tpn..tilt				
 				else
-					new_name = "elepower_lighting:incandescent_floodlight_x"..rpn..rotate.."_y"..tpn..tilt.."_active"
+					new_name = "elepower_lighting:"..bulb_type.."_floodlight_x"..rpn..rotate.."_y"..tpn..tilt.."_active"
 				end
 				
 				if new_name ~= reg_name then

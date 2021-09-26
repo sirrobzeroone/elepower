@@ -306,7 +306,9 @@ minetest.register_abm({
 			-- the word "Active" was found.
 			if bat_flag == true then
 				local active = string.find(user_status, "Active")
-				if active ~= nil then
+				local out_power =  string.find(user_status, "Out of Power")
+				--minetest.debug(dump(user_status))
+				if active ~= nil or out_power ~= nil then
 					if user_gets > user_usage then
 						user_gets = user_usage
 					end
