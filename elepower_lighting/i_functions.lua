@@ -395,6 +395,24 @@ function elepower_lighting.rot_and_place(itemstack, placer, pointed_thing)
 	return minetest.item_place(itemstack, placer, pointed_thing, param2)
 end
 
+-------------------------------------
+--      Light State Function       --
+-- "Active", "Off", "Out of Power" --
+-------------------------------------
+function elepower_lighting.status(on_off,storage,usage)
+	local status = "Active"
+	
+		if on_off == 0 then
+			status = "Off"
+		
+		elseif storage < usage then
+			status = "Out of Power!"
+			
+		end
+	
+	return status
+end
+
 ------------------------------------
 -- Main Lighting timer, what uses --
 -- EpU's and allows lights to be  --
@@ -413,7 +431,7 @@ function elepower_lighting.light_timer(pos)
 	local pow_percent = {capacity = capacity, storage = storage, usage = usage}
 	local light_strip_axis
 	local flood_light_change = false
-		
+	
 	if light_shape ~= "flood" then
 		light_strip_axis = elepower_lighting.p2_to_axis(node_p2)
 	
@@ -539,7 +557,8 @@ function elepower_lighting.light_timer(pos)
 		end	
 	end
 
-	meta:set_string("infotext", name .. "\n" .. ele.capacity_text(capacity, storage))
+	local status = elepower_lighting.status(on_off,pow_percent.storage,pow_percent.usage)
+	meta:set_string("infotext", name.." "..status.."\n" .. ele.capacity_text(capacity, storage))
 
 	if light_shape == "flood" then
 		local tilt = meta:get_int("tilt") or 0
@@ -709,9 +728,10 @@ function elepower_lighting.light_timer_colored(pos)
 						
 			end	
 		end
+		local status = elepower_lighting.status(on_off,pow_percent.storage,pow_percent.usage)
 		
-		meta:set_string("formspec", get_formspec_panel_color(pow_percent,color_mode,color_sync))
-		meta:set_string("infotext", name .. "\n" .. ele.capacity_text(capacity, storage))
+		meta:set_string("formspec", get_formspec_panel_color(pow_percent,color_mode,color_sync))			
+		meta:set_string("infotext", name .." "..status.. "\n" .. ele.capacity_text(capacity, storage))
 
 		cycles = 0
 	end
@@ -866,7 +886,7 @@ end)
 function elepower_lighting.light_punch(pos,player)
 	local meta   = minetest.get_meta(pos)
 	local on_off = meta:get_int("on_off") or 1
-
+	
 	if on_off == 1 then
 		on_off = 0
 		
@@ -880,6 +900,7 @@ end
 function elepower_lighting.light_construct(pos)
 	local meta  = minetest.get_meta(pos)
 	meta:set_int("on_off",1)
+	meta:set_string("infotext", "Active")
 	
 	local is_colored  = minetest.registered_items[minetest.get_node(pos).name].palette or nil
 	

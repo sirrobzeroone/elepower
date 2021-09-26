@@ -13,15 +13,15 @@
 ------------------------------------------------------
 
 local flood_light_angles = {
-							xp0_yp0   = {groups = {cracky = 1, ele_user = 1, ele_lighting = 1}, drops = "elepower_lighting:incandescent_floodlight_xp0_yp0"},
-							xp0_yp20  = {groups = {cracky = 1, ele_user = 1, not_in_creative_inventory = 1}, drops = "elepower_lighting:incandescent_floodlight_xp0_yp0"},
-							xp0_yn20  = {groups = {cracky = 1, ele_user = 1, not_in_creative_inventory = 1}, drops = "elepower_lighting:incandescent_floodlight_xp0_yp0"},
-							xp45_yp0  = {groups = {cracky = 1, ele_user = 1, not_in_creative_inventory = 1}, drops = "elepower_lighting:incandescent_floodlight_xp0_yp0"},
-							xp45_yp20 = {groups = {cracky = 1, ele_user = 1, not_in_creative_inventory = 1}, drops = "elepower_lighting:incandescent_floodlight_xp0_yp0"},
-							xp45_yn20 = {groups = {cracky = 1, ele_user = 1, not_in_creative_inventory = 1}, drops = "elepower_lighting:incandescent_floodlight_xp0_yp0"},
-							xn45_yp0  = {groups = {cracky = 1, ele_user = 1, not_in_creative_inventory = 1}, drops = "elepower_lighting:incandescent_floodlight_xp0_yp0"},
-							xn45_yp20 = {groups = {cracky = 1, ele_user = 1, not_in_creative_inventory = 1}, drops = "elepower_lighting:incandescent_floodlight_xp0_yp0"},
-							xn45_yn20 = {groups = {cracky = 1, ele_user = 1, not_in_creative_inventory = 1}, drops = "elepower_lighting:incandescent_floodlight_xp0_yp0"}
+							xp0_yp0   = {groups = {cracky = 1, ele_user = 1, ele_lighting = 1}},
+							xp0_yp20  = {groups = {cracky = 1, ele_user = 1, not_in_creative_inventory = 1}},
+							xp0_yn20  = {groups = {cracky = 1, ele_user = 1, not_in_creative_inventory = 1}},
+							xp45_yp0  = {groups = {cracky = 1, ele_user = 1, not_in_creative_inventory = 1}},
+							xp45_yp20 = {groups = {cracky = 1, ele_user = 1, not_in_creative_inventory = 1}},
+							xp45_yn20 = {groups = {cracky = 1, ele_user = 1, not_in_creative_inventory = 1}},
+							xn45_yp0  = {groups = {cracky = 1, ele_user = 1, not_in_creative_inventory = 1}},
+							xn45_yp20 = {groups = {cracky = 1, ele_user = 1, not_in_creative_inventory = 1}},
+							xn45_yn20 = {groups = {cracky = 1, ele_user = 1, not_in_creative_inventory = 1}}
                            }
 
 for angle,def in pairs(flood_light_angles) do
@@ -46,7 +46,7 @@ for angle,def in pairs(flood_light_angles) do
 		use_texture_alpha = "clip",
 		paramtype = "light",
 		sunlight_propagates = true,
-		drops = def.drops,
+		drops = "elepower_lighting:incandescent_floodlight_xp0_yp0",
 		groups = def.groups,
 		ele_capacity = 64,
 		ele_usage    = 8,
@@ -84,7 +84,7 @@ for angle,def in pairs(flood_light_angles) do
 		use_texture_alpha = "clip",
 		paramtype = "light",
 		sunlight_propagates = true,
-		drops = def.drops,
+		drops = "elepower_lighting:cf_floodlight_xp0_yp0",
 		groups = def.groups,
 		ele_capacity = 128,
 		ele_usage    = 4,
@@ -122,7 +122,7 @@ for angle,def in pairs(flood_light_angles) do
 		use_texture_alpha = "clip",
 		paramtype = "light",
 		sunlight_propagates = true,
-		drops = def.drops,
+		drops = "elepower_lighting:led_floodlight_xp0_yp0",
 		groups = def.groups,
 		ele_capacity = 192,
 		ele_usage    = 2,

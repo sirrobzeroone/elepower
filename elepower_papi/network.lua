@@ -136,8 +136,13 @@ local function discover_branches(pr_pos, positions)
 		end
 	end
 
-	-- Add self to providers
+	-- self/triggered abm node can be provider or powercell/user_gets
+	-- add to correct table provider or user
+	if ele.helpers.get_item_group(provider.name, "ele_storage") then
+		add_node(users, pr_pos, pnodeid, "ele_storage")
+	else
 		add_node(providers, pr_pos, pnodeid)
+	end
 
 	users      = ele.helpers.flatten(users)
 	providers  = ele.helpers.flatten(providers)
@@ -159,7 +164,7 @@ local function give_node_power(pos, available)
 	local storage   = user_meta:get_int("storage")
 	local usage     = ele.helpers.get_node_property(user_meta, pos, "usage")
 	local status     = user_meta:get_string("infotext")
-
+	
 	local total_add = 0
 
 	if available >= inrush then
@@ -182,17 +187,18 @@ end
 
 
 minetest.register_abm({
-	nodenames = {"group:ele_provider"},
+	nodenames = {"group:ele_provider","group:ele_storage"},
 	label     = "elepower Power Transfer Tick",
 	interval  = 1,
 	chance    = 1,
 	action    = function(pos, node, active_object_count, active_object_count_wider)
+		
 		local meta  = minetest.get_meta(pos)
 		local meta1 = nil
 
 		local users     = {}
 		local providers = {}
-
+		
 		local providerdef = minetest.registered_nodes[node.name]
 		-- TODO: Customizable output sides
 		local positions = {
@@ -205,6 +211,7 @@ minetest.register_abm({
 		}
 
 		local branches = {}
+		
 		for _,pos1 in ipairs(positions) do
 			local pnode = minetest.get_node(pos1)
 			local name  = pnode.name
@@ -227,7 +234,19 @@ minetest.register_abm({
 
 		-- Find all users and providers
 		users, providers = discover_branches(pos, branches)
-
+		
+		-- Standalone Powercell check		
+		if ele.helpers.get_item_group(node.name, "ele_storage") and #providers >= 1 then
+			-- abm hits powercell but network has provider end here
+			-- as power distribution will be handled on provider abm hit
+			-- minetest.debug("provider present")
+			return			
+		elseif ele.helpers.get_item_group(node.name, "ele_provider") then
+			--minetest.debug("Provider")			
+		else
+			--minetest.debug("solo storage")			
+		end
+		
 		-- Calculate power data for providers
 		local pw_supply  = 0
 		local pw_demand  = 0
@@ -285,7 +304,7 @@ minetest.register_abm({
 					table.insert(bat_users, pg) -- save node_users who aren't batteries
 				end
 		   end
-
+			
 		   users = bat_users           -- replace users with bat_users so batteries arent users anymore
 		   providers = bat_providers   -- replace providers with bat_providers
 		   pw_supply = bat_supply      -- override with battery supply
@@ -298,7 +317,7 @@ minetest.register_abm({
 		for _,ndv in ipairs(users) do       --ndv = pos table
 			-- Check how much power a node wants and can get ie is it close to full charge
 			local user_gets, user_storage, user_usage, user_status = give_node_power(ndv, (pw_supply - pw_demand))  -- pw_demand always 0 check old code
-
+			
 			-- when on battery we dont want to provide user_inrush or if
 			-- machine is currently not in use we dont want to use bat power
 			-- user_status provides the tooltip info when you point at a
