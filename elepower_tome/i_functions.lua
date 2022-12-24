@@ -238,7 +238,7 @@ function eletome.gen_craft_grid(recipe,y_off,no_items)
 			-- handle when recipe includes groups
 			if string.find(recipe.items[x_cnt],"group") then
 				local grp_name = string.gsub(recipe.items[x_cnt],"group:","")
-				local node_name
+				local node_name = "UNKNOWN"
 				for name,def in pairs(minetest.registered_nodes) do 
 					if def.groups[grp_name] and not def.groups["wall"] then
 						node_name = name
